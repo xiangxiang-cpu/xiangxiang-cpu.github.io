@@ -2,12 +2,14 @@
 <search>
   <entry>
     <title>firstblog</title>
-    <url>/2019/04/04/firstblog/</url>
+    <url>/2019/04/04/firstblog%20-%20%E5%89%AF%E6%9C%AC/</url>
     <content><![CDATA[<h1 id="数据移动"><a href="#数据移动" class="headerlink" title="数据移动"></a>数据移动</h1><ul>
 <li>数据文件 —– 数据库</li>
 <li>数据库 —– 数据文件</li>
 <li>数据库 —– 数据库</li>
 </ul>
+<a id="more"></a>
+
 <h2 id="sqlload-用于外部数据文件–-gt-数据库"><a href="#sqlload-用于外部数据文件–-gt-数据库" class="headerlink" title="sqlload 用于外部数据文件–&gt;数据库"></a>sqlload 用于外部数据文件–&gt;数据库</h2><img src="/images/image-20200403080339320.png" alt="image-20200403080339320" style="zoom: 80%;" />
 
 
@@ -19,8 +21,6 @@
 <li>discarded file（可选）：将格式正确，但不符合筛选条件的数据放在这里【只向数据库中插入工资大于2500的记录，不满足记录的放到这个文件中】</li>
 <li>log file：（不同于重做日志文件）文本文件，sqlload出了问题可以查这个</li>
 </ul>
-<a id="more"></a>
-
 <h4 id="sqlload数据类型"><a href="#sqlload数据类型" class="headerlink" title="sqlload数据类型"></a>sqlload数据类型</h4><img src="/images/image-20200403082334486.png" alt="image-20200403082334486" style="zoom: 80%;" />
 
 <img src="/images/image-20200404184140838.png" alt="image-20200404184140838" style="zoom:80%;" />
@@ -211,14 +211,12 @@
   </entry>
   <entry>
     <title>firstblog</title>
-    <url>/2019/04/04/firstblog%20-%20%E5%89%AF%E6%9C%AC/</url>
+    <url>/2019/04/04/firstblog/</url>
     <content><![CDATA[<h1 id="数据移动"><a href="#数据移动" class="headerlink" title="数据移动"></a>数据移动</h1><ul>
 <li>数据文件 —– 数据库</li>
 <li>数据库 —– 数据文件</li>
 <li>数据库 —– 数据库</li>
 </ul>
-<a id="more"></a>
-
 <h2 id="sqlload-用于外部数据文件–-gt-数据库"><a href="#sqlload-用于外部数据文件–-gt-数据库" class="headerlink" title="sqlload 用于外部数据文件–&gt;数据库"></a>sqlload 用于外部数据文件–&gt;数据库</h2><img src="/images/image-20200403080339320.png" alt="image-20200403080339320" style="zoom: 80%;" />
 
 
@@ -230,6 +228,8 @@
 <li>discarded file（可选）：将格式正确，但不符合筛选条件的数据放在这里【只向数据库中插入工资大于2500的记录，不满足记录的放到这个文件中】</li>
 <li>log file：（不同于重做日志文件）文本文件，sqlload出了问题可以查这个</li>
 </ul>
+<a id="more"></a>
+
 <h4 id="sqlload数据类型"><a href="#sqlload数据类型" class="headerlink" title="sqlload数据类型"></a>sqlload数据类型</h4><img src="/images/image-20200403082334486.png" alt="image-20200403082334486" style="zoom: 80%;" />
 
 <img src="/images/image-20200404184140838.png" alt="image-20200404184140838" style="zoom:80%;" />
