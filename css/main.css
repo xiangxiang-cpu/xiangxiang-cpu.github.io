@@ -1272,7 +1272,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c8bee0;
+  background: #eff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1613,7 +1613,7 @@ pre .javascript .function {
   }
 }
 .post-body {
-  font-family: 'Lato', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
@@ -1911,7 +1911,7 @@ pre .javascript .function {
 }
 .posts-expand .post-meta {
   color: #999;
-  font-family: 'Lato', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 0.75em;
   margin: 3px 0 60px 0;
   text-align: center;
@@ -2701,11 +2701,17 @@ ul.breadcrumb li + li:last-child {
     margin-top: 8px;
   }
 }
-.post-body h1,
-.post-body h2 {
+.post-body h1 {
+  text-align: center;
+  font-size: 2.5em;
   border-bottom: 1px solid #eee;
 }
+.post-body h2 {
+  text-align: center;
+  font-size: 1.5em;
+}
 .post-body h3 {
+  text-align: center;
   border-bottom: 1px dotted #eee;
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -2754,4 +2760,28 @@ ul.breadcrumb li + li:last-child {
   .pagination {
     margin: 8px 0 0;
   }
+}
+.headband {
+  display: none;
+}
+body {
+  background-image: url("");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+  cursor: url("/images/cur/DiamondSword.cur"), auto;
+}
+.header-inner {
+  opacity: 0.95;
+}
+.main-inner {
+  opacity: 0.95;
+}
+.post {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  padding: 25px;
+  -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
+  -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
 }
