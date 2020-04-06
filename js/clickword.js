@@ -17,3 +17,4 @@
         document.body.appendChild(span);
         animate(span);
     });
+})
