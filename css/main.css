@@ -1272,7 +1272,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #eb65ff;
+  background: #fffff4;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2552,6 +2552,7 @@ ul.breadcrumb li + li:last-child {
   box-sizing: border-box;
   color: var(--text-color);
   width: 240px;
+  opacity: 0;
 }
 .sidebar-inner.affix {
   position: fixed;
@@ -2788,11 +2789,22 @@ ul.breadcrumb li + li:last-child {
     margin: 8px 0 0;
   }
 }
+::selection {
+  background: #87cefa;
+  color: #fff;
+}
+::-moz-selection {
+  background: #87cefa;
+  color: #fff;
+}
+::-webkit-selection {
+  background: #87cefa;
+  color: #fff;
+}
 .headband {
   display: none;
 }
 body {
-  background-image: url("");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 50% 50%;
@@ -2823,4 +2835,12 @@ body {
 }
 .post-toc .nav .active-current > a:hover {
   color: #0eeff0;
+}
+.posts-collapse::after {
+  margin-left: -2px;
+  background-image: linear-gradient(180deg, #f79533 0, #f37055 15%, #ef4e7b 30%, #a166ab 44%, #5073b8 58%, #1098ad 72%, #07b39b 86%, #6dba82 100%);
+}
+.posts-collapse::before {
+  margin-left: -2px;
+  background-image: linear-gradient(180deg, #f79533 0, #f37055 15%, #ef4e7b 30%, #a166ab 44%, #5073b8 58%, #1098ad 72%, #07b39b 86%, #6dba82 100%);
 }
