@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="SQL语句  结构化查询语言 任何关系型数据库都支持 第四代 4GL 描述性语言，只说做什么，不说怎么做  SQL语句解析阶段   语法分析   语义分析   权限管理 select * from scott.emp, 没有权限视为这个表不存在   生成执行计划 set autot on（可以显示执行过程） 可能形成多个执行计划，评估代价之后，选择最优的计划，生成CPU可以执行的代码   每次解析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle SQL">
+<meta property="og:url" content="http://yoursite.com/2020/03/21/OracleSQL/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="SQL语句  结构化查询语言 任何关系型数据库都支持 第四代 4GL 描述性语言，只说做什么，不说怎么做  SQL语句解析阶段   语法分析   语义分析   权限管理 select * from scott.emp, 没有权限视为这个表不存在   生成执行计划 set autot on（可以显示执行过程） 可能形成多个执行计划，评估代价之后，选择最优的计划，生成CPU可以执行的代码   每次解析">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306093419179.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306092938108.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306093334329.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095000479.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095204410.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095356438.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095659509.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095735930.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095805989.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306100151650.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306100209248.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306100352961.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306102621264.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306103700984.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306104453200.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105113281.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105516169.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105724182.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105842029.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105948434.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306110426444.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306110806901.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306110946493.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306111306224.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306111401351.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306111410292.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310140930718.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141037295.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141211342.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141226596.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141312017.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141409406.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141423898.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141505398.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141536821.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310142735929.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310143642776.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310143816031.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144259396.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144613274.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144657279.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145148675.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145312543.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145643975.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145539136.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145847769.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200310150035174.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310142452090.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313081711091.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200310153239676.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310153425232.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310153636547.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154051578.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154118186.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154141553.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154204941.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154340396.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154407763.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154425936.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154750523.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154826288.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160118150.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310155220897.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200310155629157.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160030582.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160156120.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160756122.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161009017.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161314653.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161058714.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161358726.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310162414625.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310163839313.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310164729901.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310164759320.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310165216731.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310163749897.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313084554769.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313091614228.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313091701960.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313091833106.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313102858035.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313102934943.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313103122536.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317140650155.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313104247127.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313104910425.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313105836846.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313110349993.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313111635286.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200313112225894.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112258438.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112317774.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112352718.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112454771.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112518743.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317141638218.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317142702416.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317142743736.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317141922195.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143239047.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143315343.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143534303.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143731712.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317144439028.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317144952980.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317145009259.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317145056394.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317145124431.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317150747877.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317155211432.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317155222288.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317155249225.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317160215275.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317160321363.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317160341297.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317160423579.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317160644120.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317160701273.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317162039355.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317162230483.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317162547204.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163415534.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163550464.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163444998.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163510655.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163956703.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164056329.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163734206.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164226712.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164249902.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164328694.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164419510.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164436572.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164505127.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164524918.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164645758.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317165334485.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317170838541.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317171345201.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317171415887.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317171644537.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200317172432102.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317171852506.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317171922522.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317171944963.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317172559096.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317172619407.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317174913083.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320080400696.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320082001607.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320082032418.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320082617109.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320082759535.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200320085717461.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320100247037.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320100757114.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320103354004.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/OracleSQL/md_picture_backup/image-20200320103835250.png">
+<meta property="article:published_time" content="2020-03-21T14:13:55.000Z">
+<meta property="article:modified_time" content="2020-04-06T16:17:48.822Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306093419179.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/21/OracleSQL/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Oracle SQL | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">9</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/OracleSQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle SQL
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-07 00:17:48" itemprop="dateModified" datetime="2020-04-07T00:17:48+08:00">2020-04-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1>SQL语句</h1>
+<ul>
+<li>结构化查询语言</li>
+<li>任何关系型数据库都支持</li>
+<li>第四代 4GL</li>
+<li>描述性语言，只说做什么，不说怎么做</li>
+</ul>
+<p><strong>SQL语句解析阶段</strong></p>
+<ul>
+<li>
+<p>语法分析</p>
+</li>
+<li>
+<p>语义分析</p>
+</li>
+<li>
+<p>权限管理 select * from scott.emp, 没有权限视为这个表不存在</p>
+</li>
+<li>
+<p>生成执行计划 set autot on（可以显示执行过程）</p>
+<p>可能形成多个执行计划，评估代价之后，选择最优的计划，生成CPU可以执行的代码</p>
+</li>
+</ul>
+<p>每次解析SQL效率太低，在内存（共享池）中保存已经解析好的代码，避免重复解析</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306093419179.png" alt="image-20200306093419179"></p>
+<ol>
+<li>QL query</li>
+<li>DML data manipulate 全部针对用户数据</li>
+<li>DDL data define 针对系统数据</li>
+<li>DCL 权限控制</li>
+<li>TCL 事务控制语句</li>
+</ol>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306092938108.png" alt="image-20200306092938108"></p>
+<p>desc user_tables;</p>
+<p>这个表不能insert改，数据字典属于系统数据，但可以通过DDL修改系统数据</p>
+<p>表不存在 - 无权限访问，在sys下修改权限</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306093334329.png" alt="image-20200306093334329"></p>
+<h1>QL</h1>
+<p>dual表，系统保证任何时候都是单行单列</p>
+<p>绑定变量，使执行速度加快</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095000479.png" alt="image-20200306095000479"></p>
+<h4 id="大小写不敏感">大小写不敏感</h4>
+<p>– 针对结果，过程不同</p>
+<p>比较语句的hash值</p>
+<p>大小写不一样时、多空格少空格、换行不同时（分号另起一行），hash值不同，重新解析</p>
+<p>如何查看已经缓存的语句</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095204410.png" alt="image-20200306095204410"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095356438.png" alt="image-20200306095356438"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095659509.png" alt="image-20200306095659509"></p>
+<p>hash值不同，执行计划的hash值相同</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095735930.png" alt="image-20200306095735930"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095805989.png" alt="image-20200306095805989"></p>
+<ul>
+<li>可以改成similar</li>
+<li>exact – 加速语句老化，适用于数据仓库</li>
+</ul>
+<p>根据业务处理系统 / 数据仓库（历史数据，一般只查询）</p>
+<p>sql语句关键字 != sqlplus命令</p>
+<p>如何学习：help index</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306100151650.png" alt="image-20200306100151650"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306100209248.png" alt="image-20200306100209248"></p>
+<p>@ == 调用脚本</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306100352961.png" alt="image-20200306100352961"></p>
+<p>list == 列出当前缓存中的最后一条语句</p>
+<h4 id="null的三值现象">null的三值现象</h4>
+<p>null == 1 为false</p>
+<p>null !=1 为false</p>
+<p>判断是不是null ，使用is null</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306102621264.png" alt="image-20200306102621264"></p>
+<p>【不配拿奖金】【有资格拿奖金，但奖金数位0】</p>
+<p>order by comm时，null相当于无穷大</p>
+<h4 id="引号使用方法">引号使用方法</h4>
+<p>Oracle中，字符和字符串都使用==单引号==</p>
+<p>Oracle中 + 不能用于字符串连接，使用双竖线表示：‘3’ || ‘4’</p>
+<p>select ‘a’ from dual;</p>
+<p>select ‘a’ a from dual; 默认别名大写</p>
+<p>select ‘a’ “a” from dual; <strong>双引号内的原样输出</strong></p>
+<p>嵌套引号方法（<strong>考试</strong>里有这些东西）</p>
+<ul>
+<li>连续两个单引号  ‘’，表示转义</li>
+<li>定界符  q’[内部的东西原样显示]’</li>
+</ul>
+<p>去重 distinct == unique</p>
+<p>考试选择题</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306103700984.png" alt="image-20200306103700984"></p>
+<p>key：bc</p>
+<h4 id="转义-escape">转义 - escape</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306104453200.png" alt="image-20200306104453200"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> demo1 <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'AB\_\_%'</span> escape <span class="string">'\'</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="order-by">order by</h4>
+<p>order by 1 按照第一列排序</p>
+<p>order by 2 按照第二列排序</p>
+<h4 id="考试必考">==考试必考==</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105113281.png" alt="image-20200306105113281"></p>
+<p>12c之前，内嵌视图</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105516169.png" alt="image-20200306105516169"></p>
+<p>fetch first 2 rows only</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105724182.png" alt="image-20200306105724182"></p>
+<p>如果并列，fetch first 2 rows with ties</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105842029.png" alt="image-20200306105842029"></p>
+<p>想要第4、5，offset 3 rows，先将前三个去掉，偏移过之后再去前三行</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105948434.png" alt="image-20200306105948434"></p>
+<h4 id="查询时和用户交互">查询时和用户交互</h4>
+<p>使用提交变量实现</p>
+<ol>
+<li>&amp;</li>
+<li>define</li>
+<li>&amp;&amp;</li>
+</ol>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306110426444.png" alt="image-20200306110426444"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306110806901.png" alt="image-20200306110806901"></p>
+<p>select * from scott.emp where name=UPPER(’&amp;姓名’);</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306110946493.png" alt="image-20200306110946493"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306111306224.png" alt="image-20200306111306224"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306111401351.png" alt="image-20200306111401351"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306111410292.png" alt="image-20200306111410292"></p>
+<p>&amp; == 接受用户的输入</p>
+<p>&amp;&amp; == 接受用户输入，并define，以后就不用输了，需要时可以undefine</p>
+<p>==待回看==第三节课</p>
+<p>定制部分11.21</p>
+<p>show all;显示所有配置</p>
+<h2 id="函数">函数</h2>
+<h3 id="字符型">字符型</h3>
+<h4 id="lower-upper-initcap-concat">lower upper initcap concat</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310140930718.png" alt="image-20200310140930718"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141037295.png" alt="image-20200310141037295"></p>
+<p>字符加引号之后，大小写敏感</p>
+<p>eg 查找人名的时候</p>
+<p>concat 只能有两个参数，可嵌套</p>
+<p>|| 也是连接字符串</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141211342.png" alt="image-20200310141211342"></p>
+<h4 id="substr">substr</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141226596.png" alt="image-20200310141226596"></p>
+<p>下标从一开始</p>
+<p>取到结尾，最后一个参数省略</p>
+<p>从倒数第五个开始正着取5个</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141312017.png" alt="image-20200310141312017">n</p>
+<h4 id="instr">instr</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141409406.png" alt="image-20200310141409406"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141423898.png" alt="image-20200310141423898"></p>
+<p>从哪一位开始找起</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141505398.png" alt="image-20200310141505398"></p>
+<p>==从哪一位开始的第几个==</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141536821.png" alt="image-20200310141536821"></p>
+<h4 id="lpad-rpad">lpad rpad</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310142735929.png" alt="image-20200310142735929"></p>
+<p>格式化层次型的数据</p>
+<p>例子见3.10录像</p>
+<h4 id="trim">trim</h4>
+<p>相当于python中的strip</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310143642776.png" alt="image-20200310143642776"></p>
+<h3 id="数字型">数字型</h3>
+<h4 id="round（四舍五入）">round（四舍五入）</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310143816031.png" alt="image-20200310143816031"></p>
+<p>1表示小数点后一位</p>
+<p>0表示舍入到个位</p>
+<p>-1表示十位，-2百位</p>
+<h4 id="trunc（无舍入，直接截断）">trunc（无舍入，直接截断）</h4>
+<h4 id="ceil-floor">ceil floor</h4>
+<h4 id="mod">mod</h4>
+<h3 id="日期型">日期型</h3>
+<h5 id="sysdate-current-date">sysdate current_date</h5>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144259396.png" alt="image-20200310144259396"></p>
+<h5 id="nls参数，更改日期格式">nls参数，更改日期格式</h5>
+<p>national language support</p>
+<p>不能有两个mm</p>
+<p>会话级设置</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144613274.png" alt="image-20200310144613274"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144657279.png" alt="image-20200310144657279"></p>
+<p>YY格式，和当前日期同一个世纪</p>
+<p>RR格式（默认），取离当前日期最近的一个世纪</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145148675.png" alt="image-20200310145148675"></p>
+<h5 id="systimestamp-current-timestamp">systimestamp current_timestamp</h5>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145312543.png" alt="image-20200310145312543"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145643975.png" alt="image-20200310145643975"></p>
+<h5 id="相差多少个月">相差多少个月</h5>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145539136.png" alt="image-20200310145539136"></p>
+<p>month_between 两个日期之间相差多少个月</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310145847769.png" alt="image-20200310145847769"></p>
+<p>刚刚会话级修改了日期格式，注意！</p>
+<p>next_day中最后可以使用数字代替星期</p>
+<h5 id="日期的舍入-截断">日期的舍入/截断</h5>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200310150035174.png" alt="image-20200310150035174" style="zoom:80%;">
+<p>舍入 == 有没有过了这一月/年的一半</p>
+<h3 id="练习题">练习题</h3>
+<h4 id="练习题1-取lastname">练习题1 取lastname</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> buyer_id, <span class="keyword">substr</span>(buyer_name,<span class="keyword">instr</span>(buyer_name,<span class="string">' '</span>)+<span class="number">1</span>) <span class="keyword">from</span> buyers;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310142452090.png" alt="image-20200310142452090"></p>
+<h4 id="练习题2">练习题2</h4>
+<p>5马尔代夫 + 20云南</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> last_name,</span><br><span class="line">	trunc(months_between(<span class="keyword">current_date</span>,hire_date)/<span class="number">12</span>) <span class="keyword">as</span> <span class="keyword">years</span>,</span><br><span class="line">	trunc(<span class="keyword">mod</span>(months_between(<span class="keyword">current_date</span>,hire_date),<span class="number">12</span>)) <span class="keyword">as</span> <span class="keyword">months</span></span><br><span class="line"><span class="keyword">from</span> employees</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">years</span> <span class="keyword">desc</span>,<span class="keyword">months</span> <span class="keyword">desc</span></span><br><span class="line"><span class="keyword">fetch</span> <span class="keyword">first</span> <span class="number">5</span> <span class="keyword">rows</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> last_name,</span><br><span class="line">	trunc(months_between(<span class="keyword">current_date</span>,hire_date)/<span class="number">12</span>) <span class="keyword">as</span> <span class="keyword">years</span>,</span><br><span class="line">	trunc(<span class="keyword">mod</span>(months_between(<span class="keyword">current_date</span>,hire_date),<span class="number">12</span>)) <span class="keyword">as</span> <span class="keyword">months</span></span><br><span class="line"><span class="keyword">from</span> employees</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">years</span> <span class="keyword">desc</span>,<span class="keyword">months</span> <span class="keyword">desc</span></span><br><span class="line"><span class="keyword">offset</span> <span class="number">5</span> <span class="keyword">rows</span> <span class="keyword">fetch</span> <span class="keyword">first</span> <span class="number">20</span> <span class="keyword">rows</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="练习3，注意是单引号">练习3，注意是单引号</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, </span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> subject <span class="keyword">when</span> <span class="string">'chinese'</span> <span class="keyword">then</span> score <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) chinese,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> subject <span class="keyword">when</span> <span class="string">'maths'</span> <span class="keyword">then</span> score <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) maths,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> subject <span class="keyword">when</span> <span class="string">'english'</span> <span class="keyword">then</span> score <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) english</span><br><span class="line"><span class="keyword">from</span> st</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, </span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">decode</span>(subject,<span class="string">'chinese'</span>,score,<span class="number">0</span>))<span class="string">"chinese"</span>,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">decode</span>(subject,<span class="string">'maths'</span>,score,<span class="number">0</span>))<span class="string">"maths"</span>,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">decode</span>(subject,<span class="string">'english'</span>,score,<span class="number">0</span>))<span class="string">"english"</span></span><br><span class="line"><span class="keyword">from</span> st</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313081711091.png" alt="image-20200313081711091"></p>
+<h4 id="练习4">练习4</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> e.first_name || <span class="string">' '</span> || e.last_name <span class="keyword">as</span> 职工全名</span><br><span class="line">,m.first_name || <span class="string">' '</span> || m.last_name <span class="keyword">as</span> 经理全名</span><br><span class="line"><span class="keyword">from</span> hr.employees e, hr.employees m</span><br><span class="line"><span class="keyword">where</span> e.manager_id = m.employee_id(+);</span><br></pre></td></tr></table></figure>
+<p>有一个人没有领导，他就是最大领导</p>
+<h4 id="练习5">练习5</h4>
+<p>练习，比本部门平均工资高的人： - b.sal_average as “超出平均水平”</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.last_name,a.department_id,a.salary,b.average_salary</span><br><span class="line"><span class="keyword">from</span> employees a,</span><br><span class="line">(<span class="keyword">select</span> department_id,<span class="keyword">avg</span>(salary) average_salary <span class="keyword">from</span> employees <span class="keyword">group</span> <span class="keyword">by</span> department_id) b</span><br><span class="line"><span class="keyword">where</span> a.department_id = b.department_id</span><br><span class="line"><span class="keyword">and</span> a.salary &gt; b.average_salary;</span><br></pre></td></tr></table></figure>
+<h3 id="转换函数">转换函数</h3>
+<h4 id="to-char？？？">to_char？？？</h4>
+<p>to_char 转换为字符的目的：按照我设定的格式来显示</p>
+<h5 id="日期转换为字符">日期转换为字符</h5>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200310153239676.png" alt="image-20200310153239676" style="zoom: 67%;">
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310153425232.png" alt="image-20200310153425232"></p>
+<p>见录像</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310153636547.png" alt="image-20200310153636547"></p>
+<h5 id="数字转换为字符">数字转换为字符</h5>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154051578.png" alt="image-20200310154051578"><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154118186.png" alt="image-20200310154118186"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154141553.png" alt="image-20200310154141553"></p>
+<p>to_char(1210.73, ‘9999.9’)	would return ‘1210.7’<br>
+to_char(1210.73, ‘9,999.99’)	would return ‘1,210.73’<br>
+to_char(1210.73, ‘$9,999.00’)	would return ‘$1,210.73’<br>
+to_char(21, ‘000099’)	would return ‘000021’<br>
+to_char(sysdate, ‘yyyy/mm/dd’);	return ‘2003/07/09’<br>
+to_char(sysdate, ‘Month DD, YYYY’);	return ‘July 09, 2003’<br>
+to_char(sysdate, ‘FMMonth DD, YYYY’);	return ‘July 9, 2003’<br>
+to_char(sysdate, ‘MON DDth, YYYY’);	return ‘JUL 09TH, 2003’<br>
+to_char(sysdate, ‘FMMON DDth, YYYY’);	return ‘JUL 9TH, 2003’<br>
+to_char(sysdate, ‘FMMon ddth, YYYY’);	return ‘Jul 9th, 2003’</p>
+<p>local</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154204941.png" alt="image-20200310154204941"></p>
+<p>如何更改当地位置？nls？</p>
+<h4 id="nls-改变当地地区">nls - 改变当地地区</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154340396.png" alt="image-20200310154340396"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154407763.png" alt="image-20200310154407763"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154425936.png" alt="image-20200310154425936"></p>
+<p>￥变成了＄</p>
+<h4 id="to-date（使用很多）">to_date（使用很多）</h4>
+<p>将字符类型按一定格式转化为日期类型，前后要一致</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154750523.png" alt="image-20200310154750523"></p>
+<p>自由写格式，需要使用to_date将字符串改为date类型？？？</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310154826288.png" alt="image-20200310154826288"></p>
+<p>YYYY：四位表示的年份<br>
+YYY，YY，Y：年份的最后三位、两位或一位，缺省为当前世纪<br>
+MM：01~12的月份编号<br>
+MONTH：九个字符表示的月份，右边用空格填补<br>
+MON：三位字符的月份缩写<br>
+WW：一年中的星期<br>
+D：星期中的第几天<br>
+DD：月份中的第几天<br>
+DDD：年所中的第几天<br>
+DAY：九个字符表示的天的全称，右边用空格补齐<br>
+HH，HH12：一天中的第几个小时，12进制表示法<br>
+HH24：一天中的第几个小时，取值为00~23<br>
+MI：一小时中的分钟<br>
+SS：一分钟中的秒<br>
+SSSS：从午夜开始过去的秒数</p>
+<h2 id="处理null值的函数">处理null值的函数</h2>
+<p>select empno,ename,sal,comm from emp;（comm为奖金，可能为空）</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160118150.png" alt="image-20200310160118150"></p>
+<h4 id="NVL">NVL</h4>
+<p>如果为null，则用某个东西显示 nvl(comm, 0)</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310155220897.png" alt="image-20200310155220897"></p>
+<p>练习</p>
+<p>select empno,ename,nvl(to_char(mgr),‘boss’) mgr from emp;</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200310155629157.png" alt="image-20200310155629157" style="zoom:67%;">
+<h4 id="NVL2">NVL2</h4>
+<p>是null显示一个值，否则显示另一个值</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160030582.png" alt="image-20200310160030582"></p>
+<h4 id="nullif">nullif</h4>
+<p>判断两个表达式值是否相同</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160156120.png" alt="image-20200310160156120"></p>
+<h4 id="coalesc？？？">coalesc？？？</h4>
+<p>select empno, ename, sal, comm, coalesce(comm+sal, sal) from emp;</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310160756122.png" alt="image-20200310160756122"></p>
+<h2 id="处理if-then-else函数">处理if-then-else函数</h2>
+<h4 id="case">case</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161009017.png" alt="image-20200310161009017"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161314653.png" alt="image-20200310161314653"></p>
+<h4 id="decode（使用很多）">decode（使用很多）</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161058714.png" alt="image-20200310161058714"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310161358726.png" alt="image-20200310161358726"></p>
+<p>练习</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">as</span> total, </span><br><span class="line"><span class="keyword">sum</span>(<span class="keyword">decode</span>(to_char(hire_date, <span class="string">'YYYY'</span>),<span class="number">2001</span>,<span class="number">1</span>,<span class="number">0</span>))<span class="string">"2001"</span>,</span><br><span class="line"> <span class="keyword">sum</span>(<span class="keyword">decode</span>(to_char(hire_date, <span class="string">'YYYY'</span>),<span class="number">2002</span>,<span class="number">1</span>,<span class="number">0</span>))<span class="string">"2002"</span>,</span><br><span class="line">  <span class="keyword">sum</span>(<span class="keyword">decode</span>(to_char(hire_date, <span class="string">'YYYY'</span>),<span class="number">2003</span>,<span class="number">1</span>,<span class="number">0</span>))<span class="string">"2003"</span>,</span><br><span class="line">   <span class="keyword">sum</span>(<span class="keyword">decode</span>(to_char(hire_date, <span class="string">'YYYY'</span>),<span class="number">2008</span>,<span class="number">1</span>,<span class="number">0</span>))<span class="string">"2008"</span></span><br><span class="line"><span class="keyword">from</span> employees;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310162414625.png" alt="image-20200310162414625"></p>
+<h2 id="组函数">组函数</h2>
+<h4 id="greatest-least">greatest least</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310163839313.png" alt="image-20200310163839313"></p>
+<h4 id="avg-count-max-min-sum">avg count max min sum</h4>
+<h4 id="listagg-列表聚合">listagg 列表聚合</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310164729901.png" alt="image-20200310164729901"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310164759320.png" alt="image-20200310164759320"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> deptno, <span class="keyword">listagg</span>(ename,<span class="string">','</span>) <span class="keyword">within</span> <span class="keyword">group</span> (<span class="keyword">order</span> <span class="keyword">by</span> deptno) <span class="keyword">as</span> ename <span class="keyword">from</span> emp</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310165216731.png" alt="image-20200310165216731"></p>
+<h4 id="stddev-方差">stddev 方差</h4>
+<h4 id="variance">variance</h4>
+<h4 id="rollup">rollup</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310163749897.png" alt="image-20200310163749897"></p>
+<p>cube – 两个方向</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> department_id,job_id,<span class="keyword">sum</span>(salary)</span><br><span class="line"><span class="keyword">from</span> hr.employees</span><br><span class="line"><span class="keyword">where</span> department_id&gt;<span class="number">40</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">rollup</span>(department_id,job_id);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> department_id,job_id,<span class="keyword">sum</span>(salary)</span><br><span class="line"><span class="keyword">from</span> hr.employees</span><br><span class="line"><span class="keyword">where</span> department_id&gt;<span class="number">40</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">cube</span>(department_id,job_id);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> department_id,job_id,<span class="keyword">sum</span>(salary)</span><br><span class="line"><span class="keyword">from</span> hr.employees</span><br><span class="line"><span class="keyword">where</span> department_id&gt;<span class="number">40</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> department_id,job_id+department_id+<span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="连接">连接</h2>
+<p>select b.buyer_id, b.buyer_id, qty from buyers b, sales s;</p>
+<p>起别名提高效率</p>
+<h4 id="内部连接">内部连接</h4>
+<p>nested loop 嵌套循环</p>
+<p>小表在前，大表在后，减少对表的访问次数</p>
+<p>把筛选掉最多的条件，放在最前面</p>
+<p>emp 10万员工 + dept 4个部门（10，20，30，40）</p>
+<p>from emp,dept</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b,sales s</span><br><span class="line"><span class="keyword">where</span> b.buyer_id = s.buyer_id;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b <span class="keyword">inner</span> <span class="keyword">join</span> sales s</span><br><span class="line"><span class="keyword">on</span> b.buyer_id = s.buyer_id;</span><br><span class="line">(inner可省)</span><br></pre></td></tr></table></figure>
+<h4 id="外部连接">外部连接</h4>
+<p>from emp,dept</p>
+<p>左外连接</p>
+<p>显示全部员工，包括没有部门的员工</p>
+<p>右外连接</p>
+<p>显示全部部门，包括没有员工的部门</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313084554769.png" alt="image-20200313084554769"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">（+）左外部连接（最好用内部连接）</span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b,sales s</span><br><span class="line"><span class="keyword">where</span> b.buyer_id = s.buyer_id(+);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> sales s <span class="keyword">on</span> b.buyer_id = s.buyer_id;</span><br><span class="line"></span><br><span class="line">// 右外连接，全外连接不是两边都加+</span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b,sales s</span><br><span class="line"><span class="keyword">where</span> b.buyer_id(+) = s.buyer_id;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b</span><br><span class="line"><span class="keyword">right</span> <span class="keyword">join</span> sales s <span class="keyword">on</span> b.buyer_id = s.buyer_id;</span><br><span class="line"></span><br><span class="line">？？？</span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b</span><br><span class="line"><span class="keyword">outer</span> <span class="keyword">join</span> sales s <span class="keyword">on</span> b.buyer_id = s.buyer_id;</span><br><span class="line"></span><br><span class="line">// 全外连接</span><br><span class="line"><span class="keyword">select</span> b.buyer_id,b.buyer_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b</span><br><span class="line"><span class="keyword">full</span> <span class="keyword">outer</span> sales s <span class="keyword">on</span> b.buyer_id = s.buyer_id;</span><br></pre></td></tr></table></figure>
+<h4 id="多表">多表</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> b.buyer_name,p.prod_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b,sales s,product p</span><br><span class="line"><span class="keyword">where</span> b.buyer_id = s.buyer_id</span><br><span class="line"><span class="keyword">and</span> p.prod_id = s.prod_id;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> b.buyer_name,p.prod_name,s.qty</span><br><span class="line"><span class="keyword">from</span> buyers b</span><br><span class="line"><span class="keyword">join</span> sales s <span class="keyword">on</span> b.buyer_id = s.buyer_id   </span><br><span class="line"><span class="keyword">join</span> product p <span class="keyword">on</span> p.prod_id = s.prod_id;</span><br></pre></td></tr></table></figure>
+<p>视图：待听录像，了解就行？？？</p>
+<h4 id="自连接">自连接</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 会查出一样的数据（镜像）</span><br><span class="line"><span class="keyword">select</span> a.buyer_id <span class="keyword">as</span> buyer1,a.prod_id,b.buyer_id <span class="keyword">as</span> buyer2</span><br><span class="line"><span class="keyword">from</span> sales a,sales b</span><br><span class="line"><span class="keyword">where</span> a.prod_id = b.prod_id</span><br><span class="line"><span class="keyword">and</span> a.buyer_id = b.buyer_id;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> a.buyer_id <span class="keyword">as</span> buyer1,a.prod_id,b.buyer_id <span class="keyword">as</span> buyer2</span><br><span class="line"><span class="keyword">from</span> sales a,sales b</span><br><span class="line"><span class="keyword">where</span> a.prod_id = b.prod_id</span><br><span class="line"><span class="keyword">and</span> a.buyer_id &lt;&gt; b.buyer_id;</span><br></pre></td></tr></table></figure>
+<h4 id="交叉连接（笛卡尔乘积）">交叉连接（笛卡尔乘积）</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> b.buyer_name,s.qty <span class="keyword">from</span> buyers b,sales s;</span><br><span class="line"><span class="keyword">select</span> b.buyer_name,s.qty <span class="keyword">from</span> buyers b <span class="keyword">cross</span> <span class="keyword">join</span> sales s;</span><br></pre></td></tr></table></figure>
+<h4 id="自然连接">自然连接</h4>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313091614228.png" alt="image-20200313091614228" style="zoom:67%;">
+<p>名字相同，且字段类型相同</p>
+<p>自己查找匹配的字段，有多个相同，则同时匹配</p>
+<p>也可以用using指定匹配的字段，using不能加表名字</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313091701960.png" alt="image-20200313091701960" style="zoom:67%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313091833106.png" alt="image-20200313091833106" style="zoom:67%;">
+<h2 id="用sqlldr从excel导入数据">用sqlldr从excel导入数据</h2>
+<p>见录像 3.10最后</p>
+<p>这两个文件都在demo文件夹下</p>
+<p>st.dat文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name.subject,score</span><br><span class="line">zhangsan,chinese,90</span><br><span class="line">zhangsan,maths,100</span><br><span class="line">zhangsan,english,96</span><br><span class="line">lisi,chinese,94</span><br><span class="line">lisi,maths,98</span><br><span class="line">lisi,english,92</span><br></pre></td></tr></table></figure>
+<p>st.ctl文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">load</span></span><br><span class="line">  inflie <span class="string">'/u01/demo/st.dat'</span></span><br><span class="line">  <span class="keyword">into</span> <span class="keyword">table</span> hr.st</span><br><span class="line">(<span class="keyword">name</span> <span class="built_in">char</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span>,</span><br><span class="line"> subject <span class="built_in">char</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span>,</span><br><span class="line"> score <span class="built_in">integer</span> <span class="keyword">external</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span>)</span><br></pre></td></tr></table></figure>
+<p>在hr登录时，创建st表</p>
+<p>create table st(name varchar(20), subject varchar(20), score int);</p>
+<p>在demo目录下</p>
+<p>sqlldr hr/123123 control=st.ctl</p>
+<h2 id="子查询">子查询</h2>
+<h4 id="嵌套子查询？？？">嵌套子查询？？？</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sal <span class="keyword">from</span> emp <span class="keyword">where</span> sal&gt;(<span class="keyword">select</span> sal <span class="keyword">from</span> emp <span class="keyword">where</span> ename = <span class="string">'SMITH'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp <span class="keyword">where</span> deptno <span class="keyword">in</span> (<span class="keyword">select</span> deptno <span class="keyword">from</span> dept <span class="keyword">where</span> loc <span class="keyword">in</span> (<span class="string">'NEW YORK'</span>,<span class="string">'CHICAGO'</span>));</span><br></pre></td></tr></table></figure>
+<p>运算的步骤放在右边效率会高一些。</p>
+<h4 id="关联子查询">关联子查询</h4>
+<p>查询谁工资最少</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> last_name,job_id,salary</span><br><span class="line"><span class="keyword">from</span> hr.employees</span><br><span class="line"><span class="keyword">where</span> salary = (<span class="keyword">select</span> <span class="keyword">min</span>(salary) <span class="keyword">from</span> hr.employees);</span><br></pre></td></tr></table></figure>
+<p>查询每个部门工资最少的（用group by）</p>
+<p>where判断条件中，不能 = 多个结果</p>
+<ul>
+<li>in 只要满足里面一个就出来</li>
+<li>any 取条件最宽松的</li>
+<li>all 取条件最严格</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// last_name 普通群众（不是领导）</span><br><span class="line"><span class="keyword">select</span> last_name</span><br><span class="line"><span class="keyword">from</span> employees</span><br><span class="line"><span class="keyword">where</span> employee_id <span class="keyword">not</span> <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> nvl(manager_id,<span class="number">0</span>) <span class="keyword">from</span> employees);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> e.last_name</span><br><span class="line"><span class="keyword">from</span> employees e</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">not</span> <span class="keyword">exists</span></span><br><span class="line">(<span class="keyword">select</span> * <span class="keyword">from</span> employees i</span><br><span class="line"><span class="keyword">where</span> e.employee_id = i.manager_id);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">last_name,salary,department_id条件：高于其部门的平均工资利用关联子查询实现</span><br><span class="line"><span class="keyword">select</span> e.last_name,e.salary,e.department_id</span><br><span class="line"><span class="keyword">from</span> hr.employees e,</span><br><span class="line">  (<span class="keyword">select</span> <span class="keyword">avg</span>(salary) <span class="keyword">as</span> avgsal,department_id <span class="keyword">from</span> hr.employees <span class="keyword">group</span> <span class="keyword">by</span> department_id) s</span><br><span class="line"><span class="keyword">where</span> e.salary &gt; s.avgsal <span class="keyword">and</span> e.DEPARTMENT_ID = s.DEPARTMENT_ID;</span><br><span class="line">  或</span><br><span class="line"><span class="keyword">select</span> e.last_name,e.salary,e.department_id</span><br><span class="line"><span class="keyword">from</span> hr.employees e</span><br><span class="line"><span class="keyword">where</span> salary&gt;(<span class="keyword">select</span> <span class="keyword">avg</span>(salary)<span class="keyword">from</span> hr.employees</span><br><span class="line"><span class="keyword">where</span> e.department_id = department_id</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> department_id);</span><br></pre></td></tr></table></figure>
+<h4 id="处理多个结果集">处理多个结果集</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp <span class="keyword">where</span> depyto =<span class="number">10</span>;</span><br><span class="line"><span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp <span class="keyword">where</span> depyto =<span class="number">30</span>;</span><br></pre></td></tr></table></figure>
+<p>两个结果集如何合并？</p>
+<p>前提：两者的数据模式要一致</p>
+<p>4个操作符：</p>
+<ol>
+<li>union 去重</li>
+<li>union all 允许重复</li>
+<li>intersect 取交集</li>
+<li>minus 取第一个结果集去掉交集</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp <span class="keyword">where</span> deptno = <span class="number">10</span></span><br><span class="line"><span class="keyword">union</span></span><br><span class="line"><span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp <span class="keyword">where</span> deptno = <span class="number">30</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313102858035.png" alt="image-20200313102858035" style="zoom: 67%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313102934943.png" alt="image-20200313102934943" style="zoom:67%;">
+<h1>DML</h1>
+<h4 id="insert">insert</h4>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313103122536.png" alt="image-20200313103122536"></p>
+<p>如果全部字段都有值，则可以不写列名</p>
+<p>没听到？？？</p>
+<p>可以同时查很多条记录</p>
+<h4 id="update">update</h4>
+<p>注意写条件，否则全部更新</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317140650155.png" alt="image-20200317140650155"></p>
+<h4 id="delete">delete</h4>
+<p>不加条件则全部删除</p>
+<h4 id="merge">merge</h4>
+<p>表的合并（没有的就insert，有的就update？？？）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> emp_hz <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp <span class="keyword">where</span> deptno = <span class="number">30</span>;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> emp_gz <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> emp_hz <span class="keyword">where</span> <span class="number">1</span>=<span class="number">2</span>;  <span class="comment">--空表</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp_gz <span class="keyword">values</span>(<span class="number">1234</span>,<span class="string">'Tom'</span>,<span class="number">3000</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp_gz <span class="keyword">values</span>(<span class="number">7900</span>,<span class="string">'JAMES'</span>,<span class="number">1900</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">merge</span> <span class="keyword">into</span> emp_hz hz</span><br><span class="line"><span class="keyword">using</span> emp_gz gz</span><br><span class="line"><span class="keyword">on</span> (hz.empno=gz.empno)</span><br><span class="line"><span class="keyword">when</span> <span class="keyword">matched</span> <span class="keyword">then</span></span><br><span class="line"><span class="keyword">update</span> <span class="keyword">set</span> hz.ename = gz.ename, hz.sal = gz.sal</span><br><span class="line"><span class="keyword">when</span> <span class="keyword">not</span> <span class="keyword">matched</span> <span class="keyword">then</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">values</span>(gz.empno,gz.ename,gz.sal);</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313104247127.png" alt="image-20200313104247127" style="zoom:67%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313104910425.png" alt="image-20200313104910425" style="zoom:67%;">
+<h1>TCL</h1>
+<h4 id="commit-rollback-savepoint">commit rollback savepoint</h4>
+<p>见录像</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp_hz <span class="keyword">values</span>(<span class="number">1111</span>,<span class="string">'aaa'</span>,<span class="number">2000</span>);</span><br><span class="line"><span class="keyword">savepoint</span> aaa;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> emp_hz <span class="keyword">where</span> empno=<span class="number">7900</span>;</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span>  <span class="keyword">savepoint</span> aaa;</span><br></pre></td></tr></table></figure>
+<p>只要事务结束（commit / rollback），则savepoints都会被擦除。</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313105836846.png" alt="image-20200313105836846" style="zoom: 67%;">
+<h4 id="alter-修改表的默认值">alter - 修改表的默认值</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t1;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 <span class="keyword">values</span>(<span class="number">4</span>,<span class="keyword">default</span>);// 默认的默认值是空值（前提是该字段允许为空);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 (<span class="keyword">id</span>) <span class="keyword">values</span>(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t1 <span class="keyword">modify</span> <span class="keyword">name</span> <span class="keyword">default</span> <span class="string">'zhangsan'</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 <span class="keyword">values</span>(<span class="number">6</span>,<span class="keyword">default</span>);  <span class="comment">--这个时候默认值为'zhangsan'</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 <span class="keyword">values</span>(<span class="number">7</span>,<span class="keyword">default</span>);</span><br></pre></td></tr></table></figure>
+<p>有坑！！！见录像，另一个用户能看到几条记录？？？：</p>
+<p>事务未结束时，别的用户看不到的。</p>
+<p>==自动提交==的情形</p>
+<ul>
+<li>alter，属于DDL，包含commit，自动提交</li>
+<li>目前有五条数据，grant，属于DCL，自动提交（scott下，grant select on emp_hz to hr）</li>
+<li>exit退出之后是正常退出，退出的时候会进行提交</li>
+<li>插入一条记录，点x退出，是异常退出，会==回滚==。</li>
+</ul>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313110349993.png" alt="image-20200313110349993" style="zoom:67%;">
+<h4 id="（重要）读的一致性">（重要）读的一致性</h4>
+<p>见录像BBB</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313111635286.png" alt="image-20200313111635286" style="zoom:50%;">
+<p>别的数据库，事务未结束时，给表加锁，别的用户不能访问</p>
+<p>oracle：读一致性 – 修改时，数据先在高速缓存中；别的用户在回滚段中访问，不用等事务结束</p>
+<p>当事务t1进行数据修改的时候，会将数据复制到回滚带上，如果另外的事务前来查询发现数据被锁，会到回滚带上查询</p>
+<p><strong>（考试）回滚的三个作用</strong></p>
+<p>1.读一致性：（写的时候可以读）若一事务对表里第三条记录进行修改，将改前的数据复制一份放入回滚段。其他事务不允许修改它。被锁住。另一事务要select的话，对复制在回滚段的进行处理，其他用户看到的都是改前的数据。</p>
+<p>2.回滚：未提交前<br>
+delete from t1;//都删掉<br>
+所有数据都在回滚段<br>
+roll back;//自动把在回滚段的都拿回来</p>
+<p>3.闪回恢复:已提交后也数据不怕丢掉</p>
+<p>delete from t1; //都删掉<br>
+commit;<br>
+提交后查，数据都没有<br>
+rollback自动回滚回不来</p>
+<p><strong>查询回滚段</strong>：</p>
+<p>select * from t1 timestamp(systemstamp-interval’3’minutes);–查看回滚带上还有没有数据（系统3min<br>
+前）</p>
+<p>恢复数据（3分钟之前的数据）：</p>
+<p>insert into t1 select * from t1 as of timestamp(systimestamp-interval’3’minute)</p>
+<h4 id="锁">锁</h4>
+<p>见录像</p>
+<p>表锁or行锁</p>
+<p>两个用户的事务都有脏数据，两边update一行数据时，会有锁</p>
+<p>一个事务不仅仅有1条语句，发生死锁，例子见录像</p>
+<p>session == 会话</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200313112225894.png" alt="image-20200313112225894" style="zoom:80%;">
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112258438.png" alt="image-20200313112258438"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112317774.png" alt="image-20200313112317774"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112352718.png" alt="image-20200313112352718"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112454771.png" alt="image-20200313112454771"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200313112518743.png" alt="image-20200313112518743"></p>
+<p>两个事务：t1,t2<br>
+t1: update t1 set name=‘Smith’ where id =103; --存在于内存<br>
+t2: update t1 set id =4 where id =104;        --可改所以这是一个行锁<br>
+如果发生死锁，oracle会自动检测死锁，发生死锁就会回滚死锁事务，另一个事务一直等待，则需要系统管理员<br>
+desc v$lock --有个number类型的block: （1阻住，0未阻住）<br>
+select sid,block from v$lock where block = 1;//SID747de<br>
+desc v$session --阻塞信息，1会话信息<br>
+select sid,serial#,username from v$session where sid= 747;//747 59756 hr<br>
+alter system kill session ‘747,59756’;</p>
+<h1>DDL</h1>
+<p>数据定义语言（create、alter、drop）清空表truncate、给表rename、加注释comment</p>
+<ul>
+<li>DML（增删改）只能改用户数据，不能insert系统数据（user_tables）</li>
+<li>系统数据对用户来说是只读的，但对dba可以用DDL修改（增删改系统数据）</li>
+</ul>
+<h4 id="oracle常见对象">oracle常见对象</h4>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317141638218.png" alt="image-20200317141638218" style="zoom:67%;">
+<p>select table_name from user_tables;</p>
+<p>select view_name from user_views;</p>
+<p>select sequence_name from user_sequences;</p>
+<p>select index_name from user_indexes; 同义词ind</p>
+<p>select synonym_name from user_synonyms;</p>
+<p>select trigger_name from user_triggers;</p>
+<p>可以和index、触发器同名？？？</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317142702416.png" alt="image-20200317142702416" style="zoom:67%;">
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317142743736.png" alt="image-20200317142743736"></p>
+<p>一种对象类型占用一种名称空间？？？听录像</p>
+<ol>
+<li>
+<p>表：</p>
+<p>表名需要合法：表名长度1-30,表名不可为oracle保留字，须以字母开头，包含A-Z,a-z,0-9,==_,$,#==<br>
+表名不可和同一用户下==相同名称空间namespace==的对象同名。</p>
+</li>
+<li>
+<p>视图：指向表</p>
+</li>
+<li>
+<p>序列：自动产生</p>
+</li>
+<li>
+<p>索引</p>
+</li>
+<li>
+<p>同义词synonym</p>
+<p>同义词，用于缩短名字？例子见录像</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317141922195.png" alt="image-20200317141922195"></p>
+</li>
+</ol>
+<h4 id="建表必须条件">建表必须条件</h4>
+<p>有创建的权限</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143239047.png" alt="image-20200317143239047"></p>
+<p>没有create session的权限</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143315343.png" alt="image-20200317143315343"></p>
+<p>必须在一个表空间</p>
+<p>刚创建的空间，什么权限都没有，需要给他授予创建会话和表的权限</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--授权</span></span><br><span class="line">conn / as sysdba      <span class="comment">--已连接。</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> demo1; <span class="comment">--授权【创建session权限】成功。</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> demo1;   <span class="comment">--授权【建表权限】成功。</span></span><br><span class="line">conn demo1/abc <span class="comment">-- 连接成功</span></span><br></pre></td></tr></table></figure>
+<p>desc dba_users 看某用户的默认表空间？？？</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143534303.png" alt="image-20200317143534303"></p>
+<p>能建表不能插入？没有对表空间的权限为什么能建表？</p>
+<p>靠参数控制</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317143731712.png" alt="image-20200317143731712"></p>
+<p>建好了表，但没有分配空间</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter defer</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> deferred_segment_creation(<span class="literal">false</span>);<span class="comment">--不允许延时，创建时就要分配表空间</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> demo1 <span class="keyword">quota</span> <span class="number">5</span>m <span class="keyword">on</span> <span class="keyword">users</span>;         <span class="comment">--demo可以使用user用户空间5兆空间</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> demo1 <span class="keyword">quota</span> <span class="keyword">unlimited</span> <span class="keyword">on</span> <span class="keyword">users</span>;    <span class="comment">--demo可以无限制使用user用户空间</span></span><br><span class="line"><span class="comment">-- 没讲</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.t1(<span class="keyword">id</span> <span class="built_in">int</span>);             <span class="comment">--不可以create仅可对自己建表</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">to</span> scott;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.t1(<span class="keyword">id</span> <span class="built_in">int</span>);             <span class="comment">--demo对scott建表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t3 <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;<span class="comment">--基于其他表select要有权限</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> demo;</span><br></pre></td></tr></table></figure>
+<h4 id="伪列">伪列</h4>
+<p>eg 前面讲过的level</p>
+<p>表的字段不能重名</p>
+<p>字段不能和伪列重名</p>
+<p>表删了之后，列就没有了</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317144439028.png" alt="image-20200317144439028" style="zoom:67%;">
+<h4 id="rowid的组成">rowid的组成</h4>
+<p>伪列 == 独立于表存在，编制外</p>
+<p>Base 64 code（数字字母和加减号一共64位）  --具体物理地址</p>
+<ol>
+<li>
+<p>文件号</p>
+</li>
+<li>
+<p>块号</p>
+</li>
+<li>
+<p>行号</p>
+</li>
+</ol>
+<p>desc dbms_rowid – 这是一个包，里面有函数</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317144952980.png" alt="image-20200317144952980"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317145009259.png" alt="image-20200317145009259"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317145056394.png" alt="image-20200317145056394"></p>
+<p>users - 表空间存在，行号就有了</p>
+<p>rowid独立于表存在</p>
+<p>创建表的时候，把表分配给表空间，将原来表空间的rowid分配给这个表</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317145124431.png" alt="image-20200317145124431" style="zoom:80%;">
+<p>查询表：</p>
+<p>全表扫描</p>
+<p>索引查找</p>
+<p>直接物理地址查找（通过rowid）</p>
+<h4 id="数据类型">数据类型</h4>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317150747877.png" alt="image-20200317150747877" style="zoom: 67%;">
+<ol>
+<li>
+<p>char(20)：定长，真正字符不够10Byte时，剩下的用空格填满（字符串比较时，性能好）</p>
+</li>
+<li>
+<p>varchar(20)：变长，最多20，已用10个，剩下的就空着（变长的，节省存储空间）–明确知道多长就用char，要是变化，就用varchar</p>
+<p>【学号】之类的长度基本不变，就可以用定长；【居住地址】长度不定，最好变长</p>
+</li>
+<li>
+<p>nchar()和nvarchar() 中的n表示国建。</p>
+<p>national，可以理解为第二字符集，补充字符集</p>
+<p>nchar、nvarchar会到第二字符集中找</p>
+<p>eg 中文常用，就用GBK，用utf16作为补充字符集</p>
+</li>
+<li>
+<p>NUMBER：该数据类型能存储精度最多达38位的数字。每个数存储在一个变长字段中，其长度在0～22字节之间。Oracle的NUMBER类型精度很高， 远远高于许多编程语言中常规的FLOAT和DOUBLE类型。</p>
+<p>NUMBER( p,s ) p表示精度（总长度） s表示小数位置（四舍五入）</p>
+<p>NUMBER(10,3) 10是总长度，3是小数位数的长度</p>
+<p>123.456<br>
+123.4567 ：将存储为123.457<br>
+12345679.899 ：精度超总长度了，10是总长度，3是小数位， 整数位为10-3=7位<br>
+NUMBER(10) == NUMBER(10,0) java.lang.Integer<br>
+NUMBER(19) == NUMBER(19,0) java.lang.Long</p>
+</li>
+<li>
+<p>date：一个7字节的定宽日期/时间数据类型。</p>
+<p>其中总包含7个属性：世纪、世纪中哪一年、月份、月中的哪一天、小时、分钟和秒。</p>
+</li>
+<li>
+<p>long - 一张表只能有一个字段是long类型，使用blob代替。</p>
+</li>
+<li>
+<p>BLOB： (binary large object)在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。BLOB包含不需要进行字符集转换的“二进制“数据，如果要存储==电子表格、字处理文档、图像文件==等就很适合采用。</p>
+</li>
+<li>
+<p>CLOB：（Character Large Object）在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。CLOB包含<strong>要进行字符集转换的信息</strong>。这种数据类型很适合存储==纯文本==信息。</p>
+</li>
+<li>
+<p>raw 计算机中原始的 == 二进制 == char的二进制形式</p>
+<p>信息给谁看。给服务器，则效率高</p>
+<p>用blob替代</p>
+</li>
+<li>
+<p>BFILE字段存放指向操作系统文件的指针</p>
+</li>
+</ol>
+<p><strong>字符集</strong></p>
+<p>字符的集合，编码方案</p>
+<p>ASCII中A（65）编码01000001</p>
+<p>unicode 使用2Byte表示一个字符 – utf16（占地方，性能不高），字母和数字还是用一个Byte – utf8</p>
+<p><strong>说明</strong></p>
+<p>建库的时候要选字符集，表示以后的符号就是来自于你选的字符集。开始创建数据库的时候要选择国家字符集，这是补充字符集</p>
+<h4 id="修改表">修改表</h4>
+<h5 id="修改表名">修改表名</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 旧表名 <span class="keyword">RENAME</span> <span class="keyword">TO</span> 新表名;</span><br><span class="line"><span class="comment">-- 简单方法</span></span><br><span class="line"><span class="keyword">RENAME</span> 旧表名 <span class="keyword">TO</span> 新表名;</span><br></pre></td></tr></table></figure>
+<h5 id="增加字段">增加字段</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span>(字段名字段类型默认值是否为空);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span>(userName <span class="built_in">varchar</span>(<span class="number">30</span>) <span class="keyword">default</span><span class="string">'空'</span> <span class="keyword">not</span> <span class="literal">null</span>);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">add</span> c3 <span class="built_in">varchar</span>(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="修改字段">修改字段</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1）修改字段名称</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">RENAME</span> colomn birthDay <span class="keyword">to</span> birth;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2）修改字段类型</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">modify</span> birth <span class="built_in">varchar</span>(<span class="number">30</span>);</span><br><span class="line"><span class="comment">-- 这个字段如果原来有数据，不为null，则可能由于数据类型不兼容出错</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3）修改宽度（和修改字段类型语法一致）</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">30</span>);<span class="comment">--改大</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">modify</span> BUYER_NAME <span class="built_in">char</span>(<span class="number">29</span>)    <span class="comment">--改小</span></span><br><span class="line"><span class="comment">-- 改char后，用空格填充，再改varchar，空格不会消失</span></span><br></pre></td></tr></table></figure>
+<h5 id="删除字段（列）">删除字段（列）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1)直接删除，注意不要忘了column 或括号</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> <span class="keyword">column</span> 列名;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> (列名<span class="number">1</span>, 列名<span class="number">2</span>……);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2）先标记为未使用，然后再删除标记为未使用的列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">set</span> <span class="keyword">unused</span> <span class="keyword">column</span> buyer_name;   <span class="comment">--标记为未使用，desc c 就查不到这一列了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查总表，看看哪些列打了标记</span></span><br><span class="line"><span class="comment">--select table_name from dict where table_name like '_UNUSED_';</span></span><br><span class="line"><span class="comment">--desc USER_UNUSED_COL_TABS</span></span><br><span class="line"><span class="comment">--select * from USER_UNUSED_COL_TABS;</span></span><br><span class="line"><span class="comment">--col table_name for a20</span></span><br><span class="line"><span class="comment">-- 29周嵩林(1428470443)  15:55:27</span></span><br><span class="line"><span class="comment">--'col 列名 for a数字' 表示设定列的显示格式，col column_name for a30的意思是将column_name 以20字符宽度进行显示，等同于column column_name format a20.把column_name的列宽设置为30个字符.a是字符</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">drop</span> <span class="keyword">unused</span> <span class="keyword">column</span>;             <span class="comment">--删除未使用的列</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用第一种，删除大表开销较大，不能在生产时间使用，应该用第二种，数据没有真正删除</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 为什么不直接drop，会放在回收站，可以flashback</span></span><br><span class="line"><span class="comment">-- 最后加purge，彻底drop</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317155211432.png" alt="image-20200317155211432"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317155222288.png" alt="image-20200317155222288"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317155249225.png" alt="image-20200317155249225"></p>
+<h5 id="截断表">截断表</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> c; <span class="comment">--将表清空</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 和delete的区别</span></span><br><span class="line"><span class="comment">-- 1）truncate属于DDL，delete属于DML语句。</span></span><br><span class="line"><span class="comment">-- 2）DML为什么很慢，将数据放到回滚段，可以rollback，不释放存储空间</span></span><br><span class="line"> <span class="comment">-- DDL直接删除，无法rollback，释放存储空间</span></span><br></pre></td></tr></table></figure>
+<h5 id="hwm-high-water-marker-高水位标记（高端水印）">hwm == high water marker 高水位标记（高端水印）</h5>
+<p>水印之上，水没有到达（没有数据），所以Oracle扫描数据只扫到hwm</p>
+<p>插一条数据，hwm向上移动</p>
+<p>DML，delete不会将hwm下移</p>
+<p>DDL，truncate会将hwm下移，相当于修改了表的定义？？？</p>
+<p>演示见3.17录像</p>
+<p>user_tables中为静态的统计数据，insert之后不会更新</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317160215275.png" alt="image-20200317160215275" style="zoom:80%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317160321363.png" alt="image-20200317160321363" style="zoom:80%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317160341297.png" alt="image-20200317160341297" style="zoom: 80%;">
+<p>hwm没有下移，使用truncate</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317160423579.png" alt="image-20200317160423579"></p>
+<h5 id="将表改为只读">将表改为只读</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> c;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">read</span> <span class="keyword">only</span>;    <span class="comment">--只读不可删/加数据</span></span><br><span class="line"><span class="keyword">select</span> table_name,read_only <span class="keyword">from</span> user_tables;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> c <span class="keyword">read</span> write;</span><br></pre></td></tr></table></figure>
+<h5 id="给表添加注释">给表添加注释</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">table</span> hello <span class="keyword">is</span> <span class="string">'this is a test table'</span>;</span><br><span class="line">desc user_tab_comments</span><br><span class="line"><span class="keyword">select</span> comments <span class="keyword">from</span> user_tab_comments <span class="keyword">where</span> table_name=<span class="string">'hello'</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317160644120.png" alt="image-20200317160644120" style="zoom:80%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317160701273.png" alt="image-20200317160701273" style="zoom:67%;">
+<h5 id="给表的列加注释？？？">给表的列加注释？？？</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> product.prod_id <span class="keyword">is</span> <span class="string">'this is product id'</span>;</span><br><span class="line">desc user_tab_comments</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> COMMENTS, ORIGIN_CON_ID <span class="keyword">from</span> user_col_comments <span class="keyword">where</span> TABLE_NAME=<span class="string">'PRODUCT'</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="删除表">删除表</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> c;                           <span class="comment">--其实没有删除</span></span><br><span class="line"><span class="keyword">show</span> recyclebin                         <span class="comment">--还在回收站</span></span><br><span class="line"><span class="keyword">flashback</span> <span class="keyword">table</span> c <span class="keyword">to</span> <span class="keyword">before</span> recyclebin; <span class="comment">--闪回</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> c <span class="keyword">purge</span>;                     <span class="comment">--删的连回收站都没了，无法闪回</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> recyclebin;</span><br></pre></td></tr></table></figure>
+<h4 id="数据完整性">数据完整性</h4>
+<p>数据 + 规则 – 保证数据的有效性、合理性</p>
+<h5 id="实现方法">实现方法</h5>
+<p>开销从高到低，尽量使用约束实现</p>
+<ol>
+<li>代码</li>
+<li>触发器</li>
+<li>约束</li>
+</ol>
+<h5 id="约束类型">约束类型</h5>
+<ol>
+<li>
+<p>not null</p>
+</li>
+<li>
+<p>unique</p>
+</li>
+<li>
+<p>primary key == pk</p>
+</li>
+<li>
+<p>foreign key == fk</p>
+</li>
+<li>
+<p>check</p>
+</li>
+</ol>
+<h5 id="查询有关约束的信息">查询有关约束的信息</h5>
+<p>两个数据字典：</p>
+<p>user_constraints    --定义<strong>表级别</strong>的约束：关键字，约束名称，约束类型，字段</p>
+<p>user_cons_columns   --定义<strong>字段级别</strong>的约束：关键字，约束名称，约束类型</p>
+<h5 id="创建约束">创建约束</h5>
+<p>约束要起名字，不起系统会自动起</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317162039355.png" alt="image-20200317162039355" style="zoom:50%;">
+<p>可以创建表的时候定义约束，也可以在之后使用alter添加</p>
+<p>表级别的约束 =&gt; 列定义好了在定义约束列级别的约束 =&gt; 列写好了就紧接着定义约束</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317162230483.png" alt="image-20200317162230483" style="zoom:67%;">
+<p><strong>定义约束书写格式</strong></p>
+<p>表级别的约束：先写关键字，约束名称，约束类型名，<strong>字段名</strong></p>
+<p>列级别的约束：关键字，约束名称，约束类型</p>
+<p>系统定义写约束类型就好了</p>
+<p><strong>定义外键</strong></p>
+<p>cascade set null二选一</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317162547204.png" alt="image-20200317162547204" style="zoom:67%;">
+<h5 id="禁用-启用约束">禁用/启用约束</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">disable</span> <span class="keyword">constraint</span> MIN_SAL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">enable</span> <span class="keyword">constraint</span> MIN_SAL;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用禁用的条件</span></span><br><span class="line"><span class="comment">-- 1.有数据违反约束会报错，需要把违反约束的修改或者删除才可以启动约束</span></span><br><span class="line"><span class="comment">-- 如果不禁用，则一个不满足，作为一个事务整体全部都失败</span></span><br><span class="line"><span class="comment">-- 实验？？？</span></span><br><span class="line"><span class="comment">-- 2.大批数据导入表中，每条数据检查约束，降低效率</span></span><br></pre></td></tr></table></figure>
+<h5 id="删除约束">删除约束</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">drop</span> <span class="keyword">constraint</span> SAL_MIN;  <span class="comment">--删除约束</span></span><br></pre></td></tr></table></figure>
+<h1>视图</h1>
+<h4 id="小练习">小练习</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">1.创建hr.test表：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">test</span>(<span class="keyword">id</span> <span class="built_in">number</span>(<span class="number">5</span>),<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line">2.插入数据：</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'aaa'</span>);</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">3</span>,<span class="string">'bbb'</span>);</span><br><span class="line">   </span><br><span class="line">3.添加约束：</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">add</span> <span class="keyword">constraint</span> uni_name <span class="keyword">unique</span>(<span class="keyword">name</span>);<span class="comment">--name字段添加唯一性约束</span></span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'aaa'</span>);  <span class="comment">--报错，违反唯一性约束</span></span><br><span class="line"></span><br><span class="line">4.禁用约束</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">disable</span> <span class="keyword">constraint</span> uni_name;<span class="comment">--禁用约束</span></span><br><span class="line"></span><br><span class="line">5.使用exceptions表（找表中违反约束的lowid放入exception表中）</span><br><span class="line">desc exceptions <span class="comment">-- 不存在</span></span><br><span class="line"></span><br><span class="line">6.app/oracle/product/18.3.0/rdbms/admin中的脚本utlexcept.sql</span><br><span class="line">@?/rdbms/admin/utlexcpt.sql <span class="comment">--调用脚本创建excptions表</span></span><br><span class="line"><span class="comment">--斜线方向不能反</span></span><br><span class="line"><span class="comment">--?为oracle home，即F:\app\oracle\product\18.3.0</span></span><br><span class="line"></span><br><span class="line">7.启用约束，找表中违反约束的lowid放入exception表中：</span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name <span class="keyword">exceptions</span> <span class="keyword">into</span> <span class="keyword">exceptions</span>;</span><br><span class="line">  <span class="comment">-- ORA-02299: 无法验证(HR.UNI_NAME) - 找到重复关键字</span></span><br><span class="line">   <span class="keyword">select</span> row_id,table_name <span class="keyword">from</span> <span class="keyword">exceptions</span>;</span><br><span class="line">   <span class="keyword">select</span> <span class="keyword">rowid</span>,<span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> <span class="keyword">test</span> <span class="keyword">where</span> <span class="keyword">rowid</span> <span class="keyword">in</span>(<span class="keyword">select</span> row_id <span class="keyword">from</span> <span class="keyword">exceptions</span>);</span><br><span class="line"></span><br><span class="line">8.update hr.test <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">'ccc'</span> <span class="keyword">where</span> <span class="keyword">rowid</span>=<span class="string">'AAASBdAADAAAPoFAAC'</span>; <span class="comment">-- rowid不同</span></span><br><span class="line"></span><br><span class="line">9.再次启用约束<span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name;</span><br><span class="line"></span><br><span class="line">10.truncate <span class="keyword">table</span> <span class="keyword">exceptions</span>; <span class="comment">-- 截断表，清空异常表供以后使用</span></span><br><span class="line"></span><br><span class="line">11.在数据字典汇总查询约束信息(user_constraints,user_cons_columns)</span><br><span class="line"><span class="keyword">select</span> CONSTRAINT_NAME <span class="keyword">from</span> user_constraints;</span><br><span class="line"><span class="keyword">select</span> CONSTRAINT_NAME,TABLE_NAME, COLUMN_NAME <span class="keyword">from</span> user_cons_columns <span class="keyword">where</span> table_name=<span class="string">'TEST'</span>; <span class="comment">-- 区分大小写</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163415534.png" alt="image-20200317163415534"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163550464.png" alt="image-20200317163550464"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163444998.png" alt="image-20200317163444998"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163510655.png" alt="image-20200317163510655"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163956703.png" alt="image-20200317163956703"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164056329.png" alt="image-20200317164056329"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317163734206.png" alt="image-20200317163734206"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164226712.png" alt="image-20200317164226712"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164249902.png" alt="image-20200317164249902"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164328694.png" alt="image-20200317164328694"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164419510.png" alt="image-20200317164419510"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164436572.png" alt="image-20200317164436572"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164505127.png" alt="image-20200317164505127"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164524918.png" alt="image-20200317164524918"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317164645758.png" alt="image-20200317164645758"></p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317165334485.png" alt="image-20200317165334485" style="zoom:50%;">
+<p>虚表：不是存储结构，是语句的定义</p>
+<p>表：一种具体的存储结构</p>
+<h4 id="视图的作用"><strong>视图的作用</strong></h4>
+<ol>
+<li>收集感兴趣的数据、屏蔽敏感数据</li>
+<li>简化查询</li>
+<li>简化权限的管理</li>
+</ol>
+<h4 id="视图的分类"><strong>视图的分类</strong></h4>
+<ul>
+<li>简单视图：基表不能超过一张，不能分组、函数</li>
+<li>复杂视图</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">视图的创建</span><br><span class="line"><span class="comment">-- 可能权限不够</span></span><br><span class="line">creat view emp_info as <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line"></span><br><span class="line">修改视图</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> emp;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改视图通过删除重建（drop create，之后就是一个新的对象了）可以吗？</span></span><br><span class="line"><span class="comment">-- 不可以，删除之前有些用户已经拥有了这些视图的权限，删除之后权限就没了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 基于不存在的表创建视图可以吗？</span></span><br><span class="line"><span class="comment">-- 不可以</span></span><br><span class="line"><span class="comment">-- 但是可以强制创建视图，使用force</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> abc;</span><br><span class="line"><span class="comment">-- 编译错误，查询不到。什么时候这个不存在的表被创建了，这些视图就可以使用了</span></span><br><span class="line"></span><br><span class="line">修改视图，表中数据会变化！</span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>;  <span class="comment">--修改视图就是修改基表</span></span><br><span class="line"></span><br><span class="line">不允许修改某个字段</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> emp <span class="keyword">where</span></span><br><span class="line">deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">check</span> <span class="keyword">option</span>; <span class="comment">--这个时候部门号就不可以修改了，只有部门号不能修改</span></span><br><span class="line"></span><br><span class="line">只允许读，不可以修改，做只读视图</span><br><span class="line"><span class="comment">--对只读视图不允许DML</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> emp <span class="keyword">where</span></span><br><span class="line">deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317170838541.png" alt="image-20200317170838541" style="zoom:67%;">
+<p>创建视图时，select sal * 12</p>
+<p>这一个表达式需要取别名？？？看3.17录像</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--复杂视图不总是可以被修改</span></span><br><span class="line"><span class="comment">--行号rownum</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,ename <span class="keyword">from</span> emp <span class="keyword">where</span> <span class="keyword">rownum</span> &gt;= <span class="number">10</span>; <span class="comment">--rownum是查询之后再根据结果进行编号</span></span><br><span class="line"><span class="comment">--把查出来的结果，再进行筛选</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>，ename <span class="keyword">from</span>（<span class="keyword">select</span> <span class="keyword">rownum</span> aa,emp.* <span class="keyword">from</span> emp）<span class="keyword">where</span> aa&gt;=<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317171345201.png" alt="image-20200317171345201" style="zoom:67%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317171415887.png" alt="image-20200317171415887" style="zoom:67%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317171644537.png" alt="image-20200317171644537" style="zoom:67%;">
+<p>计算得到的结果，不能直接修改/插入</p>
+<p>3.17最后</p>
+<p>not null属性能不能继承？？？</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200317172432102.png" alt="image-20200317172432102" style="zoom:67%;">
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317171852506.png" alt="image-20200317171852506"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317171922522.png" alt="image-20200317171922522"></p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317171944963.png" alt="image-20200317171944963"></p>
+<p>not null分显示/隐式</p>
+<ul>
+<li>e1和e2这里显示规定not null，会继承</li>
+<li>emp和emp1，将empno设置为主键，为隐式规定，主键不继承</li>
+</ul>
+<h4 id="内嵌视图">内嵌视图</h4>
+<p>rownum？？？录像</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317172559096.png" alt="image-20200317172559096"></p>
+<p>被过滤掉的行，rownum不会增加</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317172619407.png" alt="image-20200317172619407"></p>
+<p>这里rownum永远都是1</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200317174913083.png" alt="image-20200317174913083"></p>
+<h1>例程管理、配置</h1>
+<h4 id="关闭例程">关闭例程</h4>
+<p>四种模式</p>
+<p>eg</p>
+<p>超市关门，不能进 == 禁止新的连接</p>
+<p>等所有人走完，关门 == 等所有会话结束</p>
+<ol>
+<li>
+<p>正常关闭(normal，默认模式)                     --等所有回话结束才能关闭，所以时间比较长</p>
+</li>
+<li>
+<p>事务性关闭(transactional)            --等所有事务结束才能关闭，比1快</p>
+</li>
+<li>
+<p>立即关闭(==immediate==) – 不需要等事务结束    --上面三个会做检查点，对数据库没有什么伤害</p>
+</li>
+<li>
+<p>中止退出(abort) 丢数据              --不做检查点，会丢失数据</p>
+</li>
+</ol>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320080400696.png" alt="image-20200320080400696" style="zoom:67%;">
+<p>–说明</p>
+<p>3是不需要等事务结束，如果事务还没有commit，会回滚之后关闭</p>
+<h4 id="启动例程">启动例程</h4>
+<p>startup 默认为 startup open</p>
+<h5 id="1-例程启动（nomount阶段）">1.例程启动（nomount阶段）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup nomount <span class="comment">-- 分配内存，同时启动后台进程</span></span><br></pre></td></tr></table></figure>
+<p>条件：需要访问正确的初始化参数文件（下图白色）</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320082001607.png" alt="image-20200320082001607" style="zoom: 67%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320082032418.png" alt="image-20200320082032418" style="zoom:80%;">
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320082617109.png" alt="image-20200320082617109" style="zoom:67%;">
+<p>查看spfile文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $ORACLE_HOME&#x2F;dbs</span><br><span class="line">cat spfiledb12c.ora</span><br></pre></td></tr></table></figure>
+<p>功能：在nomount下，只能访问一部分动态性能视图（内容来自内存），因为动态性能视图来自<strong>内存和控制文件</strong>，不能访问数据文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">conn sys/admin as sysdba</span><br><span class="line">desc v$instance</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（nomounted）</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> v$sga；          <span class="comment">-- ok</span></span><br><span class="line"><span class="keyword">desc</span> v$<span class="keyword">datafile</span>; <span class="comment">-- 只能看到结构，不能访问内容</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--不存在，因为数据库没有打开，数据文件还没打开，查不到数据</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-加载数据库-mount阶段">2.加载数据库(mount阶段)</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;  <span class="comment">--已经进行了startup nomount就不可以在进行startup mount</span></span><br></pre></td></tr></table></figure>
+<p>条件：需要访问控制文件</p>
+<p>功能：可以访问所有的动态视图</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320082759535.png" alt="image-20200320082759535" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter control_files  <span class="comment">--查询出oracle的控制文件</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（mounted），表示处于mount阶段</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--可以访问</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在，表在数据文件中</span></span><br></pre></td></tr></table></figure>
+<p>linux mv命令？</p>
+<h5 id="3-打开数据库（open阶段）">3.打开数据库（open阶段）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<p>条件：需要联机重做日志文件和数据文件（在数据文件中定义好的）</p>
+<p>adrci命令？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo03.log</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo02.log</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo01.log</span><br><span class="line"></span><br><span class="line">app/oracle/oradata/db12c/redo01.log <span class="comment">-- .LOG文件：日志文件</span></span><br><span class="line">app/oracle/oradata/db12c/sales01.dbf <span class="comment">-- .DBF文件：数据文件</span></span><br><span class="line">app/oracle/diag/rdbms/db12c/trace/alert_db12c.log <span class="comment">-- .log文件</span></span><br></pre></td></tr></table></figure>
+<p>可以访问所有的文件（包括数据文件，静态字典视图）</p>
+<p>1）只读的方式打开数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">startup open read only;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> current_scn <span class="keyword">from</span> v$<span class="keyword">database</span>;          <span class="comment">--这个是不变的，平常是变化的</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>; <span class="comment">--报错！数据库只读，不可以修改</span></span><br></pre></td></tr></table></figure>
+<p>2）以受限的模式打开数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">startup restrict;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> instance_name,logins <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">-- 让有些用户连，有些用户不连（有restriction权限的可以访问）</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">restricted</span> <span class="keyword">session</span> <span class="keyword">to</span> hr;              <span class="comment">--hr就可以登录了</span></span><br><span class="line">    禁用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">disable</span> <span class="keyword">restricted</span> <span class="keyword">session</span>;</span><br><span class="line">    启用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">enable</span> restricited <span class="keyword">session</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="例程的配置">例程的配置</h4>
+<h5 id="初始化参数文件">初始化参数文件</h5>
+<p>1.文本文件</p>
+<ul>
+<li>文件名格式：init&lt; sid &gt;.ora</li>
+<li>pfile 参数文件，文本文件，每次重启数据库时修改，重启生效？？？</li>
+<li>sid == 服务名</li>
+</ul>
+<p>2.二进制文件</p>
+<ul>
+<li>文件名格式：spfile&lt; sid &gt;.ora</li>
+<li>有这个就不需要pfile了</li>
+<li>spfile 服务器管理的参数文件（不由可显示字符组成）不可用文本编辑器修改，文件会破坏</li>
+<li>spfile是用来服务器的启动的，不可以随便修改，要用命令修改，修改之后直接生效不用重启</li>
+</ul>
+<h5 id="查看初始化参数（spfile里的）">查看初始化参数（spfile里的）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter                   <span class="comment">--看所有初始化参数</span></span><br><span class="line"><span class="keyword">show</span> parameter shared_pool_size  <span class="comment">--看具体某一个（共享池大小）</span></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">share</span>             <span class="comment">--查询所有名字包含share的参数</span></span><br></pre></td></tr></table></figure>
+<p>如何看自己用什么启动</p>
+<p><img src="/2020/03/21/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200320085717461.png" alt="image-20200320085717461"></p>
+<h5 id="修改初始化参数">修改初始化参数</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size = <span class="number">128</span>m;   <span class="comment">--big integer类型 -- alter system为例程级别？？</span></span><br><span class="line"><span class="keyword">show</span> parameter sga_max_size  </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">5000</span>m;  <span class="comment">--这个参数是静态参数，无法动态修改，先写到文件里，重启才可生效。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">2000</span>m;</span><br><span class="line"></span><br><span class="line">desc v$parameter</span><br><span class="line"><span class="comment">-- ISSYS_MODIFIABLE字段有三种类型</span></span><br><span class="line">  deferred       <span class="comment">--延时，不会马上/也不需要生效，重新连接就可生效</span></span><br><span class="line">  immediate      <span class="comment">--可立即改</span></span><br><span class="line">  false          <span class="comment">--不可直接改，先写到文件中，必须重启才能生效</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,ISSYS_MODIFIABLE <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'s%'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="scope">scope</h5>
+<ol>
+<li>memory:只在内存改，不在spfile文件改（临时生效）</li>
+<li>spfile:先写在文件中，下次重启生效</li>
+<li>both:立即生效，同时在文件中修改</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">memory</span>; <span class="comment">--文件没有修改，下次修改还是原来的值</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">both</span>; <span class="comment">--文件被修改</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size=<span class="number">5000</span>m <span class="keyword">scope</span> = <span class="keyword">spfile</span>;    <span class="comment">--发现没有生效，但是已经写到spfile文件里面了，下次启动生效（shutdown之后重新startup）</span></span><br></pre></td></tr></table></figure>
+<h5 id="将某个初始化参数还原成默认值">将某个初始化参数还原成默认值</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter shared_server</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">reset</span> shared_server;  <span class="comment">--复位重启之后才可以看到恢复的结果</span></span><br></pre></td></tr></table></figure>
+<h5 id="将所有初始化参数都还原成默认值（待实验）">将所有初始化参数都还原成默认值（待实验）</h5>
+<p>初始化参数文件中没有的都取默认值，删掉文件18.3.0/database/initdb18c.dba</p>
+<p>shutdown immediate</p>
+<p>startup找不到初始化参数文件</p>
+<p>nodepad写一个空文件到18.3.0/database/initdb18c.dba</p>
+<p>参数库文件中要加数据库名字:</p>
+<p>文件中加*.dbname=‘db12c’</p>
+<p>再加1属性，控制文件路径</p>
+<p>*.control_files=‘F:/app/oracle/produce/18.3.0/database/control01.ctl’ ‘D:app/oracle/<br>
+……/control02.ctl’</p>
+<p>(其他默认)再重启</p>
+<h5 id="修复错误的初始化参数（要会">修复错误的初始化参数（要会</h5>
+<p>pfile，用于修复错误时用，人可以修改</p>
+<p>show parameter cpu_count</p>
+<p>show parameter spfile – 查看是不是用spfile启动的，如果是空，则用pfile；不空则用spfile</p>
+<p>alter system set shared_pool_size=200G scope=spfile;  --下次重启生效</p>
+<p>搞坏参数，起不来了，startup报错sga_target 4864M太小，其中的一部分太大</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320100247037.png" alt="image-20200320100247037" style="zoom:50%;">
+<p>==查看警告日志文件，知道是哪一个参数不对==</p>
+<p>app/oracle/diag/rdbms/db12c/trace/alert_db12c.log</p>
+<p>这个文件可以删，记录日志时会自动产生</p>
+<p>==根据一个spfile创建pfile文件==</p>
+<p>create pfile from spfile;</p>
+<p>initdb12c.ora文本文件可修改</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320100757114.png" alt="image-20200320100757114" style="zoom:67%;">
+<p>修改128m，保存</p>
+<p>将原来的spfile改名，让Oracle找不到spfile，只能用pfile启动</p>
+<p>老师的解决方法，直接把那个shared_pool_size参数去掉了，当作默认值</p>
+<p>或者两个参数都加上？</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320103354004.png" alt="image-20200320103354004" style="zoom: 80%;">
+<p>==根据pfile创建spfile==</p>
+<p>show parameter spfile – 发现又按spfile启动了？？？</p>
+<h5 id="例程在启动时选择初始化参数文件的顺序">例程在启动时选择初始化参数文件的顺序</h5>
+<p>1)spfile<sid>.ora有此文件，其他文件都不看，第一顺位</sid></p>
+<p>2)spfile.ora 第二顺位</p>
+<p>3)init<sid>.ora</sid></p>
+<p>4)都找不到就报错=&gt;解决：利用指定的q初始化参数文件启动startup pfile=d:\a\a.ora</p>
+<img src="/2020/03/21/OracleSQL/md_picture_backup\image-20200320103835250.png" alt="image-20200320103835250" style="zoom:67%;">
+<h5 id="利用指定的初始化参数文件启动">利用指定的初始化参数文件启动</h5>
+<p>用a.ora启动<br>
+startup pfile = filePath;  --文件路径</p>
+<ol>
+<li>创建oracle的服务oracleservicedemo<br>
+要在管理员权限下进行<br>
+oradim -new -sid demo<br>
+输入oracle服务用户口令：*****</li>
+<li>将当前进程设为demo<br>
+set oracle_sid=demo</li>
+</ol>
+<h1>自学）实例恢复</h1>
+<p><a href="http://blog.itpub.net/29863023/viewspace-2652139/" target="_blank" rel="noopener">http://blog.itpub.net/29863023/viewspace-2652139/</a></p>
+<p>update事务为例</p>
+<h2 id="1-sql语句解析">1.sql语句解析</h2>
+<p>首先会经过在share pool中的sql语句的解析过程，这一过程只要是针对sql语法，执行计划这些进行处理，这一部分不细讲</p>
+<h2 id="2-将数据块读入数据库高速缓存中">2.将数据块读入数据库高速缓存中</h2>
+<p>接着，到了sql执行后，数据库从物理文件读出数据行相应的数据块到 buffer cache中（假设此时内存不存在相应的数据块同时不讨论锁的过程），这一过程也涉及到数据块写到dirty list，并写脏块，为新读取的数据块寻找空闲空间的过程 。</p>
+<h2 id="3-保留一份修改前的数据块映像">3.保留一份修改前的数据块映像</h2>
+<p>同时会分配回滚段并在undo段再保留一份修改前的数据块映像。</p>
+<h2 id="4-写入重做日志缓存">4.写入重做日志缓存</h2>
+<p>为事务修改数据块，并在执行更改完成后，针对此数据块的修改也生成redo信息。这里是将该语句所影响的并被读入db buffer中的这些行数据的rowid及要更新的原值和新值及scn等信息从PGA逐条的写入redo log buffer中</p>
+<h2 id="5-执行commit命令">5.执行commit命令</h2>
+<p>声明redo log buffer 中的redo处于commit状态，然后修改事务表相应slot，声明事务已提交，最后通知lgwr进程将redo log buffer中的数据写入redo log file。待lgwr进程通知已经写入完成后，向用户发出commit完成的信息</p>
+<h1>三个后台进程</h1>
+<p>CKPT：检查点进程（Checkpoint Process）只是更新数据文件的文件首部，以辅助建立检查点的进程</p>
+<p>什么时候发生normal checkpoint</p>
+<p>下面这些操作将会触发checkpoint事件：</p>
+<ul>
+<li>日志切换，通过ALTER SYSTEM SWITCH LOGFILE。</li>
+<li>DBA发出checkpoint命令，通过ALTER SYSTEM checkpoint。</li>
+<li>对数据文件进行热备时，针对该数据文件的checkpoint也会进行，ALTER TABLESPACE TS_NAME BEGIN BACKUP/END BACKUP。</li>
+<li>当运行ALTER TABLESPACE/DATAFILE READ ONLY的时候。</li>
+<li>SHUTDOWN命令发出时。</li>
+</ul>
+<p>因为每次完全的checkpoint都需要把buffer cache所有的脏块都写入到数据文件中，这样就是产生一个很大的IO消耗，频繁的完全checkpoint操作很对系统的性能有很大的影响，为此Oracle引入的增量checkpoint的概念，buffer cache中的脏块将会按照BCQ队列的顺序持续不断的被写入到磁盘当中，同时CKPT进程将会每3秒中检查DBWn的写入进度并将相应的RBA信息记录到控制文件中。</p>
+<p>有了增量checkpoint之后在进行实例恢复的时候就不需要再从崩溃前的那个完全checkpoint开始应用重做日志了，只需要从控制文件中记录的RBA开始进行恢复操作，这样能节省恢复的时间。</p>
+<p>发生增量checkpoint的先决条件</p>
+<ul>
+<li>恢复需求设定 （FAST_START_IO_TARGET/FAST_START_MTTR_TARGET）</li>
+<li>LOG_checkpoint_INTERVAL参数值</li>
+<li>LOG_checkpoint_TIMEOUT参数值</li>
+<li>最小的日志文件大小</li>
+<li>buffer cache中的脏块的数量</li>
+</ul>
+<p>DBWn：数据库块写入器（Database Block Writer）负责将脏块写入磁盘的后台进程。</p>
+<p>触发DBWR进程的条件有：</p>
+<ul>
+<li>DBWR超时，大约3秒</li>
+<li>系统中没有多余的空缓冲区来存放数据</li>
+<li>CKPT 进程触发DBWR</li>
+<li>free buffer waits 40% 触发 dbwr吧lruw脏块写入磁盘</li>
+<li>关机会触发dbwr写</li>
+<li>alter system checkpoint 触发dbwr写</li>
+<li>redo 日志切换 触发dbwr写</li>
+<li>表空间 offline /online 触发dbwr写</li>
+</ul>
+<p>LGWR：日志写入器（Log Writer）负责将SGA中重做日志缓冲区的内容刷新输出到磁盘。</p>
+<p>触发LGWn工作的时点有几个：</p>
+<ol>
+<li>用户提交 ，commit时必须写LOGFILE.</li>
+<li>有1/3重做日志缓冲区未被写入磁盘</li>
+<li>有大于1M的重做日志缓冲区未被写入磁盘</li>
+<li>3秒超时</li>
+<li>DBWR 需要写入的数据的SCN大于LGWR记录的SCN，DBWR 触发LGWR写入。</li>
+</ol>
+<p>这三个进程都是为了更好地完成一件事：<strong>安全高效地实现内存数据块写入数据文件</strong>，就是将内存中修改的数据反映到硬盘的数据文件上。 我在事务未提交时做一个刷新buffer cache，此时发现数据块已经被刷新到磁盘文件中，通过以上三个进程的触发条件也可以看出刷新数据块与事务是否提交关系不大。</p>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="http://yoursite.com/2020/03/21/OracleSQL/" title="Oracle SQL">http://yoursite.com/2020/03/21/OracleSQL/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/" rel="prev" title="Oracle 基操">
+      <i class="fa fa-chevron-left"></i> Oracle 基操
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/" rel="next" title="Oracle 数据库备份&恢复">
+      Oracle 数据库备份&恢复 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">SQL语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">QL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#大小写不敏感"><span class="nav-text">大小写不敏感</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null的三值现象"><span class="nav-text">null的三值现象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引号使用方法"><span class="nav-text">引号使用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转义-escape"><span class="nav-text">转义 - escape</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#order-by"><span class="nav-text">order by</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#考试必考"><span class="nav-text">&#x3D;&#x3D;考试必考&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询时和用户交互"><span class="nav-text">查询时和用户交互</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符型"><span class="nav-text">字符型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lower-upper-initcap-concat"><span class="nav-text">lower upper initcap concat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#substr"><span class="nav-text">substr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instr"><span class="nav-text">instr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lpad-rpad"><span class="nav-text">lpad rpad</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#trim"><span class="nav-text">trim</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字型"><span class="nav-text">数字型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#round（四舍五入）"><span class="nav-text">round（四舍五入）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#trunc（无舍入，直接截断）"><span class="nav-text">trunc（无舍入，直接截断）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ceil-floor"><span class="nav-text">ceil floor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mod"><span class="nav-text">mod</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日期型"><span class="nav-text">日期型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sysdate-current-date"><span class="nav-text">sysdate current_date</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nls参数，更改日期格式"><span class="nav-text">nls参数，更改日期格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#systimestamp-current-timestamp"><span class="nav-text">systimestamp current_timestamp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相差多少个月"><span class="nav-text">相差多少个月</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#日期的舍入-截断"><span class="nav-text">日期的舍入&#x2F;截断</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习题"><span class="nav-text">练习题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#练习题1-取lastname"><span class="nav-text">练习题1 取lastname</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习题2"><span class="nav-text">练习题2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习3，注意是单引号"><span class="nav-text">练习3，注意是单引号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习4"><span class="nav-text">练习4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习5"><span class="nav-text">练习5</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换函数"><span class="nav-text">转换函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#to-char？？？"><span class="nav-text">to_char？？？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#日期转换为字符"><span class="nav-text">日期转换为字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数字转换为字符"><span class="nav-text">数字转换为字符</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-改变当地地区"><span class="nav-text">nls - 改变当地地区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#to-date（使用很多）"><span class="nav-text">to_date（使用很多）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理null值的函数"><span class="nav-text">处理null值的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NVL"><span class="nav-text">NVL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NVL2"><span class="nav-text">NVL2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nullif"><span class="nav-text">nullif</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coalesc？？？"><span class="nav-text">coalesc？？？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理if-then-else函数"><span class="nav-text">处理if-then-else函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#case"><span class="nav-text">case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#decode（使用很多）"><span class="nav-text">decode（使用很多）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组函数"><span class="nav-text">组函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#greatest-least"><span class="nav-text">greatest least</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#avg-count-max-min-sum"><span class="nav-text">avg count max min sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#listagg-列表聚合"><span class="nav-text">listagg 列表聚合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stddev-方差"><span class="nav-text">stddev 方差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#variance"><span class="nav-text">variance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rollup"><span class="nav-text">rollup</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接"><span class="nav-text">连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内部连接"><span class="nav-text">内部连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#外部连接"><span class="nav-text">外部连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多表"><span class="nav-text">多表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自连接"><span class="nav-text">自连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交叉连接（笛卡尔乘积）"><span class="nav-text">交叉连接（笛卡尔乘积）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自然连接"><span class="nav-text">自然连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用sqlldr从excel导入数据"><span class="nav-text">用sqlldr从excel导入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子查询"><span class="nav-text">子查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#嵌套子查询？？？"><span class="nav-text">嵌套子查询？？？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关联子查询"><span class="nav-text">关联子查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理多个结果集"><span class="nav-text">处理多个结果集</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">DML</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#insert"><span class="nav-text">insert</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#update"><span class="nav-text">update</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#merge"><span class="nav-text">merge</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">TCL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#commit-rollback-savepoint"><span class="nav-text">commit rollback savepoint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#alter-修改表的默认值"><span class="nav-text">alter - 修改表的默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（重要）读的一致性"><span class="nav-text">（重要）读的一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁"><span class="nav-text">锁</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">DDL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#oracle常见对象"><span class="nav-text">oracle常见对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建表必须条件"><span class="nav-text">建表必须条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪列"><span class="nav-text">伪列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rowid的组成"><span class="nav-text">rowid的组成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据类型"><span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改表"><span class="nav-text">修改表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改表名"><span class="nav-text">修改表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加字段"><span class="nav-text">增加字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改字段"><span class="nav-text">修改字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除字段（列）"><span class="nav-text">删除字段（列）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#截断表"><span class="nav-text">截断表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hwm-high-water-marker-高水位标记（高端水印）"><span class="nav-text">hwm &#x3D;&#x3D; high water marker 高水位标记（高端水印）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将表改为只读"><span class="nav-text">将表改为只读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#给表添加注释"><span class="nav-text">给表添加注释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#给表的列加注释？？？"><span class="nav-text">给表的列加注释？？？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除表"><span class="nav-text">删除表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据完整性"><span class="nav-text">数据完整性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实现方法"><span class="nav-text">实现方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#约束类型"><span class="nav-text">约束类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询有关约束的信息"><span class="nav-text">查询有关约束的信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建约束"><span class="nav-text">创建约束</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#禁用-启用约束"><span class="nav-text">禁用&#x2F;启用约束</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除约束"><span class="nav-text">删除约束</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小练习"><span class="nav-text">小练习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图的作用"><span class="nav-text">视图的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图的分类"><span class="nav-text">视图的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内嵌视图"><span class="nav-text">内嵌视图</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">例程管理、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭例程"><span class="nav-text">关闭例程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动例程"><span class="nav-text">启动例程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-例程启动（nomount阶段）"><span class="nav-text">1.例程启动（nomount阶段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-加载数据库-mount阶段"><span class="nav-text">2.加载数据库(mount阶段)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-打开数据库（open阶段）"><span class="nav-text">3.打开数据库（open阶段）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例程的配置"><span class="nav-text">例程的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化参数文件"><span class="nav-text">初始化参数文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看初始化参数（spfile里的）"><span class="nav-text">查看初始化参数（spfile里的）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改初始化参数"><span class="nav-text">修改初始化参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope"><span class="nav-text">scope</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将某个初始化参数还原成默认值"><span class="nav-text">将某个初始化参数还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将所有初始化参数都还原成默认值（待实验）"><span class="nav-text">将所有初始化参数都还原成默认值（待实验）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修复错误的初始化参数（要会"><span class="nav-text">修复错误的初始化参数（要会</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#例程在启动时选择初始化参数文件的顺序"><span class="nav-text">例程在启动时选择初始化参数文件的顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用指定的初始化参数文件启动"><span class="nav-text">利用指定的初始化参数文件启动</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">自学）实例恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sql语句解析"><span class="nav-text">1.sql语句解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-将数据块读入数据库高速缓存中"><span class="nav-text">2.将数据块读入数据库高速缓存中</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-保留一份修改前的数据块映像"><span class="nav-text">3.保留一份修改前的数据块映像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-写入重做日志缓存"><span class="nav-text">4.写入重做日志缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-执行commit命令"><span class="nav-text">5.执行commit命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">三个后台进程</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+    
+      <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+      <script src="/js/cursor/text.js"></script>
+    
+  
+
+
+  <!-- 动态背景 -->
+  
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.5' zIndex="-1" count="50" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+</body>
+</html>
+

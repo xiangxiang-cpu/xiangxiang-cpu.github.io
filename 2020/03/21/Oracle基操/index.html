@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="1.Oracle基本操作 登录 linux用oracle用户登录，不能用root ~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径） 12345678# linux中环境变量以$开头，$HOME，$ORACLE_HOME# 使用echo查看，使用export设置# export ORACLE_HOME&#x3D;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;product&#x2F;12.2.0&#x2F;dbhome">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 基操">
+<meta property="og:url" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="1.Oracle基本操作 登录 linux用oracle用户登录，不能用root ~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径） 12345678# linux中环境变量以$开头，$HOME，$ORACLE_HOME# 使用echo查看，使用export设置# export ORACLE_HOME&#x3D;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;product&#x2F;12.2.0&#x2F;dbhome">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200305213828892-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326132520030.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326134947000.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326135131112.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326135317633.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324110246711.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324110403179-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326101000542.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326102150199-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324110514108.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326102538205-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324131422936-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324131045760.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200303155333265-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324123234386.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324122757246.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324123745524.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324124011162.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233435103.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233522250.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233656338.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233732506.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233810555.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326125854573-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326130527532-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326130607997-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200303170141238.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326131510091.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326185323983.png">
+<meta property="article:published_time" content="2020-03-21T14:13:55.000Z">
+<meta property="article:modified_time" content="2020-04-06T16:17:30.387Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200305213828892-1586189129451.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Oracle 基操 | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">9</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle 基操
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-07 00:17:30" itemprop="dateModified" datetime="2020-04-07T00:17:30+08:00">2020-04-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-Oracle基本操作">1.Oracle基本操作</h2>
+<h3 id="登录">登录</h3>
+<p>linux用oracle用户登录，不能用root</p>
+<p>~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux中环境变量以$开头，$HOME，$ORACLE_HOME</span></span><br><span class="line"><span class="comment"># 使用echo查看，使用export设置</span></span><br><span class="line"><span class="comment"># export ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1 # 等号两边不能有空格</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ORACLE_HOME</span> <span class="comment"># /u01/app/oracle/product/12.2.0/dbhome_1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HOME</span> <span class="comment"># /home/oracle</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># linux不支持@echo，没有pause</span></span><br></pre></td></tr></table></figure>
+<p>在~下，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl status</span><br><span class="line">lsnrctl start</span><br><span class="line">sqlplus &#x2F; as sysdba</span><br><span class="line"># 或者</span><br><span class="line">sqlplus hr&#x2F;123123</span><br></pre></td></tr></table></figure>
+<p>用Oracle用户登录后，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup</span><br></pre></td></tr></table></figure>
+<h3 id="切换用户">切换用户</h3>
+<p>已登录时，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conn 用户名&#x2F;密码@网络服务器名 [as sysdba&#x2F;sysoper] </span><br><span class="line">conn &#x2F; as sysdba</span><br></pre></td></tr></table></figure>
+<h3 id="退出登录">退出登录</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>该命令会断开与数据库的连接，同时会退出sqlplus</p>
+<h3 id="更改用户密码">更改用户密码</h3>
+<p>需要登录一个能修改密码的用户</p>
+<p>在sys登录的时候，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">password scott 可以修改其他用户的密码</span><br><span class="line">password 修改sys的密码</span><br></pre></td></tr></table></figure>
+<h3 id="查看当前登录的数据库用户">查看当前登录的数据库用户</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show user</span><br></pre></td></tr></table></figure>
+<h3 id="简单定制，设置显示格式">简单定制，设置显示格式</h3>
+<p>登陆时在会话里修改，则只为会话级别的，重新登陆会失效</p>
+<p>不登陆Oracle时</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="variable">$ORACLE_HOME</span>/sqlplus/admin/glogin.sql</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> linesize <span class="number">100</span></span><br><span class="line"><span class="keyword">set</span> pagesize <span class="number">50</span></span><br><span class="line"><span class="keyword">set</span> sqlprompt _user<span class="string">"@"</span>_connect_identifier&gt;</span><br><span class="line"><span class="keyword">define</span> _EDITOR=<span class="string">"vim"</span></span><br></pre></td></tr></table></figure>
+<p>登录Oracle后可以用这两个命令查看参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show linesize</span><br><span class="line">show pagesize</span><br></pre></td></tr></table></figure>
+<h3 id="设置列宽">设置列宽</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">col [列名] for a20</span><br><span class="line">20指字符数量</span><br></pre></td></tr></table></figure>
+<h3 id="查看用户状态">查看用户状态</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username, account_status <span class="keyword">from</span> dba_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- expired - 过期，需要修改密码</span></span><br><span class="line"><span class="comment">-- locked - 需要解锁</span></span><br><span class="line"><span class="comment">-- open - 正常</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> hr <span class="keyword">account</span> <span class="keyword">unlock</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="sqldeveloper">sqldeveloper</h3>
+<p>在/下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> DISPLAY=192.168.11.1:0.0</span><br><span class="line"><span class="comment"># echo $DISPLAY</span></span><br><span class="line">sqldeveloper.sh</span><br></pre></td></tr></table></figure>
+<h3 id="查看Oracle错误信息">查看Oracle错误信息</h3>
+<p>退出Oracle，在/下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oerr ora [错误代码]</span><br></pre></td></tr></table></figure>
+<h3 id="执行位于共享目录的sql脚本">执行位于共享目录的sql脚本</h3>
+<p>用@执行脚本？？？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@&#x2F;mnt&#x2F;hgfs&#x2F;D&#x2F;software&#x2F;os&#x2F;scott.sql</span><br><span class="line">用于安装scott方案</span><br></pre></td></tr></table></figure>
+<h3 id="监听器？？？">监听器？？？</h3>
+<p>作用：它设置在服务端，是基于<strong>服务端</strong>的一种网络服务，用于监听==客户端向数据库端==发出的连接请求。判断一下连接请求是否正确，请求有效就连接，失败就拒绝。所以你要连接远程数据库，那么远程数据库就要配置监听器，客户端则不需要配置。</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200305213828892-1586189129451.png" alt="image-20200305213828892"></p>
+<h5 id="形象理解">形象理解</h5>
+<p>【假设银行只能由接引员引进，无法自行进入】</p>
+<p>服务名（db15c）【工商银行】</p>
+<p>名称解析到某机器的某端口 【银行在哪里，具体到门牌号】</p>
+<p>但名称解析<strong>只能</strong>到某机器的某端口，不知道有没有这个数据库【到了银行门口，不知道有没有这个业务】</p>
+<p>用户进程和服务器进程中间需要监听器（帮你找到服务器进程）【银行门口小姐领进去找工作人员】</p>
+<p>监听器配两个东西</p>
+<ul>
+<li>一个地址（只接收来这个地址加端口的请求）【小姐不招待进农业银行的人】</li>
+<li>一个数据库【要写出能办的业务】</li>
+</ul>
+<p>如果监听器不开？？？【没有人领进去】</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326132520030.png" alt="image-20200326132520030"></p>
+<ul>
+<li>
+<p>动态注册（ready）：刚起来的时候连不上，一会才能连上</p>
+<p>有一个？？？进程监听轮询服务，监听起是起来了，但是找不到服务</p>
+<p>【小姐上班了，但不知道里面有啥业务，隔一会进去看一下业务，发现有数据库业务】</p>
+</li>
+<li>
+<p>需要静态注册（unknown），明确的写在监听文件中，一启动就注册服务</p>
+<p>【小姐上班，翻一翻手册，就知道有数据库这个业务】</p>
+</li>
+</ul>
+<h3 id="如何配置静态注册">如何配置静态注册</h3>
+<p>admin之下 cat listener.ora，动态注册长这样</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326134947000.png" alt="image-20200326134947000"></p>
+<p>admin之下，export DISPLAY，netmgr</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326135131112.png" alt="image-20200326135131112"></p>
+<p>静态长这样</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326135317633.png" alt="image-20200326135317633"></p>
+<p>进去之后,服务器进程先查看之前有没有执行过这个语句,有的话就直接用之前的执行计划</p>
+<p>查询,</p>
+<p>修改,记录操作到log</p>
+<p>联机(listener)</p>
+<p>会话(办事)</p>
+<p>在启动、关闭或者重启oracle监听器之前确保使用lsnrctl status命令检查oracle监听器的状态。</p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324110246711.png" alt="image-20200324110246711" style="zoom:70%;">
+<p>lsnrctl start之后</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324110403179-1586189129451.png" alt="image-20200324110403179"></p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326101000542.png" alt="image-20200326101000542" style="zoom:70%;">
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326102150199-1586189129451.png" alt="image-20200326102150199"></p>
+<p>SID：启动数据库实例的服务</p>
+<p>SIDXDB：高效处理XML数据的服务，默认会占用8080端口。</p>
+<ul>
+<li>实例状态为UNKNOWN值时表明此服务是静态注册的设置，这时监听器用来表明它不知道关于该实例的任何信息，只有当客户发出连接请求时，它才检查该实例是否存在。</li>
+<li>动态监听的状态是READY。</li>
+<li>动态注册：客户端（sys用户）只能在远程数据库启动的情况下连接上，远程数据库关闭时客户端连接不上远程数据库。</li>
+<li>静态注册：无论远程数据库处于开启还是关闭状态，客户端（sys用户）都可连接上。<br>
+换一句换说静态注册可以在客户端控制服务器端数据库的启停，而动态注册则不可以。（动态注册的监听在实例关闭时会被注销）</li>
+<li>数据库关闭的状态下，只有sys用户可连入数据库，其他用户不可连入。</li>
+</ul>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324110514108.png" alt="image-20200324110514108" style="zoom:80%;">
+<p>监听器启动，需要一个参数，指定参数文件（listener.ora）</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326102538205-1586189129451.png" alt="image-20200326102538205"></p>
+<p>用lsnrctl start命令启动oracle监听器</p>
+<p><a href="https://blog.csdn.net/u011562107/article/details/80482127" target="_blank" rel="noopener">https://blog.csdn.net/u011562107/article/details/80482127</a></p>
+<ul>
+<li>
+<p>lsnrctl stop 关闭所有的监听器</p>
+</li>
+<li>
+<p>snrctl stop [listener-name]  指定要关闭的监听器的名字</p>
+</li>
+<li>
+<p>lsnrctl reload重启监听器，此命令可以代替lsnrctl stop和lsnrctl start。</p>
+<p>重启将会在不需要关闭和启动监听器的情况下读取listener.ora的配置。</p>
+</li>
+</ul>
+<h3 id="linux环境变量">linux环境变量</h3>
+<p>环境变量一般是指操作系统中指定操作系统运行环境的一些参数。它相当于一个指针，想要查看变量的值，需要加上“$”</p>
+<p>按作用的范围分。在Linux中的变量，可以分为环境变量和本地变量：</p>
+<p>1）环境变量：相当于全局变量，存在于所有的Shell中，具有继承性；<br>
+2）本地变量：相当于局部变量只存在当前Shell中，本地变量包含环境变量，非环境变量不具有继承性。</p>
+<p>按生存周期分</p>
+<p>1）永久：需要修改配置文件，变量永久生效；<br>
+2）暂时：使用export定义，关闭Shell后失效。</p>
+<ul>
+<li><code>export </code>命令显示当前系统定义的所有环境变量</li>
+<li><code>echo $PATH</code> 命令输出当前的<code>PATH</code>环境变量的值</li>
+</ul>
+<p>DISPLAY</p>
+<p>HOME  用户的主目录（也称家目录，和~相同） HOME 变量在不同用户身份下值不相同</p>
+<p>HOSTNAME 主机名</p>
+<p>LOGNAME 用户的登录名</p>
+<p>ORACLE_BASE  oracle的根目录</p>
+<p>ORACLE_HOME   oracle产品的目录，如果安装了两个版本的Oracle，会有两个</p>
+<p>方便用户更轻松地进入一个层次较深的目录</p>
+<p>ORACLE_SID 用于区别同一台机器上的不同实例</p>
+<p>ORACLE_UNQNAME？？？</p>
+<p>USER</p>
+<p>HISTSIZE 该变量指定保存历史命令的数目（最多1000）</p>
+<p>PATH  变量定义了==运行命令的查找路径==，以冒号<code>:</code>分割不同的路径</p>
+<p>SHELL 该变量指定用户当前使用的解析器</p>
+<h3 id="全局数据库名和SID">全局数据库名和SID</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,DB_UNIQUE_NAME <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- name就是全局数据库名？？？</span></span><br></pre></td></tr></table></figure>
+<p>全局数据库名用于区别<strong>分布式数据库</strong>各个不同机器上的实例， 用于外部区分</p>
+<p>SID用于区别同一台机器上的不同实例，用于内部区分</p>
+<p><strong>数据库域名</strong></p>
+<p>在分布式数据库系统中，不同版本的数据库服务器之间，不论运行的操作系统是unix或是<a href="http://www.2cto.com/os/windows/" target="_blank" rel="noopener">windows</a>，各服务器之间都可以通过<a href="http://www.2cto.com/database/" target="_blank" rel="noopener">数据库</a>链路进行远程复制，数据库域名主要用于oracle<strong>分布式环境</strong>中的复制。举例说明如：</p>
+<p>全国交通运政系统的分布式数据库，其中：</p>
+<ul>
+<li>福建节点：fj.jtyz</li>
+<li>福建厦门节点：xm.fj.jtyz</li>
+<li>江西：jx.jtyz</li>
+<li>江西上饶：sr.jx.jtyz</li>
+</ul>
+<p>这就是数据库域名。</p>
+<p>数据库域名在存在于参数文件中，他的参数是db_domain</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询数据库域名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">value</span> <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">'db_domain'</span>;</span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">domain</span></span><br></pre></td></tr></table></figure>
+<p>全局数据库名</p>
+<p>==全局数据库名 = 数据库名 + 数据库域名==，如前述福建节点的全局数据库名是：oradb.fj.jtyz</p>
+<h2 id="2-Oracle知识点">2. Oracle知识点</h2>
+<h3 id="数据库和实例">数据库和实例</h3>
+<p>数据库实例名是用于和操作系统进行联系的标识，就是说<strong>数据库和操作系统之间的交互用的是数据库实例名</strong></p>
+<p>数据库名和实例名可以相同也可以不同。</p>
+<p>在一般情况下，数据库名和实例名是一对一的关系</p>
+<p>但如果在oracle并行服务器架构（即oracle实时应用<strong>集群</strong>）中，数据库名和实例名是一对多的关系。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询当前数据库实例名，两种方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> instance_name,<span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">instance</span> <span class="comment">-- 出来好多</span></span><br></pre></td></tr></table></figure>
+<h3 id="数据库服务">数据库服务</h3>
+<p>注册就是将数据库作为一个服务注册到监听程序。</p>
+<p>客户端不需要知道数据库名和实例名，只需要知道该数据库对外提供的服务名就可以申请连接到数据库。</p>
+<p>在数据库服务器和客户端之间有一监听程序（Listener）</p>
+<p>在监听程序中，会记录相应数据库对应的服务名（一个数据库可能对应有多个服务名，一对一时，一般数据库名和服务名相同），当客户端需要连接数据库时，只需要提供服务名，就可以建立客户端和服务器之间的连接。</p>
+<p>_connect_identifier，在tnsnames.ora中定义？？？</p>
+<h3 id="大小写问题">大小写问题</h3>
+<ul>
+<li>
+<p>关键字不区分大小写</p>
+</li>
+<li>
+<p>建表时，表名和字段名不要加双引号，系统自动全部转为大写存储</p>
+<p>不加引号查表时，不会区分大小写</p>
+<p>加双引号查表时，双引号内的必须全部大写才能匹配到（双引号内的大小写保留？？？）</p>
+</li>
+<li>
+<p>建表时加上双引号，系统不会处理，保留原样；查表时，就要双引号且严格符合大小写</p>
+<p>特殊情况，如果建表时，某字段/表名双引号内全部大写，那么这个特定的字段/表名查询时不区分大小写，其余未全部大写的字段&amp;表名仍然区分大小写</p>
+</li>
+<li>
+<p>表中数据：查询时区分大小写</p>
+<p>注意一种特殊情况：查数据字典时，有的表明和字段名是作为数据存储在表中的，查询时就要区分大小写</p>
+</li>
+</ul>
+<h3 id="回滚和闪回的区别">回滚和闪回的区别</h3>
+<p>scott下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- flashback complete</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- rollback</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> emp; <span class="comment">-- 忘了加条件，删除了所有行</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- no rows selected</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- rollback complete</span></span><br></pre></td></tr></table></figure>
+<p>回滚适用于DML，闪回操作一般对应于DDL</p>
+<ul>
+<li>闪回适用于<strong>逻辑错误</strong>：误删一张表、DDL</li>
+<li>回滚适用于<strong>物理错误</strong>：磁盘损坏、数据文件被删除</li>
+<li>flashback 源数据块保留：数据块出了问题直接拿过来备份【直接换一个新的备份手机】</li>
+<li>rollback 使用对冲机制：delete之后想要回滚，要insert【修手机】</li>
+</ul>
+<p>也就是说回滚INSERT对应产生了DELETE的日志信息</p>
+<h3 id="数据文件的扩展">数据文件的扩展</h3>
+<p>备份文件越来越大，数据放在数据文件中，数据文件不够大</p>
+<p>两者矛盾：性能开销（dba和db的开销成反比，人不做的事情交给机器）</p>
+<h4 id="自动扩展">自动扩展</h4>
+<p>使用情形：数据库目前运行流畅</p>
+<p>开发人员设计后台进程，跟踪数据文件的使用情况，指定一个临界值（10%），此时触发自动扩展</p>
+<h4 id="手动扩展">手动扩展</h4>
+<p>适用情形：卡顿严重，性能不行的时候，需要手动优化</p>
+<p>ban掉自动扩展，管理员手册中加一条：每天手动监控数据文件使用情况，手动敲命令扩展，不是监控</p>
+<h3 id="数据字典">数据字典</h3>
+<p>数据字典系统表，保存在system表空间中</p>
+<p>DICTIONARY contains descriptions of data dictionary tables and views.</p>
+<p>dict表（视图）中有table_name, comments字段：看某个表有什么用</p>
+<p>动态静态都能查到</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">UPPER</span>(<span class="string">'user_tables'</span>); <span class="comment">-- 注意大小写</span></span><br></pre></td></tr></table></figure>
+<p>数据字典主要可分为四部分：</p>
+<h4 id="内部RDBMS表">内部RDBMS表</h4>
+<p><code>x$*</code></p>
+<p>用于跟踪内部数据库信息，维持DB的正常运行。是加密命名的， 而且Oracle不做文档说明。不允许sysdba以外的用户直接访问，显示授权不被允许。</p>
+<p>X$表是Oracle数据库的运行基础，在数据库启动时由Oracle应用程序动态创建。</p>
+<h4 id="数据字典表-（Data-dictionary-table）">数据字典表 （Data dictionary table）</h4>
+<p><code>*$</code>，如<code>tab$,obj$,ts$</code>等</p>
+<p>用来存储表、索引、约束以及其他数据库结构的信息。</p>
+<p>在创建数据库的时候通过运行$ORACLE_HOME/rdbms/admin/sql.bsq脚本来创建。</p>
+<h4 id="静态数据字典视图">静态数据字典视图</h4>
+<p><code>user_*、all_*、dba_*</code></p>
+<p>由于X$表和数据字典表通常不能直接被用户访问，Oracle创建了静态数据字典视图来<strong>提供用户对于数据字典信息的访问</strong>，由于这些信息通常相对稳定，不能直接修改，所以又被称为静态数据字典视图。</p>
+<p>静态数据字典视图在创建数据库时由$ORACLE_HOME/rdbms/admin/catagory.sql脚本创建。</p>
+<p>通过三类视图在本质上是为了实现权限控制。在Oracle数据库中，每个用户与方案（Schema）是对应的，Schema是用户所拥有的对象的集合。数据库通过Schema将不同用户的对象隔离开来，用户可以自由的访问自己的对象，但是要访问其他Schema对象就需要相关的授权。</p>
+<h4 id="动态性能视图">动态性能视图</h4>
+<p><code>gv$*， v$*</code></p>
+<p>记录了DB运行时信息和统计数据，大部分动态性能视图被实时更新以反映DB当前状态。</p>
+<p>在数据库启动时，Oracle动态创建X$表。在此基础上，Oracle创建了GV$和V$视图，GV$即Global V$，除了一些特例外，每个V$都对应一个GV$。GV$产生是为了OPS/RAC环境的需要，每个V$都是基于GV$的，只是GV$多了INST_ID列来显示实例ID。 在非Sys用户下，我们访问的都是同义词，而不是V$视图或GV$视图。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">查询V$视图时，报的错却是V_$视图不存在，V_$视图不是基于V$视图创建的吗，怎么反向报错了？</span><br><span class="line"></span><br><span class="line">为了防止普通用户的误操作，Oracle对通过软件机制对V$视图的访问做了限制，它不允许普通用户直接访问V$视图，但我们平时不是经常访问吗？这其实是Oracle引入了V_$视图。</span><br><span class="line">在建立V$视图后，Oracle就建立了V_$视图，随后为V_$视图建立了与V$视图同名的共用同义词。这些工作都是通过catalog.sql脚本（该脚本位于$ORACLE_HOME&#x2F;rdbms&#x2F;admin&#x2F;目录下）实现的。</span><br><span class="line"></span><br><span class="line">如：</span><br><span class="line">create or replace view v_$fixed_table as select * from v$fixed_table;</span><br><span class="line">create or replace public synonym v$fixed_table for v_$fixed_table;   --同名同义词</span><br><span class="line"></span><br><span class="line">也就是说，大部分用户访问的V$对象，并不是视图，而是执行V_$视图的同义词；而V_$视图时基于真正V$视图创建的。</span><br></pre></td></tr></table></figure>
+<h3 id="访问数据字典">访问数据字典</h3>
+<p>视图，不是一种存储结构，==全部都是视图==</p>
+<p>查看视图原表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REFERENCED_NAME, REFERENCED_TYPE</span><br><span class="line"><span class="keyword">from</span> SYS.ALL_DEPENDENCIES</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">TYPE</span> = <span class="string">'VIEW'</span></span><br><span class="line"><span class="keyword">and</span> <span class="keyword">NAME</span> = <span class="keyword">UPPER</span>(<span class="string">'DBA_TABLE'</span>)</span><br><span class="line"><span class="keyword">and</span> REFERENCED_TYPE = <span class="string">'TABLE'</span>;</span><br></pre></td></tr></table></figure>
+<p>查看是不是视图，动态性能视图查不到</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> view_name <span class="keyword">from</span> dba_views <span class="keyword">where</span> view_name=<span class="keyword">upper</span>(<span class="string">'dba_tablespaces'</span>);</span><br></pre></td></tr></table></figure>
+<p>静态数据字典视图，来自一些系统表，这些系统表一般放在system表空间下？？？</p>
+<h4 id="1-dict-columns">-1 dict_columns</h4>
+<p>我们可以在catalog.sql脚本中找到DICT_COLUMNS的创建语句</p>
+<p><strong>查询某个表中某字段是啥意思</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dict_columns <span class="keyword">where</span> TABLE_NAME=<span class="string">'DICT'</span>; </span><br><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> table_name=<span class="string">'DBA_TABLESPACES'</span>;</span><br></pre></td></tr></table></figure>
+<p>user_tab_columns？？？</p>
+<p><strong>查询都有哪些表包含指定的字段</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dict_columns <span class="keyword">where</span> COLUMN_NAME=<span class="string">'TABLE_NAME'</span> <span class="keyword">and</span> <span class="keyword">rownum</span>&lt;<span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="0-总表dict">0 总表dict</h4>
+<h4 id="1-数据字典视图">1 数据字典视图</h4>
+<ul>
+<li>内容来自：数据文件</li>
+<li>统计数据，要及时更新。安排作业？？？每天晚上自动更新</li>
+<li>一般是<strong>复数形式</strong></li>
+</ul>
+<p>查一个表有几条数据，==不用count，要查字典==，【count == 把学生叫道操场数数】</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- flashback complete</span></span><br><span class="line"></span><br><span class="line">desc user_tables</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 大小写问题</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- drop table之后，数据字典中numrows变为空</span></span><br><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="comment">-- 表闪回之后，数据字典没有更新回删除之前的状态！！！</span></span><br><span class="line"><span class="comment">-- Oracle按照这个旧的统计数据指定执行计划</span></span><br><span class="line"><span class="comment">-- 旧数据行数很少，所以不走索引全表扫描，但实际数据很多，导致性能极低</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp(empno,ename) <span class="keyword">values</span>(<span class="number">1234</span>, <span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量没有变</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量+1</span></span><br></pre></td></tr></table></figure>
+<p>查某一个表所在的表空间</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">desc user_tables <span class="comment">-- table_name, tablespace_name</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>;</span><br></pre></td></tr></table></figure>
+<p>查数据文件相关信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">desc v$datafile <span class="comment">-- 要在sys下</span></span><br><span class="line">desc dba_data_files</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324131422936-1586189129451.png" alt="image-20200324131422936"></p>
+<p>查某一个表空间所在的数据文件</p>
+<p>dba_data_files，没有all和user</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> tablespace_name,file_id,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span>,file_name <span class="keyword">from</span> dba_data_files <span class="keyword">order</span> <span class="keyword">by</span> file_id;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324131045760.png" alt="image-20200324131045760"></p>
+<p>遇到下面的前缀，权限从小到大，dba需要授权</p>
+<ul>
+<li>
+<p>USER_  当前用户是所有者的对象</p>
+</li>
+<li>
+<p>ALL_ 当前用户有权限访问？？？的</p>
+</li>
+<li>
+<p>DBA_ 在hr下，访问不了这类表，<strong>权限</strong>不够</p>
+<p>需要在sysdba（权限大的角色）下访问</p>
+</li>
+</ul>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200303155333265-1586189129451.png" alt="image-20200303155333265"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">desc user_tables</span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> user_tables;</span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> all_tables;</span><br><span class="line"></span><br><span class="line">desc user_indexes <span class="comment">-- 查看有哪些索引</span></span><br><span class="line"><span class="keyword">select</span> index_name <span class="keyword">from</span> user_indexes;</span><br><span class="line"></span><br><span class="line">desc user_triggers <span class="comment">-- 触发器</span></span><br><span class="line">desc user_jobs <span class="comment">-- </span></span><br><span class="line">desc user_users <span class="comment">--</span></span><br></pre></td></tr></table></figure>
+<p>all 所有者 + 有权限访问的</p>
+<p>user 所有者</p>
+<h4 id="2-动态性能视图">2 动态性能视图</h4>
+<p>内容来自：内存和控制文件</p>
+<p>视图内部的指标大多和性能相关</p>
+<p>==v$ 开头的==</p>
+<p>eg 查看库缓存的命中率，命中率高，效率高</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">desc v$librarycache <span class="comment">-- namespace，gethitratio</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE <span class="keyword">from</span> v$librarycache <span class="comment">-- 包含每种对象的命中率</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE,GETHITRATIO <span class="keyword">from</span> v$librarycache <span class="keyword">where</span> NAMESPACE <span class="keyword">in</span> (<span class="string">'SQL AREA'</span>,<span class="string">'TABLE/PROCEDURE'</span>); <span class="comment">-- 0.4 0.6左右</span></span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324123234386.png" alt="image-20200324123234386" style="zoom:67%;">
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324122757246.png" alt="image-20200324122757246" style="zoom:67%;">
+<ol>
+<li>第一行 - SQL语句的命中率</li>
+<li>第二行 - 存储过程的命中率</li>
+</ol>
+<p>如果查不到, 就老老实实查总表，==dictionary 同义词为 dict==</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">desc dict <span class="comment">-- 两个字段：table_name, comments</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict; <span class="comment">-- 四千多行，需要筛选</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict <span class="keyword">where</span> table_name <span class="keyword">like</span> <span class="string">'%SGA%'</span>; <span class="comment">-- 剩二十多行</span></span><br><span class="line"></span><br><span class="line">desc V$SGAINFO; <span class="comment">-- sga各部分的信息</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">sizes</span> <span class="keyword">from</span> V$SGAINFO; <span class="comment">-- 单位换算成MB</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324123745524.png" alt="image-20200324123745524"></p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200324124011162.png" alt="image-20200324124011162"></p>
+<h3 id="restore-recover区别">restore recover区别</h3>
+<p>backup把原来的文件变成变为备份文件</p>
+<p>备份时，将所有的数据文件（dbf文件）变成一个备份文件（bak文件）。还原时，将这一个bak文件还原成多个dbf文件</p>
+<ul>
+<li>restore还原，backup逆过程</li>
+<li>recover == redo，重新打开数据库就ok，用的是日志文件</li>
+</ul>
+<h3 id="表">表</h3>
+<p>==表 &lt; 表空间 - 数据文件==，表空间为了放表，表空间是逻辑概念，数据文件是物理概念</p>
+<p>一个表空间（数据库存储的逻辑单位）由一个或多个数据文件组成？？？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">oracle使用逻辑结构来管理数据存储</span><br><span class="line"></span><br><span class="line">逻辑结构        物理结构</span><br><span class="line">database   </span><br><span class="line">    |</span><br><span class="line">tablespace    --&gt;datafile (一个表空间最多有1023个数据文件)</span><br><span class="line">    |</span><br><span class="line">segment(table)</span><br><span class="line">    |</span><br><span class="line">extent</span><br><span class="line">    |</span><br><span class="line">db_block    --&gt;os_block</span><br></pre></td></tr></table></figure>
+<p>【数据库其实就是柜子，柜中的抽屉是表空间，抽屉中的文件夹是数据文件，文件夹中的纸是表，写在纸上的信息就是数据】</p>
+<ul>
+<li>
+<p>由操作系统识别的 – 物理</p>
+</li>
+<li>
+<p>由数据库识别的 – 逻辑</p>
+</li>
+<li>
+<p>数据库的物理设计 – 数据库里有哪些数据文件，应该放在什么地方，多大</p>
+</li>
+<li>
+<p>数据库的逻辑设计 – 数据库中对象的设计（表、视图、索引等）</p>
+</li>
+</ul>
+<h4 id="创建表空间v-tablespace（数据文件v-datafile）">创建表空间v$tablespace（数据文件v$datafile）</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> demo <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/db12c/demo01.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m; <span class="comment">-- 同时，创建表空间数据文件？？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- scott为所有者</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.st(<span class="keyword">id</span> <span class="built_in">int</span>,<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>)) <span class="keyword">tablespace</span> demo; <span class="comment">-- 创建表</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.st <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.st <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'Jerry'</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.st;</span><br><span class="line"></span><br><span class="line">desc [表名] <span class="comment">-- 查表的数据模式</span></span><br><span class="line">desc dba_data_files <span class="comment">-- 查数据文件</span></span><br><span class="line">desc dba_tables <span class="comment">-- 查表和所属的表空间</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> file_name, tablespace_name <span class="keyword">from</span> dba_data_files <span class="keyword">where</span> tablespace_name <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> tablespace_name <span class="keyword">from</span> dba_tables <span class="keyword">where</span> table_name=<span class="string">'ST'</span>);</span><br><span class="line"><span class="comment">-- 先查到这个表在哪个表空间，再看这个表空间在哪个数据文件</span></span><br><span class="line"><span class="comment">--sysaux01.dbf这里也有st表？？？</span></span><br></pre></td></tr></table></figure>
+<p>insufficient privilege，conn / as sysdba重连一下就好了</p>
+<h4 id="将数据文件删除，利用日志文件恢复">将数据文件删除，利用日志文件恢复</h4>
+<p>因为表的数据在缓存里，首先要shutdown immediate，会将数据库高速缓存池中脏数据写盘，清空</p>
+<p>再模拟数据丢失（在os级别rm demo01.dbf数据文件）</p>
+<p>再startup时会报错，缺少数据文件，Oracle以为还有这个文件</p>
+<p>【单位的人在外面被干掉了，单位还以为有这个人，被开除了就认为没了】</p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233435103.png" alt="image-20200325233435103" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">file</span><span class="comment">#,name from v$datafile; -- 查看几号文件和具体路径</span></span><br></pre></td></tr></table></figure>
+<p>用日志恢复，recover要有被恢复的对象（demo01.dbf）</p>
+<p>所以要创建一个文件，但又不能再os级别上创建，这样Oracle不认识</p>
+<p>在Oracle下创建，缺哪个建那个（不过现在这个数据文件是空的）</p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233522250.png" alt="image-20200325233522250" style="zoom:67%;">
+<p>有了基础，可以开始用日志recover</p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233656338.png" alt="image-20200325233656338" style="zoom:67%;">
+<p>再把数据库打开</p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233732506.png" alt="image-20200325233732506" style="zoom:67%;">
+<p>就能查到信息了</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200325233810555.png" alt="image-20200325233810555"></p>
+<p>表 table，全称为堆表 heap table（见Oracle concepts）</p>
+<p>堆 - 表中的数据不是按顺序存放的，插入数据的时候，发现哪一块是空的插哪里</p>
+<p>显示结果的时候，需要按顺序显示，需要排序区（在PGA中）</p>
+<p>一个会话使用order by查询了，另一个会话不用order by的查询结果不会变</p>
+<h3 id="关闭数据库步骤">关闭数据库步骤</h3>
+<p>1，关闭数据库，oracle将<strong>重做日志高速缓存</strong>中的内容写入重做日志文件，并且将<strong>数据库高速缓存</strong>中被改动过的数据写入数据文件，然后再关闭所有的数据文件和重做日志文件，这时数据库的控制文件仍然处于打开状态，但是由于数据库处于关闭状态，所以用户无法访问数据库</p>
+<p>2，卸载数据库，关闭数据库后，例程才能被卸载，控制文件再这个时候被关闭，但例程仍然存在</p>
+<p>3，终止例程，进程终止，分配给例程的内存sga区被回收。</p>
+<h3 id="tnsping">tnsping</h3>
+<p>Oracle Net 工具（命令）tnsping，是一个OSI会话层的工具，它用来：</p>
+<ol>
+<li>验证名字解析（name resolution，当然是oracle自己的网络服务名）</li>
+<li>远程的listener是否启动</li>
+</ol>
+<p>tnsping命令格式：</p>
+<p>tnsping  &lt;service_name&gt;  n（n的意义是可以让tnsping ping多次）</p>
+<p>!tnsping db12c （查找db12c的意义 - service name）</p>
+<p>这个感叹号代表立即刷新变化，由于IO区是需要在扫描结束后进行更新，因此对于一些需要立即更新的IO来说，其强迫IO区做立即更新。</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326125854573-1586189129451.png" alt="image-20200326125854573"></p>
+<ul>
+<li>通过TCP协议</li>
+<li>找到主机</li>
+<li>通过端口</li>
+<li>dedicated：通过专用数据库连接的方式</li>
+<li>具体的数据库是db12c？？？</li>
+</ul>
+<p>通过监听器：访问数据库通过什么协议，找到某台机器，端口(DBLC) ，连接到数据库</p>
+<p>每次都写上面一串才能连接，太麻烦了== 做一个服务名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn scott&#x2F;123123@db12c （@后面加的服务名）</span><br></pre></td></tr></table></figure>
+<h3 id="做服务名">做服务名</h3>
+<p>如果想把db15c作为一个服务名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd $ORACLE_HOME&#x2F;network&#x2F;admin</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326130527532-1586189129451.png" alt="image-20200326130527532"></p>
+<p>tnsnames.ora文件用来存放==服务名==</p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326130607997-1586189129451.png" alt="image-20200326130607997"></p>
+<p>用图形界面修改方法，Oracle外</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">netmgr</span><br></pre></td></tr></table></figure>
+<ul>
+<li>TCP</li>
+<li>主机名，如果电脑有多个ip地址，则最好不填主机名，解析容易出错。填ip</li>
+<li>第一个网络服务名可以随便写，但后面的服务名 == Oracle数据库的服务名 == 全局数据库名</li>
+<li>测试时密码记得修改成123123，他默认用的tiger</li>
+<li>记得保存网络配置</li>
+</ul>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200303170141238.png" alt="image-20200303170141238"></p>
+<p><img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326131510091.png" alt="image-20200326131510091"></p>
+<p>此时!tnsping db15c正常了</p>
+<p>conn scott/123123@db15c也可以连上服务器了</p>
+<h3 id="连接connection和会话session">连接connection和会话session</h3>
+<p>用户进程找到服务器进程 – 连接【找到这个办事的人】</p>
+<p>服务进程去处理、干活 – 会话【这个人去办事】</p>
+<h3 id="恢复">恢复</h3>
+<h4 id="instance-recovery例程恢复">instance recovery例程恢复</h4>
+<p>数据在内存中丢失，没有来得及写入磁盘</p>
+<h4 id="media-recovery介质恢复">media recovery介质恢复</h4>
+<p>数据在介质文件中丢失</p>
+<h3 id="SCN">SCN</h3>
+<p>system change number 系统改变号</p>
+<p>和时间相关的单调递增的序列</p>
+<p>过分强调运动的绝对性，导致不可知论</p>
+<p>做研究需要承认相对静止</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> current_scn <span class="keyword">from</span> v$<span class="keyword">database</span>;</span><br></pre></td></tr></table></figure>
+<p>【收电费，电表一直走，没法收费了，所以抄表（做检查点，相对静止点）】</p>
+<p>scn一定大于等于checkpoint_change</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> current_scn,checkpoint_change<span class="comment"># from v$database;</span></span><br></pre></td></tr></table></figure>
+<p><strong>数据文件、日志文件、控制文件都有SCN号</strong></p>
+<p>eg 老师举了一个恢复的例子19000 20000</p>
+<p>写脏数据之前要写重做日志，如果在写完重做日志后，写脏数据之前例程故障（断电）</p>
+<p>日志文件SCN = 20000，数据文件SCN = 19000</p>
+<p>则只需要从19000开始恢复即可，重新做一遍</p>
+<h3 id="检查点">检查点</h3>
+<p>Q：数据库和五分钟前一样不一样？</p>
+<h4 id="手动做检查点">手动做检查点</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> checkpoint;</span><br></pre></td></tr></table></figure>
+<h4 id="做检查点的作用">做检查点的作用</h4>
+<p><strong>1. 同步所有的数据文件</strong></p>
+<p>查找数据文件的检查点号</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,checkpoint_change<span class="comment"># from v$datafile;</span></span><br></pre></td></tr></table></figure>
+<p>所有的数据文件必须处于一致性状态，如果有一个文件的SCN号比当前的checkpoint小，则说明需要进行介质恢复了</p>
+<p><strong>2. 同步所有的控制文件</strong></p>
+<p>控制文件</p>
+<p><strong>3. 发送信号通知DBWR写盘</strong></p>
+<p>做检查点时要将数据库高速缓存中的脏数据写盘</p>
+<p>下一次直接从最近的检查点开始恢复</p>
+<h4 id="检查点的间隔时间">检查点的间隔时间</h4>
+<p>长/短好：根据业务需求设置</p>
+<ul>
+<li>短：减少例程的恢复时间，但检查点是IO密集型事件，性能下降</li>
+<li>长：与短相反</li>
+</ul>
+<p>【希望多长时间恢复正常卖票】：5min</p>
+<p>通过初始化参设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">show parameter mttr</span><br><span class="line">-- fast_start_mttr_target</span><br><span class="line">-- instance 启动时进行初始化配置的文件</span><br><span class="line">-- 0：代表禁用自动checkpoint</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> fast_start_mttr_target=<span class="number">300</span>;</span><br></pre></td></tr></table></figure>
+<p>不是绝对的300s保存一次，出了问题恢复数据需要的时间</p>
+<p>数据库一直在操作，如果不写盘，出问题时要redo</p>
+<p>如果恢复这些数据的时间大于300s时，系统自动做一次检查点（写盘）</p>
+<p>【打字快的人，保存的要频繁一些】</p>
+<h4 id="查看数据库恢复时间">查看数据库恢复时间</h4>
+<p>问题：做了一次检查点之后，几乎没有做任何操作，现在这个数据库挂了，恢复需要多长时间？</p>
+<p>小于等于300，不知道</p>
+<p>查数据字典，动态，例程恢复</p>
+<img src="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/image-20200326185323983.png" alt="image-20200326185323983" style="zoom:67%;">
+<p>estimated_mttr：后台进程监视，这个值达到300时自动checkpoint</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> estimated_mttr <span class="keyword">from</span> v$instance_recovery;</span><br></pre></td></tr></table></figure>
+<h3 id="alter-system-database">alter system / database</h3>
+<p>看着那张结构图</p>
+<p>对instance（内存 + 进程）操作就是alter system</p>
+<p>对数据库操作就是alter database</p>
+<h3 id="显示提交-隐式提交">显示提交&amp;隐式提交</h3>
+<h4 id="显式提交">显式提交</h4>
+<p>用COMMIT命令直接完成的提交为显式提交</p>
+<h4 id="隐式提交">隐式提交</h4>
+<p>用SQL命令间接完成的提交为隐式提交</p>
+<ul>
+<li>正常执行完ddl语句。包括create，alter，drop，truncate，rename。</li>
+<li>正常执行完dcl语句。包括grant，revoke。</li>
+<li>正常退出sqlplus，没有明确发出commit或者rollback。</li>
+</ul>
+<p>这些命令是：ALTER，AUDIT，COMMENT，CONNECT，CREATE，DISCONNECT，DROP，EXIT，GRANT，NOAUDIT，QUIT，REVOKE，RENAME。</p>
+<p>(此隐式提交是在自己的session，如果在其他人的session(如用户a)中正在修改相同的数据，则引起隐式提交的语句（用户a的k另一个session)则必需等待)</p>
+<p><strong>隐式提交的注意事项</strong></p>
+<p>1、执行ddl语句时，前面的dml操作也会被提交到数据库中<br>
+因为是在一个session里，那执行ddl语句的时候前面的dml语句肯定也会“不可幸免”的被提交到库中。</p>
+<p>2、即使ddl语句执行失败，前面的dml操作也会被提交到数据库中<br>
+这就有点儿让人奇怪了，ddl都执行失败了，怎么还会提交呢？这就需要探究一下隐式提交的本质了（下文有叙述）。</p>
+<p>3、在前面1和2的基础上总结<br>
+为了避免隐式提交或者回滚，尽量保证一条或者几条DML操作完成后有显示的提交或者回滚，防止后续执行的DCL或者DDL自动提交前期的DML操作。</p>
+<p><strong>隐式提交的本质</strong></p>
+<p>1、一条ddl语句执行了两次commit<br>
+commit;<br>
+ddl statement;<br>
+commit;<br>
+第一个commit将当前session中未提交的事务隐式提交，以保证ddl语句失败时的回滚位置。<br>
+第二个commit将ddl提交</p>
+<p>2、为什么需要隐式提交？</p>
+<p>为了保证事务的一致性。我们在执行ddl语句的时候，oracle需要在它的系统表中进行元数据的记录操作（即：除了建表还会进行不少insert操作），如果它不隐式提交就无法保证一致性；从内部运行机制来看ddl语句和dml语句还是有很大区别的，dml会对每个语句的每条记录都做日志记录以便于回滚，而ddl往往没必要搞这么复杂，从功能和易用性上看隐式提交都是最好的选择。</p>
+<h4 id="自动提交">自动提交</h4>
+<p>若把AUTOCOMMIT设置为ON，则在插入、修改、删除语句执行后，系统将自动进行提交，这就是自动提交。SET AUTOCOMMIT ON;</p>
+<p>查看当前是否是自动提交：show autocommit</p>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    <a href="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/" title="Oracle 基操">http://yoursite.com/2020/03/21/Oracle基操/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/" rel="prev" title="Oracle 安全3A">
+      <i class="fa fa-chevron-left"></i> Oracle 安全3A
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/21/OracleSQL/" rel="next" title="Oracle SQL">
+      Oracle SQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Oracle基本操作"><span class="nav-text">1.Oracle基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录"><span class="nav-text">登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切换用户"><span class="nav-text">切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出登录"><span class="nav-text">退出登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改用户密码"><span class="nav-text">更改用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看当前登录的数据库用户"><span class="nav-text">查看当前登录的数据库用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单定制，设置显示格式"><span class="nav-text">简单定制，设置显示格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置列宽"><span class="nav-text">设置列宽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看用户状态"><span class="nav-text">查看用户状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqldeveloper"><span class="nav-text">sqldeveloper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Oracle错误信息"><span class="nav-text">查看Oracle错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行位于共享目录的sql脚本"><span class="nav-text">执行位于共享目录的sql脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听器？？？"><span class="nav-text">监听器？？？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#形象理解"><span class="nav-text">形象理解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何配置静态注册"><span class="nav-text">如何配置静态注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux环境变量"><span class="nav-text">linux环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Oracle知识点"><span class="nav-text">2. Oracle知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内部RDBMS表"><span class="nav-text">内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据字典表-（Data-dictionary-table）"><span class="nav-text">数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态数据字典视图"><span class="nav-text">静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态性能视图"><span class="nav-text">动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问数据字典"><span class="nav-text">访问数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-dict-columns"><span class="nav-text">-1 dict_columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0-总表dict"><span class="nav-text">0 总表dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-数据字典视图"><span class="nav-text">1 数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-动态性能视图"><span class="nav-text">2 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建表空间v-tablespace（数据文件v-datafile）"><span class="nav-text">创建表空间v$tablespace（数据文件v$datafile）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将数据文件删除，利用日志文件恢复"><span class="nav-text">将数据文件删除，利用日志文件恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库步骤"><span class="nav-text">关闭数据库步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tnsping"><span class="nav-text">tnsping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接connection和会话session"><span class="nav-text">连接connection和会话session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复"><span class="nav-text">恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SCN"><span class="nav-text">SCN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检查点"><span class="nav-text">检查点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#手动做检查点"><span class="nav-text">手动做检查点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#做检查点的作用"><span class="nav-text">做检查点的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查点的间隔时间"><span class="nav-text">检查点的间隔时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看数据库恢复时间"><span class="nav-text">查看数据库恢复时间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database"><span class="nav-text">alter system &#x2F; database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示提交-隐式提交"><span class="nav-text">显示提交&amp;隐式提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显式提交"><span class="nav-text">显式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式提交"><span class="nav-text">隐式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动提交"><span class="nav-text">自动提交</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+    
+      <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+      <script src="/js/cursor/text.js"></script>
+    
+  
+
+
+  <!-- 动态背景 -->
+  
+    <script type="text/javascript"
+    color="0,0,255" opacity='0.5' zIndex="-1" count="50" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+</body>
+</html>
+
