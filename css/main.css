@@ -1272,7 +1272,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a43b73;
+  background: #eb65ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2714,6 +2714,7 @@ ul.breadcrumb li + li:last-child {
 .post-body h2 {
   color: #fff;
   background-color: #ff7c00;
+  background-color: #0eeff0;
   font-weight: 900;
   text-align: center;
   font-size: 2.5em;
@@ -2725,10 +2726,12 @@ ul.breadcrumb li + li:last-child {
   color: #fff;
   font-weight: 700;
   background-color: #ffb500;
+  background-color: #90f0f0;
   border-top: 50px solid #fff;
   padding-bottom: 5px;
   text-align: center;
   font-size: 1.5em;
+  font-style: italic;
   border-bottom: 1px dotted #eee;
 }
 .post-body h4 {
@@ -2736,6 +2739,7 @@ ul.breadcrumb li + li:last-child {
   font-weight: 900;
   border-top: 30px solid #fff;
   background-color: #ffe4b5;
+  background-color: #e0fcfc;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .content-wrap {
@@ -2802,4 +2806,21 @@ body {
   width: 100px;
   height: 50px;
   font-size: 20px;
+}
+.post-toc .nav .active > a {
+  border-bottom-color: #0eeff0;
+  color: #0eeff0;
+}
+.sidebar-nav .sidebar-nav-active {
+  border-bottom-color: #0eeff0;
+  color: #0eeff0;
+}
+.sidebar-nav .sidebar-nav-active:hover {
+  color: #0eeff0;
+}
+.sidebar-nav li:hover {
+  color: #0eeff0;
+}
+.post-toc .nav .active-current > a:hover {
+  color: #0eeff0;
 }
