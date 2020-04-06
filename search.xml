@@ -1,3 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
+  <entry>
+    <title>C++</title>
+    <url>/2020/04/06/C++/</url>
+    <content><![CDATA[<h1>vector</h1>
+<ul>
+<li>v.size()</li>
+<li>v.pushback()</li>
+</ul>
+<h1>set</h1>
+<ul>
+<li>s.size()</li>
+<li>s.insert()</li>
+</ul>
+]]></content>
+  </entry>
 </search>
