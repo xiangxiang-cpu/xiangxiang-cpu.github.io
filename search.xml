@@ -500,7 +500,11 @@ commit;<br>
   <entry>
     <title>Oracle 数据库备份&amp;恢复</title>
     <url>/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/</url>
-    <content><![CDATA[<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140116459.png" alt="image-20200407140116459" style="zoom:67%;">
+    <content><![CDATA[<ul>
+<li>演示logMiner</li>
+<li>演示【备份-破坏-恢复】操作</li>
+</ul>
+<a id="more"></a>
 <img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140226228.png" alt="image-20200407140226228" style="zoom:67%;">
 <p>错误分类？？？</p>
 <ul>
@@ -510,7 +514,7 @@ commit;<br>
 </ul>
 <p>防止用户误操作（误删所有记录，误删所有表）</p>
 <p>闪回，闪回到什么时候？？？</p>
-<a id="more"></a>
+<!--more-->
 <h2 id="logMiner">logMiner</h2>
 <img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140103767.png" alt="image-20200407140103767" style="zoom:67%;">
 <p>用户可能不承认，所以要看日志</p>
@@ -531,12 +535,13 @@ commit;<br>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">execute</span> dbms_logmnr.start_logmnr(DictFileName=&gt;<span class="string">'/u01/dict/v816dic.ora'</span>);</span><br></pre></td></tr></table></figure>
 <p>6)查询结果==视图v$logmnr_contents中==</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc v$logmnr_contents</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>; <span class="comment">-- 改一下日期格式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看对某个表，进行的某个操作</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">timestamp</span>,username,sql_redo <span class="keyword">from</span> v$logmnr_contents</span><br><span class="line"><span class="keyword">where</span> SEG_NAME=<span class="string">'EMP'</span> <span class="keyword">and</span> operation=<span class="string">'UPDATE'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询怎么对冲undo</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">timestamp</span>,username,sql_undo <span class="keyword">from</span> v$logmnr_contents</span><br><span class="line"><span class="keyword">where</span> SEG_NAME=<span class="string">'EMP'</span> <span class="keyword">and</span> operation=<span class="string">'UPDATE'</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="RMAN">RMAN</h2>
+<h2 id="备份与恢复">备份与恢复</h2>
 <p>RMAN == Recover manage（恢复管理器，处理备份和恢复）</p>
 <p>两种备份方式：</p>
 <p>1）冷备份：MOUNT（数据库未打开，mount状态下的备份，不是shutdown状态下）</p>
 <p>2）热备份：（数据库打开时做的备份）</p>
-<p>了解：<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144339989.png" alt="image-20200407144339989"></p>
+<p>了解：备份分类</p>
+<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144339989.png" alt="image-20200407144339989" style="zoom: 80%;">
 <img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144351636.png" alt="image-20200407144351636" style="zoom:67%;">
 <h3 id="用户管理的备份和恢复">用户管理的备份和恢复</h3>
 <ul>
