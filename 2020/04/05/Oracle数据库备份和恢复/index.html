@@ -35,18 +35,24 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <meta name="description" content="防止用户误操作 logMiner 1.使用logMiner日志挖掘器（工具）查询重做日志文件 1）启用数据库补充日志：记日志比较全面 查询启动了吗？ 1234567desc v$database-- supplemental_log_data_minselect supplemental_log_data_min from v$database; -- NO未启动alter database ad">
+  <meta name="description" content="错误分类？？？  用户进程错误 网络错误 用户误操作  防止用户误操作（误删所有记录，误删所有表） 闪回，闪回到什么时候？？？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle 数据库备份&amp;恢复">
 <meta property="og:url" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/index.html">
 <meta property="og:site_name" content="翔翔の据点">
-<meta property="og:description" content="防止用户误操作 logMiner 1.使用logMiner日志挖掘器（工具）查询重做日志文件 1）启用数据库补充日志：记日志比较全面 查询启动了吗？ 1234567desc v$database-- supplemental_log_data_minselect supplemental_log_data_min from v$database; -- NO未启动alter database ad">
+<meta property="og:description" content="错误分类？？？  用户进程错误 网络错误 用户误操作  防止用户误操作（误删所有记录，误删所有表） 闪回，闪回到什么时候？？？">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140116459.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140226228.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140103767.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144339989.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144351636.png">
 <meta property="article:published_time" content="2020-04-05T14:13:55.000Z">
-<meta property="article:modified_time" content="2020-04-06T15:44:51.419Z">
+<meta property="article:modified_time" content="2020-04-07T08:06:47.382Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140116459.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/">
 
@@ -137,7 +143,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">3</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -147,7 +153,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">9</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">8</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -237,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-06 23:44:51" itemprop="dateModified" datetime="2020-04-06T23:44:51+08:00">2020-04-06</time>
+                <time title="Modified: 2020-04-07 16:06:47" itemprop="dateModified" datetime="2020-04-07T16:06:47+08:00">2020-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,53 +266,103 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>防止用户误操作</p>
-<h4 id="logMiner">logMiner</h4>
-<p>1.使用logMiner日志挖掘器（工具）查询重做日志文件</p>
-<p>1）启用数据库补充日志：记日志比较全面<br>
-查询启动了吗？</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">desc v$database</span><br><span class="line"><span class="comment">-- supplemental_log_data_min</span></span><br><span class="line"><span class="keyword">select</span> supplemental_log_data_min <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- NO未启动</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> supplemental <span class="keyword">log</span> <span class="keyword">data</span>; <span class="comment">-- 启用/关闭</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> supplemental <span class="keyword">log</span> <span class="keyword">data</span>; <span class="comment">-- 启用/关闭</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> supplemental_log_data_min <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- YES启动了</span></span><br></pre></td></tr></table></figure>
+        <img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140116459.png" alt="image-20200407140116459" style="zoom:67%;">
+<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140226228.png" alt="image-20200407140226228" style="zoom:67%;">
+<p>错误分类？？？</p>
+<ul>
+<li>用户进程错误</li>
+<li>网络错误</li>
+<li>用户误操作</li>
+</ul>
+<p>防止用户误操作（误删所有记录，误删所有表）</p>
+<p>闪回，闪回到什么时候？？？</p>
 <a id="more"></a>
-<p>2）创建/产生一个数据字典文件：日志文件中—对象号：二进制/16进制记日记，人看不懂，对照数据字典文件——能对应看懂</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">放到F:&#x2F;dict</span><br><span class="line"> create directory dict as &#39;F:\dict&#39;;&#x2F;&#x2F;物理路径+逻辑路径。创建目录</span><br><span class="line">execute dbms_logmnr_d.build(&#39;v816dic.ora&#39;,&#39;DICT&#39;);&#x2F;&#x2F;加单引号之后要大写</span><br></pre></td></tr></table></figure>
+<h2 id="logMiner">logMiner</h2>
+<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407140103767.png" alt="image-20200407140103767" style="zoom:67%;">
+<p>用户可能不承认，所以要看日志</p>
+<p>日志是二进制文件，通过logMiner查看联机和归档重做日志文件</p>
+<p>1.使用logMiner日志挖掘器（工具）查询重做日志文件</p>
+<p>1）启用数据库补充日志：记日志比较全面</p>
+<p>查询启动了吗？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">desc v$database</span><br><span class="line"><span class="comment">-- supplemental_log_data_min</span></span><br><span class="line"><span class="keyword">select</span> supplemental_log_data_min <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- NO未启动</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> supplemental <span class="keyword">log</span> <span class="keyword">data</span>; <span class="comment">-- 启用</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> supplemental <span class="keyword">log</span> <span class="keyword">data</span>; <span class="comment">-- 关闭</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> supplemental_log_data_min <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- YES启动了</span></span><br></pre></td></tr></table></figure>
+<p>不启用结果：update旧数据不保留，启用可以使日志记得更完整</p>
+<p>2）创建/产生一个数据字典文件：</p>
+<p>日志文件中—对象号：二进制/16进制记日记，人看不懂，对照数据字典文件——能对应看懂</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">directory</span> dict <span class="keyword">as</span> <span class="string">'/u01/dict'</span>; <span class="comment">-- 物理路径+逻辑路径。创建目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">execute</span> dbms_logmnr_d.build(<span class="string">'v816dic.ora'</span>,<span class="string">'DICT'</span>); <span class="comment">-- 加单引号之后要大写</span></span><br></pre></td></tr></table></figure>
 <p>3）开始一个事务：开始记日记</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scott:</span><br><span class="line">      set oracle_sid&#x3D;db18c</span><br><span class="line">     sqlplus scott&#x2F;tiger</span><br><span class="line">      select empno,ename,sal from emp;</span><br><span class="line">      update emp set sal&#x3D;1800 where empno&#x3D;7369;</span><br><span class="line">     commit;&#x2F;&#x2F;提交，记日记</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sales scott下</span></span><br><span class="line"><span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp;</span><br><span class="line"><span class="keyword">update</span> emp <span class="keyword">set</span> sal=<span class="number">3800</span> <span class="keyword">where</span> empno=<span class="number">7369</span>;</span><br><span class="line"><span class="keyword">commit</span>; <span class="comment">-- 提交，记日记</span></span><br></pre></td></tr></table></figure>
 <p>4)添加需要分析的日志文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> sys db18c&gt;select group#,status from v$log;</span><br><span class="line">       select group#,member from v$logfile;</span><br><span class="line">      查到日志文件名~F:\APP\LUYAO\ORADATA\DB18C\REDO03.LOG</span><br><span class="line">      execute</span><br><span class="line">dbms_logmnr.add_logfile(LogFileName&#x3D;&gt;&#39;F:\APP\LUYAO\ORADATA\DB18C\REDO03.LOG&#39;,options&#x3D;&gt;dbms_</span><br><span class="line">logmnr.new);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys sales下</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,status from v$log; -- 看现在哪个日志文件在使用</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,member from v$logfile; -- 查看正在使用的日志文件的路径</span></span><br><span class="line"><span class="comment">-- 查到日志文件名/u01/app/oracle/oradata/sales/redo04b.log</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">-- 添加需要分析的日志文件</span></span><br><span class="line"><span class="keyword">execute</span> dbms_logmnr.add_logfile(LogFileName=&gt;<span class="string">'/u01/app/oracle/oradata/sales/redo04b.log'</span>,options=&gt;dbms_logmnr.new);</span><br></pre></td></tr></table></figure>
 <p>5)执行分析：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">execute dbms_logmnr.start_logmnr(DictFileName&#x3D;&gt;&#39;F:\dict\v816dic.ora&#39;);</span><br></pre></td></tr></table></figure>
-<p>6)查询结果      视图v$logmnr_contents中</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">desc v$logmnr_contents</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">timestamp</span>,sql_redo <span class="keyword">from</span> v$logmnr_contents</span><br><span class="line"><span class="keyword">where</span> SEG_NAME=<span class="string">'EMP'</span> <span class="keyword">and</span> operation=<span class="string">'update'</span>;//对哪个表操作的seg_name</span><br></pre></td></tr></table></figure>
-<h4 id="RMAN">RMAN</h4>
-<p>2.RMAN工具：Recover manage（恢复管理器，处理备份和恢复）<br>
-两种方式：冷备份（数据库未打开，mount状态下的备份，不是shutdown状态下）、热备份（数据库打开时做的备份）<br>
-1）冷备份：MOUNT<br>
-2）热备份：打开数据库的备份<br>
-认识RMAN：<br>
-进入RMAN：<br>
-F:\exp&gt;rman<br>
-备份一个表空间users</p>
-<p>lecture 14 RMAN下的整库备份和恢复<br>
-backup tablespace users;//报错，未连接到目标数据库<br>
-connect target sys/admin<br>
-backup tablespace users;//非归档模式只能做冷备份，不可做热备份<br>
-sys@db18c&gt;shutdown immediate<br>
-sys@db18c&gt;startup mount<br>
-sys@db18c&gt;alter database archievelog;//修改数据库日志模式（非存档-&gt;存档模式）<br>
-sys@db18c&gt;select log_mode from v$datafile;<br>
-RMAN&gt;backup tablespace users;<br>
-RMAN&gt;exit<br>
-犯错：删数据文件<br>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">execute</span> dbms_logmnr.start_logmnr(DictFileName=&gt;<span class="string">'/u01/dict/v816dic.ora'</span>);</span><br></pre></td></tr></table></figure>
+<p>6)查询结果==视图v$logmnr_contents中==</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">desc v$logmnr_contents</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>; <span class="comment">-- 改一下日期格式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看对某个表，进行的某个操作</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">timestamp</span>,username,sql_redo <span class="keyword">from</span> v$logmnr_contents</span><br><span class="line"><span class="keyword">where</span> SEG_NAME=<span class="string">'EMP'</span> <span class="keyword">and</span> operation=<span class="string">'UPDATE'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询怎么对冲undo</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">timestamp</span>,username,sql_undo <span class="keyword">from</span> v$logmnr_contents</span><br><span class="line"><span class="keyword">where</span> SEG_NAME=<span class="string">'EMP'</span> <span class="keyword">and</span> operation=<span class="string">'UPDATE'</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="RMAN">RMAN</h2>
+<p>RMAN == Recover manage（恢复管理器，处理备份和恢复）</p>
+<p>两种备份方式：</p>
+<p>1）冷备份：MOUNT（数据库未打开，mount状态下的备份，不是shutdown状态下）</p>
+<p>2）热备份：（数据库打开时做的备份）</p>
+<p>了解：<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144339989.png" alt="image-20200407144339989"></p>
+<img src="/2020/04/05/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/image-20200407144351636.png" alt="image-20200407144351636" style="zoom:67%;">
+<h3 id="用户管理的备份和恢复">用户管理的备份和恢复</h3>
+<ul>
+<li>处于shutdown状态</li>
+<li>文件不能漏，所以要做一个文件列表</li>
+</ul>
+<ol>
+<li>初始化参数文件</li>
+<li>控制文件</li>
+<li>数据文件、日志文件（联机&amp;归档）</li>
+<li>口令文件（可选）</li>
+</ol>
+<h4 id="做一个文件列表">做一个文件列表</h4>
+<p>通过以下命令查看现有的文件，把路径拷出来备用</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">SYS@sales&gt;show parameter undo_tablespace;</span><br><span class="line"></span><br><span class="line">NAME                                 TYPE                   VALUE</span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line">undo_tablespace                      string                 UNDOTBS1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SYS@sales&gt;show parameter spfile</span><br><span class="line"></span><br><span class="line">NAME                                 TYPE                   VALUE</span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line">spfile                               string                 /u01/app/oracle/product/12.2.0</span><br><span class="line">                                                            /dbhome_1/dbs/spfilesales.ora</span><br><span class="line">SYS@sales&gt;select name from v$controlfile;</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/sales/control01.ctl</span><br><span class="line">/u01/app/oracle/recovery_area/sales/control02.ctl</span><br><span class="line">/u01/demo/control03.ctl</span><br><span class="line"></span><br><span class="line">SYS@sales&gt;select name from v$datafile;</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/sales/system01.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/sysaux01.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/undotbs01.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/users01.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/undotbs02.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/tbs1.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/users02.dbf</span><br><span class="line"></span><br><span class="line">7 rows selected.</span><br><span class="line"></span><br><span class="line">SYS@sales&gt;select member from v$logfile;</span><br><span class="line"></span><br><span class="line">MEMBER</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/sales/redo03.log</span><br><span class="line">/u01/app/oracle/oradata/sales/redo02.log</span><br><span class="line">/u01/app/oracle/oradata/sales/redo04b.log</span><br><span class="line"></span><br><span class="line">SYS@sales&gt;select name from v$tempfile;</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/sales/temp01.dbf</span><br><span class="line">/u01/app/oracle/oradata/sales/temp02.dbf</span><br></pre></td></tr></table></figure>
+<h4 id="创建测试表">创建测试表</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">SYS@sales&gt;create table scott.cold(a varchar(30)) tablespace users;</span><br><span class="line"></span><br><span class="line">Table created.</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 插入一条测试记录</span></span><br><span class="line">SYS@sales&gt;insert into scott.cold values('Before backup~~');</span><br><span class="line"></span><br><span class="line">1 row created.</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 提交事务</span></span><br><span class="line">SYS@sales&gt;commit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Commit</span> complete.</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 做检查点</span></span><br><span class="line"><span class="keyword">SYS</span>@sales&gt;<span class="keyword">alter</span> <span class="keyword">system</span> checkpoint;</span><br><span class="line"></span><br><span class="line">System altered.</span><br><span class="line"></span><br><span class="line">SYS@sales&gt;select * from scott.cold;</span><br><span class="line"></span><br><span class="line">A</span><br><span class="line"><span class="comment">------------------------------------------------------------</span></span><br><span class="line">Before <span class="keyword">backup</span>~~</span><br></pre></td></tr></table></figure>
+<h4 id="shutdown拷贝列表中的文件">shutdown拷贝列表中的文件</h4>
+<p>==cp的时候记得shutdown，否则造成scn不一致问题==！！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp ~]$ cd &#x2F;u01</span><br><span class="line">[oracle@ocp u01]$ cd dict</span><br><span class="line">[oracle@ocp dict]$ cd salesbak</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;product&#x2F;12.2.0&#x2F;dbhome_1&#x2F;dbs&#x2F;spfilesales.ora .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;control01.ctl .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;recovery_area&#x2F;sales&#x2F;control02.ctl .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;demo&#x2F;control03.ctl .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo02.log .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo03.log .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo04b.log .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;system01.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;sysaux01.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;undotbs01.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;undotbs02.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;users01.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;users02.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;tbs1.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;temp01.dbf .&#x2F;</span><br><span class="line">[oracle@ocp salesbak]$ cp &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;temp02.dbf .&#x2F;</span><br></pre></td></tr></table></figure>
+<h4 id="startup，再插入一条记录">startup，再插入一条记录</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">SYS@sales&gt;insert into scott.cold values('After backup~~');</span><br><span class="line"></span><br><span class="line">1 row created.</span><br><span class="line"></span><br><span class="line">SYS@sales&gt;select * from scott.cold;</span><br><span class="line"></span><br><span class="line">A</span><br><span class="line"><span class="comment">------------------------------------------------------------</span></span><br><span class="line">Before <span class="keyword">backup</span>~~</span><br><span class="line"><span class="keyword">After</span> <span class="keyword">backup</span>~~</span><br><span class="line"></span><br><span class="line"><span class="keyword">SYS</span>@sales&gt;<span class="keyword">commit</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Commit</span> complete.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">SYS</span>@sales&gt;<span class="keyword">shutdown</span> <span class="keyword">immediate</span></span><br><span class="line"><span class="comment">-- 需不需要shut之后再拷贝？</span></span><br></pre></td></tr></table></figure>
+<h4 id="拷贝新的控制文件和日志文件">拷贝新的控制文件和日志文件</h4>
+<p>因为新数据（after）都在日志文件中</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp salesbak]$ <span class="built_in">cd</span> <span class="built_in">log</span></span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp /u01/demo/control03.ctl ./</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp /u01/app/oracle/oradata/sales/redo02.log ./</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp /u01/app/oracle/oradata/sales/redo03.log ./</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp /u01/app/oracle/oradata/sales/redo04b.log ./</span><br></pre></td></tr></table></figure>
+<h4 id="破坏数据库">破坏数据库</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp ~]$ vim /etc/oratab</span><br><span class="line">增加一行sales</span><br><span class="line">sales:/u01/app/oracle/product/12.2.0/dbhome_1:N</span><br><span class="line"></span><br><span class="line">[oracle@ocp ~]$ <span class="built_in">export</span> DISPLAY=192.168.11.1:0.0</span><br><span class="line">[oracle@ocp ~]$ dbca</span><br><span class="line">-- 要在startup的时候删？？？否则造成部分删除</span><br><span class="line">-- 一路向下删即可</span><br><span class="line">sys/admin1<span class="comment">#3</span></span><br></pre></td></tr></table></figure>
+<p>恢复数据库</p>
+<h4 id="还原初始化参数文件">还原初始化参数文件</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp salesbak]$ cp spfilesales.ora /u01/app/oracle/product/12.2.0/dbhome_1/dbs/spfilesales.ora</span><br></pre></td></tr></table></figure>
+<h4 id="创建口令文件中的目录">创建口令文件中的目录</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp salesbak]$ cat spfilesales.ora</span><br><span class="line"></span><br><span class="line">[oracle@ocp salesbak]$ mkdir -p /u01/app/oracle/admin/sales/adump</span><br><span class="line">[oracle@ocp salesbak]$ mkdir -p /u01/app/oracle/oradata/sales</span><br><span class="line">[oracle@ocp salesbak]$ mkdir -p /u01/app/oracle/recovery_area/sales</span><br><span class="line">[oracle@ocp salesbak]$ mkdir -p /u01/omf</span><br><span class="line">[oracle@ocp salesbak]$ mkdir -p /u01/arch/1</span><br><span class="line">[oracle@ocp salesbak]$ mkdir -p /u01/arch/2</span><br></pre></td></tr></table></figure>
+<h4 id="startup-nomount">startup nomount</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SYS@sales&gt;conn / as sysdba</span><br><span class="line">Connected to an idle instance.</span><br><span class="line">SYS@sales&gt;startup nomount</span><br><span class="line">ORACLE instance started.</span><br></pre></td></tr></table></figure>
+<h4 id="还原控制文件">还原控制文件</h4>
+<p>注意版本，用log中的，恢复到最新状态</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp salesbak]$ <span class="built_in">cd</span> <span class="built_in">log</span></span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp control03.ctl /u01/app/oracle/oradata/sales/control01.ctl</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp control03.ctl /u01/app/oracle/recovery_area/sales/control02.ctl</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp control03.ctl /u01/demo/control03.ctl</span><br></pre></td></tr></table></figure>
+<h4 id="mount">mount</h4>
+<p>有控制文件就可以mount</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="还原日志文件和数据文件">还原日志文件和数据文件</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp redo02.log /u01/app/oracle/oradata/sales/redo02.log</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp redo03.log /u01/app/oracle/oradata/sales/redo03.log</span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ cp redo04b.log /u01/app/oracle/oradata/sales/redo04b.log</span><br><span class="line"></span><br><span class="line">[oracle@ocp <span class="built_in">log</span>]$ <span class="built_in">cd</span> ..</span><br><span class="line">[oracle@ocp salesbak]$ cp *.dbf /u01/app/oracle/oradata/sales/</span><br></pre></td></tr></table></figure>
+<h4 id="介质恢复recover">介质恢复recover</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">recover database;</span><br></pre></td></tr></table></figure>
+<h4 id="打开数据库并检查数据">打开数据库并检查数据</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">SYS@sales&gt;recover database;</span><br><span class="line">Media recovery complete.</span><br><span class="line">SYS@sales&gt;alter database open;</span><br><span class="line"></span><br><span class="line">Database altered.</span><br><span class="line"></span><br><span class="line">SYS@sales&gt;select * from scott.cold;</span><br><span class="line"></span><br><span class="line">A</span><br><span class="line"><span class="comment">------------------------------------------------------------</span></span><br><span class="line">Before <span class="keyword">backup</span>~~</span><br><span class="line"><span class="keyword">After</span> <span class="keyword">backup</span>~~</span><br></pre></td></tr></table></figure>
+<p>F:\exp&gt;rman</p>
+<p>备份一个表空间users</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> property_name,property_value <span class="keyword">from</span> database_properties;</span><br><span class="line"><span class="comment">-- 删掉不用的表空间</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">tablespace</span>;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> USERDATA <span class="keyword">including</span> <span class="keyword">contents</span> <span class="keyword">and</span> <span class="keyword">datafiles</span>;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> tempdef <span class="keyword">including</span> <span class="keyword">contents</span> <span class="keyword">and</span> <span class="keyword">datafiles</span>;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> temp2 <span class="keyword">including</span> <span class="keyword">contents</span> <span class="keyword">and</span> <span class="keyword">datafiles</span>;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> undotbs2 <span class="keyword">including</span> <span class="keyword">contents</span> <span class="keyword">and</span> <span class="keyword">datafiles</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">backup</span> <span class="keyword">tablespace</span> <span class="keyword">users</span>;//报错，未连接到目标数据库</span><br><span class="line">connect target sys/admin</span><br><span class="line"><span class="keyword">backup</span> <span class="keyword">tablespace</span> <span class="keyword">users</span>;//非归档模式只能做冷备份，不可做热备份</span><br><span class="line">sys@db18c&gt;shutdown immediate</span><br><span class="line">sys@db18c&gt;startup mount</span><br><span class="line">sys@db18c&gt;alter database archievelog;//修改数据库日志模式（非存档-&gt;存档模式）</span><br><span class="line">sys@db18c&gt;select log_mode from v$datafile;</span><br><span class="line">RMAN&gt;backup tablespace users;</span><br><span class="line">RMAN&gt;exit</span><br></pre></td></tr></table></figure>
+<p>犯错：删数据文件<br>
 sys db18c:select name from v$datafile;<br>
 select * from scott.emp;<br>
-alter tablespace users offline;<br>
-目录夹中users01.dbf删掉<br>
+alter tablespace users offline;</p>
+<p>目录夹中users01.dbf删掉<br>
 sys db18c&gt;select * from scott.emp;//查不到了，找备份<br>
 F:\exp&gt;rman targer /<br>
 restore tablespace users;<br>
 recover tablespace users;<br>
-sys db18c&gt;select * from scott.emp;//查到了<br>
-RMAN&gt;exit<br>
+sys db18c&gt;select * from scott.emp;//查到了</p>
+<p>RMAN&gt;exit<br>
 删掉数据文件<br>
 F:\exp&gt;rman target /<br>
 RMAN&gt;advise failure all;<br>
@@ -314,6 +370,83 @@ RMAN&gt;advise failure all;<br>
 RMAN&gt;repair failure;<br>
 db18c&gt;alter tablespace users online;<br>
 可select</p>
+<h2 id="RMAN下的整库备份和恢复">RMAN下的整库备份和恢复</h2>
+<p>1.创建测试表<br>
+create table scott.hotbak(a varchar(30)) tablespace users;<br>
+insert into scott.hotback values(’’)</p>
+<ol start="2">
+<li>备份前的准备<br>
+备份spfile<br>
+备份控制文件<br>
+rman target/<br>
+RMAN&gt;show all<br>
+Configure controlfile autobackup on<br>
+备份数据文件<br>
+Channel(通道）<br>
+Configure channel.device bzd<br>
+RMAN&gt;Configure channel.device type disk format ‘\d\demobak%d_%u_%T’<br>
+Configure controlfile autobackup format for device type disk to ‘d:\demobak\auto%F’;<br>
+备份归档日志文件<br>
+select log_mode from v$database;//数据库中的归档模式（mount 修改状态，归档模式）<br>
+Alter system archive log current ;当前日志归档</li>
+<li>开始备份<br>
+backup database plus archivelog//自动备份开关打开了，回车开始备份<br>
+4.增加新的记录<br>
+insert into scott.hotbak values(‘After backup’);<br>
+commit;<br>
+Demo_编号_日期备份文件<br>
+delete backup;<br>
+Configure device type disk parallelism 3;<br>
+Alter system archive log current;<br>
+Show all;<br>
+backup database plus archivelog;//3个通道<br>
+select tablespace_name,status from dba_tablespaces;<br>
+备份数据文件、初始化参数文件<br>
+RMAN&gt;select * from scot.hotbak;<br>
+Insert into scott/hotbak values(‘After backup’);<br>
+RMAN&gt;select * from scott.hotbak;</li>
+<li>复制联机重做日志文件<br>
+D:\demobak\文件夹中新建文件夹log<br>
+把日志文件拷过去<br>
+Demo&gt;Select member from v$logfile;//查询有哪些日志文件<br>
+复制需要的日志文件至此文件夹D：\demobak\log<br>
+6.破坏数据库<br>
+全部删掉<br>
+运行dbca<br>
+cmd&gt;dbca<br>
+删除数据库（删demo 数据），口令验证文件sys-admin1#3<br>
+完成删除整个数据库</li>
+<li>恢复<br>
+恢复初始化参数文件spfile<br>
+set oracle sid-demo<br>
+rman target/<br>
+oradim -new -sid demo(用管理员身份创建)<br>
+多了oracledemoservice服务里面<br>
+rman target /<br>
+连接到目标数据库未启动，无法恢复<br>
+rman&gt;restore spfile form’d:\demobak\auto’C-…;<br>
+无初始化参数文件无法启动<br>
+Rman target /<br>
+rman&gt; startup nomount 找不到初始化参数文件（RMAN提供了一个简化的初始化参数文件）<br>
+启动好执行restore spfile form ‘d:\demobak\auto’C-…’;<br>
+Oracle \product\18.2.0\database\下有了初始化参数文件spfiledamo.ora</li>
+<li>创建相应的目录结构<br>
+创建D:\app\oracle\admin\damo文件夹<br>
+oracle\oradata\data<br>
+fast_recovery_area\demo</li>
+</ol>
+<p>重新启动<br>
+shutdown immediate<br>
+startup nomount<br>
+9. 恢复控制文件<br>
+restore controlfile form ‘d:\demobak\auto’C-…’;<br>
+alter database mount<br>
+10. 恢复数据文件<br>
+restore database;//恢复整个数据库<br>
+11.将前面复制的日志文件复制到demo文件夹中<br>
+recover database;//完成恢复<br>
+12.打开数据库<br>
+alter database open resetlogs;</p>
 
     </div>
 
@@ -358,10 +491,7 @@ db18c&gt;alter tablespace users online;<br>
     <a href="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/" rel="prev" title="Oracle 基操">
       <i class="fa fa-chevron-left"></i> Oracle 基操
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/04/06/tensorflow%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE/" rel="next" title="tensorflow相关配置">
-      tensorflow相关配置 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -420,7 +550,7 @@ db18c&gt;alter tablespace users online;<br>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#logMiner"><span class="nav-text">logMiner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RMAN"><span class="nav-text">RMAN</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#logMiner"><span class="nav-text">logMiner</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMAN"><span class="nav-text">RMAN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户管理的备份和恢复"><span class="nav-text">用户管理的备份和恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#做一个文件列表"><span class="nav-text">做一个文件列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建测试表"><span class="nav-text">创建测试表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shutdown拷贝列表中的文件"><span class="nav-text">shutdown拷贝列表中的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#startup，再插入一条记录"><span class="nav-text">startup，再插入一条记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝新的控制文件和日志文件"><span class="nav-text">拷贝新的控制文件和日志文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#破坏数据库"><span class="nav-text">破坏数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还原初始化参数文件"><span class="nav-text">还原初始化参数文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建口令文件中的目录"><span class="nav-text">创建口令文件中的目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#startup-nomount"><span class="nav-text">startup nomount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还原控制文件"><span class="nav-text">还原控制文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount"><span class="nav-text">mount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还原日志文件和数据文件"><span class="nav-text">还原日志文件和数据文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#介质恢复recover"><span class="nav-text">介质恢复recover</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打开数据库并检查数据"><span class="nav-text">打开数据库并检查数据</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMAN下的整库备份和恢复"><span class="nav-text">RMAN下的整库备份和恢复</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -436,7 +566,7 @@ db18c&gt;alter tablespace users online;<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -449,7 +579,7 @@ db18c&gt;alter tablespace users online;<br>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
