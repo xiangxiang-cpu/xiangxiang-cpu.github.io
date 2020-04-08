@@ -865,6 +865,11 @@ pre .javascript .function {
   border-bottom: 1px solid #84333f;
   color: #84333f;
 }
+.pdfobject-container iframe,
+.pdfobject-container embed {
+  height: 500px;
+  width: 100%;
+}
 .pagination .prev,
 .pagination .next,
 .pagination .page-number,
@@ -1302,7 +1307,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b08386;
+  background: #0193ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
