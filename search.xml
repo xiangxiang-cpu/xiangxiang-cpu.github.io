@@ -498,6 +498,236 @@ commit;<br>
       </tags>
   </entry>
   <entry>
+    <title>Oracle 安全3A</title>
+    <url>/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/</url>
+    <content><![CDATA[<ol>
+<li>验证【第一步得现有身份证】</li>
+<li>授权【有身份证还得有登机牌才能上飞机】</li>
+<li>审核【飞机掉下去找黑匣子，找问题的原因】</li>
+</ol>
+<a id="more"></a>
+<h2 id="1-Oracle验证">1. Oracle验证</h2>
+<h3 id="用户-权限">用户 &amp; 权限</h3>
+<p>Oracle的初始账号，最主要的就是sys、system，sys相当于超级用户，具有最高权限，system对于一般的系统维护是足够的。如果要看具体当前数据库中<strong>有哪些用户，用户有哪些权限</strong>，可以用sys用户使用下面两句语句查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> username <span class="keyword">from</span> dba_users;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> DBA_SYS_PRIVS;</span><br></pre></td></tr></table></figure>
+<p>角色可以认为是将一组权限打包，比如把A、B、C权限赋给角色ROLE1了，以后只要把ROLE1角色赋给任何用户，就等同于把A、B、C权限赋给了用户，用下面两句可以<strong>查询有哪些角色，以及各用户上有哪些角色</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_roles;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_role_privs;</span><br></pre></td></tr></table></figure>
+<h4 id="各用户（权限）介绍">各用户（权限）介绍</h4>
+<ul>
+<li>
+<p>sysdba：可以访问整个Oracle服务器，包括instance和database</p>
+</li>
+<li>
+<p>sysoper：系统操作员，只能管理instance</p>
+</li>
+<li>
+<p>sysasm：只能进行自动存储管理操作</p>
+</li>
+<li>
+<p>sysback：只能进行备份操作</p>
+</li>
+<li>
+<p>sysdg（data guard）：可以进行双机热备操作，数据库有多份</p>
+<p>多节点对于地震等天灾没啥用【汶川地震，但在北京做一个双机热备，要保证数据库的同步，所以要传日志，应用一下就行了】</p>
+<p>讲归档模式的时候，可以归到本地，也可以用service放到远端</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> log_archive_dest_1=<span class="string">'[service]=/u01/arch/1'</span>;<span class="comment">-- 远程，service填写一个服务名</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>syskm：给数据库做加密工作</p>
+</li>
+</ul>
+<h4 id="sys和system用户的区别">sys和system用户的区别</h4>
+<p>sys &gt; system</p>
+<p>1 )   最重要的区别，存储的数据的重要性不同</p>
+<ul>
+<li>【sys】所有oracle的数据字典的基表和视图都存放在sys用户中，这些基表和视图对于oracle的运行是至关重要的，由数据库自己维护，任何用户都不能手动更改。<br>
+sys用户拥有dba，sysdba，sysoper等角色或权限，是oracle权限最高的用户。</li>
+<li>【system】 用户用于存放次一级的内部数据，如oracle的一些特性或工具的管理信息。system用户拥有普通dba角色权限。</li>
+</ul>
+<ol start="2">
+<li>其次的区别，权限不同</li>
+</ol>
+<ul>
+<li>
+<p>【system】用户只能用normal身份登陆em，除非你对它授予了sysdba的系统权限或者syspoer系统权限。</p>
+</li>
+<li>
+<p>【sys】用户具有“SYSDBA”或者“SYSOPER”系统权限，登陆em也只能用这两个身份，不能用normal。</p>
+</li>
+</ul>
+<h3 id="sys用户验证方式">sys用户验证方式</h3>
+<p>不打开数据库都能连</p>
+<p>non-sys用户的信息在数据文件中？？？，不打开数据库无法访问，会报Oracle not available</p>
+<p>所以，在数据库shutdown时，必须是sys用户先登录，将数据库startup之后，其他用户才能连接</p>
+<h4 id="操作系统验证">操作系统验证</h4>
+<p>conn / as sysdba或者sqlplus / as sysdba</p>
+<p>两种验证方式都启用时，操作系统验证优先</p>
+<p>找network/admin/sqlnet.ora文件，加一行，none表示禁用操作系统验证</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SQLNET.AUTHENTICATION_SERVICES&#x3D;(NONE)</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/D:%5Cmd_picture_backup%5Cimage-20200327110357194.png" alt="image-20200327110357194"></p>
+<h4 id="口令文件验证">口令文件验证</h4>
+<p>做一个口令验证文件（二进制文件），用grant，revoke修改？？？</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$ORACLE_HOME</span>/dbs</span><br><span class="line">orapwd file=orapwsales password=admin1<span class="comment">#3 force=y</span></span><br><span class="line"><span class="comment"># 可以强制更新</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter remote_login_passwordfile</span><br><span class="line"><span class="comment">-- none - 禁用口令文件</span></span><br><span class="line"><span class="comment">-- exclusive</span></span><br><span class="line"><span class="comment">-- shared</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--exclusive - 单例程多用户</span></span><br><span class="line"><span class="comment">--适用于集群（可通过多台机器访问Oracle，多例程对应一个数据库）（多个instance只有一个能访问？？？）</span></span><br><span class="line"><span class="comment">--shared - 多例程单用户</span></span><br><span class="line"><span class="comment">--可以多个例程同时访问，但只能是单用户（sys）</span></span><br></pre></td></tr></table></figure>
+<h5 id="v-pwfile-users">v$pwfile_users</h5>
+<p>多用户，哪些用户能用什么角色登录</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">sysdba</span>,<span class="keyword">sysoper</span>,<span class="keyword">sysasm</span>,sysbackup,sysdg,syskm <span class="keyword">from</span> v$pwfile_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">sysdba</span> <span class="keyword">to</span> scott;</span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">sysdba</span> <span class="keyword">from</span> scott;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/md_picture_backup\image-20200330102956168.png" alt="image-20200330102956168" style="zoom:67%;">
+<p>如果开启操作系统验证，则任意用户名用任意密码连接任意一个角色都可以，赋予权限变得没有意义</p>
+<p>登录上去的用户都是sys/public？？？不应该是scott吗</p>
+<p>所以要开启口令文件验证，禁用操作系统验证</p>
+<p>开启之后，只能按正确的用户名密码，用特定允许的身份登录</p>
+<p>（如果只有sysdba权限，则不能用sysoper身份登录）</p>
+<h3 id="non-sys用户验证方式">non-sys用户验证方式</h3>
+<h4 id="数据库验证">数据库验证</h4>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc user$ <span class="comment">-- 外部连接时，去这个文件验证</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> u11 <span class="keyword">identified</span> <span class="keyword">by</span> <span class="number">123123</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span> <span class="keyword">to</span> u11;</span><br><span class="line">conn u11/123123</span><br></pre></td></tr></table></figure>
+<h4 id="操作系统验证-2">操作系统验证</h4>
+<p>只要连到操作系统，就能连到数据库</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter os_authent_prefix</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> os_authent_prefix=<span class="string">''</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br></pre></td></tr></table></figure>
+<p>创建操作系统用户qq</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">useradd -g oinstall -G dba qq</span><br><span class="line">passwd qq</span><br></pre></td></tr></table></figure>
+<p>创建Oracle用户</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> qq <span class="keyword">identified</span> <span class="keyword">externally</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span> <span class="keyword">to</span> qq;</span><br></pre></td></tr></table></figure>
+<p>配置qq用户的.bash_profile</p>
+<p>在Oracle登录操作系统时，在~下查看profile文件</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>将下面这一段，复制到qq操作系统用户的profile文件下</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">su - qq</span><br><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">ORACLE_SID=db12c;<span class="built_in">export</span> ORACLE_SID</span><br><span class="line">ORACLE_UNQNAME=db12c;<span class="built_in">export</span> ORACLE_UNQNAME</span><br><span class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/java; <span class="built_in">export</span> JAVA_HOME</span><br><span class="line">ORACLE_BASE=/u01/app/oracle; <span class="built_in">export</span> ORACLE_BASE</span><br><span class="line">ORACLE_HOME=<span class="variable">$ORACLE_BASE</span>/product/12.2.0/dbhome_1; <span class="built_in">export</span> ORACLE_HOME</span><br><span class="line">ORACLE_TERM=xterm; <span class="built_in">export</span> ORACLE_TERM</span><br><span class="line">NLS_LANG=american_america.ZHS16GBK; <span class="built_in">export</span> NLS_LANG</span><br><span class="line">TNS_ADMIN=<span class="variable">$ORACLE_HOME</span>/network/admin; <span class="built_in">export</span> TNS_ADMIN</span><br><span class="line">ORA_NLS11=<span class="variable">$ORACLE_HOME</span>/nls/data; <span class="built_in">export</span> ORA_NLS11</span><br><span class="line">PATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$HOME</span>/bin:<span class="variable">$ORACLE_HOME</span>/bin:<span class="variable">$ORA_CRS_HOME</span>/bin</span><br><span class="line">PATH=<span class="variable">$&#123;PATH&#125;</span>:/usr/bin:/bin:/usr/bin/X11:/usr/<span class="built_in">local</span>/bin</span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line">LD_LIBRARY_PATH=<span class="variable">$ORACLE_HOME</span>/lib</span><br><span class="line">LD_LIBRARY_PATH=<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/oracm/lib</span><br><span class="line">LD_LIBRARY_PATH=<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span>:/lib:/usr/lib:/usr/<span class="built_in">local</span>/lib</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH</span><br><span class="line">CLASSPATH=<span class="variable">$ORACLE_HOME</span>/JRE</span><br><span class="line">CLASSPATH=<span class="variable">$&#123;CLASSPATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/jlib</span><br><span class="line">CLASSPATH=<span class="variable">$&#123;CLASSPATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/rdbms/jlib</span><br><span class="line">CLASSPATH=<span class="variable">$&#123;CLASSPATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/network/jlib</span><br><span class="line"><span class="built_in">export</span> CLASSPATH</span><br><span class="line">THREADS_FLAG=native; <span class="built_in">export</span> THREADS_FLAG</span><br><span class="line"><span class="built_in">export</span> TEMP=/tmp</span><br><span class="line"><span class="built_in">export</span> TMPDIR=/tmp</span><br><span class="line"><span class="built_in">umask</span> 022</span><br></pre></td></tr></table></figure>
+<p>立即生效</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source ~&#x2F;.bash_profile</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200330113114808.png" alt="image-20200330113114808"></p>
+<h4 id="全局验证（了解）">全局验证（了解）</h4>
+<p>基于LDAP 轻型目录访问协议</p>
+<p>用一个用户登录到所有数据库【单点登录】</p>
+<p>【pegion】做一个映射？？？</p>
+<h2 id="2-Oracle授权">2. Oracle授权</h2>
+<ul>
+<li>系统权限：全局性，作用点为用户【select any table】</li>
+<li>对象权限：局部性，着重资源（先找到资源）【select on scott.emp】</li>
+<li>权力：？？？</li>
+<li>权限：【对某个目录可读可写，对其他不行】</li>
+</ul>
+<p>考试：区分系统权限和对象权限</p>
+<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331140518784.png" alt="image-20200331140518784" style="zoom:80%;">
+<p>特征：<br>
+1）全局局部<br>
+select any table    --系统权限，因为是全局性的，可以访问所有的表<br>
+select on scott.emp --对象权限，局部<br>
+2）用户资源</p>
+<h3 id="权限传递的规则">权限传递的规则</h3>
+<p>==系统权限==是不连带的</p>
+<p>A授权给B，B授权给C，A收回B的权限后，C的权限==不被收回==的。可以越级撤销</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> a <span class="keyword">identified</span> <span class="keyword">by</span> a;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> b <span class="keyword">identified</span> <span class="keyword">by</span> b;</span><br><span class="line"><span class="comment">-- 登陆时注意在sales数据库下</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> a;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- a下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> b; <span class="comment">-- 不行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> a <span class="keyword">with</span> <span class="keyword">admin</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- a下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> b; <span class="comment">-- 可以了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">from</span> a;</span><br><span class="line"><span class="comment">-- b还可以访问</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> r1;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> r1;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> r1;</span><br><span class="line"><span class="comment">--sys</span></span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> a;</span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> a <span class="keyword">with</span> a <span class="keyword">with</span> <span class="keyword">admin</span> <span class="keyword">option</span>;</span><br><span class="line"><span class="comment">--a</span></span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> b;</span><br><span class="line"><span class="comment">--sys</span></span><br><span class="line"><span class="keyword">revoke</span> r1 <span class="keyword">from</span> a;</span><br><span class="line"><span class="comment">--此时，b的权限还是在的</span></span><br></pre></td></tr></table></figure>
+<p>==对象权限==是连带的</p>
+<p>A授权给B，B授权给C，A收回B的权限后，C的权限也是==被收回==的。不可以越级撤销</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> a,b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> a;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- a下，没有赋权限的权限</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> a <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> b; <span class="comment">-- 可以</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">from</span> a; <span class="comment">-- 对象权限连带收回</span></span><br></pre></td></tr></table></figure>
+<h3 id="角色（权限的集合）">角色（权限的集合）</h3>
+<h4 id="角色的作用">角色的作用</h4>
+<p>1&gt; 简化权限的管理，减少授权次数；</p>
+<p>2&gt; 动态权限管理（权限是静态管理的）</p>
+<p>角色处于激活状态（登陆之后激活）有效</p>
+<p>默认角色在用户登录时激活</p>
+<p>非默认角色用set role r1来激活</p>
+<p>带口令激活角色set role r2 identified by r2;</p>
+<h4 id="用户自定义角色">用户自定义角色</h4>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> r1;  <span class="comment">--角色</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> r2 <span class="keyword">identified</span> <span class="keyword">by</span> r2;  <span class="comment">--带口令角色</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> r1,r2;  <span class="comment">-- 两个角色都对此表有访问的权限</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> a; <span class="comment">-- r1是a的默认角色，登陆时才激活</span></span><br><span class="line"><span class="keyword">grant</span> r2 <span class="keyword">to</span> b;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> a <span class="keyword">default</span> <span class="keyword">role</span> <span class="keyword">none</span>; <span class="comment">-- a没有默认角色，r1不是他的默认，所以a不可以访问表</span></span><br><span class="line"></span><br><span class="line">a&gt;set role r1;    --把r1的角色激活之后a就可以访问这个表了。角色只有激活，权限才生效</span><br><span class="line"></span><br><span class="line">b&gt;conn b/b</span><br><span class="line">b&gt;set role r2; --没有激活，因为r2是带口令的</span><br><span class="line">b&gt;set role r2 identified by r2; --激活带口令的角色</span><br></pre></td></tr></table></figure>
+<h4 id="预定义角色">预定义角色</h4>
+<p>创建数据库就自带的，自己分配了权限，为了之后使用方便</p>
+<p>connect和create session区别？？？</p>
+<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331142903634.png" alt="image-20200331142903634" style="zoom:80%;">
+<p>resource给开发人员</p>
+<p>dba给管理人员</p>
+<p>scott是普通用户，不能<strong>访问数据字典</strong>，可以赋给select_catalog_role</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">grant</span> select_catalog_role <span class="keyword">to</span> scott;</span><br><span class="line"><span class="comment">-- 还要激活？？？</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">revoke</span> select_catalog_role <span class="keyword">from</span> scott;</span><br></pre></td></tr></table></figure>
+<h4 id="应用程序角色">应用程序角色</h4>
+<p>应用程序激活角色</p>
+<p>不需要指派给用户，用户只要能跑这个应用程序，就有相应的权限（做的时候有，不做的时候没有）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">revoke</span> r1 <span class="keyword">from</span> a; <span class="comment">-- 角色撤回</span></span><br><span class="line"><span class="keyword">revoke</span> r2 <span class="keyword">from</span> b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> app_r1 <span class="keyword">identified</span> <span class="keyword">using</span> scott.p1; <span class="comment">-- 创建应用程序角色（不能用by，否则认定为口令）</span></span><br><span class="line"><span class="comment">--create role app_r1 identified using 具体应用程序，角色可通过scott下表的p1应用激活</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> app_r1; <span class="comment">-- 给角色app_r1分配权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建应用程序/存储过程，这个存储过程创建好了</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">procedure</span> scott.p1</span><br><span class="line"><span class="keyword">authid</span> <span class="keyword">current_user</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">dbms_session.set_role(<span class="string">'APP_R1'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">execute</span> <span class="keyword">on</span> scott.p1 <span class="keyword">to</span> a,b; <span class="comment">-- 赋ab用户执行存储过程权限</span></span><br><span class="line">conn a/a;</span><br><span class="line"></span><br><span class="line">a&gt; desc scott.emp -- 无权限</span><br><span class="line">a&gt; execute scott.p1; -- A用户执行存储过程</span><br><span class="line">a&gt; desc scott.emp --当前登陆之后且跑完过程获得权限</span><br><span class="line"><span class="comment">--退出后重新登陆后不跑过程还是无权限</span></span><br></pre></td></tr></table></figure>
+<h3 id="利用权限分析来实现最小权限原则">利用权限分析来实现最小权限原则</h3>
+<p>最小权限原则：给用户能够执行这个操作的最小权限</p>
+<p>dbms_privilege_capture</p>
+<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331144353915.png" alt="image-20200331144353915"></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 1. 新建权限测试用户</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 给两个权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 调用包，创建捕获</span></span><br><span class="line"><span class="comment">-- 捕获用户对两个角色内部权限的使用情况</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3. 启用捕获</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 4. 使用测试用户连接，做一些操作（创建表、序列、视图、向表中查记录commit，顺便再访问一下数据字典）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 5. 禁用捕获，产生分析结果</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1   创建用户并赋予权限</span><br><span class="line">CREATE USER priv_test_user IDENTIFIED BY priv_test_user;</span><br><span class="line">GRANT DBA, RESOURCE TO priv_test_user;</span><br><span class="line">2   创建捕获</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.create_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;,</span><br><span class="line">    type        &#x3D;&gt; DBMS_PRIVILEGE_CAPTURE.g_role_and_context,</span><br><span class="line">    roles       &#x3D;&gt; role_name_list(&#39;DBA&#39;, &#39;RESOURCE&#39;),</span><br><span class="line">    condition   &#x3D;&gt; &#39;SYS_CONTEXT(&#39;&#39;USERENV&#39;&#39;, &#39;&#39;SESSION_USER&#39;&#39;) </span><br><span class="line">    &#x3D; &#39;&#39;PRIV_TEST_USER&#39;&#39;&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br><span class="line">3  启用捕获</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.enable_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br><span class="line">4  用户PRIV_TEST_USER执行一些操作</span><br><span class="line">CONN priv_test_user&#x2F;priv_test_user;</span><br><span class="line"></span><br><span class="line">CREATE TABLE tab1 (</span><br><span class="line">  id NUMBER,</span><br><span class="line">  description VARCHAR2(50),</span><br><span class="line">  CONSTRAINT tab1_px PRIMARY KEY (id)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">CREATE SEQUENCE tab1_seq;</span><br><span class="line"></span><br><span class="line">CREATE VIEW tab1_view AS</span><br><span class="line">SELECT * FROM tab1;</span><br><span class="line"></span><br><span class="line">INSERT INTO tab1</span><br><span class="line">SELECT level, &#39;Description of &#39; || TO_CHAR(level)</span><br><span class="line">FROM   dual</span><br><span class="line">CONNECT BY level &lt;&#x3D; 5;</span><br><span class="line"></span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">SELECT name FROM v$database;</span><br><span class="line"></span><br><span class="line">5   禁用捕获并产生分析结果</span><br><span class="line">conn &#x2F; as sysdba</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.disable_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.generate_result(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br><span class="line"></span><br><span class="line">6    从 DBA_USED_PRIVS, DBA_USED_SYSPRIVS or DBA_USED_SYSPRIVS_PATH视图查询被使用到的系统权限</span><br><span class="line">COLUMN username FORMAT A20</span><br><span class="line">COLUMN sys_priv FORMAT A20</span><br><span class="line"></span><br><span class="line">SELECT username, sys_priv</span><br><span class="line">FROM   dba_used_sysprivs</span><br><span class="line">WHERE  capture &#x3D; &#39;dba_res_user_pol&#39;</span><br><span class="line">ORDER BY username, sys_priv;</span><br><span class="line"></span><br><span class="line">USERNAME             SYS_PRIV</span><br><span class="line">-------------------- --------------------</span><br><span class="line">PRIV_TEST_USER       CREATE ANY INDEX</span><br><span class="line">PRIV_TEST_USER       CREATE SEQUENCE</span><br><span class="line">PRIV_TEST_USER       CREATE SESSION</span><br><span class="line">PRIV_TEST_USER       CREATE TABLE</span><br><span class="line">PRIV_TEST_USER       CREATE VIEW</span><br><span class="line"></span><br><span class="line">7    从DBA_USED_SYSPRIVS_PATH视图查看用户priv_test_user怎么获得这些权限的</span><br><span class="line">COLUMN username FORMAT A20</span><br><span class="line">COLUMN used_role FORMAT A30</span><br><span class="line">COLUMN sys_priv FORMAT A20</span><br><span class="line">COLUMN path FORMAT A50</span><br><span class="line">SET LINESIZE 200</span><br><span class="line"></span><br><span class="line">SELECT username, sys_priv, used_role, path</span><br><span class="line">FROM   dba_used_sysprivs_path</span><br><span class="line">WHERE  capture &#x3D; &#39;dba_res_user_pol&#39;</span><br><span class="line">ORDER BY username, sys_priv;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">8   从DBA_USED_PRIVS, DBA_USED_OBJPRIVS or DBA_USED_OBJPRIVS_PATH视图查询被使用到的对象权限</span><br><span class="line"></span><br><span class="line">COLUMN username FORMAT A20</span><br><span class="line">COLUMN obj_priv FORMAT A8</span><br><span class="line">COLUMN object_owner FORMAT A15</span><br><span class="line">COLUMN object_name FORMAT A20</span><br><span class="line">COLUMN used_role FORMAT A20</span><br><span class="line">COLUMN path FORMAT A30</span><br><span class="line">SET LINESIZE 200</span><br><span class="line"></span><br><span class="line">SELECT username, obj_priv, object_owner, object_name, used_role, path </span><br><span class="line">FROM   dba_used_objprivs_path</span><br><span class="line">WHERE  capture &#x3D; &#39;dba_res_user_pol&#39;;</span><br><span class="line"></span><br><span class="line">也可以通过DBA_UNUSED_SYSPRIVS视图查询未使用到的系统权限。</span><br><span class="line">select sys_priv from DBA_UNUSED_SYSPRIVS where CAPTURE&#x3D;&#39;dba_res_user_pol&#39;;</span><br><span class="line"></span><br><span class="line">249 rows selected</span><br><span class="line"></span><br><span class="line">9   通过分析发现</span><br><span class="line">1） 所有的权限来源于DBA角色，而不是被赋予直接的权限</span><br><span class="line">2） resource角色没有被使用</span><br><span class="line">由于DBA角色有更大的权限，所以解决方案就比较简单了：</span><br><span class="line">创建一个用户自定义角色，然后将这些权限分配给该角色，并将该角色指派给该用户，完成最小权限原则。</span><br><span class="line"></span><br><span class="line">conn &#x2F; as sysdba</span><br><span class="line">CREATE ROLE custom_role;</span><br><span class="line">GRANT CREATE SEQUENCE TO custom_role;</span><br><span class="line">GRANT CREATE SESSION TO custom_role;</span><br><span class="line">GRANT CREATE TABLE TO custom_role;</span><br><span class="line">GRANT CREATE VIEW TO custom_role;</span><br><span class="line">GRANT SELECT ON SYS.V_$DATABASE TO custom_role;</span><br><span class="line"></span><br><span class="line">GRANT custom_role TO priv_test_user;</span><br><span class="line">REVOKE DBA, RESOURCE FROM priv_test_user;</span><br><span class="line"></span><br><span class="line">10   任务完毕，删除捕获</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.drop_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br></pre></td></tr></table></figure>
+<h3 id="概要文件">概要文件</h3>
+<p>操作如果超过资源限制，则不允许做</p>
+<p>创建完之后，将profile指派给用户</p>
+<p>eg 输入密码错误几次，将账户锁定，只能管理员来解锁</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[oracle@ocp ~]$ export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">[oracle@ocp ~]$ sqldeveloper.sh</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331152557598.png" alt="image-20200331152557598"></p>
+<h2 id="3-Oracle审核">3. Oracle审核</h2>
+<p>监视可疑的活动</p>
+<h3 id="默认审核（强制审核）">默认审核（强制审核）</h3>
+<p>重大的数据库事件会记录，如果系统出现故障就会有审核</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">col user_name for a20</span><br><span class="line"></span><br><span class="line">col proxy_name for a20</span><br><span class="line"></span><br><span class="line">col privilege for a30</span><br><span class="line"></span><br><span class="line">col success for a20</span><br><span class="line"></span><br><span class="line">col failure for a20</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_priv_audit_opts;</span><br></pre></td></tr></table></figure>
+<h3 id="标准数据库审核（初始化参数）">标准数据库审核（初始化参数）</h3>
+<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331153400633.png" alt="image-20200331153400633" style="zoom:67%;">
+<p>1）启用审核，通过初始化参数audit_trail</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> audit_trail=extend db <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>none：不启用审核</p>
+</li>
+<li>
+<p>os：审核记录存放在操作系统的文件里（show parameter audit_file_dest）</p>
+</li>
+<li>
+<p>db：审核记录放在数据库aud$表里（一般不去查这个表，查对应的视图dba_audit_trail）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">TIMESTAMP</span>, ACTION_NAME, USERNAME <span class="keyword">from</span> dba_audit_trail;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format = <span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>xml：审核记录放在一个xml表里，放在audit_file_dest的路径里</p>
+</li>
+</ul>
+<p>–extended不可单独使用，与其他的一起，记录的信息更能详细，开销也大</p>
+<p>2）指定审核选项</p>
+<p>1.审核用户（权限审核）</p>
+<p>某用户行使权限时，记录下来</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">audit <span class="keyword">select</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">by</span> scott; <span class="comment">--只要scott用户访问表（行使权限），就记录下来</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查自己的表时，没有行使权限，不会记录</span></span><br><span class="line">audit <span class="keyword">select</span> <span class="keyword">on</span> scott.emp; <span class="comment">-- 这个才会记录</span></span><br></pre></td></tr></table></figure>
+<p>2.审核对象（对象审核）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp; <span class="comment">--只关心表有没有被删除，不管谁删的都要记录下来</span></span><br><span class="line">noaudit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp; <span class="comment">-- 取消审核</span></span><br><span class="line"></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> successful; <span class="comment">-- 只记录成功</span></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> <span class="keyword">not</span> successful; <span class="comment">-- 只记录失败</span></span><br></pre></td></tr></table></figure>
+<p>3.审核语句：和某种行为有关</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">audit <span class="keyword">create</span> <span class="keyword">trigger</span>; <span class="comment">-- 审核有没有创建触发器模式</span></span><br><span class="line"></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> successful; <span class="comment">-- 删表成功时审计，失败忽略不计</span></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> <span class="keyword">not</span> successful; <span class="comment">-- 删表失败时审计，成功忽略不计</span></span><br><span class="line"></span><br><span class="line">audit session whenever not successful; <span class="comment">-- 仅登陆失败时记录</span></span><br><span class="line"></span><br><span class="line">audit <span class="keyword">update</span> <span class="keyword">on</span> scott.emp <span class="keyword">by</span> <span class="keyword">session</span>; <span class="comment">-- 会话中若干次更新记录，只记录一次（默认是只记录一次）</span></span><br><span class="line">audit <span class="keyword">update</span> <span class="keyword">on</span> scott.emp <span class="keyword">by</span> <span class="keyword">access</span>; <span class="comment">-- 干一次记一次</span></span><br></pre></td></tr></table></figure>
+<p>查看自己设置过什么审核</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_obj_audit_opts;</span><br></pre></td></tr></table></figure>
+<h3 id="基于值的审核-–-触发器">基于值的审核 – 触发器</h3>
+<ul>
+<li>函数和脚本，可以手工调用</li>
+<li>触发器可以自动执行的一段代码，不可以手工调用（和procedure不同）</li>
+</ul>
+<h4 id="dml触发器">dml触发器</h4>
+<p>触发条件为dml语句</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">conn scott/tiger</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> soctt.tr1_test(a <span class="built_in">varchar</span>(<span class="number">30</span>));   <span class="comment">--一般触发器不创建在sys下</span></span><br></pre></td></tr></table></figure>
+<p>语句触发器</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr1</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">update</span> <span class="keyword">on</span> scott.emp</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.tr1_test <span class="keyword">values</span>(<span class="string">'Be changed!'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> emp <span class="keyword">set</span> sal=<span class="number">2800</span> <span class="keyword">where</span> mgr=<span class="number">7698</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test; <span class="comment">-- 一条be changed</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- 回滚了，tr_test1中的数据也没了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果改5行，那么插入一行记录</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">5000</span> <span class="keyword">where</span> mgr=<span class="number">7839</span>;<span class="comment">--动了很多条</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test; <span class="comment">-- 一条be changed</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- 回滚了，tr_test1中的数据也没了</span></span><br></pre></td></tr></table></figure>
+<p>逐行触发for each row</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr1</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">update</span> <span class="keyword">on</span> scott.emp <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.tr1_test <span class="keyword">values</span>(<span class="string">'Be changed!'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test;<span class="comment">--空</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">10000</span> <span class="keyword">where</span> mgr=<span class="number">7839</span>;<span class="comment">--动了3条</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test;<span class="comment">--有3条be changed</span></span><br></pre></td></tr></table></figure>
+<p>练习：利用触发器记录员工的工资改变情况</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> sal_change(ename <span class="built_in">varchar2</span>(<span class="number">10</span>),old_sal <span class="built_in">number</span>(<span class="number">7</span>,<span class="number">2</span>),new_sal <span class="built_in">number</span>(<span class="number">7</span>,<span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr1</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">update</span> <span class="keyword">on</span> emp <span class="keyword">referencing</span> <span class="keyword">old</span> <span class="keyword">as</span> my_old <span class="keyword">new</span> <span class="keyword">as</span> my_new <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.sal_change <span class="keyword">values</span>(:my_old.ename,:my_old.sal,:my_new.sal);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> sal_change;</span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">4399</span> <span class="keyword">where</span> empno=<span class="number">7369</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> sal_change;</span><br></pre></td></tr></table></figure>
+<h4 id="系统触发器">系统触发器</h4>
+<p>只要有用户登录，就记录时间用户等信息</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.logon_rec(username <span class="built_in">varchar</span>(<span class="number">30</span>),logon_time <span class="built_in">date</span>);</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">administer</span> <span class="keyword">database</span> <span class="keyword">trigger</span> <span class="keyword">to</span> scott; <span class="comment">-- 赋权限</span></span><br></pre></td></tr></table></figure>
+<p>创建触发器，只要用户登陆了数据库，就有记录</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr3</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">logon</span> <span class="keyword">on</span> <span class="keyword">database</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">user</span> <span class="keyword">in</span> (<span class="string">'SYS'</span>,<span class="string">'SYSTEM'</span>) <span class="keyword">then</span> <span class="literal">null</span>;</span><br><span class="line">else <span class="keyword">insert</span> <span class="keyword">into</span> scott.logon_rec <span class="keyword">values</span>(<span class="keyword">user</span>,<span class="keyword">sysdate</span>);</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span>;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">conn a/a;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.logon_rec;</span><br></pre></td></tr></table></figure>
+<p>创建打开数据库就锁定进程的触发器</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 查询内存中的对象</span></span><br><span class="line">col owner for a20</span><br><span class="line">col name for a30</span><br><span class="line">col type for a30</span><br><span class="line"><span class="keyword">select</span> owner,<span class="keyword">name</span>,<span class="keyword">type</span> <span class="keyword">from</span> v$db_object_cache <span class="keyword">where</span> owner&lt;&gt;<span class="string">'SYS'</span> <span class="keyword">and</span> kept=<span class="string">'YES'</span>;</span><br><span class="line"></span><br><span class="line">desc user_procedures;</span><br><span class="line"><span class="keyword">select</span> object_name,object_type <span class="keyword">from</span> user_procedures <span class="keyword">where</span> object_type=<span class="string">'PROCEDURE'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">execute</span> dbms_shared_pool.keep(<span class="string">'SCOTT.P1'</span>);</span><br><span class="line"><span class="comment">-- 只要启动就调用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 需要先给scott权限</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">execute</span> <span class="keyword">on</span> dbms_shared_pool <span class="keyword">to</span> scott;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr4</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">startup</span> <span class="keyword">on</span> <span class="keyword">database</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">sys.dbms_shared_pool.keep(<span class="string">'SCOTT.P1'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line"><span class="comment">-- shutdown，startup之后就有了</span></span><br></pre></td></tr></table></figure>
+<h4 id="细粒度审计（FGA）">细粒度审计（FGA）</h4>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc dbms_fga <span class="comment">-- 有4个存储过程，add drop enable disable policy</span></span><br><span class="line">desc dbms_shared_pool <span class="comment">-- keep存储过程，锁在内存中</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">  <span class="comment">-- 调用包</span></span><br><span class="line"><span class="keyword">execute</span> dbms_fga.ADD_POLICY(<span class="string">'SCOTT'</span>,<span class="string">'EMP'</span>,<span class="string">'FGA_DEMO'</span>,STATEMENT_TYPES=<span class="string">'select,insert,delete'</span>);</span><br><span class="line">  <span class="comment">--a:</span></span><br><span class="line">   <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> scott.emp；</span><br><span class="line">   <span class="comment">--处理错误</span></span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">index</span> scott.pk_emp <span class="keyword">rebuild</span>;</span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">user</span> scott <span class="keyword">quota</span> <span class="keyword">unlimited</span>……；</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> scott.emp(empno,ename)<span class="keyword">values</span>(<span class="number">1234</span>,<span class="string">'Tom'</span>);</span><br><span class="line">   <span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">3000</span> <span class="keyword">where</span> empno=<span class="number">1234</span>;</span><br><span class="line">   <span class="keyword">delete</span> <span class="keyword">from</span> scott.emp wheer empno=<span class="number">1234</span>;</span><br><span class="line">   <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;</span><br><span class="line">   <span class="comment">--sys:</span></span><br><span class="line">   desc dba_fga_audit_trail<span class="comment">--查询dba_fga_audit_trail结果</span></span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br><span class="line">   <span class="keyword">select</span> <span class="built_in">timestamp</span>,db_user,sql_text <span class="keyword">from</span> dba_fga_audit_trail <span class="keyword">where</span></span><br><span class="line">policy_name=<span class="string">'FGA_DEMO'</span>;<span class="comment">--policy</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Coding</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Oracle SQL</title>
     <url>/2020/03/10/OracleSQL/</url>
     <content><![CDATA[<ul>
@@ -1426,233 +1656,184 @@ set oracle_sid=demo</li>
       </tags>
   </entry>
   <entry>
-    <title>Oracle 安全3A</title>
-    <url>/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/</url>
-    <content><![CDATA[<ol>
-<li>验证【第一步得现有身份证】</li>
-<li>授权【有身份证还得有登机牌才能上飞机】</li>
-<li>审核【飞机掉下去找黑匣子，找问题的原因】</li>
+    <title>hexo搭建</title>
+    <url>/2018/12/21/hexo%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="0-准备">0. 准备</h2>
+<ol>
+<li>注册github账号</li>
+<li>本地安装好git</li>
 </ol>
+<h2 id="1-创建github仓库">1. 创建github仓库</h2>
+<p>仓库名为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[your_github_username].github.io</span><br></pre></td></tr></table></figure>
+<p>仓库名字一定不能写错！</p>
 <a id="more"></a>
-<h2 id="1-Oracle验证">1. Oracle验证</h2>
-<h3 id="用户-权限">用户 &amp; 权限</h3>
-<p>Oracle的初始账号，最主要的就是sys、system，sys相当于超级用户，具有最高权限，system对于一般的系统维护是足够的。如果要看具体当前数据库中<strong>有哪些用户，用户有哪些权限</strong>，可以用sys用户使用下面两句语句查询</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> username <span class="keyword">from</span> dba_users;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> DBA_SYS_PRIVS;</span><br></pre></td></tr></table></figure>
-<p>角色可以认为是将一组权限打包，比如把A、B、C权限赋给角色ROLE1了，以后只要把ROLE1角色赋给任何用户，就等同于把A、B、C权限赋给了用户，用下面两句可以<strong>查询有哪些角色，以及各用户上有哪些角色</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_roles;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_role_privs;</span><br></pre></td></tr></table></figure>
-<h4 id="各用户（权限）介绍">各用户（权限）介绍</h4>
+<h2 id="2-安装node-js">2. 安装node.js</h2>
 <ul>
 <li>
-<p>sysdba：可以访问整个Oracle服务器，包括instance和database</p>
+<p>下载node.js的网址https://nodejs.org/en/download/</p>
+<p>我选择 <strong>Windows Installer (.msi)</strong> ，不太喜欢用zip的= =</p>
 </li>
 <li>
-<p>sysoper：系统操作员，只能管理instance</p>
+<p>Node.js主要用于安装hexo，npm开头的命令都依赖于Node.js</p>
 </li>
 <li>
-<p>sysasm：只能进行自动存储管理操作</p>
+<p>如果出现以下提示，则代表你的Node.js没有安装或者还未生效，如果已经安装了则重启电脑</p>
+<p>bash: nmp: command not found</p>
 </li>
 <li>
-<p>sysback：只能进行备份操作</p>
-</li>
-<li>
-<p>sysdg（data guard）：可以进行双机热备操作，数据库有多份</p>
-<p>多节点对于地震等天灾没啥用【汶川地震，但在北京做一个双机热备，要保证数据库的同步，所以要传日志，应用一下就行了】</p>
-<p>讲归档模式的时候，可以归到本地，也可以用service放到远端</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> log_archive_dest_1=<span class="string">'[service]=/u01/arch/1'</span>;<span class="comment">-- 远程，service填写一个服务名</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>syskm：给数据库做加密工作</p>
+<p>查看node版本的命令：在cmd或者git bash</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h4 id="sys和system用户的区别">sys和system用户的区别</h4>
-<p>sys &gt; system</p>
-<p>1 )   最重要的区别，存储的数据的重要性不同</p>
+<h2 id="3-安装hexo">3. 安装hexo</h2>
+<p>（1）安装hexo</p>
+<p>鼠标右键任意地方，选择Git Bash，使用以下命令</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">npm  install  hexo-cli -g</span><br><span class="line">npm  install  hexo-deployer-git  --save</span><br><span class="line"><span class="comment"># 如果不执行第二句，出现“ERROR Deployer not found: git“这样的提示错误</span></span><br></pre></td></tr></table></figure>
+<p>（2）创建放置博客文件的文件夹</p>
 <ul>
-<li>【sys】所有oracle的数据字典的基表和视图都存放在sys用户中，这些基表和视图对于oracle的运行是至关重要的，由数据库自己维护，任何用户都不能手动更改。<br>
-sys用户拥有dba，sysdba，sysoper等角色或权限，是oracle权限最高的用户。</li>
-<li>【system】 用户用于存放次一级的内部数据，如oracle的一些特性或工具的管理信息。system用户拥有普通dba角色权限。</li>
+<li>hexo文件夹，我放置在D盘，D:\blog\hexo</li>
+<li>最好不要在中文路径下面，会出现莫名其妙的错误</li>
+<li>注意：==以后进行hexo操作都要进入到此文件夹中==</li>
 </ul>
-<ol start="2">
-<li>其次的区别，权限不同</li>
-</ol>
+<p>（3）初始化hexo</p>
 <ul>
-<li>
-<p>【system】用户只能用normal身份登陆em，除非你对它授予了sysdba的系统权限或者syspoer系统权限。</p>
-</li>
-<li>
-<p>【sys】用户具有“SYSDBA”或者“SYSOPER”系统权限，登陆em也只能用这两个身份，不能用normal。</p>
-</li>
+<li>初始化进入hexo文件夹，鼠标右键选择“Git Bash”，执行以下命令，</li>
+<li>这时候会在该文件夹中创建网站所需要的文件</li>
 </ul>
-<h3 id="sys用户验证方式">sys用户验证方式</h3>
-<p>不打开数据库都能连</p>
-<p>non-sys用户的信息在数据文件中？？？，不打开数据库无法访问，会报Oracle not available</p>
-<p>所以，在数据库shutdown时，必须是sys用户先登录，将数据库startup之后，其他用户才能连接</p>
-<h4 id="操作系统验证">操作系统验证</h4>
-<p>conn / as sysdba或者sqlplus / as sysdba</p>
-<p>两种验证方式都启用时，操作系统验证优先</p>
-<p>找network/admin/sqlnet.ora文件，加一行，none表示禁用操作系统验证</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SQLNET.AUTHENTICATION_SERVICES&#x3D;(NONE)</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/D:%5Cmd_picture_backup%5Cimage-20200327110357194.png" alt="image-20200327110357194"></p>
-<h4 id="口令文件验证">口令文件验证</h4>
-<p>做一个口令验证文件（二进制文件），用grant，revoke修改？？？</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$ORACLE_HOME</span>/dbs</span><br><span class="line">orapwd file=orapwsales password=admin1<span class="comment">#3 force=y</span></span><br><span class="line"><span class="comment"># 可以强制更新</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter remote_login_passwordfile</span><br><span class="line"><span class="comment">-- none - 禁用口令文件</span></span><br><span class="line"><span class="comment">-- exclusive</span></span><br><span class="line"><span class="comment">-- shared</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--exclusive - 单例程多用户</span></span><br><span class="line"><span class="comment">--适用于集群（可通过多台机器访问Oracle，多例程对应一个数据库）（多个instance只有一个能访问？？？）</span></span><br><span class="line"><span class="comment">--shared - 多例程单用户</span></span><br><span class="line"><span class="comment">--可以多个例程同时访问，但只能是单用户（sys）</span></span><br></pre></td></tr></table></figure>
-<h5 id="v-pwfile-users">v$pwfile_users</h5>
-<p>多用户，哪些用户能用什么角色登录</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> username,<span class="keyword">sysdba</span>,<span class="keyword">sysoper</span>,<span class="keyword">sysasm</span>,sysbackup,sysdg,syskm <span class="keyword">from</span> v$pwfile_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">sysdba</span> <span class="keyword">to</span> scott;</span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">sysdba</span> <span class="keyword">from</span> scott;</span><br></pre></td></tr></table></figure>
-<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/md_picture_backup\image-20200330102956168.png" alt="image-20200330102956168" style="zoom:67%;">
-<p>如果开启操作系统验证，则任意用户名用任意密码连接任意一个角色都可以，赋予权限变得没有意义</p>
-<p>登录上去的用户都是sys/public？？？不应该是scott吗</p>
-<p>所以要开启口令文件验证，禁用操作系统验证</p>
-<p>开启之后，只能按正确的用户名密码，用特定允许的身份登录</p>
-<p>（如果只有sysdba权限，则不能用sysoper身份登录）</p>
-<h3 id="non-sys用户验证方式">non-sys用户验证方式</h3>
-<h4 id="数据库验证">数据库验证</h4>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc user$ <span class="comment">-- 外部连接时，去这个文件验证</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> u11 <span class="keyword">identified</span> <span class="keyword">by</span> <span class="number">123123</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span> <span class="keyword">to</span> u11;</span><br><span class="line">conn u11/123123</span><br></pre></td></tr></table></figure>
-<h4 id="操作系统验证-2">操作系统验证</h4>
-<p>只要连到操作系统，就能连到数据库</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter os_authent_prefix</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> os_authent_prefix=<span class="string">''</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br></pre></td></tr></table></figure>
-<p>创建操作系统用户qq</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">useradd -g oinstall -G dba qq</span><br><span class="line">passwd qq</span><br></pre></td></tr></table></figure>
-<p>创建Oracle用户</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> qq <span class="keyword">identified</span> <span class="keyword">externally</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span> <span class="keyword">to</span> qq;</span><br></pre></td></tr></table></figure>
-<p>配置qq用户的.bash_profile</p>
-<p>在Oracle登录操作系统时，在~下查看profile文件</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure>
-<p>将下面这一段，复制到qq操作系统用户的profile文件下</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">su - qq</span><br><span class="line">vim ~/.bash_profile</span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">ORACLE_SID=db12c;<span class="built_in">export</span> ORACLE_SID</span><br><span class="line">ORACLE_UNQNAME=db12c;<span class="built_in">export</span> ORACLE_UNQNAME</span><br><span class="line">JAVA_HOME=/usr/<span class="built_in">local</span>/java; <span class="built_in">export</span> JAVA_HOME</span><br><span class="line">ORACLE_BASE=/u01/app/oracle; <span class="built_in">export</span> ORACLE_BASE</span><br><span class="line">ORACLE_HOME=<span class="variable">$ORACLE_BASE</span>/product/12.2.0/dbhome_1; <span class="built_in">export</span> ORACLE_HOME</span><br><span class="line">ORACLE_TERM=xterm; <span class="built_in">export</span> ORACLE_TERM</span><br><span class="line">NLS_LANG=american_america.ZHS16GBK; <span class="built_in">export</span> NLS_LANG</span><br><span class="line">TNS_ADMIN=<span class="variable">$ORACLE_HOME</span>/network/admin; <span class="built_in">export</span> TNS_ADMIN</span><br><span class="line">ORA_NLS11=<span class="variable">$ORACLE_HOME</span>/nls/data; <span class="built_in">export</span> ORA_NLS11</span><br><span class="line">PATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$&#123;PATH&#125;</span>:<span class="variable">$HOME</span>/bin:<span class="variable">$ORACLE_HOME</span>/bin:<span class="variable">$ORA_CRS_HOME</span>/bin</span><br><span class="line">PATH=<span class="variable">$&#123;PATH&#125;</span>:/usr/bin:/bin:/usr/bin/X11:/usr/<span class="built_in">local</span>/bin</span><br><span class="line"><span class="built_in">export</span> PATH</span><br><span class="line">LD_LIBRARY_PATH=<span class="variable">$ORACLE_HOME</span>/lib</span><br><span class="line">LD_LIBRARY_PATH=<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/oracm/lib</span><br><span class="line">LD_LIBRARY_PATH=<span class="variable">$&#123;LD_LIBRARY_PATH&#125;</span>:/lib:/usr/lib:/usr/<span class="built_in">local</span>/lib</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH</span><br><span class="line">CLASSPATH=<span class="variable">$ORACLE_HOME</span>/JRE</span><br><span class="line">CLASSPATH=<span class="variable">$&#123;CLASSPATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/jlib</span><br><span class="line">CLASSPATH=<span class="variable">$&#123;CLASSPATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/rdbms/jlib</span><br><span class="line">CLASSPATH=<span class="variable">$&#123;CLASSPATH&#125;</span>:<span class="variable">$ORACLE_HOME</span>/network/jlib</span><br><span class="line"><span class="built_in">export</span> CLASSPATH</span><br><span class="line">THREADS_FLAG=native; <span class="built_in">export</span> THREADS_FLAG</span><br><span class="line"><span class="built_in">export</span> TEMP=/tmp</span><br><span class="line"><span class="built_in">export</span> TMPDIR=/tmp</span><br><span class="line"><span class="built_in">umask</span> 022</span><br></pre></td></tr></table></figure>
-<p>立即生效</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source ~&#x2F;.bash_profile</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200330113114808.png" alt="image-20200330113114808"></p>
-<h4 id="全局验证（了解）">全局验证（了解）</h4>
-<p>基于LDAP 轻型目录访问协议</p>
-<p>用一个用户登录到所有数据库【单点登录】</p>
-<p>【pegion】做一个映射？？？</p>
-<h2 id="2-Oracle授权">2. Oracle授权</h2>
-<ul>
-<li>系统权限：全局性，作用点为用户【select any table】</li>
-<li>对象权限：局部性，着重资源（先找到资源）【select on scott.emp】</li>
-<li>权力：？？？</li>
-<li>权限：【对某个目录可读可写，对其他不行】</li>
-</ul>
-<p>考试：区分系统权限和对象权限</p>
-<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331140518784.png" alt="image-20200331140518784" style="zoom:80%;">
-<p>特征：<br>
-1）全局局部<br>
-select any table    --系统权限，因为是全局性的，可以访问所有的表<br>
-select on scott.emp --对象权限，局部<br>
-2）用户资源</p>
-<h3 id="权限传递的规则">权限传递的规则</h3>
-<p>==系统权限==是不连带的</p>
-<p>A授权给B，B授权给C，A收回B的权限后，C的权限==不被收回==的。可以越级撤销</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> a <span class="keyword">identified</span> <span class="keyword">by</span> a;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> b <span class="keyword">identified</span> <span class="keyword">by</span> b;</span><br><span class="line"><span class="comment">-- 登陆时注意在sales数据库下</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> a;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- a下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> b; <span class="comment">-- 不行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> a <span class="keyword">with</span> <span class="keyword">admin</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- a下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> b; <span class="comment">-- 可以了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">from</span> a;</span><br><span class="line"><span class="comment">-- b还可以访问</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> r1;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> r1;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> r1;</span><br><span class="line"><span class="comment">--sys</span></span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> a;</span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> a <span class="keyword">with</span> a <span class="keyword">with</span> <span class="keyword">admin</span> <span class="keyword">option</span>;</span><br><span class="line"><span class="comment">--a</span></span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> b;</span><br><span class="line"><span class="comment">--sys</span></span><br><span class="line"><span class="keyword">revoke</span> r1 <span class="keyword">from</span> a;</span><br><span class="line"><span class="comment">--此时，b的权限还是在的</span></span><br></pre></td></tr></table></figure>
-<p>==对象权限==是连带的</p>
-<p>A授权给B，B授权给C，A收回B的权限后，C的权限也是==被收回==的。不可以越级撤销</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> a,b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> a;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- a下，没有赋权限的权限</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> a <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> b; <span class="comment">-- 可以</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">from</span> a; <span class="comment">-- 对象权限连带收回</span></span><br></pre></td></tr></table></figure>
-<h3 id="角色（权限的集合）">角色（权限的集合）</h3>
-<h4 id="角色的作用">角色的作用</h4>
-<p>1&gt; 简化权限的管理，减少授权次数；</p>
-<p>2&gt; 动态权限管理（权限是静态管理的）</p>
-<p>角色处于激活状态（登陆之后激活）有效</p>
-<p>默认角色在用户登录时激活</p>
-<p>非默认角色用set role r1来激活</p>
-<p>带口令激活角色set role r2 identified by r2;</p>
-<h4 id="用户自定义角色">用户自定义角色</h4>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> r1;  <span class="comment">--角色</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> r2 <span class="keyword">identified</span> <span class="keyword">by</span> r2;  <span class="comment">--带口令角色</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> r1,r2;  <span class="comment">-- 两个角色都对此表有访问的权限</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> r1 <span class="keyword">to</span> a; <span class="comment">-- r1是a的默认角色，登陆时才激活</span></span><br><span class="line"><span class="keyword">grant</span> r2 <span class="keyword">to</span> b;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> a <span class="keyword">default</span> <span class="keyword">role</span> <span class="keyword">none</span>; <span class="comment">-- a没有默认角色，r1不是他的默认，所以a不可以访问表</span></span><br><span class="line"></span><br><span class="line">a&gt;set role r1;    --把r1的角色激活之后a就可以访问这个表了。角色只有激活，权限才生效</span><br><span class="line"></span><br><span class="line">b&gt;conn b/b</span><br><span class="line">b&gt;set role r2; --没有激活，因为r2是带口令的</span><br><span class="line">b&gt;set role r2 identified by r2; --激活带口令的角色</span><br></pre></td></tr></table></figure>
-<h4 id="预定义角色">预定义角色</h4>
-<p>创建数据库就自带的，自己分配了权限，为了之后使用方便</p>
-<p>connect和create session区别？？？</p>
-<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331142903634.png" alt="image-20200331142903634" style="zoom:80%;">
-<p>resource给开发人员</p>
-<p>dba给管理人员</p>
-<p>scott是普通用户，不能<strong>访问数据字典</strong>，可以赋给select_catalog_role</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">grant</span> select_catalog_role <span class="keyword">to</span> scott;</span><br><span class="line"><span class="comment">-- 还要激活？？？</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">revoke</span> select_catalog_role <span class="keyword">from</span> scott;</span><br></pre></td></tr></table></figure>
-<h4 id="应用程序角色">应用程序角色</h4>
-<p>应用程序激活角色</p>
-<p>不需要指派给用户，用户只要能跑这个应用程序，就有相应的权限（做的时候有，不做的时候没有）</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">revoke</span> r1 <span class="keyword">from</span> a; <span class="comment">-- 角色撤回</span></span><br><span class="line"><span class="keyword">revoke</span> r2 <span class="keyword">from</span> b;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">role</span> app_r1 <span class="keyword">identified</span> <span class="keyword">using</span> scott.p1; <span class="comment">-- 创建应用程序角色（不能用by，否则认定为口令）</span></span><br><span class="line"><span class="comment">--create role app_r1 identified using 具体应用程序，角色可通过scott下表的p1应用激活</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> app_r1; <span class="comment">-- 给角色app_r1分配权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建应用程序/存储过程，这个存储过程创建好了</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">procedure</span> scott.p1</span><br><span class="line"><span class="keyword">authid</span> <span class="keyword">current_user</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">dbms_session.set_role(<span class="string">'APP_R1'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">execute</span> <span class="keyword">on</span> scott.p1 <span class="keyword">to</span> a,b; <span class="comment">-- 赋ab用户执行存储过程权限</span></span><br><span class="line">conn a/a;</span><br><span class="line"></span><br><span class="line">a&gt; desc scott.emp -- 无权限</span><br><span class="line">a&gt; execute scott.p1; -- A用户执行存储过程</span><br><span class="line">a&gt; desc scott.emp --当前登陆之后且跑完过程获得权限</span><br><span class="line"><span class="comment">--退出后重新登陆后不跑过程还是无权限</span></span><br></pre></td></tr></table></figure>
-<h3 id="利用权限分析来实现最小权限原则">利用权限分析来实现最小权限原则</h3>
-<p>最小权限原则：给用户能够执行这个操作的最小权限</p>
-<p>dbms_privilege_capture</p>
-<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331144353915.png" alt="image-20200331144353915"></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 1. 新建权限测试用户</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 给两个权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2. 调用包，创建捕获</span></span><br><span class="line"><span class="comment">-- 捕获用户对两个角色内部权限的使用情况</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3. 启用捕获</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 4. 使用测试用户连接，做一些操作（创建表、序列、视图、向表中查记录commit，顺便再访问一下数据字典）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 5. 禁用捕获，产生分析结果</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1   创建用户并赋予权限</span><br><span class="line">CREATE USER priv_test_user IDENTIFIED BY priv_test_user;</span><br><span class="line">GRANT DBA, RESOURCE TO priv_test_user;</span><br><span class="line">2   创建捕获</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.create_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;,</span><br><span class="line">    type        &#x3D;&gt; DBMS_PRIVILEGE_CAPTURE.g_role_and_context,</span><br><span class="line">    roles       &#x3D;&gt; role_name_list(&#39;DBA&#39;, &#39;RESOURCE&#39;),</span><br><span class="line">    condition   &#x3D;&gt; &#39;SYS_CONTEXT(&#39;&#39;USERENV&#39;&#39;, &#39;&#39;SESSION_USER&#39;&#39;) </span><br><span class="line">    &#x3D; &#39;&#39;PRIV_TEST_USER&#39;&#39;&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br><span class="line">3  启用捕获</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.enable_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br><span class="line">4  用户PRIV_TEST_USER执行一些操作</span><br><span class="line">CONN priv_test_user&#x2F;priv_test_user;</span><br><span class="line"></span><br><span class="line">CREATE TABLE tab1 (</span><br><span class="line">  id NUMBER,</span><br><span class="line">  description VARCHAR2(50),</span><br><span class="line">  CONSTRAINT tab1_px PRIMARY KEY (id)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">CREATE SEQUENCE tab1_seq;</span><br><span class="line"></span><br><span class="line">CREATE VIEW tab1_view AS</span><br><span class="line">SELECT * FROM tab1;</span><br><span class="line"></span><br><span class="line">INSERT INTO tab1</span><br><span class="line">SELECT level, &#39;Description of &#39; || TO_CHAR(level)</span><br><span class="line">FROM   dual</span><br><span class="line">CONNECT BY level &lt;&#x3D; 5;</span><br><span class="line"></span><br><span class="line">COMMIT;</span><br><span class="line"></span><br><span class="line">SELECT name FROM v$database;</span><br><span class="line"></span><br><span class="line">5   禁用捕获并产生分析结果</span><br><span class="line">conn &#x2F; as sysdba</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.disable_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.generate_result(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br><span class="line"></span><br><span class="line">6    从 DBA_USED_PRIVS, DBA_USED_SYSPRIVS or DBA_USED_SYSPRIVS_PATH视图查询被使用到的系统权限</span><br><span class="line">COLUMN username FORMAT A20</span><br><span class="line">COLUMN sys_priv FORMAT A20</span><br><span class="line"></span><br><span class="line">SELECT username, sys_priv</span><br><span class="line">FROM   dba_used_sysprivs</span><br><span class="line">WHERE  capture &#x3D; &#39;dba_res_user_pol&#39;</span><br><span class="line">ORDER BY username, sys_priv;</span><br><span class="line"></span><br><span class="line">USERNAME             SYS_PRIV</span><br><span class="line">-------------------- --------------------</span><br><span class="line">PRIV_TEST_USER       CREATE ANY INDEX</span><br><span class="line">PRIV_TEST_USER       CREATE SEQUENCE</span><br><span class="line">PRIV_TEST_USER       CREATE SESSION</span><br><span class="line">PRIV_TEST_USER       CREATE TABLE</span><br><span class="line">PRIV_TEST_USER       CREATE VIEW</span><br><span class="line"></span><br><span class="line">7    从DBA_USED_SYSPRIVS_PATH视图查看用户priv_test_user怎么获得这些权限的</span><br><span class="line">COLUMN username FORMAT A20</span><br><span class="line">COLUMN used_role FORMAT A30</span><br><span class="line">COLUMN sys_priv FORMAT A20</span><br><span class="line">COLUMN path FORMAT A50</span><br><span class="line">SET LINESIZE 200</span><br><span class="line"></span><br><span class="line">SELECT username, sys_priv, used_role, path</span><br><span class="line">FROM   dba_used_sysprivs_path</span><br><span class="line">WHERE  capture &#x3D; &#39;dba_res_user_pol&#39;</span><br><span class="line">ORDER BY username, sys_priv;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">8   从DBA_USED_PRIVS, DBA_USED_OBJPRIVS or DBA_USED_OBJPRIVS_PATH视图查询被使用到的对象权限</span><br><span class="line"></span><br><span class="line">COLUMN username FORMAT A20</span><br><span class="line">COLUMN obj_priv FORMAT A8</span><br><span class="line">COLUMN object_owner FORMAT A15</span><br><span class="line">COLUMN object_name FORMAT A20</span><br><span class="line">COLUMN used_role FORMAT A20</span><br><span class="line">COLUMN path FORMAT A30</span><br><span class="line">SET LINESIZE 200</span><br><span class="line"></span><br><span class="line">SELECT username, obj_priv, object_owner, object_name, used_role, path </span><br><span class="line">FROM   dba_used_objprivs_path</span><br><span class="line">WHERE  capture &#x3D; &#39;dba_res_user_pol&#39;;</span><br><span class="line"></span><br><span class="line">也可以通过DBA_UNUSED_SYSPRIVS视图查询未使用到的系统权限。</span><br><span class="line">select sys_priv from DBA_UNUSED_SYSPRIVS where CAPTURE&#x3D;&#39;dba_res_user_pol&#39;;</span><br><span class="line"></span><br><span class="line">249 rows selected</span><br><span class="line"></span><br><span class="line">9   通过分析发现</span><br><span class="line">1） 所有的权限来源于DBA角色，而不是被赋予直接的权限</span><br><span class="line">2） resource角色没有被使用</span><br><span class="line">由于DBA角色有更大的权限，所以解决方案就比较简单了：</span><br><span class="line">创建一个用户自定义角色，然后将这些权限分配给该角色，并将该角色指派给该用户，完成最小权限原则。</span><br><span class="line"></span><br><span class="line">conn &#x2F; as sysdba</span><br><span class="line">CREATE ROLE custom_role;</span><br><span class="line">GRANT CREATE SEQUENCE TO custom_role;</span><br><span class="line">GRANT CREATE SESSION TO custom_role;</span><br><span class="line">GRANT CREATE TABLE TO custom_role;</span><br><span class="line">GRANT CREATE VIEW TO custom_role;</span><br><span class="line">GRANT SELECT ON SYS.V_$DATABASE TO custom_role;</span><br><span class="line"></span><br><span class="line">GRANT custom_role TO priv_test_user;</span><br><span class="line">REVOKE DBA, RESOURCE FROM priv_test_user;</span><br><span class="line"></span><br><span class="line">10   任务完毕，删除捕获</span><br><span class="line">BEGIN</span><br><span class="line">  DBMS_PRIVILEGE_CAPTURE.drop_capture(</span><br><span class="line">    name        &#x3D;&gt; &#39;dba_res_user_pol&#39;</span><br><span class="line">  );</span><br><span class="line">END;</span><br><span class="line">&#x2F;</span><br></pre></td></tr></table></figure>
-<h3 id="概要文件">概要文件</h3>
-<p>操作如果超过资源限制，则不允许做</p>
-<p>创建完之后，将profile指派给用户</p>
-<p>eg 输入密码错误几次，将账户锁定，只能管理员来解锁</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[oracle@ocp ~]$ export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">[oracle@ocp ~]$ sqldeveloper.sh</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331152557598.png" alt="image-20200331152557598"></p>
-<h2 id="3-Oracle审核">3. Oracle审核</h2>
-<p>监视可疑的活动</p>
-<h3 id="默认审核（强制审核）">默认审核（强制审核）</h3>
-<p>重大的数据库事件会记录，如果系统出现故障就会有审核</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">col user_name for a20</span><br><span class="line"></span><br><span class="line">col proxy_name for a20</span><br><span class="line"></span><br><span class="line">col privilege for a30</span><br><span class="line"></span><br><span class="line">col success for a20</span><br><span class="line"></span><br><span class="line">col failure for a20</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_priv_audit_opts;</span><br></pre></td></tr></table></figure>
-<h3 id="标准数据库审核（初始化参数）">标准数据库审核（初始化参数）</h3>
-<img src="/2020/03/21/Oracle%E5%AE%89%E5%85%A83A/image-20200331153400633.png" alt="image-20200331153400633" style="zoom:67%;">
-<p>1）启用审核，通过初始化参数audit_trail</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> audit_trail=extend db <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>执行完毕后，将会生成以下文件结构：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">|-- node_modules       &#x2F;&#x2F;依赖安装目录</span><br><span class="line">|-- scaffolds          &#x2F;&#x2F;模板文件夹，新建的文章将会从此目录下的文件中继承格式</span><br><span class="line">|-- source             &#x2F;&#x2F;资源文件夹，用于放置图片、数据、文章等资源</span><br><span class="line">|   |-- _posts         &#x2F;&#x2F;文章目录</span><br><span class="line">|-- themes             &#x2F;&#x2F;主题文件夹</span><br><span class="line">|   |-- landscape      &#x2F;&#x2F;默认主题</span><br><span class="line">|-- .gitignore         &#x2F;&#x2F;指定不纳入git版本控制的文件</span><br><span class="line">|-- _config.yml        &#x2F;&#x2F;站点配置文件</span><br><span class="line">|-- db.json</span><br><span class="line">|-- package.json</span><br><span class="line">&#96;-- package-lock.json</span><br></pre></td></tr></table></figure>
+<p>（4）安装依赖包</p>
+<p>（4）安装依赖包</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>会在D:\Hexo目录中安装 node_modules</p>
+<p>（5）生成静态文件</p>
+<p>会在D:\Hexo目录中安装 node_modules<br>
+（5）生成静态文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+<p>（6）预览</p>
+<p>此时最基本的网站已经搭建好了，只不过是在本地放着，我们可以先预览一下</p>
+<p>在git中执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>这时候，会在本地开启一个http服务，监听4000端口</p>
+<p>我们在浏览器访问http://127.0.0.1:4000</p>
+<h3 id="常用命令简化和组合">常用命令简化和组合</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g    # 等同于hexo generate，生成静态文件</span><br><span class="line">hexo s    # 等同于hexo server，在本地服务器运行</span><br><span class="line">hexo p    # 等同于hexo port</span><br><span class="line">hexo d    # 等同于hexo deploy，用于将本地文件发布到github上 </span><br><span class="line">hexo n 	  # 等同于hexo new，用于新建一篇文章</span><br></pre></td></tr></table></figure>
+<p>当本地不想使用默认的4000端口时（比如在服务器上，默认使用80端口），可以使用 port 命令更改启动端口</p>
+<p>另外，<strong>hexo</strong>支持命令合并，比方说 生成静态文件 → 本地启动80端口，我们可以执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo s -g -p 80</span><br></pre></td></tr></table></figure>
+<p>生成静态文件并发布</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<h2 id="4-部署本地文件到github">4. 部署本地文件到github</h2>
+<p>本地文件要发布到github上面，则需要使本地git和互联网上的通信。怎么通信呢？</p>
+<p>有两种方法，https和ssh公钥方式。</p>
+<p>使用https的话需要每次输入密码，不过配置起来简单。</p>
+<p>常用的是ssh公钥的方式。</p>
+<p>先来在本地初始化一下git设置吧</p>
+<h3 id="a-本机git初始设置">a. 本机git初始设置</h3>
+<p>1、设置姓名和邮箱地址</p>
+<p>（安装git时，已经配置好的话，可以跳过这一步）</p>
+<p>终端输入：任意目录中都可以</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git config  --global  user.name  &quot;your name&quot;</span><br><span class="line">git config  --global  user.email  your_email@youremail.com</span><br></pre></td></tr></table></figure>
+<p>我用的是我的用户名和邮箱设置的</p>
+<p>邮箱仅仅是识别用的key，不一定是真实存在的邮箱</p>
+<p>设置完成会在~/.gitconfig文件中生成如下配置</p>
+<p>gitconfig这个文件在C:\Users\zhx</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat ~&#x2F;.gitconfig</span><br><span class="line"></span><br><span class="line">[user]</span><br><span class="line">        name &#x3D; your name</span><br><span class="line">        email &#x3D; your_email@youremail.com</span><br><span class="line">[filter &quot;lfs&quot;]</span><br><span class="line">        required &#x3D; true</span><br><span class="line">        clean &#x3D; git-lfs clean -- %f</span><br><span class="line">        smudge &#x3D; git-lfs smudge -- %f</span><br><span class="line">        process &#x3D; git-lfs filter-process</span><br></pre></td></tr></table></figure>
+<p>我用的是我的用户名和邮箱设置的，设置完成会在~/.gitconfig文件中生成如下配置</p>
+<p>2、本地生成ssh key</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C 13253641509@qq.com</span><br></pre></td></tr></table></figure>
 <ul>
 <li>
-<p>none：不启用审核</p>
+<p>SSH 为 [Secure Shell](<a href="https://baike.baidu.com/item/Secure" target="_blank" rel="noopener">https://baike.baidu.com/item/Secure</a> Shell) 的缩写，为建立在应用层基础上的安全协议。</p>
 </li>
 <li>
-<p>os：审核记录存放在操作系统的文件里（show parameter audit_file_dest）</p>
+<p>SSH 是较可靠，专为<a href="https://baike.baidu.com/item/%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95/1071998" target="_blank" rel="noopener">远程登录</a>会话和其他网络服务提供安全性的协议。</p>
 </li>
 <li>
-<p>db：审核记录放在数据库aud$表里（一般不去查这个表，查对应的视图dba_audit_trail）</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">TIMESTAMP</span>, ACTION_NAME, USERNAME <span class="keyword">from</span> dba_audit_trail;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format = <span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br></pre></td></tr></table></figure>
+<p>和在linux生成的ssh一样，也可以生成的秘钥时候设置私钥密码（我后来设置了一个没有密码的ssh，每次输入太麻烦了）</p>
 </li>
 <li>
-<p>xml：审核记录放在一个xml表里，放在audit_file_dest的路径里</p>
+<p>-t = The type of the key to generate</p>
+</li>
+<li>
+<p>-C = comment to identify the key</p>
 </li>
 </ul>
-<p>–extended不可单独使用，与其他的一起，记录的信息更能详细，开销也大</p>
-<p>2）指定审核选项</p>
-<p>1.审核用户（权限审核）</p>
-<p>某用户行使权限时，记录下来</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">audit <span class="keyword">select</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">by</span> scott; <span class="comment">--只要scott用户访问表（行使权限），就记录下来</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查自己的表时，没有行使权限，不会记录</span></span><br><span class="line">audit <span class="keyword">select</span> <span class="keyword">on</span> scott.emp; <span class="comment">-- 这个才会记录</span></span><br></pre></td></tr></table></figure>
-<p>2.审核对象（对象审核）</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp; <span class="comment">--只关心表有没有被删除，不管谁删的都要记录下来</span></span><br><span class="line">noaudit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp; <span class="comment">-- 取消审核</span></span><br><span class="line"></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> successful; <span class="comment">-- 只记录成功</span></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> <span class="keyword">not</span> successful; <span class="comment">-- 只记录失败</span></span><br></pre></td></tr></table></figure>
-<p>3.审核语句：和某种行为有关</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">audit <span class="keyword">create</span> <span class="keyword">trigger</span>; <span class="comment">-- 审核有没有创建触发器模式</span></span><br><span class="line"></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> successful; <span class="comment">-- 删表成功时审计，失败忽略不计</span></span><br><span class="line">audit <span class="keyword">delete</span> <span class="keyword">on</span> scott.emp <span class="keyword">whenever</span> <span class="keyword">not</span> successful; <span class="comment">-- 删表失败时审计，成功忽略不计</span></span><br><span class="line"></span><br><span class="line">audit session whenever not successful; <span class="comment">-- 仅登陆失败时记录</span></span><br><span class="line"></span><br><span class="line">audit <span class="keyword">update</span> <span class="keyword">on</span> scott.emp <span class="keyword">by</span> <span class="keyword">session</span>; <span class="comment">-- 会话中若干次更新记录，只记录一次（默认是只记录一次）</span></span><br><span class="line">audit <span class="keyword">update</span> <span class="keyword">on</span> scott.emp <span class="keyword">by</span> <span class="keyword">access</span>; <span class="comment">-- 干一次记一次</span></span><br></pre></td></tr></table></figure>
-<p>查看自己设置过什么审核</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_obj_audit_opts;</span><br></pre></td></tr></table></figure>
-<h3 id="基于值的审核-–-触发器">基于值的审核 – 触发器</h3>
+<p>所以这个注释你可以输入任何内容，很多网站和软件用这个注释作为密钥的名字</p>
 <ul>
-<li>函数和脚本，可以手工调用</li>
-<li>触发器可以自动执行的一段代码，不可以手工调用（和procedure不同）</li>
+<li>
+<p>会提示创建文件的路径，以及设置密码（直接回车，即为空密码）</p>
+</li>
+<li>
+<p>生成id_rsa密钥和id_rsa.pub公钥</p>
+</li>
+<li>
+<p>known_hosts文件，这个文件会把<strong>远程计算机的相关信息</strong>记录在这个文件里，确保你下次登录的时候是相同的服务器，避免遭受hijack之类的攻击。如果登录的服务器信息有所变动，那你登录的时候就会提示你，然后登录失败。</p>
+</li>
 </ul>
-<h4 id="dml触发器">dml触发器</h4>
-<p>触发条件为dml语句</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">conn scott/tiger</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> soctt.tr1_test(a <span class="built_in">varchar</span>(<span class="number">30</span>));   <span class="comment">--一般触发器不创建在sys下</span></span><br></pre></td></tr></table></figure>
-<p>语句触发器</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr1</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">update</span> <span class="keyword">on</span> scott.emp</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.tr1_test <span class="keyword">values</span>(<span class="string">'Be changed!'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> emp <span class="keyword">set</span> sal=<span class="number">2800</span> <span class="keyword">where</span> mgr=<span class="number">7698</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test; <span class="comment">-- 一条be changed</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- 回滚了，tr_test1中的数据也没了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果改5行，那么插入一行记录</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">5000</span> <span class="keyword">where</span> mgr=<span class="number">7839</span>;<span class="comment">--动了很多条</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test; <span class="comment">-- 一条be changed</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- 回滚了，tr_test1中的数据也没了</span></span><br></pre></td></tr></table></figure>
-<p>逐行触发for each row</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr1</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">update</span> <span class="keyword">on</span> scott.emp <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.tr1_test <span class="keyword">values</span>(<span class="string">'Be changed!'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test;<span class="comment">--空</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">10000</span> <span class="keyword">where</span> mgr=<span class="number">7839</span>;<span class="comment">--动了3条</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.tr1_test;<span class="comment">--有3条be changed</span></span><br></pre></td></tr></table></figure>
-<p>练习：利用触发器记录员工的工资改变情况</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> sal_change(ename <span class="built_in">varchar2</span>(<span class="number">10</span>),old_sal <span class="built_in">number</span>(<span class="number">7</span>,<span class="number">2</span>),new_sal <span class="built_in">number</span>(<span class="number">7</span>,<span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr1</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">update</span> <span class="keyword">on</span> emp <span class="keyword">referencing</span> <span class="keyword">old</span> <span class="keyword">as</span> my_old <span class="keyword">new</span> <span class="keyword">as</span> my_new <span class="keyword">for</span> <span class="keyword">each</span> <span class="keyword">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.sal_change <span class="keyword">values</span>(:my_old.ename,:my_old.sal,:my_new.sal);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> sal_change;</span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">4399</span> <span class="keyword">where</span> empno=<span class="number">7369</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> sal_change;</span><br></pre></td></tr></table></figure>
-<h4 id="系统触发器">系统触发器</h4>
-<p>只要有用户登录，就记录时间用户等信息</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.logon_rec(username <span class="built_in">varchar</span>(<span class="number">30</span>),logon_time <span class="built_in">date</span>);</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">administer</span> <span class="keyword">database</span> <span class="keyword">trigger</span> <span class="keyword">to</span> scott; <span class="comment">-- 赋权限</span></span><br></pre></td></tr></table></figure>
-<p>创建触发器，只要用户登陆了数据库，就有记录</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr3</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">logon</span> <span class="keyword">on</span> <span class="keyword">database</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">user</span> <span class="keyword">in</span> (<span class="string">'SYS'</span>,<span class="string">'SYSTEM'</span>) <span class="keyword">then</span> <span class="literal">null</span>;</span><br><span class="line">else <span class="keyword">insert</span> <span class="keyword">into</span> scott.logon_rec <span class="keyword">values</span>(<span class="keyword">user</span>,<span class="keyword">sysdate</span>);</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">if</span>;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">conn a/a;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.logon_rec;</span><br></pre></td></tr></table></figure>
-<p>创建打开数据库就锁定进程的触发器</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 查询内存中的对象</span></span><br><span class="line">col owner for a20</span><br><span class="line">col name for a30</span><br><span class="line">col type for a30</span><br><span class="line"><span class="keyword">select</span> owner,<span class="keyword">name</span>,<span class="keyword">type</span> <span class="keyword">from</span> v$db_object_cache <span class="keyword">where</span> owner&lt;&gt;<span class="string">'SYS'</span> <span class="keyword">and</span> kept=<span class="string">'YES'</span>;</span><br><span class="line"></span><br><span class="line">desc user_procedures;</span><br><span class="line"><span class="keyword">select</span> object_name,object_type <span class="keyword">from</span> user_procedures <span class="keyword">where</span> object_type=<span class="string">'PROCEDURE'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">execute</span> dbms_shared_pool.keep(<span class="string">'SCOTT.P1'</span>);</span><br><span class="line"><span class="comment">-- 只要启动就调用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 需要先给scott权限</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">execute</span> <span class="keyword">on</span> dbms_shared_pool <span class="keyword">to</span> scott;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">trigger</span> scott.tr4</span><br><span class="line"><span class="keyword">after</span> <span class="keyword">startup</span> <span class="keyword">on</span> <span class="keyword">database</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">sys.dbms_shared_pool.keep(<span class="string">'SCOTT.P1'</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line"><span class="comment">-- shutdown，startup之后就有了</span></span><br></pre></td></tr></table></figure>
-<h4 id="细粒度审计（FGA）">细粒度审计（FGA）</h4>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc dbms_fga <span class="comment">-- 有4个存储过程，add drop enable disable policy</span></span><br><span class="line">desc dbms_shared_pool <span class="comment">-- keep存储过程，锁在内存中</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">  <span class="comment">-- 调用包</span></span><br><span class="line"><span class="keyword">execute</span> dbms_fga.ADD_POLICY(<span class="string">'SCOTT'</span>,<span class="string">'EMP'</span>,<span class="string">'FGA_DEMO'</span>,STATEMENT_TYPES=<span class="string">'select,insert,delete'</span>);</span><br><span class="line">  <span class="comment">--a:</span></span><br><span class="line">   <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> scott.emp；</span><br><span class="line">   <span class="comment">--处理错误</span></span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">index</span> scott.pk_emp <span class="keyword">rebuild</span>;</span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">user</span> scott <span class="keyword">quota</span> <span class="keyword">unlimited</span>……；</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> scott.emp(empno,ename)<span class="keyword">values</span>(<span class="number">1234</span>,<span class="string">'Tom'</span>);</span><br><span class="line">   <span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">3000</span> <span class="keyword">where</span> empno=<span class="number">1234</span>;</span><br><span class="line">   <span class="keyword">delete</span> <span class="keyword">from</span> scott.emp wheer empno=<span class="number">1234</span>;</span><br><span class="line">   <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;</span><br><span class="line">   <span class="comment">--sys:</span></span><br><span class="line">   desc dba_fga_audit_trail<span class="comment">--查询dba_fga_audit_trail结果</span></span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br><span class="line">   <span class="keyword">select</span> <span class="built_in">timestamp</span>,db_user,sql_text <span class="keyword">from</span> dba_fga_audit_trail <span class="keyword">where</span></span><br><span class="line">policy_name=<span class="string">'FGA_DEMO'</span>;<span class="comment">--policy</span></span><br></pre></td></tr></table></figure>
+<p>3、把本机生成的公开的秘钥添加到github中</p>
+<p>在<code>C:\Users\zhx\.ssh</code>下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>将公钥复制下来</p>
+<p>4、将公钥放在github上</p>
+<p>打开github登陆后，点击自己头像下箭头，找到settings（设置）</p>
+<p>在左边栏目里面选择SSH keys，然后点击Add SSH key</p>
+<p>随便填一个Title，把上面把cat出来的内容全部添加到key文本框里，然后点击add key。</p>
+<p>添加成功后，创建github时用到的邮箱会收到GitHub发的一个”A new public key was add to your account”的邮件。（可能会比较慢）</p>
+<p>5、使用私人密钥与GitHub进行认证和通信</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br><span class="line"></span><br><span class="line">Hi xiangxiang-cpu! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+<h3 id="b-将hexo和github进行关联">b. 将hexo和github进行关联</h3>
+<p>1、编辑E：\hexo下的_config.yml文件，在_config.yml最下方，添加如下配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:thinkerwalker&#x2F;thinkerwalker.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ul>
+<li>
+<p>hexo的配置文件中任何引号’:’后面都是带一个空格的</p>
+</li>
+<li>
+<p>repository: 后面的地址其实在github上有生成。新建仓库时候，会有生成如下图</p>
+<p><img src="/2018/12/21/hexo%E6%90%AD%E5%BB%BA/image-20200408150322601.png" alt="image-20200408150322601"></p>
+</li>
+<li>
+<p>这里发现还有HTTPS，其实HTTPS也可以和本地进行通信，只不过通信时候，每次要求输入GitHub账号密码</p>
+</li>
+</ul>
+<p>2、将本地文件同步到GitHub</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<p>此时，我们的博客已经搭建起来，并发布到Github上了，这时可以登陆自己的Github查看代码是否已经推送到对应Repository，在浏览器访问http://xiangxiang-cpu.github.io<br>
+就能看到自己的博客了。配置域名后，上面链接会失效？？？</p>
+<p>第一次访问地址，可能访问不了，您可以在几分钟后进行访问，一般不超过10分钟。</p>
+<h2 id="5-发表一篇文章">5. 发表一篇文章</h2>
+<p>1、在Git Bash执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo new “firstblog”</span><br></pre></td></tr></table></figure>
+<p>2、这时候会在hexo\source_post文件夹中，生成一个firstblog.md文件，这时候，我们可以在里面编辑内容。</p>
+<p>3、可以先在本地预览一下生成的博客</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>4、访问http://127.0.0.1:4000</p>
+<p>5、同步到GitHub上</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+<p>6、访问自己的网址即可查看，<a href="https://xiangxiang-cpu.github.io" target="_blank" rel="noopener">https://xiangxiang-cpu.github.io</a></p>
+<h2 id="6-配置域名">6. 配置域名</h2>
+<p>1、在hexo/source文件夹中新建一个CNAME文件，注意不是txt！</p>
+<p>然后里面添加自己的网站域名（theworld.ltd）</p>
+<p>2、到自己的域名解析中添加CNAME值，主机记录www，<a href="http://xn--username-nw7m987ov50e.github.io" target="_blank" rel="noopener">解析到username.github.io</a></p>
+<p><img src="/2018/12/21/hexo%E6%90%AD%E5%BB%BA/image-20200408151636893.png" alt="image-20200408151636893"></p>
+<ul>
+<li>A记录，指向IP</li>
+<li>CNAME记录， 当需要将域名指向另一个域名，再由另一个域名提供 IP 地址</li>
+<li>@主机记录，不用输一级域名（www）也能访问</li>
+<li>www主机记录，需要输www才能访问</li>
+</ul>
+<p>3、hexo g -d</p>
+<p>4、等个10min就能用域名访问辣~</p>
 ]]></content>
       <categories>
-        <category>Coding</category>
+        <category>Blog</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -2376,6 +2557,18 @@ alias rman=‘rlwrap rman’</p>
       </tags>
   </entry>
   <entry>
+    <title>hexo美化</title>
+    <url>/2019/01/25/hexo%E7%BE%8E%E5%8C%96/</url>
+    <content><![CDATA[<h4 id="0-写在前面">0. 写在前面</h4>
+]]></content>
+      <categories>
+        <category>Blog</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tensorflow安装</title>
     <url>/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/</url>
     <content><![CDATA[<h2 id="1-python3-7">1. python3.7</h2>
@@ -2442,7 +2635,8 @@ alias rman=‘rlwrap rman’</p>
         <category>Coding</category>
       </categories>
       <tags>
-        <tag>tensorflow; - anaconda</tag>
+        <tag>tensorflow</tag>
+        <tag>anaconda</tag>
       </tags>
   </entry>
 </search>
