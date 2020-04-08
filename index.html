@@ -227,14 +227,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-04-05 22:13:55" itemprop="dateCreated datePublished" datetime="2020-04-05T22:13:55+08:00">2020-04-05</time>
+              <time title="Created: 2020-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-05T00:00:00+08:00">2020-04-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-07 16:17:01" itemprop="dateModified" datetime="2020-04-07T16:17:01+08:00">2020-04-07</time>
+                <time title="Modified: 2020-04-08 13:54:33" itemprop="dateModified" datetime="2020-04-08T13:54:33+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -287,7 +287,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/27/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -301,7 +301,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/" class="post-title-link" itemprop="url">Oracle 基操</a>
+            <a href="/2020/03/27/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/" class="post-title-link" itemprop="url">Oracle 数据移动&外部表</a>
         </h2>
 
         <div class="post-meta">
@@ -311,14 +311,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+              <time title="Created: 2020-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-27T00:00:00+08:00">2020-03-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-07 10:21:48" itemprop="dateModified" datetime="2020-04-07T10:21:48+08:00">2020-04-07</time>
+                <time title="Modified: 2020-04-08 13:55:04" itemprop="dateModified" datetime="2020-04-08T13:55:04+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -341,14 +341,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-Oracle基本操作">1.Oracle基本操作</h2>
-<h3 id="登录">登录</h3>
-<p>linux用oracle用户登录，不能用root</p>
-<p>~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径）</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux中环境变量以$开头，$HOME，$ORACLE_HOME</span></span><br><span class="line"><span class="comment"># 使用echo查看，使用export设置</span></span><br><span class="line"><span class="comment"># export ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1 # 等号两边不能有空格</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ORACLE_HOME</span> <span class="comment"># /u01/app/oracle/product/12.2.0/dbhome_1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HOME</span> <span class="comment"># /home/oracle</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># linux不支持@echo，没有pause</span></span><br></pre></td></tr></table></figure>
+          <h2 id="1-数据移动">1.数据移动</h2>
+<ul>
+<li>数据文件 ----- 数据库</li>
+<li>数据库 ----- 数据文件</li>
+<li>数据库 ----- 数据库</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/21/Oracle%E5%9F%BA%E6%93%8D/#more" rel="contents">
+              <a class="btn" href="/2020/03/27/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -403,7 +404,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-06 23:44:34" itemprop="dateModified" datetime="2020-04-06T23:44:34+08:00">2020-04-06</time>
+                <time title="Modified: 2020-04-08 13:19:50" itemprop="dateModified" datetime="2020-04-08T13:19:50+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -426,8 +427,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Oracle安全3A</h1>
-<ol>
+          <ol>
 <li>验证【第一步得现有身份证】</li>
 <li>授权【有身份证还得有登机牌才能上飞机】</li>
 <li>审核【飞机掉下去找黑匣子，找问题的原因】</li>
@@ -458,7 +458,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -472,7 +472,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/" class="post-title-link" itemprop="url">Oracle 数据移动&外部表</a>
+            <a href="/2020/03/13/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">Oracle 服务器架构</a>
         </h2>
 
         <div class="post-meta">
@@ -482,14 +482,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+              <time title="Created: 2020-03-13 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-13T22:13:55+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-06 23:44:20" itemprop="dateModified" datetime="2020-04-06T23:44:20+08:00">2020-04-06</time>
+                <time title="Modified: 2020-04-08 13:54:42" itemprop="dateModified" datetime="2020-04-08T13:54:42+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -512,15 +512,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-数据移动">1.数据移动</h2>
-<ul>
-<li>数据文件 ----- 数据库</li>
-<li>数据库 ----- 数据文件</li>
-<li>数据库 ----- 数据库</li>
-</ul>
+          <p><strong>服务器</strong>：提供服务的计算机，计算机经过优化处理，在某方面功能强大</p>
+<p><strong>文件服务器</strong>：存储容量强</p>
+<p><strong>应用服务器</strong>：CPU、内存强</p>
+<p><strong>Oracle服务器</strong>：<strong>数据存储、数据处理</strong>功能强大的计算机</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/21/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/#more" rel="contents">
+              <a class="btn" href="/2020/03/13/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -544,7 +542,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/OracleSQL/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/OracleSQL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -558,7 +556,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/OracleSQL/" class="post-title-link" itemprop="url">Oracle SQL</a>
+            <a href="/2020/03/10/OracleSQL/" class="post-title-link" itemprop="url">Oracle SQL</a>
         </h2>
 
         <div class="post-meta">
@@ -568,14 +566,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+              <time title="Created: 2020-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-07 11:41:23" itemprop="dateModified" datetime="2020-04-07T11:41:23+08:00">2020-04-07</time>
+                <time title="Modified: 2020-04-08 13:54:17" itemprop="dateModified" datetime="2020-04-08T13:54:17+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -598,8 +596,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>SQL语句</h1>
-<ul>
+          <ul>
 <li>结构化查询语言</li>
 <li>任何关系型数据库都支持</li>
 <li>第四代 4GL</li>
@@ -607,7 +604,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/21/OracleSQL/#more" rel="contents">
+              <a class="btn" href="/2020/03/10/OracleSQL/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -631,7 +628,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/Oracle%E5%9F%BA%E6%93%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -645,7 +642,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">Oracle 服务器架构</a>
+            <a href="/2020/02/25/Oracle%E5%9F%BA%E6%93%8D/" class="post-title-link" itemprop="url">Oracle 基操</a>
         </h2>
 
         <div class="post-meta">
@@ -655,14 +652,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+              <time title="Created: 2020-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-25T00:00:00+08:00">2020-02-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-07 10:21:42" itemprop="dateModified" datetime="2020-04-07T10:21:42+08:00">2020-04-07</time>
+                <time title="Modified: 2020-04-08 13:52:43" itemprop="dateModified" datetime="2020-04-08T13:52:43+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -685,14 +682,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1>Oracle服务器架构</h1>
-<p><strong>服务器</strong>：提供服务的计算机，计算机经过优化处理，在某方面功能强大</p>
-<p><strong>文件服务器</strong>：存储容量强</p>
-<p><strong>应用服务器</strong>：CPU、内存强</p>
-<p><strong>Oracle服务器</strong>：<strong>数据存储、数据处理</strong>功能强大的计算机</p>
+          <h2 id="1-Oracle基本操作">1.Oracle基本操作</h2>
+<h3 id="登录">登录</h3>
+<p>linux用oracle用户登录，不能用root</p>
+<p>~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux中环境变量以$开头，$HOME，$ORACLE_HOME</span></span><br><span class="line"><span class="comment"># 使用echo查看，使用export设置</span></span><br><span class="line"><span class="comment"># export ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1 # 等号两边不能有空格</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ORACLE_HOME</span> <span class="comment"># /u01/app/oracle/product/12.2.0/dbhome_1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HOME</span> <span class="comment"># /home/oracle</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># linux不支持@echo，没有pause</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/21/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/#more" rel="contents">
+              <a class="btn" href="/2020/02/25/Oracle%E5%9F%BA%E6%93%8D/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -716,7 +713,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/linux_vmware/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -730,7 +727,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/linux_vmware/" class="post-title-link" itemprop="url">VMware和linux</a>
+            <a href="/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/" class="post-title-link" itemprop="url">tensorflow安装</a>
         </h2>
 
         <div class="post-meta">
@@ -740,14 +737,98 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+              <time title="Created: 2019-10-28 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-28T00:00:00+08:00">2019-10-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-07 00:16:18" itemprop="dateModified" datetime="2020-04-07T00:16:18+08:00">2020-04-07</time>
+                <time title="Modified: 2020-04-08 14:01:13" itemprop="dateModified" datetime="2020-04-08T14:01:13+08:00">2020-04-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-python3-7">1. python3.7</h2>
+<p>下载并安装python3.7版本的anaconda</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.anaconda.com&#x2F;distribution&#x2F;</span><br></pre></td></tr></table></figure>
+<img src="/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/image-20200313234202516.png" alt="image-20200313234202516" style="zoom:67%;">
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/linux_vmware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/21/linux_vmware/" class="post-title-link" itemprop="url">VMware和linux</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-03-21T00:00:00+08:00">2019-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-08 13:53:50" itemprop="dateModified" datetime="2020-04-08T13:53:50+08:00">2020-04-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -775,91 +856,7 @@
 <p>隐藏 – 只是选择移除，没有删除磁盘文件</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/21/linux_vmware/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/%E9%85%8D%E7%BD%AEtensorflow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/21/%E9%85%8D%E7%BD%AEtensorflow/" class="post-title-link" itemprop="url">tensorflow安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-04-07 10:21:32" itemprop="dateModified" datetime="2020-04-07T10:21:32+08:00">2020-04-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-python3-7">1. python3.7</h2>
-<p>下载并安装python3.7版本的anaconda</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.anaconda.com&#x2F;distribution&#x2F;</span><br></pre></td></tr></table></figure>
-<img src="/2020/03/21/%E9%85%8D%E7%BD%AEtensorflow/image-20200313234202516.png" alt="image-20200313234202516" style="zoom:67%;">
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/21/%E9%85%8D%E7%BD%AEtensorflow/#more" rel="contents">
+              <a class="btn" href="/2019/03/21/linux_vmware/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1065,11 +1062,6 @@
 
 
   <!-- 鼠标效果 -->
-  
-    
-      <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
-      <script src="/js/cursor/text.js"></script>
-    
   
 
 
