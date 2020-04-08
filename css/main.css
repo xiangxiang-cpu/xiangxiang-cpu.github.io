@@ -867,7 +867,7 @@ pre .javascript .function {
 }
 .pdfobject-container iframe,
 .pdfobject-container embed {
-  height: 500px;
+  height: 700px;
   width: 100%;
 }
 .pagination .prev,
@@ -1307,7 +1307,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #0193ff;
+  background: #0a85b8;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2909,15 +2909,15 @@ ul.breadcrumb li + li:last-child {
   }
 }
 ::selection {
-  background: #87cefa;
+  background: #f90;
   color: #fff;
 }
 ::-moz-selection {
-  background: #87cefa;
+  background: #f90;
   color: #fff;
 }
 ::-webkit-selection {
-  background: #87cefa;
+  background: #f90;
   color: #fff;
 }
 .headband {
