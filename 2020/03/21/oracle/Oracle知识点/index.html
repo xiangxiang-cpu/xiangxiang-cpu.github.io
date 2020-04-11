@@ -38,23 +38,24 @@
 </style>
   <meta name="description" content="2. Oracle知识点 数据库和实例 数据库实例名是用于和操作系统进行联系的标识，就是说数据库和操作系统之间的交互用的是数据库实例名 数据库名和实例名可以相同也可以不同。 在一般情况下，数据库名和实例名是一对一的关系 但如果在oracle并行服务器架构（即oracle实时应用集群）中，数据库名和实例名是一对多的关系。 1234-- 查询当前数据库实例名，两种方法select instance_n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="oracle&#x2F;Oracle知识点">
-<meta property="og:url" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:title" content="Oracle 零碎知识点">
+<meta property="og:url" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
 <meta property="og:site_name" content="翔翔の据点">
 <meta property="og:description" content="2. Oracle知识点 数据库和实例 数据库实例名是用于和操作系统进行联系的标识，就是说数据库和操作系统之间的交互用的是数据库实例名 数据库名和实例名可以相同也可以不同。 在一般情况下，数据库名和实例名是一对一的关系 但如果在oracle并行服务器架构（即oracle实时应用集群）中，数据库名和实例名是一对多的关系。 1234-- 查询当前数据库实例名，两种方法select instance_n">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
-<meta property="og:image" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130607997-1586189129451.png">
-<meta property="og:image" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png">
-<meta property="og:image" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png">
-<meta property="og:image" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326185323983.png">
-<meta property="article:published_time" content="2020-04-10T12:41:02.618Z">
-<meta property="article:modified_time" content="2020-04-11T02:29:31.079Z">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130607997-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326185323983.png">
+<meta property="article:published_time" content="2020-03-21T14:13:55.000Z">
+<meta property="article:modified_time" content="2020-04-11T06:11:22.686Z">
 <meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
+<link rel="canonical" href="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
 
 
 <script id="page-configurations">
@@ -67,7 +68,7 @@
   };
 </script>
 
-  <title>oracle/Oracle知识点 | 翔翔の据点</title>
+  <title>Oracle 零碎知识点 | 翔翔の据点</title>
   
 
 
@@ -153,7 +154,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">15</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">14</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -214,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -227,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          oracle/Oracle知识点
+          Oracle 零碎知识点
         </h1>
 
         <div class="post-meta">
@@ -237,15 +238,24 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-04-10 20:41:02" itemprop="dateCreated datePublished" datetime="2020-04-10T20:41:02+08:00">2020-04-10</time>
+              <time title="创建时间：2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-11 10:29:31" itemprop="dateModified" datetime="2020-04-11T10:29:31+08:00">2020-04-11</time>
+                <time title="修改时间：2020-04-11 14:11:22" itemprop="dateModified" datetime="2020-04-11T14:11:22+08:00">2020-04-11</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
 
           
 
@@ -442,9 +452,9 @@
 <h3 id="做服务名">做服务名</h3>
 <p>如果想把db15c作为一个服务名</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd $ORACLE_HOME&#x2F;network&#x2F;admin</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png" alt="image-20200326130527532"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png" alt="image-20200326130527532"></p>
 <p>tnsnames.ora文件用来存放==服务名==</p>
-<p><img src="/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130607997-1586189129451.png" alt="image-20200326130607997"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130607997-1586189129451.png" alt="image-20200326130607997"></p>
 <p>用图形界面修改方法，Oracle外</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">netmgr</span><br></pre></td></tr></table></figure>
 <ul>
@@ -454,8 +464,8 @@
 <li>测试时密码记得修改成123123，他默认用的tiger</li>
 <li>记得保存网络配置</li>
 </ul>
-<p><img src="/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png" alt="image-20200303170141238"></p>
-<p><img src="/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png" alt="image-20200326131510091"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png" alt="image-20200303170141238"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png" alt="image-20200326131510091"></p>
 <p>此时!tnsping db15c正常了</p>
 <p>conn scott/123123@db15c也可以连上服务器了</p>
 <h3 id="全局数据库名和SID">全局数据库名和SID</h3>
@@ -522,7 +532,7 @@
 <p>问题：做了一次检查点之后，几乎没有做任何操作，现在这个数据库挂了，恢复需要多长时间？</p>
 <p>小于等于300，不知道</p>
 <p>查数据字典，动态，例程恢复</p>
-<img src="/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326185323983.png" alt="image-20200326185323983" style="zoom:67%;">
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326185323983.png" alt="image-20200326185323983" style="zoom:67%;">
 <p>estimated_mttr：后台进程监视，这个值达到300时自动checkpoint</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> estimated_mttr <span class="keyword">from</span> v$instance_recovery;</span><br></pre></td></tr></table></figure>
 <h3 id="alter-system-database">alter system / database</h3>
@@ -580,7 +590,7 @@ commit;<br>
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yoursite.com/2020/04/10/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" title="oracle&#x2F;Oracle知识点">http://yoursite.com/2020/04/10/oracle/Oracle知识点/</a>
+    <a href="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" title="Oracle 零碎知识点">http://yoursite.com/2020/03/21/oracle/Oracle知识点/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -590,6 +600,10 @@ commit;<br>
 
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
 
         
 
@@ -597,10 +611,13 @@ commit;<br>
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/" rel="prev" title="Oracle 数据库备份&恢复">
-      <i class="fa fa-chevron-left"></i> Oracle 数据库备份&恢复
+    <a href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" rel="prev" title="Oracle 服务器架构">
+      <i class="fa fa-chevron-left"></i> Oracle 服务器架构
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/21/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/" rel="next" title="Oracle 文件部分">
+      Oracle 文件部分 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -675,7 +692,7 @@ commit;<br>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
