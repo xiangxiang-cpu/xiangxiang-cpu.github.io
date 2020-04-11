@@ -294,7 +294,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/svg/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/hhh/svg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -308,7 +308,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/01/25/svg/" class="post-title-link" itemprop="url">svg学习笔记</a>
+            <a href="/2019/01/25/hhh/svg/" class="post-title-link" itemprop="url">svg学习笔记</a>
         </h2>
 
         <div class="post-meta">
@@ -374,7 +374,7 @@
 <p>与 Flash 相比，SVG 最大的优势是与其他标准（比如 XSL 和 DOM）相兼容。而 Flash 则是未开源的私有技术。</p>
 <h2 id="例子">例子</h2>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; standalone&#x3D;&quot;no&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE svg PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD SVG 1.1&#x2F;&#x2F;EN&quot; </span><br><span class="line">&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;Graphics&#x2F;SVG&#x2F;1.1&#x2F;DTD&#x2F;svg11.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;svg width&#x3D;&quot;100%&quot; height&#x3D;&quot;100%&quot; version&#x3D;&quot;1.1&quot;</span><br><span class="line">xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;50&quot; r&#x3D;&quot;40&quot; stroke&#x3D;&quot;black&quot;</span><br><span class="line">stroke-width&#x3D;&quot;2&quot; fill&#x3D;&quot;blue&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;svg&gt;</span><br></pre></td></tr></table></figure>
-<img src="/2019/01/25/svg/image-20200408211835100.png" alt="image-20200408211835100" style="zoom:80%;">
+<img src="/2019/01/25/hhh/svg/image-20200408211835100.png" alt="image-20200408211835100" style="zoom:80%;">
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">第一行包含了 XML 声明。</span><br><span class="line">注意 standalone 属性！该属性规定此 SVG 文件是否是“独立的”，或含有对外部文件的引用。</span><br><span class="line">standalone&#x3D;&quot;no&quot; 意味着【不独立】 SVG 文档会引用一个外部文件 - 在这里，是 DTD 文件。</span><br><span class="line"></span><br><span class="line">第二和第三行引用了这个外部的 SVG DTD。该 DTD 位于“http:&#x2F;&#x2F;www.w3.org&#x2F;Graphics&#x2F;SVG&#x2F;1.1&#x2F;DTD&#x2F;svg11.dtd”。</span><br><span class="line">该 DTD 位于 W3C，含有所有允许的 SVG 元素。</span><br><span class="line"></span><br><span class="line">SVG 代码以 &lt;svg&gt; 元素开始，包括开启标签 &lt;svg&gt; 和关闭标签 &lt;&#x2F;svg&gt; 。</span><br><span class="line">&lt;svg&gt; 是根元素。</span><br><span class="line">width 和 height 属性可设置此 SVG 文档的宽度和高度。</span><br><span class="line">version 属性可定义所使用的 SVG 版本。</span><br><span class="line">xmlns 属性定义 SVG 命名空间。</span><br><span class="line"></span><br><span class="line">关闭标签的作用是关闭 SVG 元素和文档本身。</span><br></pre></td></tr></table></figure>
 <p>SVG 的 <code>&lt;circle&gt;</code> 用来创建一个圆。</p>
 <ul>
