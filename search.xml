@@ -1631,6 +1631,8 @@ F:\exp&gt;expdp scott/tiger file=empdp.dmp tables=emp<br>
 <p>执行位于共享目录的sql脚本</p>
 <p>用@执行脚本</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@&#x2F;mnt&#x2F;hgfs&#x2F;D&#x2F;software&#x2F;os&#x2F;scott.sql</span><br><span class="line">用于安装scott方案</span><br></pre></td></tr></table></figure>
+<h3 id="desc">desc</h3>
+<p>查询时记得加上表的所有者</p>
 <h2 id="2-Oracle常用操作">2. Oracle常用操作</h2>
 <h3 id="查数据字典">查数据字典</h3>
 <h4 id="dict-columns">dict_columns</h4>
@@ -2590,35 +2592,76 @@ duplicate target database to oradup from active database;</p>
 <p>查询结果显示格式，可以改的</p>
 <img src="/2020/03/10/oracle/OracleSQL/image-20200413004334644.png" alt="image-20200413004334644" style="zoom:67%;">
 <h3 id="null的三值现象">null的三值现象</h3>
-<p>null == 1 为false</p>
-<p>null !=1 为false</p>
-<p>判断是不是null ，使用is null</p>
-<p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306102621264.png" alt="image-20200306102621264"></p>
-<p>【不配拿奖金】【有资格拿奖金，但奖金数位0】</p>
-<p>order by comm时，null相当于无穷大</p>
-<h3 id="引号使用方法">引号使用方法</h3>
-<p>Oracle中，字符和字符串都使用==单引号==</p>
-<p>Oracle中 + 不能用于字符串连接，使用双竖线表示：‘3’ || ‘4’</p>
-<p>select ‘a’ from dual;</p>
-<p>select ‘a’ a from dual; 默认别名大写</p>
-<p>select ‘a’ “a” from dual; <strong>双引号内的原样输出</strong></p>
-<p>嵌套引号方法（<strong>考试</strong>里有这些东西）</p>
+<p>null 相当于未定义的变量，不能说等于或者不等于</p>
 <ul>
-<li>连续两个单引号  ‘’，表示转义</li>
-<li>定界符  q’[内部的东西原样显示]’</li>
+<li>null == 1 为false</li>
+<li>null !=1 为false</li>
+<li>判断是不是null ，使用is null</li>
 </ul>
-<p>去重 distinct == unique</p>
+<p>eg1</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> empno,ename,mgr <span class="keyword">from</span> scott.emp <span class="keyword">where</span> mgr&lt;&gt;<span class="number">7698</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> empno,ename,mgr <span class="keyword">from</span> scott.emp <span class="keyword">where</span> mgr <span class="keyword">is</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">select</span> empno,ename,mgr <span class="keyword">from</span> scott.emp <span class="keyword">where</span> mgr <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<p>eg2</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> empno,ename,sal,comm,comm+<span class="number">500</span> <span class="keyword">from</span> scott.emp;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/10/oracle/OracleSQL/image-20200413005310401.png" alt="image-20200413005310401" style="zoom:67%;">
+<ul>
+<li>null：不配拿奖金</li>
+<li>0：有资格拿奖金，但奖金数位0</li>
+</ul>
+<p>涨奖金时，只有配拿奖金的人才会涨，null的不会加</p>
+<p>order by comm时，null不参加排序，null相当于无穷大</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> empno,ename,sal,comm <span class="keyword">from</span> scott.emp <span class="keyword">order</span> <span class="keyword">by</span> comm;</span><br><span class="line"><span class="keyword">select</span> empno,ename,sal,comm <span class="keyword">from</span> scott.emp <span class="keyword">order</span> <span class="keyword">by</span> comm <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="别名">别名</h3>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> last_name <span class="keyword">as</span> <span class="keyword">name</span> <span class="keyword">from</span> employees;</span><br></pre></td></tr></table></figure>
+<p>as 可以省略，别名引号？</p>
+<h3 id="Oracle中引号、字符串连接">Oracle中引号、字符串连接</h3>
+<ul>
+<li>字符和字符串都使用单引号</li>
+<li>双引号用于名字：表的名称、别名、列的名称使用双引号</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">'a'</span> <span class="keyword">from</span> dual; <span class="comment">-- 列名默认大写</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="string">'a'</span> a <span class="keyword">from</span> dual; <span class="comment">-- 默认别名大写</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="string">'a'</span> <span class="string">"a"</span> <span class="keyword">from</span> dual; <span class="comment">-- 双引号内的原样输出，别名变为小写</span></span><br></pre></td></tr></table></figure>
+<p>Oracle中 + 就是算术运算，不能用于字符串连接</p>
+<p>字符串连接使用双竖线表示：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="number">3</span>+<span class="string">'4'</span> <span class="keyword">from</span> dual; <span class="comment">-- 7</span></span><br><span class="line"><span class="keyword">select</span> <span class="string">'3'</span>+<span class="string">'4'</span> <span class="keyword">from</span> dual; <span class="comment">-- 7</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="string">'3'</span> || <span class="string">'4'</span> <span class="keyword">from</span> dual; <span class="comment">-- 34</span></span><br></pre></td></tr></table></figure>
+<p>嵌套引号方法（考试里有这些东西）</p>
+<ul>
+<li>连续两个单引号表示转义</li>
+<li>定界符q，不一定是方括号</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">'I''m a student'</span> <span class="keyword">from</span> dual;</span><br><span class="line"><span class="keyword">select</span> q<span class="string">'[I'</span>m a student]<span class="string">' from dual;</span></span><br></pre></td></tr></table></figure>
+<h3 id="去重-distinct-unique">去重 distinct == unique</h3>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">unique</span> department_id <span class="keyword">from</span> hr.employees <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 <p>考试选择题</p>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306103700984.png" alt="image-20200306103700984"></p>
 <p>key：bc</p>
-<h3 id="转义-escape">转义 - escape</h3>
-<p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306104453200.png" alt="image-20200306104453200"></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> demo1 <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'AB\_\_%'</span> escape <span class="string">'\'</span>;</span><br></pre></td></tr></table></figure>
 <h3 id="order-by">order by</h3>
-<p>order by 1 按照第一列排序</p>
+<h4 id="根据数字排序">根据数字排序</h4>
+<p>order by 1 按照<strong>select字段中的</strong>第一列排序（不是原表？？？）</p>
 <p>order by 2 按照第二列排序</p>
-<h3 id="考试必考">==考试必考==</h3>
-<p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105113281.png" alt="image-20200306105113281"></p>
+<h4 id="根据别名排序">根据别名排序</h4>
+<p>（别名的原名是一个表达式时，很好用）</p>
+<h4 id="复合排序">复合排序</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">order by aa, bb desc</span><br></pre></td></tr></table></figure>
+<p>复合的两个，可以一升一降</p>
+<h3 id="比较符">比较符</h3>
+<ul>
+<li>between and 含两端的值</li>
+<li>不等于是 &lt;&gt;</li>
+<li>in (set)</li>
+<li>like</li>
+<li>is null</li>
+</ul>
+<p>后三个都可以加not</p>
+<h4 id="like">like</h4>
+<p>%匹配任意多个</p>
+<p>_匹配一个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">where xx like &#39;%sga%&#39;;</span><br></pre></td></tr></table></figure>
+<h4 id="转义-escape">转义 - escape</h4>
+<p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306104453200.png" alt="image-20200306104453200"></p>
+<p>匹配AB__开头的记录</p>
+<p>每个\只转移后面的一个字符</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> demo1 <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'AB\_\_%'</span> escape <span class="string">'\'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="实现top-n功能">==实现top n功能==</h3>
+<p>考试必考</p>
 <p>12c之前，内嵌视图</p>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105516169.png" alt="image-20200306105516169"></p>
 <p>fetch first 2 rows only</p>
@@ -2627,7 +2670,7 @@ duplicate target database to oradup from active database;</p>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105842029.png" alt="image-20200306105842029"></p>
 <p>想要第4、5，offset 3 rows，先将前三个去掉，偏移过之后再去前三行</p>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306105948434.png" alt="image-20200306105948434"></p>
-<h4 id="查询时和用户交互">查询时和用户交互</h4>
+<h3 id="查询时和用户交互">查询时和用户交互</h3>
 <p>使用提交变量实现</p>
 <ol>
 <li>&amp;</li>
@@ -2646,8 +2689,8 @@ duplicate target database to oradup from active database;</p>
 <p>==待回看==第三节课</p>
 <p>定制部分11.21</p>
 <p>show all;显示所有配置</p>
-<h2 id="函数">函数</h2>
-<h3 id="字符型">字符型</h3>
+<h3 id="函数">函数</h3>
+<h4 id="字符型">字符型</h4>
 <h4 id="lower-upper-initcap-concat">lower upper initcap concat</h4>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310140930718.png" alt="image-20200310140930718"></p>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310141037295.png" alt="image-20200310141037295"></p>
@@ -2676,7 +2719,7 @@ duplicate target database to oradup from active database;</p>
 <h4 id="trim">trim</h4>
 <p>相当于python中的strip</p>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310143642776.png" alt="image-20200310143642776"></p>
-<h3 id="数字型">数字型</h3>
+<h4 id="数字型">数字型</h4>
 <h4 id="round（四舍五入）">round（四舍五入）</h4>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310143816031.png" alt="image-20200310143816031"></p>
 <p>1表示小数点后一位</p>
@@ -2685,7 +2728,7 @@ duplicate target database to oradup from active database;</p>
 <h4 id="trunc（无舍入，直接截断）">trunc（无舍入，直接截断）</h4>
 <h4 id="ceil-floor">ceil floor</h4>
 <h4 id="mod">mod</h4>
-<h3 id="日期型">日期型</h3>
+<h4 id="日期型">日期型</h4>
 <h5 id="sysdate-current-date">sysdate current_date</h5>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310144259396.png" alt="image-20200310144259396"></p>
 <h5 id="nls参数，更改日期格式">nls参数，更改日期格式</h5>
@@ -2709,7 +2752,7 @@ duplicate target database to oradup from active database;</p>
 <h5 id="日期的舍入-截断">日期的舍入/截断</h5>
 <img src="/2020/03/10/oracle/OracleSQL/md_picture_backup\image-20200310150035174.png" alt="image-20200310150035174" style="zoom:80%;">
 <p>舍入 == 有没有过了这一月/年的一半</p>
-<h3 id="练习题">练习题</h3>
+<h4 id="练习题">练习题</h4>
 <h4 id="练习题1-取lastname">练习题1 取lastname</h4>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> buyer_id, <span class="keyword">substr</span>(buyer_name,<span class="keyword">instr</span>(buyer_name,<span class="string">' '</span>)+<span class="number">1</span>) <span class="keyword">from</span> buyers;</span><br></pre></td></tr></table></figure>
 <p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200310142452090.png" alt="image-20200310142452090"></p>
