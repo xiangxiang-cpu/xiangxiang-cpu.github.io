@@ -1586,8 +1586,16 @@ F:\exp&gt;expdp scott/tiger file=empdp.dmp tables=emp<br>
     <title>Oracle 基操</title>
     <url>/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/</url>
     <content><![CDATA[<h2 id="1-sqlplus常用命令">1.sqlplus常用命令</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SQL&gt; help index</span><br><span class="line"></span><br><span class="line">Enter Help [topic] for help.</span><br><span class="line"></span><br><span class="line"> @             COPY         PAUSE                    SHUTDOWN</span><br><span class="line"> @@            DEFINE       PRINT                    SPOOL</span><br><span class="line"> &#x2F;             DEL          PROMPT                   SQLPLUS</span><br><span class="line"> ACCEPT        DESCRIBE     QUIT                     START</span><br><span class="line"> APPEND        DISCONNECT   RECOVER                  STARTUP</span><br><span class="line"> ARCHIVE LOG   EDIT         REMARK                   STORE</span><br><span class="line"> ATTRIBUTE     EXECUTE      REPFOOTER                TIMING</span><br><span class="line"> BREAK         EXIT         REPHEADER                TTITLE</span><br><span class="line"> BTITLE        GET          RESERVED WORDS (SQL)     UNDEFINE</span><br><span class="line"> CHANGE        HELP         RESERVED WORDS (PL&#x2F;SQL)  VARIABLE</span><br><span class="line"> CLEAR         HOST         RUN                      WHENEVER OSERROR</span><br><span class="line"> COLUMN        INPUT        SAVE                     WHENEVER SQLERROR</span><br><span class="line"> COMPUTE       LIST         SET                      XQUERY</span><br><span class="line"> CONNECT       PASSWORD     SHOW</span><br></pre></td></tr></table></figure>
+<p>sql语句关键字 != sqlplus命令</p>
+<p>不产生歧义的时候可以缩写</p>
+<p>如何学习sqlplus命令：登陆SQL plus后，help index</p>
 <a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">help index</span><br><span class="line"></span><br><span class="line">Enter Help [topic] for help.</span><br><span class="line"></span><br><span class="line"> @             COPY         PAUSE                    SHUTDOWN</span><br><span class="line"> @@            DEFINE       PRINT                    SPOOL</span><br><span class="line"> &#x2F;             DEL          PROMPT                   SQLPLUS</span><br><span class="line"> ACCEPT        DESCRIBE     QUIT                     START</span><br><span class="line"> APPEND        DISCONNECT   RECOVER                  STARTUP</span><br><span class="line"> ARCHIVE LOG   EDIT         REMARK                   STORE</span><br><span class="line"> ATTRIBUTE     EXECUTE      REPFOOTER                TIMING</span><br><span class="line"> BREAK         EXIT         REPHEADER                TTITLE</span><br><span class="line"> BTITLE        GET          RESERVED WORDS (SQL)     UNDEFINE</span><br><span class="line"> CHANGE        HELP         RESERVED WORDS (PL&#x2F;SQL)  VARIABLE</span><br><span class="line"> CLEAR         HOST         RUN                      WHENEVER OSERROR</span><br><span class="line"> COLUMN        INPUT        SAVE                     WHENEVER SQLERROR</span><br><span class="line"> COMPUTE       LIST         SET                      XQUERY</span><br><span class="line"> CONNECT       PASSWORD     SHOW</span><br><span class="line"></span><br><span class="line">help @</span><br></pre></td></tr></table></figure>
+<p>@ 调用脚本，把文件中的语句执行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@&#x2F;u01&#x2F;demo&#x2F;sql1</span><br></pre></td></tr></table></figure>
+<p>list 列出当前缓存中的最后一条语句</p>
+<p>edit 只能编辑最后一条语句？？？</p>
+<p>run 运行edit中的语句</p>
 <h3 id="sqlplus-startup-shutdown">sqlplus startup shutdown</h3>
 <p>linux用oracle用户登录，不能用root</p>
 <p>~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径）</p>
@@ -1625,17 +1633,29 @@ F:\exp&gt;expdp scott/tiger file=empdp.dmp tables=emp<br>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@&#x2F;mnt&#x2F;hgfs&#x2F;D&#x2F;software&#x2F;os&#x2F;scott.sql</span><br><span class="line">用于安装scott方案</span><br></pre></td></tr></table></figure>
 <h2 id="2-Oracle常用操作">2. Oracle常用操作</h2>
 <h3 id="查数据字典">查数据字典</h3>
-<h4 id="dba-users">dba_users</h4>
+<h4 id="dict-columns">dict_columns</h4>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> TABLE_NAME=<span class="string">'DICT'</span>; </span><br><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> table_name=<span class="string">'DBA_TABLESPACES'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询某个表中字段是啥意思</span></span><br><span class="line"><span class="comment">-- 我们可以在catalog.sql脚本中找到DICT_COLUMNS视图的创建语句</span></span><br></pre></td></tr></table></figure>
+<p>user_tab_columns？？？</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dict_columns <span class="keyword">where</span> COLUMN_NAME=<span class="string">'TABLE_NAME'</span> <span class="keyword">and</span> <span class="keyword">rownum</span>&lt;<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询都有哪些表包含指定的字段</span></span><br><span class="line"><span class="comment">-- 不加限制，可能条目太多</span></span><br></pre></td></tr></table></figure>
+<h4 id="dict">dict</h4>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">upper</span>(<span class="string">'dba_users'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表的作用</span></span><br></pre></td></tr></table></figure>
+<h4 id="users">_users</h4>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> username, account_status <span class="keyword">from</span> dba_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- expired - 过期，需要修改密码</span></span><br><span class="line"><span class="comment">-- locked - 需要解锁</span></span><br><span class="line"><span class="comment">-- open - 正常</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> hr <span class="keyword">account</span> <span class="keyword">unlock</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="views">_views</h4>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> owner,view_name <span class="keyword">from</span> dba_views <span class="keyword">where</span> view_name=<span class="keyword">upper</span>(<span class="string">'dba_tablespaces'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看是不是视图 </span></span><br><span class="line"><span class="comment">-- 动态性能视图查不到？？？</span></span><br></pre></td></tr></table></figure>
+<h4 id="tables">_tables</h4>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- table_name, tablespace_name</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="keyword">upper</span>(<span class="string">'emp'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查某一个表所在的表空间</span></span><br><span class="line"></span><br><span class="line">desc user_indexes <span class="comment">-- 查看有哪些索引</span></span><br><span class="line"><span class="keyword">select</span> index_name <span class="keyword">from</span> user_indexes;</span><br><span class="line">desc user_triggers <span class="comment">-- 触发器</span></span><br><span class="line">desc user_jobs <span class="comment">-- </span></span><br><span class="line">desc user_users <span class="comment">-- 用户</span></span><br></pre></td></tr></table></figure>
+<p>查数据文件相关信息</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc v$datafile <span class="comment">-- 要在sys下</span></span><br><span class="line">desc dba_data_files</span><br></pre></td></tr></table></figure>
+<p>查某一个表空间所在的数据文件</p>
+<p>dba_data_files，没有all和user</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> tablespace_name,file_id,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span>,file_name <span class="keyword">from</span> dba_data_files <span class="keyword">order</span> <span class="keyword">by</span> file_id;</span><br></pre></td></tr></table></figure>
 <h3 id="sqldeveloper">sqldeveloper</h3>
 <p>在/下</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> DISPLAY=192.168.11.1:0.0</span><br><span class="line"><span class="comment"># echo $DISPLAY</span></span><br><span class="line">sqldeveloper.sh</span><br></pre></td></tr></table></figure>
 <h3 id="查看Oracle错误信息">查看Oracle错误信息</h3>
 <p>退出Oracle，在/下</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">oerr ora [错误代码]</span><br></pre></td></tr></table></figure>
-<ul>
-<li></li>
-</ul>
 <h3 id="linux环境变量">linux环境变量</h3>
 <p>环境变量一般是指操作系统中指定操作系统运行环境的一些参数。它相当于一个指针，想要查看变量的值，需要加上“$”</p>
 <p>按作用的范围分。在Linux中的变量，可以分为环境变量和本地变量：</p>
@@ -2460,7 +2480,8 @@ duplicate target database to oradup from active database;</p>
   <entry>
     <title>Oracle SQL</title>
     <url>/2020/03/10/oracle/OracleSQL/</url>
-    <content><![CDATA[<p>sql简介</p>
+    <content><![CDATA[<h2 id="SQL">SQL</h2>
+<h3 id="sql简介">sql简介</h3>
 <ul>
 <li>结构化查询语言</li>
 <li>任何关系型数据库都支持</li>
@@ -2468,7 +2489,28 @@ duplicate target database to oradup from active database;</p>
 <li>描述性语言，只说做什么，不说怎么做</li>
 </ul>
 <a id="more"></a>
-<p><strong>SQL语句解析过程</strong></p>
+<h3 id="sql分类">sql分类</h3>
+<ol>
+<li>
+<p>QL：</p>
+</li>
+<li>
+<p>DML针对用户数据：insert update delete merge</p>
+</li>
+<li>
+<p>DDL针对系统数据：create alter drop truncate rename comment</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc user_tables; <span class="comment">-- 这个表不能insert改，数据字典属于系统数据，但可以通过DDL修改系统数据</span></span><br><span class="line"><span class="comment">-- insert into user_tables(table_name) values('aaa'); 不行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- db12c scott下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> aaa(<span class="keyword">id</span> <span class="built_in">int</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>DCL权限控制：grant revoke</p>
+<p>表不存在，可能是无权限访问，在sys下修改权限</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> hr.departments <span class="keyword">to</span> scott;</span><br><span class="line"><span class="keyword">revoke</span> <span class="keyword">select</span> <span class="keyword">on</span> hr.departments <span class="keyword">from</span> scott;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>TCL事务控制：commit rollback savepoint</p>
+</li>
+</ol>
+<h3 id="语句解析过程">语句解析过程</h3>
 <ul>
 <li>
 <p>语法分析</p>
@@ -2485,48 +2527,68 @@ duplicate target database to oradup from active database;</p>
 </li>
 </ul>
 <p>每次解析SQL效率太低，在内存（共享池）中保存已经解析好的代码，避免重复解析</p>
-<p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306093419179.png" alt="image-20200306093419179"></p>
-<ol>
-<li>QL query</li>
-<li>DML data manipulate 全部针对用户数据</li>
-<li>DDL data define 针对系统数据</li>
-<li>DCL 权限控制</li>
-<li>TCL 事务控制语句</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- db12c scott下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> aaa(<span class="keyword">id</span> <span class="built_in">int</span>);</span><br><span class="line"></span><br><span class="line">desc user_tables; <span class="comment">-- 这个表不能insert改，数据字典属于系统数据，但可以通过DDL修改系统数据</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> user_tables;</span><br></pre></td></tr></table></figure>
-<p>表不存在 - 无权限访问，在sys下修改权限</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grant select on hr.departments to scott;</span><br><span class="line">revoke select on hr.departments from scott;</span><br></pre></td></tr></table></figure>
-<h2 id="QL">QL</h2>
-<p>dual表，系统保证任何时候都是单行单列</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SYS@db12c&gt;desc dual</span><br><span class="line"> Name         Null?    Type</span><br><span class="line"> ------------ -------- ------------------------------------</span><br><span class="line"> DUMMY                 VARCHAR2(1)</span><br></pre></td></tr></table></figure>
-<p>绑定变量，使执行速度加快？？？</p>
-<p><img src="/2020/03/10/oracle/OracleSQL/D:%5Cmd_picture_backup%5Cimage-20200306095000479.png" alt="&quot;image-20200306095000479&quot;"></p>
+<h3 id="sql语法注意">sql语法注意</h3>
+<ul>
+<li>关键字不能缩写（和sqlplus命令区分）和跨行</li>
+<li>以分号结尾</li>
+</ul>
 <h3 id="“大小写不敏感”">“大小写不敏感”</h3>
 <p>==针对结果，过程不同==</p>
-<p>比较语句的hash值</p>
-<p>大小写不一样时、多空格少空格、换行不同时（分号另起一行），语句的hash值不同，重新解析</p>
+<p>eg</p>
+<img src="/2020/03/10/oracle/OracleSQL/image-20200413001053865.png" alt="image-20200413001053865" style="zoom: 80%;">
+<p>select 中，i不同，数据库就认为是1000条不同的语句，解析1000次</p>
+<p>需要绑定变量，使执行速度加快</p>
+<img src="/2020/03/10/oracle/OracleSQL/md_picture_backup\image-20200306095000479.png" alt="&quot;image-20200306095000479&quot;" style="zoom: 67%;">
+<p>数据库怎么知道一条语句有没有执行过？</p>
+<p>不是一个字母一个字母比较，而是比较语句的hash值</p>
+<p>字符串不是完全相同时，语句的hash值不同，重新解析？？？：</p>
+<ul>
+<li>大小写不一样时</li>
+<li>多空格少空格</li>
+<li>换行不同时（不一定能在查询结果中看出来）（分号另起一行）</li>
+<li><strong>要遵循写sql语句的规范</strong>（关键字大写，从句另起一行？？？）</li>
+</ul>
+<p>sql语句的hash值就不同，但执行计划的hash值相同</p>
 <p>如何查看已经缓存的语句</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc v$sql <span class="comment">-- sql_text, hash_value</span></span><br><span class="line"><span class="comment">-- shutdown，startup之后清空</span></span><br><span class="line"> SQL_TEXT                                                       VARCHAR2(1000)</span><br><span class="line"> SQL_FULLTEXT                                                   CLOB</span><br><span class="line"> SQL_ID                                                         VARCHAR2(13)</span><br><span class="line"> HASH_VALUE                                                     NUMBER</span><br><span class="line"> OLD_HASH_VALUE                                                 NUMBER</span><br><span class="line"> PLAN_HASH_VALUE                                                NUMBER</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> sql_text, hash_value, plan_hash_value <span class="keyword">from</span> v$<span class="keyword">sql</span> <span class="keyword">where</span> sql_text <span class="keyword">like</span> <span class="string">'%scott.emp%'</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>字符串不是完全相同，sql语句的hash值就不同</li>
-<li>但执行计划的hash值相同</li>
-</ul>
 <p><img src="/2020/03/10/oracle/OracleSQL/image-20200407113342237.png" alt="image-20200407113342237"></p>
 <p><img src="/2020/03/10/oracle/OracleSQL/image-20200407113448904.png" alt="image-20200407113448904"></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter <span class="keyword">cursor</span></span><br><span class="line"><span class="keyword">NAME</span>                                 <span class="keyword">TYPE</span>                   <span class="keyword">VALUE</span></span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line">cursor_bind_capture_destination      <span class="keyword">string</span>                 <span class="keyword">memory</span>+disk</span><br><span class="line">cursor_invalidation                  <span class="keyword">string</span>                 <span class="keyword">IMMEDIATE</span></span><br><span class="line">cursor_sharing                       <span class="keyword">string</span>                 EXACT</span><br><span class="line">cursor_space_for_time                <span class="built_in">boolean</span>                <span class="literal">FALSE</span></span><br><span class="line">open_cursors                         <span class="built_in">integer</span>                <span class="number">300</span></span><br><span class="line">session_cached_cursors               <span class="built_in">integer</span>                <span class="number">50</span></span><br></pre></td></tr></table></figure>
-<p>cursor_sharing取值</p>
+<p>cursor_sharing取值，用于判断两条sql语句是不是视为同一条语句，不同则需要重新解析</p>
 <ul>
-<li>可以改成similar</li>
-<li>exact – 加速语句老化，适用于数据仓库？？？</li>
+<li>
+<p>similar – 检查plan_hash_value，一样则视为同一条语句</p>
+<p>两条语句可以表面不一样，只要不造成执行计划的不同</p>
+</li>
+<li>
+<p>exact – 检查hash_value，一样则视为同一条语句</p>
+<p>两条语句必须完全一致</p>
+</li>
 </ul>
-<p>根据业务处理系统 / 数据仓库（历史数据，一般只查询）</p>
-<p>如何学习sqlplus命令：登陆SQL plus后，help index</p>
-<p>sql语句关键字 != sqlplus命令</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">help index</span><br><span class="line">help @</span><br></pre></td></tr></table></figure>
-<p>@ == 调用脚本</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@&#x2F;u01&#x2F;demo&#x2F;sql1</span><br></pre></td></tr></table></figure>
-<p>list == 列出当前缓存中的最后一条语句</p>
-<p><img src="/2020/03/10/oracle/OracleSQL/image-20200407113931407.png" alt="image-20200407113931407"></p>
+<p>根据业务选择模板（数据库类型），不能选错，参数都是根据类型变化的：</p>
+<p>处理系统（存放当前经常变化的数据，经常重复做一样的事情？？？）</p>
+<p>数据仓库（存放历史数据，一般只查询，用作决策支持）</p>
+<ul>
+<li>环境中语句如果不重复用，用exact加速语句老化？？？，适用于数据仓库</li>
+<li>重用语句的话，similar比较合适，适用于处理系统</li>
+</ul>
+<h2 id="QL">QL</h2>
+<ol>
+<li>选择：横向的子集</li>
+<li>投影：纵向的子集</li>
+<li>连接：一张表的来源可能是两张表</li>
+</ol>
+<p><strong>dual表</strong></p>
+<p>系统保证任何时候都是单行单列（里面的值没有限制）</p>
+<p>查询一些和表没有关系的信息（时间）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dual;</span><br><span class="line">DU</span><br><span class="line"><span class="comment">--</span></span><br><span class="line">X</span><br><span class="line"></span><br><span class="line">SYS@db12c&gt;desc dual</span><br><span class="line"> Name         Null?    Type</span><br><span class="line"> <span class="comment">------------ -------- ------------------------------------</span></span><br><span class="line"> DUMMY                 VARCHAR2(1)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span>+<span class="number">4</span> <span class="keyword">from</span> dual;</span><br><span class="line">       3+4</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">         7</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="number">3</span>+<span class="number">4</span> <span class="keyword">as</span> he <span class="keyword">from</span> dual;</span><br><span class="line">        HE</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">         7</span><br><span class="line">         </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sysdate</span> <span class="keyword">from</span> dual;</span><br><span class="line">SYSDATE</span><br><span class="line"><span class="comment">------------</span></span><br><span class="line">12-APR-20</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> dual <span class="keyword">values</span>(<span class="string">'Y'</span>); <span class="comment">-- 插不进去记录</span></span><br><span class="line"><span class="keyword">update</span> dual <span class="keyword">set</span> dummy=<span class="string">'Z'</span>; <span class="comment">-- 但是可以改</span></span><br></pre></td></tr></table></figure>
+<p>表设计原则</p>
+<ul>
+<li>不允许一张表孤零零（外键）</li>
+<li>从一张表要能访问到其他表</li>
+</ul>
+<p>查询结果显示格式，可以改的</p>
+<img src="/2020/03/10/oracle/OracleSQL/image-20200413004334644.png" alt="image-20200413004334644" style="zoom:67%;">
 <h3 id="null的三值现象">null的三值现象</h3>
 <p>null == 1 为false</p>
 <p>null !=1 为false</p>
@@ -3390,6 +3452,73 @@ set oracle_sid=demo</li>
     <title>Oracle 零碎知识点</title>
     <url>/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
     <content><![CDATA[<h2 id="2-Oracle知识点">2. Oracle知识点</h2>
+<h3 id="数据字典">数据字典</h3>
+<ul>
+<li>
+<p>数据字典系统表（dict），保存在system表空间中</p>
+</li>
+<li>
+<p>DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）</p>
+</li>
+<li>
+<p>dict表（视图）中有table_name, comments字段：看某个表有什么用</p>
+</li>
+<li>
+<p>动态静态都能查到</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">UPPER</span>(<span class="string">'user_tables'</span>); <span class="comment">-- 注意大小写</span></span><br></pre></td></tr></table></figure>
+<p>数据字典主要可分为四部分：</p>
+<h4 id="1-内部RDBMS表">1. 内部RDBMS表</h4>
+<p><code>x$*</code></p>
+<p>用于跟踪内部数据库信息，维持DB的正常运行。是加密命名的， 而且Oracle不做文档说明。不允许sysdba以外的用户直接访问，显示授权不被允许。</p>
+<p>X$表是Oracle数据库的运行基础，在数据库启动时由Oracle应用程序动态创建。</p>
+<h4 id="2-数据字典表-（Data-dictionary-table）">2. 数据字典表 （Data dictionary table）</h4>
+<p><code>*$</code>，如<code>tab$,obj$,ts$</code>等</p>
+<p>用来存储表、索引、约束以及其他数据库结构的信息。</p>
+<p>在创建数据库的时候通过运行$ORACLE_HOME/rdbms/admin/sql.bsq脚本来创建。</p>
+<h4 id="3-静态数据字典视图">3. 静态数据字典视图</h4>
+<p>视图，不是一种存储结构</p>
+<p>静态数据字典视图，来自一些系统表，这些系统表一般放在system表空间下？？？</p>
+<p><strong>查看视图原表</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> REFERENCED_NAME, REFERENCED_TYPE</span><br><span class="line"><span class="keyword">from</span> SYS.ALL_DEPENDENCIES</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">TYPE</span> = <span class="string">'VIEW'</span></span><br><span class="line"><span class="keyword">and</span> <span class="keyword">NAME</span> = <span class="keyword">UPPER</span>(<span class="string">'DBA_TABLE'</span>)</span><br><span class="line"><span class="keyword">and</span> REFERENCED_TYPE = <span class="string">'TABLE'</span>;</span><br></pre></td></tr></table></figure>
+<p><code>user_*、all_*、dba_*</code></p>
+<p>由于X$表和数据字典表通常不能直接被用户访问，Oracle创建了静态数据字典视图来<strong>提供用户对于数据字典信息的访问</strong>，由于这些信息通常相对稳定，不能直接修改，所以又被称为静态数据字典视图。</p>
+<p>静态数据字典视图在创建数据库时由$ORACLE_HOME/rdbms/admin/catagory.sql脚本创建。</p>
+<p>通过三类视图在本质上是为了实现权限控制。在Oracle数据库中，每个用户与方案（Schema）是对应的，Schema是用户所拥有的对象的集合。数据库通过Schema将不同用户的对象隔离开来，用户可以自由的访问自己的对象，但是要访问其他Schema对象就需要相关的授权。</p>
+<ul>
+<li>内容来自：数据文件</li>
+<li>统计数据，要及时更新。安排作业？？？每天晚上自动更新</li>
+<li>一般是<strong>复数形式</strong></li>
+</ul>
+<p>遇到下面的前缀，权限从小到大，dba需要授权</p>
+<ul>
+<li>
+<p>USER_  当前用户是所有者的对象</p>
+</li>
+<li>
+<p>ALL_  当前用户是所有者的对象 + 当前用户有权限访问的对象</p>
+</li>
+<li>
+<p>DBA_ dba是所有者的对象 +dba有权限访问的对象</p>
+<p>在hr下，访问不了这类表，<strong>权限</strong>不够。需要在sysdba（权限大的角色）下访问</p>
+</li>
+</ul>
+<p>查一个表有几条数据，==不用count，要查字典==，【count == 把学生叫道操场数数】</p>
+<p>静态数据字典视图，更新问题</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- flashback complete</span></span><br><span class="line"></span><br><span class="line">desc user_tables</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 大小写问题</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- drop table之后，数据字典中numrows变为空</span></span><br><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="comment">-- 表闪回之后，数据字典没有更新回删除之前的状态！！！</span></span><br><span class="line"><span class="comment">-- Oracle按照这个旧的统计数据指定执行计划</span></span><br><span class="line"><span class="comment">-- 旧数据行数很少，所以不走索引全表扫描，但实际数据很多，导致性能极低</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp(empno,ename) <span class="keyword">values</span>(<span class="number">1234</span>, <span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量没有变</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量+1</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-动态性能视图">4. 动态性能视图</h4>
+<p><code>gv$*， v$*</code></p>
+<p>记录了DB运行时信息和统计数据，大部分动态性能视图被实时更新以反映DB当前状态。</p>
+<p>内容来自：内存和控制文件</p>
+<p>视图内部的指标大多和性能相关</p>
+<p>==v$ 开头的==</p>
+<p>eg 查看库缓存的命中率（命中率高，效率高）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc v$librarycache <span class="comment">-- namespace，gethitratio</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE <span class="keyword">from</span> v$librarycache <span class="comment">-- 包含每种对象（sql area、index等）的命中率</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE,GETHITRATIO <span class="keyword">from</span> v$librarycache <span class="keyword">where</span> NAMESPACE <span class="keyword">in</span> (<span class="string">'SQL AREA'</span>,<span class="string">'TABLE/PROCEDURE'</span>); <span class="comment">-- sql语句和存储过程的命中率0.4 0.6左右</span></span><br><span class="line"><span class="comment">-- 生产中90%以下需要优化</span></span><br></pre></td></tr></table></figure>
+<p>如果猜不到, 就老老实实查总表，==dictionary 同义词为 dict==</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc dict <span class="comment">-- 两个字段：table_name, comments</span></span><br><span class="line"><span class="comment">-- select table_name from dict; -- 四千多行，需要筛选</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict <span class="keyword">where</span> table_name <span class="keyword">like</span> <span class="string">'%SGA%'</span>; <span class="comment">-- 剩二十多行</span></span><br><span class="line"></span><br><span class="line">desc V$SGAINFO; <span class="comment">-- sga各部分的信息（里面有sga各部分大小：共享池等）</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">sizes</span> <span class="keyword">from</span> V$SGAINFO; <span class="comment">-- 单位换算成MB</span></span><br></pre></td></tr></table></figure>
+<p>在数据库启动时，Oracle动态创建X$表。在此基础上，Oracle创建了GV$和V$视图，GV$即Global V$，除了一些特例外，每个V$都对应一个GV$。GV$产生是为了OPS/RAC环境的需要，每个V$都是基于GV$的，只是GV$多了INST_ID列来显示实例ID。 在非Sys用户下，我们访问的都是同义词，而不是V$视图或GV$视图。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查询V$视图时，报的错却是V_$视图不存在，V_$视图不是基于V$视图创建的吗，怎么反向报错了？</span><br><span class="line"></span><br><span class="line">为了防止普通用户的误操作，Oracle对通过软件机制对V$视图的访问做了限制，它不允许普通用户直接访问V$视图，但我们平时不是经常访问吗？这其实是Oracle引入了V_$视图。</span><br><span class="line">在建立V$视图后，Oracle就建立了V_$视图，随后为V_$视图建立了与V$视图同名的共用同义词。这些工作都是通过catalog.sql脚本（该脚本位于$ORACLE_HOME&#x2F;rdbms&#x2F;admin&#x2F;目录下）实现的。</span><br><span class="line"></span><br><span class="line">如：</span><br><span class="line">create or replace view v_$fixed_table as select * from v$fixed_table;</span><br><span class="line">create or replace public synonym v$fixed_table for v_$fixed_table;   --同名同义词</span><br><span class="line"></span><br><span class="line">也就是说，大部分用户访问的V$对象，并不是视图，而是执行V_$视图的同义词；而V_$视图时基于真正V$视图创建的。</span><br></pre></td></tr></table></figure>
 <h3 id="数据库和实例">数据库和实例</h3>
 <p>数据库实例名是用于和操作系统进行联系的标识，就是说<strong>数据库和操作系统之间的交互用的是数据库实例名</strong></p>
 <p>数据库名和实例名可以相同也可以不同。</p>
@@ -3465,85 +3594,6 @@ set oracle_sid=demo</li>
 <h4 id="手动扩展">手动扩展</h4>
 <p>适用情形：卡顿严重，性能不行的时候，需要手动优化</p>
 <p>ban掉自动扩展，管理员手册中加一条：每天手动监控数据文件使用情况，手动敲命令扩展，不是监控</p>
-<h3 id="数据字典">数据字典</h3>
-<p>数据字典系统表，保存在system表空间中</p>
-<p>DICTIONARY contains descriptions of data dictionary tables and views.</p>
-<p>dict表（视图）中有table_name, comments字段：看某个表有什么用</p>
-<p>动态静态都能查到</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">UPPER</span>(<span class="string">'user_tables'</span>); <span class="comment">-- 注意大小写</span></span><br></pre></td></tr></table></figure>
-<p>数据字典主要可分为四部分：</p>
-<h4 id="内部RDBMS表">内部RDBMS表</h4>
-<p><code>x$*</code></p>
-<p>用于跟踪内部数据库信息，维持DB的正常运行。是加密命名的， 而且Oracle不做文档说明。不允许sysdba以外的用户直接访问，显示授权不被允许。</p>
-<p>X$表是Oracle数据库的运行基础，在数据库启动时由Oracle应用程序动态创建。</p>
-<h4 id="数据字典表-（Data-dictionary-table）">数据字典表 （Data dictionary table）</h4>
-<p><code>*$</code>，如<code>tab$,obj$,ts$</code>等</p>
-<p>用来存储表、索引、约束以及其他数据库结构的信息。</p>
-<p>在创建数据库的时候通过运行$ORACLE_HOME/rdbms/admin/sql.bsq脚本来创建。</p>
-<h4 id="静态数据字典视图">静态数据字典视图</h4>
-<p><code>user_*、all_*、dba_*</code></p>
-<p>由于X$表和数据字典表通常不能直接被用户访问，Oracle创建了静态数据字典视图来<strong>提供用户对于数据字典信息的访问</strong>，由于这些信息通常相对稳定，不能直接修改，所以又被称为静态数据字典视图。</p>
-<p>静态数据字典视图在创建数据库时由$ORACLE_HOME/rdbms/admin/catagory.sql脚本创建。</p>
-<p>通过三类视图在本质上是为了实现权限控制。在Oracle数据库中，每个用户与方案（Schema）是对应的，Schema是用户所拥有的对象的集合。数据库通过Schema将不同用户的对象隔离开来，用户可以自由的访问自己的对象，但是要访问其他Schema对象就需要相关的授权。</p>
-<h4 id="动态性能视图">动态性能视图</h4>
-<p><code>gv$*， v$*</code></p>
-<p>记录了DB运行时信息和统计数据，大部分动态性能视图被实时更新以反映DB当前状态。</p>
-<p>在数据库启动时，Oracle动态创建X$表。在此基础上，Oracle创建了GV$和V$视图，GV$即Global V$，除了一些特例外，每个V$都对应一个GV$。GV$产生是为了OPS/RAC环境的需要，每个V$都是基于GV$的，只是GV$多了INST_ID列来显示实例ID。 在非Sys用户下，我们访问的都是同义词，而不是V$视图或GV$视图。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">查询V$视图时，报的错却是V_$视图不存在，V_$视图不是基于V$视图创建的吗，怎么反向报错了？</span><br><span class="line"></span><br><span class="line">为了防止普通用户的误操作，Oracle对通过软件机制对V$视图的访问做了限制，它不允许普通用户直接访问V$视图，但我们平时不是经常访问吗？这其实是Oracle引入了V_$视图。</span><br><span class="line">在建立V$视图后，Oracle就建立了V_$视图，随后为V_$视图建立了与V$视图同名的共用同义词。这些工作都是通过catalog.sql脚本（该脚本位于$ORACLE_HOME&#x2F;rdbms&#x2F;admin&#x2F;目录下）实现的。</span><br><span class="line"></span><br><span class="line">如：</span><br><span class="line">create or replace view v_$fixed_table as select * from v$fixed_table;</span><br><span class="line">create or replace public synonym v$fixed_table for v_$fixed_table;   --同名同义词</span><br><span class="line"></span><br><span class="line">也就是说，大部分用户访问的V$对象，并不是视图，而是执行V_$视图的同义词；而V_$视图时基于真正V$视图创建的。</span><br></pre></td></tr></table></figure>
-<h3 id="访问数据字典">访问数据字典</h3>
-<p>视图，不是一种存储结构，==全部都是视图==</p>
-<p>查看视图原表</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> REFERENCED_NAME, REFERENCED_TYPE</span><br><span class="line"><span class="keyword">from</span> SYS.ALL_DEPENDENCIES</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">TYPE</span> = <span class="string">'VIEW'</span></span><br><span class="line"><span class="keyword">and</span> <span class="keyword">NAME</span> = <span class="keyword">UPPER</span>(<span class="string">'DBA_TABLE'</span>)</span><br><span class="line"><span class="keyword">and</span> REFERENCED_TYPE = <span class="string">'TABLE'</span>;</span><br></pre></td></tr></table></figure>
-<p>查看是不是视图，动态性能视图查不到</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> view_name <span class="keyword">from</span> dba_views <span class="keyword">where</span> view_name=<span class="keyword">upper</span>(<span class="string">'dba_tablespaces'</span>);</span><br></pre></td></tr></table></figure>
-<p>静态数据字典视图，来自一些系统表，这些系统表一般放在system表空间下？？？</p>
-<h4 id="1-dict-columns">-1 dict_columns</h4>
-<p>我们可以在catalog.sql脚本中找到DICT_COLUMNS的创建语句</p>
-<p><strong>查询某个表中某字段是啥意思</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dict_columns <span class="keyword">where</span> TABLE_NAME=<span class="string">'DICT'</span>; </span><br><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> table_name=<span class="string">'DBA_TABLESPACES'</span>;</span><br></pre></td></tr></table></figure>
-<p>user_tab_columns？？？</p>
-<p><strong>查询都有哪些表包含指定的字段</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dict_columns <span class="keyword">where</span> COLUMN_NAME=<span class="string">'TABLE_NAME'</span> <span class="keyword">and</span> <span class="keyword">rownum</span>&lt;<span class="number">4</span>;</span><br></pre></td></tr></table></figure>
-<h4 id="0-总表dict">0 总表dict</h4>
-<h4 id="1-数据字典视图">1 数据字典视图</h4>
-<ul>
-<li>内容来自：数据文件</li>
-<li>统计数据，要及时更新。安排作业？？？每天晚上自动更新</li>
-<li>一般是<strong>复数形式</strong></li>
-</ul>
-<p>遇到下面的前缀，权限从小到大，dba需要授权</p>
-<ul>
-<li>
-<p>USER_  当前用户是所有者的对象</p>
-</li>
-<li>
-<p>ALL_  当前用户是所有者的对象 + 当前用户有权限访问的对象</p>
-</li>
-<li>
-<p>DBA_ dba是所有者的对象 +dba有权限访问的对象</p>
-<p>在hr下，访问不了这类表，<strong>权限</strong>不够。需要在sysdba（权限大的角色）下访问</p>
-</li>
-</ul>
-<p>eg</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc user_tables</span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> user_tables;</span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> all_tables;</span><br><span class="line"></span><br><span class="line">desc user_indexes <span class="comment">-- 查看有哪些索引</span></span><br><span class="line"><span class="keyword">select</span> index_name <span class="keyword">from</span> user_indexes;</span><br><span class="line"></span><br><span class="line">desc user_triggers <span class="comment">-- 触发器</span></span><br><span class="line">desc user_jobs <span class="comment">-- </span></span><br><span class="line">desc user_users <span class="comment">-- 用户</span></span><br></pre></td></tr></table></figure>
-<p>查一个表有几条数据，==不用count，要查字典==，【count == 把学生叫道操场数数】</p>
-<p>静态数据字典视图，更新问题</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- flashback complete</span></span><br><span class="line"></span><br><span class="line">desc user_tables</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 大小写问题</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- drop table之后，数据字典中numrows变为空</span></span><br><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="comment">-- 表闪回之后，数据字典没有更新回删除之前的状态！！！</span></span><br><span class="line"><span class="comment">-- Oracle按照这个旧的统计数据指定执行计划</span></span><br><span class="line"><span class="comment">-- 旧数据行数很少，所以不走索引全表扫描，但实际数据很多，导致性能极低</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp(empno,ename) <span class="keyword">values</span>(<span class="number">1234</span>, <span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量没有变</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量+1</span></span><br></pre></td></tr></table></figure>
-<p>查某一个表所在的表空间</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc user_tables <span class="comment">-- table_name, tablespace_name</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>;</span><br></pre></td></tr></table></figure>
-<p>查数据文件相关信息</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc v$datafile <span class="comment">-- 要在sys下</span></span><br><span class="line">desc dba_data_files</span><br></pre></td></tr></table></figure>
-<p>查某一个表空间所在的数据文件</p>
-<p>dba_data_files，没有all和user</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> tablespace_name,file_id,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span>,file_name <span class="keyword">from</span> dba_data_files <span class="keyword">order</span> <span class="keyword">by</span> file_id;</span><br></pre></td></tr></table></figure>
-<h4 id="2-动态性能视图">2 动态性能视图</h4>
-<p>内容来自：内存和控制文件</p>
-<p>视图内部的指标大多和性能相关</p>
-<p>==v$ 开头的==</p>
-<p>eg 查看库缓存的命中率（命中率高，效率高）</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc v$librarycache <span class="comment">-- namespace，gethitratio</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE <span class="keyword">from</span> v$librarycache <span class="comment">-- 包含每种对象（sql area、index等）的命中率</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE,GETHITRATIO <span class="keyword">from</span> v$librarycache <span class="keyword">where</span> NAMESPACE <span class="keyword">in</span> (<span class="string">'SQL AREA'</span>,<span class="string">'TABLE/PROCEDURE'</span>); <span class="comment">-- sql语句和存储过程的命中率0.4 0.6左右</span></span><br><span class="line"><span class="comment">-- 生产中90%以下需要优化</span></span><br></pre></td></tr></table></figure>
-<p>如果猜不到, 就老老实实查总表，==dictionary 同义词为 dict==</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">desc dict <span class="comment">-- 两个字段：table_name, comments</span></span><br><span class="line"><span class="comment">-- select table_name from dict; -- 四千多行，需要筛选</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict <span class="keyword">where</span> table_name <span class="keyword">like</span> <span class="string">'%SGA%'</span>; <span class="comment">-- 剩二十多行</span></span><br><span class="line"></span><br><span class="line">desc V$SGAINFO; <span class="comment">-- sga各部分的信息（里面有sga各部分大小：共享池等）</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">sizes</span> <span class="keyword">from</span> V$SGAINFO; <span class="comment">-- 单位换算成MB</span></span><br></pre></td></tr></table></figure>
 <h3 id="表">表</h3>
 <p>==表 &lt; 表空间 - 数据文件==，表空间为了放表，表空间是逻辑概念，数据文件是物理概念</p>
 <p>一个表空间（数据库存储的逻辑单位）由一个或多个数据文件组成？？？</p>
