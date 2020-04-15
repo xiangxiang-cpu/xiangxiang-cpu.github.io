@@ -36,19 +36,56 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <meta name="description" content="2. Oracle知识点 数据字典   数据字典系统表（dict），保存在system表空间中   DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）   dict表（视图）中有table_name, comments字段：看某个表有什么用   动态静态都能查到   1se">
+  <meta name="description" content="数据字典   数据字典系统表（dict），保存在system表空间中   DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）   dict表（视图）中有table_name, comments字段：看某个表有什么用   动态静态都能查到   1select table_na">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle 零碎知识点">
 <meta property="og:url" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
 <meta property="og:site_name" content="翔翔の据点">
-<meta property="og:description" content="2. Oracle知识点 数据字典   数据字典系统表（dict），保存在system表空间中   DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）   dict表（视图）中有table_name, comments字段：看某个表有什么用   动态静态都能查到   1se">
+<meta property="og:description" content="数据字典   数据字典系统表（dict），保存在system表空间中   DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）   dict表（视图）中有table_name, comments字段：看某个表有什么用   动态静态都能查到   1select table_na">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130607997-1586189129451.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163415534.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163550464.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163444998.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163510655.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163956703.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164056329.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163734206.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164226712.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164249902.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164328694.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164419510.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164436572.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164505127.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164524918.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164645758.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200317165334485.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200317170838541.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200317171345201.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200317171415887.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200317171644537.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200317172432102.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317171852506.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317171922522.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317171944963.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317172559096.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317172619407.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317174913083.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320080400696.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082001607.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082032418.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082617109.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082759535.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320085717461.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320100247037.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320100757114.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320103354004.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320103835250.png">
 <meta property="article:published_time" content="2020-03-21T14:13:55.000Z">
-<meta property="article:modified_time" content="2020-04-12T15:51:09.296Z">
+<meta property="article:modified_time" content="2020-04-13T16:49:07.648Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
@@ -244,7 +281,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-12 23:51:09" itemprop="dateModified" datetime="2020-04-12T23:51:09+08:00">2020-04-12</time>
+                <time title="修改时间：2020-04-14 00:49:07" itemprop="dateModified" datetime="2020-04-14T00:49:07+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,8 +304,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="2-Oracle知识点">2. Oracle知识点</h2>
-<h3 id="数据字典">数据字典</h3>
+        <h3 id="数据字典">数据字典</h3>
 <ul>
 <li>
 <p>数据字典系统表（dict），保存在system表空间中</p>
@@ -474,7 +510,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询数据库域名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">value</span> <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">'db_domain'</span>;</span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">domain</span></span><br></pre></td></tr></table></figure>
 <p>全局数据库名</p>
 <p>==全局数据库名 = 数据库名 + 数据库域名==，如前述福建节点的全局数据库名是：oradb.fj.jtyz</p>
-<h3 id="alter-system-database">alter system / database</h3>
+<h3 id="alter-system-database-session">alter system / database / session</h3>
 <p>看着那张结构图</p>
 <ul>
 <li>
@@ -486,6 +522,37 @@
 <p>新建一个数据文件，所以alter database</p>
 </li>
 </ul>
+<h3 id="nls">nls</h3>
+<p>national language support</p>
+<p>怎么查所有的nls参数（三个级别上）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> nls_session_parameters;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> nls_instance_parameters;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> nls_database_parameters;</span><br></pre></td></tr></table></figure>
+<h4 id="nls-date-format">nls_date_format</h4>
+<p>修改的4种方式，alter system不允许？？？：<a href="https://blog.csdn.net/xie_xiansheng/article/details/50776226" target="_blank" rel="noopener">https://blog.csdn.net/xie_xiansheng/article/details/50776226</a></p>
+<p>亲测这个可以：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim .bash_profile</span><br><span class="line">加一句alter session set nls_date_format &#x3D; &#39;yyyy-mm-dd hh24:mi:ss&#39;;</span><br><span class="line">重启</span><br></pre></td></tr></table></figure>
+<p>1、查询nls_date_format</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> nls_session_parameters <span class="keyword">where</span> parameter = <span class="string">'NLS_DATE_FORMAT'</span>;</span><br><span class="line"><span class="comment">--显示：NLS_DATE_FORMAT  DD-MON-RR</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> nls_database_parameters <span class="keyword">where</span> parameter = <span class="string">'NLS_DATE_FORMAT'</span>;</span><br><span class="line"><span class="comment">--显示：NLS_DATE_FORMAT  DD-MON-RR</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> nls_instance_parameters <span class="keyword">where</span> parameter = <span class="string">'NLS_DATE_FORMAT'</span>;</span><br><span class="line"><span class="comment">--显示：NLS_DATE_FORMAT  null （在我本地nls_instance_parameters中没有设置NLS_DATE_FORMAT）</span></span><br><span class="line"><span class="comment">-- alter system级别时，设置到这里了，但是会被session级别的覆盖</span></span><br></pre></td></tr></table></figure>
+<p>2、设置nls_date_format</p>
+<p>1)首先，介绍一下NLS参数相关的三个视图。</p>
+<ol>
+<li>NLS_SESSION_PARAMETERS</li>
+<li>NLS_INSTANCE_PARAMETERS</li>
+<li>NLS_DATABASE_PARAMTERS</li>
+</ol>
+<ul>
+<li>NLS参数分session/ instance/ database三个级别</li>
+<li>session级别覆盖instance级别，instance级别覆盖database级别（注意不是反的）。</li>
+<li>就是说，如果session级别、instance级别和database级别都给某个参数赋值了，如nls_date_format参数，则先看session级别、如果session级别没有设定值，则看instance级别，以此类推。</li>
+</ul>
+<p>2)其次，设定nls_date_format的值</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- session级别设定值：</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format = <span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;设定之后再查询会发现<span class="comment">-- nls_session_parameters视图中nls_date_format的值已经变了，而nls_instance_parameters、nls_database_parameters视图中的值没有变。</span></span><br><span class="line"><span class="comment">-- SESSION级别——如果只是希望自己看到某种格式而不影响其他人看到的结果。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- instance级别设定值：</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> nls_date_format = <span class="string">'yyyy-mm-dd hh24:mi:ss'</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- database级别设定值：</span></span><br><span class="line"><span class="comment">-- oracle不允许设定此级别的参数值，也没有提供设定语句。</span></span><br></pre></td></tr></table></figure>
+<p>3)然后，我们可以通过以下查询，发现本数据库是不允许instance级别和database级别参数值更改的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">col name for a20</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, isses_modifiable, issys_modifiable, isinstance_modifiable <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> = <span class="string">'nls_date_format'</span>;</span><br><span class="line"></span><br><span class="line">NAME                 ISSES_MODI ISSYS_MODIFIABLE   ISINSTANCE</span><br><span class="line"><span class="comment">-------------------- ---------- ------------------ ----------</span></span><br><span class="line">nls_date_format      TRUE       FALSE              FALSE</span><br></pre></td></tr></table></figure>
+<h4 id="nls-territory">nls_territory</h4>
+<p>改变当地地区</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_territory=america;</span><br></pre></td></tr></table></figure>
+<p>￥变成了＄</p>
+<h4 id="nls-language">nls_language</h4>
 <h3 id="显示提交-隐式提交">显示提交&amp;隐式提交</h3>
 <h4 id="显式提交">显式提交</h4>
 <p>用COMMIT命令直接完成的提交为显式提交</p>
@@ -517,6 +584,252 @@ commit;<br>
 <h4 id="自动提交">自动提交</h4>
 <p>若把AUTOCOMMIT设置为ON，则在插入、修改、删除语句执行后，系统将自动进行提交，这就是自动提交。SET AUTOCOMMIT ON;</p>
 <p>查看当前是否是自动提交：show autocommit</p>
+<h3 id="视图">视图</h3>
+<h4 id="小练习">小练习</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">1.创建hr.test表：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">test</span>(<span class="keyword">id</span> <span class="built_in">number</span>(<span class="number">5</span>),<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line">2.插入数据：</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'aaa'</span>);</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">3</span>,<span class="string">'bbb'</span>);</span><br><span class="line">   </span><br><span class="line">3.添加约束：</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">add</span> <span class="keyword">constraint</span> uni_name <span class="keyword">unique</span>(<span class="keyword">name</span>);<span class="comment">--name字段添加唯一性约束</span></span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'aaa'</span>);  <span class="comment">--报错，违反唯一性约束</span></span><br><span class="line"></span><br><span class="line">4.禁用约束</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">disable</span> <span class="keyword">constraint</span> uni_name;<span class="comment">--禁用约束</span></span><br><span class="line"></span><br><span class="line">5.使用exceptions表（找表中违反约束的lowid放入exception表中）</span><br><span class="line">desc exceptions <span class="comment">-- 不存在</span></span><br><span class="line"></span><br><span class="line">6.app/oracle/product/18.3.0/rdbms/admin中的脚本utlexcept.sql</span><br><span class="line">@?/rdbms/admin/utlexcpt.sql <span class="comment">--调用脚本创建excptions表</span></span><br><span class="line"><span class="comment">--斜线方向不能反</span></span><br><span class="line"><span class="comment">--?为oracle home，即F:\app\oracle\product\18.3.0</span></span><br><span class="line"></span><br><span class="line">7.启用约束，找表中违反约束的lowid放入exception表中：</span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name <span class="keyword">exceptions</span> <span class="keyword">into</span> <span class="keyword">exceptions</span>;</span><br><span class="line">  <span class="comment">-- ORA-02299: 无法验证(HR.UNI_NAME) - 找到重复关键字</span></span><br><span class="line">   <span class="keyword">select</span> row_id,table_name <span class="keyword">from</span> <span class="keyword">exceptions</span>;</span><br><span class="line">   <span class="keyword">select</span> <span class="keyword">rowid</span>,<span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> <span class="keyword">test</span> <span class="keyword">where</span> <span class="keyword">rowid</span> <span class="keyword">in</span>(<span class="keyword">select</span> row_id <span class="keyword">from</span> <span class="keyword">exceptions</span>);</span><br><span class="line"></span><br><span class="line">8.update hr.test <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">'ccc'</span> <span class="keyword">where</span> <span class="keyword">rowid</span>=<span class="string">'AAASBdAADAAAPoFAAC'</span>; <span class="comment">-- rowid不同</span></span><br><span class="line"></span><br><span class="line">9.再次启用约束<span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name;</span><br><span class="line"></span><br><span class="line">10.truncate <span class="keyword">table</span> <span class="keyword">exceptions</span>; <span class="comment">-- 截断表，清空异常表供以后使用</span></span><br><span class="line"></span><br><span class="line">11.在数据字典汇总查询约束信息(user_constraints,user_cons_columns)</span><br><span class="line"><span class="keyword">select</span> CONSTRAINT_NAME <span class="keyword">from</span> user_constraints;</span><br><span class="line"><span class="keyword">select</span> CONSTRAINT_NAME,TABLE_NAME, COLUMN_NAME <span class="keyword">from</span> user_cons_columns <span class="keyword">where</span> table_name=<span class="string">'TEST'</span>; <span class="comment">-- 区分大小写</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163415534.png" alt="image-20200317163415534"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163550464.png" alt="image-20200317163550464"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163444998.png" alt="image-20200317163444998"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163510655.png" alt="image-20200317163510655"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163956703.png" alt="image-20200317163956703"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164056329.png" alt="image-20200317164056329"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317163734206.png" alt="image-20200317163734206"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164226712.png" alt="image-20200317164226712"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164249902.png" alt="image-20200317164249902"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164328694.png" alt="image-20200317164328694"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164419510.png" alt="image-20200317164419510"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164436572.png" alt="image-20200317164436572"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164505127.png" alt="image-20200317164505127"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164524918.png" alt="image-20200317164524918"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317164645758.png" alt="image-20200317164645758"></p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200317165334485.png" alt="image-20200317165334485" style="zoom:50%;">
+<p>虚表：不是存储结构，是语句的定义</p>
+<p>表：一种具体的存储结构</p>
+<h4 id="视图的作用"><strong>视图的作用</strong></h4>
+<ol>
+<li>收集感兴趣的数据、屏蔽敏感数据</li>
+<li>简化查询</li>
+<li>简化权限的管理</li>
+</ol>
+<h4 id="视图的分类"><strong>视图的分类</strong></h4>
+<ul>
+<li>简单视图：基表不能超过一张，不能分组、函数</li>
+<li>复杂视图</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">视图的创建</span><br><span class="line"><span class="comment">-- 可能权限不够</span></span><br><span class="line">creat view emp_info as <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> emp;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line"></span><br><span class="line">修改视图</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> emp;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改视图通过删除重建（drop create，之后就是一个新的对象了）可以吗？</span></span><br><span class="line"><span class="comment">-- 不可以，删除之前有些用户已经拥有了这些视图的权限，删除之后权限就没了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 基于不存在的表创建视图可以吗？</span></span><br><span class="line"><span class="comment">-- 不可以</span></span><br><span class="line"><span class="comment">-- 但是可以强制创建视图，使用force</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> abc;</span><br><span class="line"><span class="comment">-- 编译错误，查询不到。什么时候这个不存在的表被创建了，这些视图就可以使用了</span></span><br><span class="line"></span><br><span class="line">修改视图，表中数据会变化！</span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>;  <span class="comment">--修改视图就是修改基表</span></span><br><span class="line"></span><br><span class="line">不允许修改某个字段</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> emp <span class="keyword">where</span></span><br><span class="line">deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">check</span> <span class="keyword">option</span>; <span class="comment">--这个时候部门号就不可以修改了，只有部门号不能修改</span></span><br><span class="line"></span><br><span class="line">只允许读，不可以修改，做只读视图</span><br><span class="line"><span class="comment">--对只读视图不允许DML</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> emp <span class="keyword">where</span></span><br><span class="line">deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200317170838541.png" alt="image-20200317170838541" style="zoom:67%;">
+<p>创建视图时，select sal * 12</p>
+<p>这一个表达式需要取别名？？？看3.17录像</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--复杂视图不总是可以被修改</span></span><br><span class="line"><span class="comment">--行号rownum</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,ename <span class="keyword">from</span> emp <span class="keyword">where</span> <span class="keyword">rownum</span> &gt;= <span class="number">10</span>; <span class="comment">--rownum是查询之后再根据结果进行编号</span></span><br><span class="line"><span class="comment">--把查出来的结果，再进行筛选</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>，ename <span class="keyword">from</span>（<span class="keyword">select</span> <span class="keyword">rownum</span> aa,emp.* <span class="keyword">from</span> emp）<span class="keyword">where</span> aa&gt;=<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200317171345201.png" alt="image-20200317171345201" style="zoom:67%;">
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200317171415887.png" alt="image-20200317171415887" style="zoom:67%;">
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200317171644537.png" alt="image-20200317171644537" style="zoom:67%;">
+<p>计算得到的结果，不能直接修改/插入</p>
+<p>3.17最后</p>
+<p>not null属性能不能继承？？？</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200317172432102.png" alt="image-20200317172432102" style="zoom:67%;">
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317171852506.png" alt="image-20200317171852506"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317171922522.png" alt="image-20200317171922522"></p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317171944963.png" alt="image-20200317171944963"></p>
+<p>not null分显示/隐式</p>
+<ul>
+<li>e1和e2这里显示规定not null，会继承</li>
+<li>emp和emp1，将empno设置为主键，为隐式规定，主键不继承</li>
+</ul>
+<h4 id="内嵌视图">内嵌视图</h4>
+<p>rownum？？？录像</p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317172559096.png" alt="image-20200317172559096"></p>
+<p>被过滤掉的行，rownum不会增加</p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317172619407.png" alt="image-20200317172619407"></p>
+<p>这里rownum永远都是1</p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200317174913083.png" alt="image-20200317174913083"></p>
+<h3 id="例程管理、配置">例程管理、配置</h3>
+<h4 id="关闭例程">关闭例程</h4>
+<p>四种模式</p>
+<p>eg</p>
+<p>超市关门，不能进 == 禁止新的连接</p>
+<p>等所有人走完，关门 == 等所有会话结束</p>
+<ol>
+<li>
+<p>正常关闭(normal，默认模式)                     --等所有回话结束才能关闭，所以时间比较长</p>
+</li>
+<li>
+<p>事务性关闭(transactional)            --等所有事务结束才能关闭，比1快</p>
+</li>
+<li>
+<p>立即关闭(==immediate==) – 不需要等事务结束    --上面三个会做检查点，对数据库没有什么伤害</p>
+</li>
+<li>
+<p>中止退出(abort) 丢数据              --不做检查点，会丢失数据</p>
+</li>
+</ol>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320080400696.png" alt="image-20200320080400696" style="zoom:67%;">
+<p>–说明</p>
+<p>3是不需要等事务结束，如果事务还没有commit，会回滚之后关闭</p>
+<h4 id="启动例程">启动例程</h4>
+<p>startup 默认为 startup open</p>
+<h5 id="1-例程启动（nomount阶段）">1.例程启动（nomount阶段）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup nomount <span class="comment">-- 分配内存，同时启动后台进程</span></span><br></pre></td></tr></table></figure>
+<p>条件：需要访问正确的初始化参数文件（下图白色）</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082001607.png" alt="image-20200320082001607" style="zoom: 67%;">
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082032418.png" alt="image-20200320082032418" style="zoom:80%;">
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082617109.png" alt="image-20200320082617109" style="zoom:67%;">
+<p>查看spfile文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $ORACLE_HOME&#x2F;dbs</span><br><span class="line">cat spfiledb12c.ora</span><br></pre></td></tr></table></figure>
+<p>功能：在nomount下，只能访问一部分动态性能视图（内容来自内存），因为动态性能视图来自<strong>内存和控制文件</strong>，不能访问数据文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">conn sys/admin as sysdba</span><br><span class="line">desc v$instance</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（nomounted）</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> v$sga；          <span class="comment">-- ok</span></span><br><span class="line"><span class="keyword">desc</span> v$<span class="keyword">datafile</span>; <span class="comment">-- 只能看到结构，不能访问内容</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--不存在，因为数据库没有打开，数据文件还没打开，查不到数据</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-加载数据库-mount阶段">2.加载数据库(mount阶段)</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;  <span class="comment">--已经进行了startup nomount就不可以在进行startup mount</span></span><br></pre></td></tr></table></figure>
+<p>条件：需要访问控制文件</p>
+<p>功能：可以访问所有的动态视图</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082759535.png" alt="image-20200320082759535" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter control_files  <span class="comment">--查询出oracle的控制文件</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（mounted），表示处于mount阶段</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--可以访问</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在，表在数据文件中</span></span><br></pre></td></tr></table></figure>
+<p>linux mv命令？</p>
+<h5 id="3-打开数据库（open阶段）">3.打开数据库（open阶段）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<p>条件：需要联机重做日志文件和数据文件（在数据文件中定义好的）</p>
+<p>adrci命令？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo03.log</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo02.log</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo01.log</span><br><span class="line"></span><br><span class="line">app/oracle/oradata/db12c/redo01.log <span class="comment">-- .LOG文件：日志文件</span></span><br><span class="line">app/oracle/oradata/db12c/sales01.dbf <span class="comment">-- .DBF文件：数据文件</span></span><br><span class="line">app/oracle/diag/rdbms/db12c/trace/alert_db12c.log <span class="comment">-- .log文件</span></span><br></pre></td></tr></table></figure>
+<p>可以访问所有的文件（包括数据文件，静态字典视图）</p>
+<p>1）只读的方式打开数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">startup open read only;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> current_scn <span class="keyword">from</span> v$<span class="keyword">database</span>;          <span class="comment">--这个是不变的，平常是变化的</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>; <span class="comment">--报错！数据库只读，不可以修改</span></span><br></pre></td></tr></table></figure>
+<p>2）以受限的模式打开数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">startup restrict;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> instance_name,logins <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">-- 让有些用户连，有些用户不连（有restriction权限的可以访问）</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">restricted</span> <span class="keyword">session</span> <span class="keyword">to</span> hr;              <span class="comment">--hr就可以登录了</span></span><br><span class="line">    禁用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">disable</span> <span class="keyword">restricted</span> <span class="keyword">session</span>;</span><br><span class="line">    启用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">enable</span> restricited <span class="keyword">session</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="例程的配置">例程的配置</h4>
+<h5 id="初始化参数文件">初始化参数文件</h5>
+<p>1.文本文件</p>
+<ul>
+<li>文件名格式：init&lt; sid &gt;.ora</li>
+<li>pfile 参数文件，文本文件，每次重启数据库时修改，重启生效？？？</li>
+<li>sid == 服务名</li>
+</ul>
+<p>2.二进制文件</p>
+<ul>
+<li>文件名格式：spfile&lt; sid &gt;.ora</li>
+<li>有这个就不需要pfile了</li>
+<li>spfile 服务器管理的参数文件（不由可显示字符组成）不可用文本编辑器修改，文件会破坏</li>
+<li>spfile是用来服务器的启动的，不可以随便修改，要用命令修改，修改之后直接生效不用重启</li>
+</ul>
+<h5 id="查看初始化参数（spfile里的）">查看初始化参数（spfile里的）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter                   <span class="comment">--看所有初始化参数</span></span><br><span class="line"><span class="keyword">show</span> parameter shared_pool_size  <span class="comment">--看具体某一个（共享池大小）</span></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">share</span>             <span class="comment">--查询所有名字包含share的参数</span></span><br></pre></td></tr></table></figure>
+<p>如何看自己用什么启动</p>
+<p><img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320085717461.png" alt="image-20200320085717461"></p>
+<h5 id="修改初始化参数">修改初始化参数</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size = <span class="number">128</span>m;   <span class="comment">--big integer类型 -- alter system为例程级别？？</span></span><br><span class="line"><span class="keyword">show</span> parameter sga_max_size  </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">5000</span>m;  <span class="comment">--这个参数是静态参数，无法动态修改，先写到文件里，重启才可生效。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">2000</span>m;</span><br><span class="line"></span><br><span class="line">desc v$parameter</span><br><span class="line"><span class="comment">-- ISSYS_MODIFIABLE字段有三种类型</span></span><br><span class="line">  deferred       <span class="comment">--延时，不会马上/也不需要生效，重新连接就可生效</span></span><br><span class="line">  immediate      <span class="comment">--可立即改</span></span><br><span class="line">  false          <span class="comment">--不可直接改，先写到文件中，必须重启才能生效</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,ISSYS_MODIFIABLE <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'s%'</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="scope">scope</h5>
+<ol>
+<li>memory:只在内存改，不在spfile文件改（临时生效）</li>
+<li>spfile:先写在文件中，下次重启生效</li>
+<li>both:立即生效，同时在文件中修改</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">memory</span>; <span class="comment">--文件没有修改，下次修改还是原来的值</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">both</span>; <span class="comment">--文件被修改</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size=<span class="number">5000</span>m <span class="keyword">scope</span> = <span class="keyword">spfile</span>;    <span class="comment">--发现没有生效，但是已经写到spfile文件里面了，下次启动生效（shutdown之后重新startup）</span></span><br></pre></td></tr></table></figure>
+<h5 id="将某个初始化参数还原成默认值">将某个初始化参数还原成默认值</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter shared_server</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">reset</span> shared_server;  <span class="comment">--复位重启之后才可以看到恢复的结果</span></span><br></pre></td></tr></table></figure>
+<h5 id="将所有初始化参数都还原成默认值（待实验）">将所有初始化参数都还原成默认值（待实验）</h5>
+<p>初始化参数文件中没有的都取默认值，删掉文件18.3.0/database/initdb18c.dba</p>
+<p>shutdown immediate</p>
+<p>startup找不到初始化参数文件</p>
+<p>nodepad写一个空文件到18.3.0/database/initdb18c.dba</p>
+<p>参数库文件中要加数据库名字:</p>
+<p>文件中加*.dbname=‘db12c’</p>
+<p>再加1属性，控制文件路径</p>
+<p>*.control_files=‘F:/app/oracle/produce/18.3.0/database/control01.ctl’ ‘D:app/oracle/<br>
+……/control02.ctl’</p>
+<p>(其他默认)再重启</p>
+<h5 id="修复错误的初始化参数（要会">修复错误的初始化参数（要会</h5>
+<p>pfile，用于修复错误时用，人可以修改</p>
+<p>show parameter cpu_count</p>
+<p>show parameter spfile – 查看是不是用spfile启动的，如果是空，则用pfile；不空则用spfile</p>
+<p>alter system set shared_pool_size=200G scope=spfile;  --下次重启生效</p>
+<p>搞坏参数，起不来了，startup报错sga_target 4864M太小，其中的一部分太大</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320100247037.png" alt="image-20200320100247037" style="zoom:50%;">
+<p>==查看警告日志文件，知道是哪一个参数不对==</p>
+<p>app/oracle/diag/rdbms/db12c/trace/alert_db12c.log</p>
+<p>这个文件可以删，记录日志时会自动产生</p>
+<p>==根据一个spfile创建pfile文件==</p>
+<p>create pfile from spfile;</p>
+<p>initdb12c.ora文本文件可修改</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320100757114.png" alt="image-20200320100757114" style="zoom:67%;">
+<p>修改128m，保存</p>
+<p>将原来的spfile改名，让Oracle找不到spfile，只能用pfile启动</p>
+<p>老师的解决方法，直接把那个shared_pool_size参数去掉了，当作默认值</p>
+<p>或者两个参数都加上？</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320103354004.png" alt="image-20200320103354004" style="zoom: 80%;">
+<p>==根据pfile创建spfile==</p>
+<p>show parameter spfile – 发现又按spfile启动了？？？</p>
+<h5 id="例程在启动时选择初始化参数文件的顺序">例程在启动时选择初始化参数文件的顺序</h5>
+<p>1)spfile<sid>.ora有此文件，其他文件都不看，第一顺位</sid></p>
+<p>2)spfile.ora 第二顺位</p>
+<p>3)init<sid>.ora</sid></p>
+<p>4)都找不到就报错=&gt;解决：利用指定的q初始化参数文件启动startup pfile=d:\a\a.ora</p>
+<img src="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320103835250.png" alt="image-20200320103835250" style="zoom:67%;">
+<h5 id="利用指定的初始化参数文件启动">利用指定的初始化参数文件启动</h5>
+<p>用a.ora启动<br>
+startup pfile = filePath;  --文件路径</p>
+<ol>
+<li>创建oracle的服务oracleservicedemo<br>
+要在管理员权限下进行<br>
+oradim -new -sid demo<br>
+输入oracle服务用户口令：*****</li>
+<li>将当前进程设为demo<br>
+set oracle_sid=demo</li>
+</ol>
+<h3 id="自学）实例恢复">自学）实例恢复</h3>
+<p><a href="http://blog.itpub.net/29863023/viewspace-2652139/" target="_blank" rel="noopener">http://blog.itpub.net/29863023/viewspace-2652139/</a></p>
+<p>update事务为例</p>
+<h4 id="1-sql语句解析">1.sql语句解析</h4>
+<p>首先会经过在share pool中的sql语句的解析过程，这一过程只要是针对sql语法，执行计划这些进行处理，这一部分不细讲</p>
+<h4 id="2-将数据块读入数据库高速缓存中">2.将数据块读入数据库高速缓存中</h4>
+<p>接着，到了sql执行后，数据库从物理文件读出数据行相应的数据块到 buffer cache中（假设此时内存不存在相应的数据块同时不讨论锁的过程），这一过程也涉及到数据块写到dirty list，并写脏块，为新读取的数据块寻找空闲空间的过程 。</p>
+<h4 id="3-保留一份修改前的数据块映像">3.保留一份修改前的数据块映像</h4>
+<p>同时会分配回滚段并在undo段再保留一份修改前的数据块映像。</p>
+<h4 id="4-写入重做日志缓存">4.写入重做日志缓存</h4>
+<p>为事务修改数据块，并在执行更改完成后，针对此数据块的修改也生成redo信息。这里是将该语句所影响的并被读入db buffer中的这些行数据的rowid及要更新的原值和新值及scn等信息从PGA逐条的写入redo log buffer中</p>
+<h4 id="5-执行commit命令">5.执行commit命令</h4>
+<p>声明redo log buffer 中的redo处于commit状态，然后修改事务表相应slot，声明事务已提交，最后通知lgwr进程将redo log buffer中的数据写入redo log file。待lgwr进程通知已经写入完成后，向用户发出commit完成的信息</p>
+<h3 id="三个后台进程">三个后台进程</h3>
+<p>CKPT：检查点进程（Checkpoint Process）只是更新数据文件的文件首部，以辅助建立检查点的进程</p>
+<p>什么时候发生normal checkpoint</p>
+<p>下面这些操作将会触发checkpoint事件：</p>
+<ul>
+<li>日志切换，通过ALTER SYSTEM SWITCH LOGFILE。</li>
+<li>DBA发出checkpoint命令，通过ALTER SYSTEM checkpoint。</li>
+<li>对数据文件进行热备时，针对该数据文件的checkpoint也会进行，ALTER TABLESPACE TS_NAME BEGIN BACKUP/END BACKUP。</li>
+<li>当运行ALTER TABLESPACE/DATAFILE READ ONLY的时候。</li>
+<li>SHUTDOWN命令发出时。</li>
+</ul>
+<p>因为每次完全的checkpoint都需要把buffer cache所有的脏块都写入到数据文件中，这样就是产生一个很大的IO消耗，频繁的完全checkpoint操作很对系统的性能有很大的影响，为此Oracle引入的增量checkpoint的概念，buffer cache中的脏块将会按照BCQ队列的顺序持续不断的被写入到磁盘当中，同时CKPT进程将会每3秒中检查DBWn的写入进度并将相应的RBA信息记录到控制文件中。</p>
+<p>有了增量checkpoint之后在进行实例恢复的时候就不需要再从崩溃前的那个完全checkpoint开始应用重做日志了，只需要从控制文件中记录的RBA开始进行恢复操作，这样能节省恢复的时间。</p>
+<p>发生增量checkpoint的先决条件</p>
+<ul>
+<li>恢复需求设定 （FAST_START_IO_TARGET/FAST_START_MTTR_TARGET）</li>
+<li>LOG_checkpoint_INTERVAL参数值</li>
+<li>LOG_checkpoint_TIMEOUT参数值</li>
+<li>最小的日志文件大小</li>
+<li>buffer cache中的脏块的数量</li>
+</ul>
+<p>DBWn：数据库块写入器（Database Block Writer）负责将脏块写入磁盘的后台进程。</p>
+<p>触发DBWR进程的条件有：</p>
+<ul>
+<li>DBWR超时，大约3秒</li>
+<li>系统中没有多余的空缓冲区来存放数据</li>
+<li>CKPT 进程触发DBWR</li>
+<li>free buffer waits 40% 触发 dbwr吧lruw脏块写入磁盘</li>
+<li>关机会触发dbwr写</li>
+<li>alter system checkpoint 触发dbwr写</li>
+<li>redo 日志切换 触发dbwr写</li>
+<li>表空间 offline /online 触发dbwr写</li>
+</ul>
+<p>LGWR：日志写入器（Log Writer）负责将SGA中重做日志缓冲区的内容刷新输出到磁盘。</p>
+<p>触发LGWn工作的时点有几个：</p>
+<ol>
+<li>用户提交 ，commit时必须写LOGFILE.</li>
+<li>有1/3重做日志缓冲区未被写入磁盘</li>
+<li>有大于1M的重做日志缓冲区未被写入磁盘</li>
+<li>3秒超时</li>
+<li>DBWR 需要写入的数据的SCN大于LGWR记录的SCN，DBWR 触发LGWR写入。</li>
+</ol>
+<p>这三个进程都是为了更好地完成一件事：<strong>安全高效地实现内存数据块写入数据文件</strong>，就是将内存中修改的数据反映到硬盘的数据文件上。 我在事务未提交时做一个刷新buffer cache，此时发现数据块已经被刷新到磁盘文件中，通过以上三个进程的触发条件也可以看出刷新数据块与事务是否提交关系不大。</p>
 
     </div>
 
@@ -623,7 +936,7 @@ commit;<br>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Oracle知识点"><span class="nav-text">2. Oracle知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内部RDBMS表"><span class="nav-text">1. 内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据字典表-（Data-dictionary-table）"><span class="nav-text">2. 数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-静态数据字典视图"><span class="nav-text">3. 静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态性能视图"><span class="nav-text">4. 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库发生的事情"><span class="nav-text">关闭数据库发生的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database"><span class="nav-text">alter system &#x2F; database</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示提交-隐式提交"><span class="nav-text">显示提交&amp;隐式提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显式提交"><span class="nav-text">显式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式提交"><span class="nav-text">隐式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动提交"><span class="nav-text">自动提交</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内部RDBMS表"><span class="nav-text">1. 内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据字典表-（Data-dictionary-table）"><span class="nav-text">2. 数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-静态数据字典视图"><span class="nav-text">3. 静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态性能视图"><span class="nav-text">4. 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库发生的事情"><span class="nav-text">关闭数据库发生的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database-session"><span class="nav-text">alter system &#x2F; database &#x2F; session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nls"><span class="nav-text">nls</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-date-format"><span class="nav-text">nls_date_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-territory"><span class="nav-text">nls_territory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-language"><span class="nav-text">nls_language</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示提交-隐式提交"><span class="nav-text">显示提交&amp;隐式提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显式提交"><span class="nav-text">显式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式提交"><span class="nav-text">隐式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动提交"><span class="nav-text">自动提交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小练习"><span class="nav-text">小练习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图的作用"><span class="nav-text">视图的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图的分类"><span class="nav-text">视图的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内嵌视图"><span class="nav-text">内嵌视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例程管理、配置"><span class="nav-text">例程管理、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭例程"><span class="nav-text">关闭例程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动例程"><span class="nav-text">启动例程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-例程启动（nomount阶段）"><span class="nav-text">1.例程启动（nomount阶段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-加载数据库-mount阶段"><span class="nav-text">2.加载数据库(mount阶段)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-打开数据库（open阶段）"><span class="nav-text">3.打开数据库（open阶段）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例程的配置"><span class="nav-text">例程的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化参数文件"><span class="nav-text">初始化参数文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看初始化参数（spfile里的）"><span class="nav-text">查看初始化参数（spfile里的）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改初始化参数"><span class="nav-text">修改初始化参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope"><span class="nav-text">scope</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将某个初始化参数还原成默认值"><span class="nav-text">将某个初始化参数还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将所有初始化参数都还原成默认值（待实验）"><span class="nav-text">将所有初始化参数都还原成默认值（待实验）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修复错误的初始化参数（要会"><span class="nav-text">修复错误的初始化参数（要会</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#例程在启动时选择初始化参数文件的顺序"><span class="nav-text">例程在启动时选择初始化参数文件的顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用指定的初始化参数文件启动"><span class="nav-text">利用指定的初始化参数文件启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自学）实例恢复"><span class="nav-text">自学）实例恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sql语句解析"><span class="nav-text">1.sql语句解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-将数据块读入数据库高速缓存中"><span class="nav-text">2.将数据块读入数据库高速缓存中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-保留一份修改前的数据块映像"><span class="nav-text">3.保留一份修改前的数据块映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-写入重做日志缓存"><span class="nav-text">4.写入重做日志缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行commit命令"><span class="nav-text">5.执行commit命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三个后台进程"><span class="nav-text">三个后台进程</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
