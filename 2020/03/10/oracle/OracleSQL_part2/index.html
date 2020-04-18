@@ -36,30 +36,56 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <meta name="description" content="中国南京 东南大学 软件学院">
-<meta property="og:type" content="website">
-<meta property="og:title" content="翔翔の据点">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="2 DML insert  如果全部字段都有值，则可以不写列名 如果部分字段为null，两种方法（显式&#x2F;隐式）  没听到？？？ 插入日期类型时，注意用to_date 插入数据和用户交互，用&amp;  嵌入子查询，可以同时插入很多条记录  update 注意写where条件，否则全部更新  如果更新多个字段，set后用逗号隔开 子查询嵌入set部分，提高效率（省的取两次数据）  子查询嵌入wher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle SQL_part2">
+<meta property="og:url" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/index.html">
 <meta property="og:site_name" content="翔翔の据点">
-<meta property="og:description" content="中国南京 东南大学 软件学院">
+<meta property="og:description" content="2 DML insert  如果全部字段都有值，则可以不写列名 如果部分字段为null，两种方法（显式&#x2F;隐式）  没听到？？？ 插入日期类型时，注意用to_date 插入数据和用户交互，用&amp;  嵌入子查询，可以同时插入很多条记录  update 注意写where条件，否则全部更新  如果更新多个字段，set后用逗号隔开 子查询嵌入set部分，提高效率（省的取两次数据）  子查询嵌入wher">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200313103122536.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415122923453.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415123218099.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415123136515.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415123421013.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200317140650155.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415123918356.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415123612794.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415123713405.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200415125047943.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200313110349993.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200313111635286.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200317141638218.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200416220506116.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200317150747877.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/md_picture_backup/image-20200317162230483.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200418185519693.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200418185610756.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/md_picture_backup/image-20200317162547204.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200418185946648.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200418190532268.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200418193318378.png">
+<meta property="article:published_time" content="2020-03-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-18T13:01:54.203Z">
 <meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/image-20200313103122536.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>翔翔の据点</title>
+  <title>Oracle SQL_part2 | 翔翔の据点</title>
   
 
 
@@ -199,864 +225,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/" class="post-title-link" itemprop="url">Oracle 12c中的c</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-04-17 22:13:55 / 修改时间：11:04:18" itemprop="dateCreated datePublished" datetime="2020-04-17T22:13:55+08:00">2020-04-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="创建容器数据库（cdb）">创建容器数据库（cdb）</h2>
-<p>不建议手工创建，否则一堆问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">dbca</span><br></pre></td></tr></table></figure>
-<ul>
-<li>创建模式 - 高级配置</li>
-<li>全局数据库名 - cdb</li>
-<li>创建为容器数据库</li>
-<li>取消将本地还原表空间用于PDB（Oracle认证考试时取消）</li>
-<li>pdb名称 - pdb1</li>
-<li>将下列用于数据库存储属性（文件系统）</li>
-<li>指定快速恢复区</li>
-<li>启用归档</li>
-<li>配置选项 - 实例方案 - 将实例方案添加到数据库</li>
-<li>创建选项 - 所有用户使用同一口令（admin）</li>
-<li>开始创建就好了</li>
-</ul>
-<h2 id="cdb和non-cdb">cdb和non-cdb</h2>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083351622.png" alt="image-20200417083351622" style="zoom:67%;">
-<p>==cdb == 一个例程接多个数据库==</p>
-<p>dba管好cdb，分部门管好自己的数据</p>
-<p>重要</p>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083517069.png" alt="image-20200417083517069" style="zoom:67%;">
-<p>可插拔数据库（PDB）pluggable</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME                       <span class="keyword">OPEN</span> <span class="keyword">MODE</span>  <span class="keyword">RESTRICTED</span></span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">         <span class="number">2</span> PDB$<span class="keyword">SEED</span>                       <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">         <span class="number">3</span> PDB1                           <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> con_name</span><br><span class="line"><span class="comment">-- CDB$ROOT</span></span><br><span class="line"><span class="keyword">show</span> con_id</span><br><span class="line"><span class="comment">-- 1</span></span><br></pre></td></tr></table></figure>
-<p>第一个是总的，pdb1是新建的哪个</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> con_id,<span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">tablespace</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    CON_ID NAME</span><br><span class="line"><span class="comment">---------- ------------------------------------------------------------</span></span><br><span class="line">         1 SYSAUX</span><br><span class="line">         1 SYSTEM</span><br><span class="line">         1 UNDOTBS1</span><br><span class="line">         1 USERS</span><br><span class="line">         1 TEMP</span><br><span class="line">         2 SYSTEM</span><br><span class="line">         2 TEMP</span><br><span class="line">         2 SYSAUX</span><br><span class="line">         3 TEMP</span><br><span class="line">         3 SYSTEM</span><br><span class="line">         3 SYSAUX</span><br><span class="line">         3 USERS</span><br><span class="line"></span><br><span class="line">12 rows selected.</span><br></pre></td></tr></table></figure>
-<p>系统数据共享？</p>
-<p>cdb下，系统数据分两部分</p>
-<ul>
-<li>Oracle系统数据：放在cdb_root里</li>
-<li>用户的系统数据：放在每个用户的system表空间里。用户表的定义（表的创建者等信息）</li>
-</ul>
-<p>非cdb时，两部分混在一起</p>
-<p>物理结构（查看哪些是共享的）</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 初始化文件只有一个（因为instance只有一个）</span></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">spfile</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">NAME</span>                                 <span class="keyword">TYPE</span>                   <span class="keyword">VALUE</span></span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line"><span class="keyword">spfile</span>                               <span class="keyword">string</span>                 /u01/app/<span class="keyword">oracle</span>/product/<span class="number">12.2</span><span class="number">.0</span></span><br><span class="line">                                                            /dbhome_1/dbs/spfilecdb.ora</span><br><span class="line"><span class="comment">-- 控制文件、日志文件共享，只在根下</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>;</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/cdb/control01.ctl</span><br><span class="line">/u01/app/oracle/fast_recovery_area/cdb/control02.ctl</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,con_id from v$logfile;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment">#     CON_ID</span></span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">         <span class="number">3</span>          <span class="number">0</span></span><br><span class="line">         <span class="number">2</span>          <span class="number">0</span></span><br><span class="line">         <span class="number">1</span>          <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 数据文件无法共享（根 + 总支 + pdb）</span></span><br><span class="line"><span class="comment">-- pdb中只有数据文件了</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br></pre></td></tr></table></figure>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084723162.png" alt="image-20200417084723162" style="zoom:80%;">
-<p>术语发生变化</p>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084820564.png" alt="image-20200417084820564" style="zoom:67%;">
-<p>数据字典视图结构发生变化</p>
-<p><code>dba_外面又有一层cdb_</code></p>
-<p>abc都对</p>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084953390.png" alt="image-20200417084953390" style="zoom:67%;">
-<p>架构图，考试，和非cdb的不同点</p>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085120398.png" alt="image-20200417085120398"></p>
-<ul>
-<li>一对一，多对一</li>
-<li>共享不同</li>
-</ul>
-<p>初始化参数文件不同</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show parameter enable_pluggable_database</span><br></pre></td></tr></table></figure>
-<p>考试a（实际上可以修改？？？）</p>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085718644.png" alt="image-20200417085718644" style="zoom:67%;">
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line"><span class="comment">-- 看是不是容器数据库</span></span><br><span class="line"><span class="keyword">desc</span> v$<span class="keyword">database</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, cdb <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- cdb下yes</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, cdb <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- sales下no</span></span><br><span class="line"></span><br><span class="line">col username for a20</span><br><span class="line"><span class="keyword">select</span> username,con_id <span class="keyword">from</span> cdb_users <span class="keyword">where</span> username=<span class="string">'HR'</span>;</span><br><span class="line"><span class="comment">-- 1原来就有hr，3克隆1，顺便把用户也带上了</span></span><br><span class="line">USERNAME                 CON_ID</span><br><span class="line"><span class="comment">-------------------- ----------</span></span><br><span class="line">HR                            3</span><br><span class="line">HR                            5</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line">    CON_ID CON_NAME                       <span class="keyword">OPEN</span> <span class="keyword">MODE</span>  <span class="keyword">RESTRICTED</span></span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">         <span class="number">2</span> PDB$<span class="keyword">SEED</span>                       <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">         <span class="number">3</span> PDB1                           <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">         <span class="number">4</span> PDB2                           <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br><span class="line">         <span class="number">5</span> PDB3                           <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建pdb">创建pdb</h2>
-<h3 id="1-基于pdb种子数据库创建pdb">1. 基于pdb种子数据库创建pdb</h3>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085928678.png" alt="image-20200417085928678" style="zoom:67%;">
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">col name for a50</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> con_id=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> con_id=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> con_id=<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- os</span></span><br><span class="line">mkdir -p /u01/app/oracle/oradata/cdb/pdbseed/</span><br><span class="line">mkdir -p /u01/app/oracle/oradata/cdb/pdb2/</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> pdb_file_name_convert=<span class="string">'/u01/app/oracle/oradata/cdb/pdbseed/'</span>,<span class="string">'/u01/app/oracle/oradata/cdb/pdb2/'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb2 <span class="keyword">admin</span> <span class="keyword">user</span> pdb2admin <span class="keyword">identified</span> <span class="keyword">by</span> <span class="keyword">admin</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb2 <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="2-克隆本地pdb">2.克隆本地pdb</h3>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417090536311.png" alt="image-20200417090536311" style="zoom:67%;">
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">close</span>;</span><br><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">open</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- os</span></span><br><span class="line">mkdir -p /u01/app/oracle/oradata/cdb/pdb3/</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb3 <span class="keyword">from</span> pdb1 <span class="keyword">file_name_convert</span>=(<span class="string">'/u01/app/oracle/oradata/cdb/pdb1/'</span>,<span class="string">'/u01/app/oracle/oradata/cdb/pdb3/'</span>);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb3 <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="3-把非pdb插入cdb">3.把非pdb插入cdb</h3>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417092430038.png" alt="image-20200417092430038"></p>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417093150625.png" alt="image-20200417093150625"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- SYS@sales&gt;</span></span><br><span class="line">shutdown immediate</span><br><span class="line">startup open read only</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;</span><br><span class="line"></span><br><span class="line">NAME               OPEN_MODE</span><br><span class="line"><span class="comment">------------------ ----------------------------------------</span></span><br><span class="line">SALES              READ ONLY</span><br><span class="line"></span><br><span class="line">exec dbms_pdb.describe(PDB_DESCR_FILE=&gt;<span class="string">'/u01/app/oracle/oradata/sales/sales.xml'</span>);</span><br><span class="line"><span class="comment">-- 查看是否产生，用来描述数据库信息</span></span><br><span class="line">shutdown immediate</span><br><span class="line"><span class="comment">-- drop pluggable database db12c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- cdb下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> sales <span class="keyword">using</span> <span class="string">'/u01/app/oracle/oradata/sales/sales.xml'</span></span><br><span class="line">copy</span><br><span class="line"><span class="keyword">FILE_NAME_CONVERT</span>=(<span class="string">'/u01/app/oracle/oradata/sales/'</span>,<span class="string">'/u01/app/oracle/oradata/cdb/sales/'</span>);</span><br><span class="line"></span><br><span class="line">col name for a20</span><br><span class="line">col restricted for a16</span><br><span class="line"><span class="keyword">select</span> con_id,<span class="keyword">name</span>,open_mode,<span class="keyword">restricted</span> <span class="keyword">from</span> v$pdbs;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 千万别打开</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=sales;</span><br><span class="line"><span class="comment">-- 执行脚本，去除不需要的元数据</span></span><br><span class="line">@?/rdbms/admin/noncdb_to_pdb</span><br><span class="line">conn / as sysdba</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> con_name</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=sales; <span class="comment">-- 记得换容器</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> sales <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="4-pdb的拔插和删除">4. pdb的拔插和删除</h3>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095135258.png" alt="image-20200417095135258"></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 换回cdb</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=cdb$root;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">close</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 unplug <span class="keyword">into</span> <span class="string">'/u01/app/oracle/oradata/cdb/pdb1.xml'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">keep</span> <span class="keyword">datafiles</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$pdbs;</span><br></pre></td></tr></table></figure>
-<h2 id="使用pdb">使用pdb</h2>
-<h3 id="连接和切换">连接和切换</h3>
-<p>连接到pdb</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conn sys/admin@192.168.11.200:1521/pdb1 as sysdba</span><br><span class="line">conn sys/admin@192.168.11.200/sales as sysdba</span><br><span class="line"><span class="comment">-- 默认端口1521可以不写</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> scott.emp;</span><br></pre></td></tr></table></figure>
-<p>为pdb做服务名（服务名都写pdb1，主机名192.168.11.200）</p>
-<p>之后就可以这样登录</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conn system/admin@pdb1</span><br><span class="line"><span class="comment">-- 或者sqlplus</span></span><br></pre></td></tr></table></figure>
-<p>连接到cdb</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn sys&#x2F;admin@cdb as sysdba</span><br></pre></td></tr></table></figure>
-<p>切换cdb和pdb</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 换回cdb</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=cdb$root;</span><br><span class="line"><span class="comment">-- 切换到pdb</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=pdb1;</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095612499.png" alt="image-20200417095612499"></p>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095655521.png" alt="image-20200417095655521"></p>
-<p>关cdb之后，再起，发现所有pdb都是mounted，需要手动</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- cdb下</span></span><br><span class="line">shutdown immediate</span><br><span class="line">startup</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> <span class="keyword">all</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
-<p>自动怎么办</p>
-<ul>
-<li>
-<p>触发器</p>
-</li>
-<li>
-<p>命令</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> <span class="keyword">all</span> <span class="keyword">save</span> state;</span><br><span class="line"><span class="comment">-- 保留关闭时的状态</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> <span class="keyword">all</span> discard state;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>之后没听</p>
-<p>==pdb，只能看到数据文件==</p>
-<p>改初始化参数对pdb的影响</p>
-<p>有的参数不能在pdb里改，只能在cdb上改</p>
-<p>能改的一般都只影响自己的pdb</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">show parameter target_pdbs</span><br><span class="line"></span><br><span class="line">NAME                                 TYPE                   VALUE</span><br><span class="line">------------------------------------ ---------------------- ------------------------------</span><br><span class="line">target_pdbs                          integer                3</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417101300271.png" alt="image-20200417101300271"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show parameter session_max_open_files</span><br><span class="line">show parameter circuits</span><br></pre></td></tr></table></figure>
-<p>有的命令只能在cdb上做（切换日志文件）</p>
-<p>能在pdb上做的：做检查点，但是影响了整个cdb</p>
-<h3 id="公共用户-本地用户">公共用户&amp;本地用户</h3>
-<p>考试（互相指派能不能，多选题</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">-- cdb下</span></span><br><span class="line"> <span class="comment">-- 只能建公共用户</span></span><br><span class="line"><span class="keyword">select</span> username <span class="keyword">from</span> dba_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- create user test identified by 123123; -- 不能</span></span><br><span class="line"><span class="keyword">show</span> parameter prefix</span><br><span class="line"><span class="comment">-- 公共用户前缀必须是C##</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> C<span class="comment">##test identified by 123123;</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> C<span class="comment">##test; -- 默认本地权限</span></span><br><span class="line"><span class="keyword">conn</span> C<span class="comment">##test/123123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果公共用户要登到pdb</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> C<span class="comment">##test container=all; -- sys给了公共权限</span></span><br><span class="line"><span class="keyword">conn</span> C<span class="comment">##test/123123@pdb1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不能将公共权限给本地用户，别的都可以</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- pdb下</span></span><br><span class="line"><span class="comment">-- 本地用户只在pdb可见，cdb不可见？？？</span></span><br></pre></td></tr></table></figure>
-<img src="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417104917764.png" alt="image-20200417104917764" style="zoom:67%;">
-<h2 id="考试">考试</h2>
-<p>架构：区分是cdb还是非cdb（20分）</p>
-<p>SQL：只靠QL</p>
-<p>查询、条件、排序（top n功能、连接、子查询、函数）</p>
-<p>例程管理（启动的过程）</p>
-<p>控制文件（包含内容、出了问题怎么复用）</p>
-<p>日志文件（联机 重做日志文件 + 归档日志文件）</p>
-<p>表空间和数据文件（结构，基本管理）</p>
-<p>Oracle安全3a？？？</p>
-<p>数据移动 logmnr步骤！！！</p>
-<p>备份和恢复 完全恢复和不完全恢复</p>
-<p>闪回技术</p>
-<p>多租户架构</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/" class="post-title-link" itemprop="url">Oracle 数据库备份&恢复</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-05T00:00:00+08:00">2020-04-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 08:19:09" itemprop="dateModified" datetime="2020-04-17T08:19:09+08:00">2020-04-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>演示logMiner</li>
-<li>演示【备份-破坏-恢复】操作</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/27/oracle/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/27/oracle/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/" class="post-title-link" itemprop="url">Oracle 数据移动&外部表</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-27T00:00:00+08:00">2020-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 20:28:02" itemprop="dateModified" datetime="2020-04-14T20:28:02+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-数据移动">1.数据移动</h2>
-<ul>
-<li>数据文件 ----- 数据库</li>
-<li>数据库 ----- 数据文件</li>
-<li>数据库 ----- 数据库</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/27/oracle/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/" class="post-title-link" itemprop="url">Oracle 安全3A</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-09 16:26:45" itemprop="dateModified" datetime="2020-04-09T16:26:45+08:00">2020-04-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>验证【第一步得现有身份证】</li>
-<li>授权【有身份证还得有登机牌才能上飞机】</li>
-<li>审核【飞机掉下去找黑匣子，找问题的原因】</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/21/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/" class="post-title-link" itemprop="url">Oracle 文件部分</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-11 14:13:37" itemprop="dateModified" datetime="2020-04-11T14:13:37+08:00">2020-04-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="手动创建数据库sales">手动创建数据库sales</h2>
-<h3 id="创建-编辑初始化参数文件pfile">创建/编辑初始化参数文件pfile</h3>
-<p>在db12c下</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> pfile <span class="keyword">from</span> <span class="keyword">spfile</span>;</span><br></pre></td></tr></table></figure>
-<p>到$ORACLE_HOME/dbs下，把db12c的pfile复制一份给sales</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp initdb12c.ora initsales.ora</span><br><span class="line">vim initsales.ora</span><br></pre></td></tr></table></figure>
-<p>内容修改，查找全部替换db12c-&gt;sales（按esc，再输命令）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1,$ s&#x2F;db12c&#x2F;sales&#x2F;g</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/21/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">Oracle 零碎知识点</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-18 20:53:13" itemprop="dateModified" datetime="2020-04-18T20:53:13+08:00">2020-04-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="数据字典">数据字典</h3>
-<ul>
-<li>
-<p>数据字典系统表（dict），保存在system表空间中</p>
-</li>
-<li>
-<p>DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）</p>
-</li>
-<li>
-<p>dict表（视图）中有table_name, comments字段：看某个表有什么用</p>
-</li>
-<li>
-<p>动态静态都能查到</p>
-</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">UPPER</span>(<span class="string">'user_tables'</span>); <span class="comment">-- 注意大小写</span></span><br></pre></td></tr></table></figure>
-<p>数据字典主要可分为四部分：</p>
-<h4 id="1-内部RDBMS表">1. 内部RDBMS表</h4>
-<p><code>x$*</code></p>
-<p>用于跟踪内部数据库信息，维持DB的正常运行。是加密命名的， 而且Oracle不做文档说明。不允许sysdba以外的用户直接访问，显示授权不被允许。</p>
-<p>X$表是Oracle数据库的运行基础，在数据库启动时由Oracle应用程序动态创建。</p>
-<h4 id="2-数据字典表-（Data-dictionary-table）">2. 数据字典表 （Data dictionary table）</h4>
-<p><code>*$</code>，如<code>tab$,obj$,ts$</code>等</p>
-<p>用来存储表、索引、约束以及其他数据库结构的信息。</p>
-<p>在创建数据库的时候通过运行$ORACLE_HOME/rdbms/admin/sql.bsq脚本来创建。</p>
-<h4 id="3-静态数据字典视图">3. 静态数据字典视图</h4>
-<p>视图，不是一种存储结构</p>
-<p>静态数据字典视图，来自一些系统表，这些系统表一般放在system表空间下？？？</p>
-<p><strong>查看视图原表</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REFERENCED_NAME, REFERENCED_TYPE</span><br><span class="line"><span class="keyword">from</span> SYS.ALL_DEPENDENCIES</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">TYPE</span> = <span class="string">'VIEW'</span></span><br><span class="line"><span class="keyword">and</span> <span class="keyword">NAME</span> = <span class="keyword">UPPER</span>(<span class="string">'DBA_TABLE'</span>)</span><br><span class="line"><span class="keyword">and</span> REFERENCED_TYPE = <span class="string">'TABLE'</span>;</span><br></pre></td></tr></table></figure>
-<p><code>user_*、all_*、dba_*</code></p>
-<p>由于X$表和数据字典表通常不能直接被用户访问，Oracle创建了静态数据字典视图来<strong>提供用户对于数据字典信息的访问</strong>，由于这些信息通常相对稳定，不能直接修改，所以又被称为静态数据字典视图。</p>
-<p>静态数据字典视图在创建数据库时由$ORACLE_HOME/rdbms/admin/catagory.sql脚本创建。</p>
-<p>通过三类视图在本质上是为了实现权限控制。在Oracle数据库中，每个用户与方案（Schema）是对应的，Schema是用户所拥有的对象的集合。数据库通过Schema将不同用户的对象隔离开来，用户可以自由的访问自己的对象，但是要访问其他Schema对象就需要相关的授权。</p>
-<ul>
-<li>内容来自：数据文件</li>
-<li>统计数据，要及时更新。安排作业？？？每天晚上自动更新</li>
-<li>一般是<strong>复数形式</strong></li>
-</ul>
-<p>遇到下面的前缀，权限从小到大，dba需要授权</p>
-<ul>
-<li>
-<p>USER_  当前用户是所有者的对象</p>
-</li>
-<li>
-<p>ALL_  当前用户是所有者的对象 + 当前用户有权限访问的对象</p>
-</li>
-<li>
-<p>DBA_ dba是所有者的对象 +dba有权限访问的对象</p>
-<p>在hr下，访问不了这类表，<strong>权限</strong>不够。需要在sysdba（权限大的角色）下访问</p>
-</li>
-</ul>
-<p>查一个表有几条数据，==不用count，要查字典==，【count == 把学生叫道操场数数】</p>
-<p>静态数据字典视图，更新问题</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- flashback complete</span></span><br><span class="line"></span><br><span class="line">desc user_tables</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 大小写问题</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- drop table之后，数据字典中numrows变为空</span></span><br><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="comment">-- 表闪回之后，数据字典没有更新回删除之前的状态！！！</span></span><br><span class="line"><span class="comment">-- Oracle按照这个旧的统计数据指定执行计划</span></span><br><span class="line"><span class="comment">-- 旧数据行数很少，所以不走索引全表扫描，但实际数据很多，导致性能极低</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> emp(empno,ename) <span class="keyword">values</span>(<span class="number">1234</span>, <span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量没有变</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> emp <span class="keyword">compute</span> <span class="keyword">statistics</span>; <span class="comment">-- 更新统计数据</span></span><br><span class="line"><span class="keyword">select</span> table_name, num_rows <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 数量+1</span></span><br></pre></td></tr></table></figure>
-<h4 id="4-动态性能视图">4. 动态性能视图</h4>
-<p><code>gv$*， v$*</code></p>
-<p>记录了DB运行时信息和统计数据，大部分动态性能视图被实时更新以反映DB当前状态。</p>
-<p>内容来自：内存和控制文件</p>
-<p>视图内部的指标大多和性能相关</p>
-<p>==v$ 开头的==</p>
-<p>eg 查看库缓存的命中率（命中率高，效率高）</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">desc v$librarycache <span class="comment">-- namespace，gethitratio</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE <span class="keyword">from</span> v$librarycache <span class="comment">-- 包含每种对象（sql area、index等）的命中率</span></span><br><span class="line"><span class="keyword">select</span> NAMESPACE,GETHITRATIO <span class="keyword">from</span> v$librarycache <span class="keyword">where</span> NAMESPACE <span class="keyword">in</span> (<span class="string">'SQL AREA'</span>,<span class="string">'TABLE/PROCEDURE'</span>); <span class="comment">-- sql语句和存储过程的命中率0.4 0.6左右</span></span><br><span class="line"><span class="comment">-- 生产中90%以下需要优化</span></span><br></pre></td></tr></table></figure>
-<p>如果猜不到, 就老老实实查总表，==dictionary 同义词为 dict==</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">desc dict <span class="comment">-- 两个字段：table_name, comments</span></span><br><span class="line"><span class="comment">-- select table_name from dict; -- 四千多行，需要筛选</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict <span class="keyword">where</span> table_name <span class="keyword">like</span> <span class="string">'%SGA%'</span>; <span class="comment">-- 剩二十多行</span></span><br><span class="line"></span><br><span class="line">desc V$SGAINFO; <span class="comment">-- sga各部分的信息（里面有sga各部分大小：共享池等）</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">sizes</span> <span class="keyword">from</span> V$SGAINFO; <span class="comment">-- 单位换算成MB</span></span><br></pre></td></tr></table></figure>
-<p>在数据库启动时，Oracle动态创建X$表。在此基础上，Oracle创建了GV$和V$视图，GV$即Global V$，除了一些特例外，每个V$都对应一个GV$。GV$产生是为了OPS/RAC环境的需要，每个V$都是基于GV$的，只是GV$多了INST_ID列来显示实例ID。 在非Sys用户下，我们访问的都是同义词，而不是V$视图或GV$视图。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">查询V$视图时，报的错却是V_$视图不存在，V_$视图不是基于V$视图创建的吗，怎么反向报错了？</span><br><span class="line"></span><br><span class="line">为了防止普通用户的误操作，Oracle对通过软件机制对V$视图的访问做了限制，它不允许普通用户直接访问V$视图，但我们平时不是经常访问吗？这其实是Oracle引入了V_$视图。</span><br><span class="line">在建立V$视图后，Oracle就建立了V_$视图，随后为V_$视图建立了与V$视图同名的共用同义词。这些工作都是通过catalog.sql脚本（该脚本位于$ORACLE_HOME&#x2F;rdbms&#x2F;admin&#x2F;目录下）实现的。</span><br><span class="line"></span><br><span class="line">如：</span><br><span class="line">create or replace view v_$fixed_table as select * from v$fixed_table;</span><br><span class="line">create or replace public synonym v$fixed_table for v_$fixed_table;   --同名同义词</span><br><span class="line"></span><br><span class="line">也就是说，大部分用户访问的V$对象，并不是视图，而是执行V_$视图的同义词；而V_$视图时基于真正V$视图创建的。</span><br></pre></td></tr></table></figure>
-<h3 id="数据库和实例">数据库和实例</h3>
-<p>数据库实例名是用于和操作系统进行联系的标识，就是说<strong>数据库和操作系统之间的交互用的是数据库实例名</strong></p>
-<p>数据库名和实例名可以相同也可以不同。</p>
-<p>在一般情况下，数据库名和实例名是一对一的关系</p>
-<p>但如果在oracle并行服务器架构（即oracle实时应用<strong>集群</strong>）中，数据库名和实例名是一对多的关系。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询当前数据库实例名，两种方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> instance_name,<span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">instance</span> <span class="comment">-- 出来好多</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/21/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">Oracle 服务器架构</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-13 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-13T22:13:55+08:00">2020-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-12 00:51:32" itemprop="dateModified" datetime="2020-04-12T00:51:32+08:00">2020-04-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>服务器</strong>：提供服务的计算机，计算机经过优化处理，在某方面功能强大</p>
-<p><strong>文件服务器</strong>：存储容量强</p>
-<p><strong>应用服务器</strong>：CPU、内存强</p>
-<p><strong>Oracle服务器</strong>干两件事：**数据存储（database）、数据处理（instance）**功能强大的计算机</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/oracle/OracleSQL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/oracle/OracleSQL/" class="post-title-link" itemprop="url">Oracle SQL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-18 21:02:37" itemprop="dateModified" datetime="2020-04-18T21:02:37+08:00">2020-04-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="0-SQL">0 SQL</h2>
-<h3 id="sql简介">sql简介</h3>
-<ul>
-<li>结构化查询语言</li>
-<li>任何关系型数据库都支持</li>
-<li>第四代 4GL</li>
-<li>描述性语言，只说做什么，不说怎么做</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/10/oracle/OracleSQL/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -1072,10 +244,9 @@
       <meta itemprop="name" content="翔翔の据点">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/oracle/OracleSQL_part2/" class="post-title-link" itemprop="url">Oracle SQL_part2</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Oracle SQL_part2
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -1114,7 +285,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="2-DML">2 DML</h2>
+        <h2 id="2-DML">2 DML</h2>
 <h3 id="insert">insert</h3>
 <p><img src="/2020/03/10/oracle/OracleSQL_part2/image-20200313103122536.png" alt="image-20200313103122536"></p>
 <p>如果全部字段都有值，则可以不写列名</p>
@@ -1524,109 +695,60 @@ commit;<br>
 <p>约束是依赖于表的，不能直接drop constraint</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">drop</span> <span class="keyword">constraint</span> SAL_MIN;  <span class="comment">--删除约束</span></span><br></pre></td></tr></table></figure>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/" class="post-title-link" itemprop="url">Oracle 基操</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-25T00:00:00+08:00">2020-02-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 19:33:22" itemprop="dateModified" datetime="2020-04-14T19:33:22+08:00">2020-04-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-sqlplus常用命令">1.sqlplus常用命令</h2>
-<p>sql语句关键字 != sqlplus命令</p>
-<p>不产生歧义的时候可以缩写</p>
-<p>如何学习sqlplus命令：登陆SQL plus后，help index</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/" title="Oracle SQL_part2">http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/" rel="prev" title="Oracle 基操">
+      <i class="fa fa-chevron-left"></i> Oracle 基操
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/10/oracle/OracleSQL/" rel="next" title="Oracle SQL">
+      Oracle SQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1678,6 +800,7 @@ commit;<br>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-DML"><span class="nav-text">2 DML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-text">insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update"><span class="nav-text">update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge"><span class="nav-text">merge</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-TCL"><span class="nav-text">3 TCL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commit-rollback-savepoint"><span class="nav-text">commit rollback savepoint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter"><span class="nav-text">alter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示提交-隐式提交"><span class="nav-text">显示提交&amp;隐式提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显式提交"><span class="nav-text">显式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式提交"><span class="nav-text">隐式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动提交"><span class="nav-text">自动提交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读的一致性"><span class="nav-text">&#x3D;&#x3D;读的一致性&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（考试）回滚段的三个作用"><span class="nav-text">（考试）回滚段的三个作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-text">锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-DCL"><span class="nav-text">4 DCL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-DDL"><span class="nav-text">5 DDL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#oracle常见对象"><span class="nav-text">oracle常见对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#建表"><span class="nav-text">建表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ps：伪列"><span class="nav-text">ps：伪列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rowid的组成"><span class="nav-text">rowid的组成</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ps：数据类型"><span class="nav-text">ps：数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询表"><span class="nav-text">查询表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改表"><span class="nav-text">修改表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改表名"><span class="nav-text">修改表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加字段"><span class="nav-text">增加字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改字段"><span class="nav-text">修改字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除字段（列）"><span class="nav-text">删除字段（列）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将表改为只读"><span class="nav-text">将表改为只读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#给表添加注释"><span class="nav-text">给表添加注释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#给表的列加注释"><span class="nav-text">给表的列加注释</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#截断表"><span class="nav-text">截断表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#hwm"><span class="nav-text">hwm</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除表"><span class="nav-text">删除表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同义词"><span class="nav-text">同义词</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同义词-2"><span class="nav-text">同义词</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5’-数据完整性-约束"><span class="nav-text">5’ 数据完整性 - 约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#约束类型"><span class="nav-text">约束类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询有关约束的信息"><span class="nav-text">查询有关约束的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建约束"><span class="nav-text">创建约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义约束书写格式"><span class="nav-text">定义约束书写格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义非空"><span class="nav-text">定义非空</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义主键"><span class="nav-text">定义主键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义唯一性约束"><span class="nav-text">定义唯一性约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义外键"><span class="nav-text">定义外键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check约束"><span class="nav-text">check约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合例子"><span class="nav-text">混合例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用-启用约束"><span class="nav-text">禁用 &#x2F; 启用约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异常表实验"><span class="nav-text">异常表实验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除约束"><span class="nav-text">删除约束</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
