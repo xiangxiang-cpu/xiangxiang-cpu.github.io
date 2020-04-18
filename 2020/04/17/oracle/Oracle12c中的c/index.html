@@ -36,12 +36,12 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <meta name="description" content="创建容器数据库（cdb） 不建议手工创建，否则一堆问题 12export DISPLAY&#x3D;192.168.11.1:0.0dbca  创建模式 - 高级配置 全局数据库名 - cdb 创建为容器数据库 取消将本地还原表空间用于PDB（Oracle认证考试时取消） pdb名称 - pdb1 将下列用于数据库存储属性（文件系统） 指定快速恢复区 启用归档 配置选项 - 实例方案 - 将实例方">
+  <meta name="description" content="创建容器数据库（cdb） 不建议手工创建，否则一堆问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle 12c中的c">
 <meta property="og:url" content="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/index.html">
 <meta property="og:site_name" content="翔翔の据点">
-<meta property="og:description" content="创建容器数据库（cdb） 不建议手工创建，否则一堆问题 12export DISPLAY&#x3D;192.168.11.1:0.0dbca  创建模式 - 高级配置 全局数据库名 - cdb 创建为容器数据库 取消将本地还原表空间用于PDB（Oracle认证考试时取消） pdb名称 - pdb1 将下列用于数据库存储属性（文件系统） 指定快速恢复区 启用归档 配置选项 - 实例方案 - 将实例方">
+<meta property="og:description" content="创建容器数据库（cdb） 不建议手工创建，否则一堆问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083351622.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083517069.png">
@@ -60,7 +60,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417101300271.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417104917764.png">
 <meta property="article:published_time" content="2020-04-17T14:13:55.000Z">
-<meta property="article:modified_time" content="2020-04-17T03:04:18.475Z">
+<meta property="article:modified_time" content="2020-04-18T16:30:51.508Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
@@ -263,10 +263,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-17 22:13:55 / 修改时间：11:04:18" itemprop="dateCreated datePublished" datetime="2020-04-17T22:13:55+08:00">2020-04-17</time>
+              <time title="创建时间：2020-04-17 22:13:55" itemprop="dateCreated datePublished" datetime="2020-04-17T22:13:55+08:00">2020-04-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-19 00:30:51" itemprop="dateModified" datetime="2020-04-19T00:30:51+08:00">2020-04-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -290,6 +296,7 @@
       
         <h2 id="创建容器数据库（cdb）">创建容器数据库（cdb）</h2>
 <p>不建议手工创建，否则一堆问题</p>
+<a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">dbca</span><br></pre></td></tr></table></figure>
 <ul>
 <li>创建模式 - 高级配置</li>

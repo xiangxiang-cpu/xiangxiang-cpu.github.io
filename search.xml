@@ -569,6 +569,7 @@ alias rman=‘rlwrap rman’</p>
     <url>/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/</url>
     <content><![CDATA[<h2 id="创建容器数据库（cdb）">创建容器数据库（cdb）</h2>
 <p>不建议手工创建，否则一堆问题</p>
+<a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">dbca</span><br></pre></td></tr></table></figure>
 <ul>
 <li>创建模式 - 高级配置</li>
@@ -817,6 +818,7 @@ alias rman=‘rlwrap rman’</p>
 <p><img src="/2020/03/10/oracle/OracleSQL_part2/image-20200313103122536.png" alt="image-20200313103122536"></p>
 <p>如果全部字段都有值，则可以不写列名</p>
 <p>如果部分字段为null，两种方法（显式/隐式）</p>
+<a id="more"></a>
 <p><img src="/2020/03/10/oracle/OracleSQL_part2/image-20200415122923453.png" alt="image-20200415122923453"></p>
 <p>没听到？？？</p>
 <p>插入日期类型时，注意用to_date</p>
