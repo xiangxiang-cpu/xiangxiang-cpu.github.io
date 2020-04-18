@@ -1307,7 +1307,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #cb3bdb;
+  background: #ffd75d;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1438,7 +1438,7 @@ pre .javascript .function {
 .post-toc ol {
   list-style: none;
   margin: 0;
-  padding: 0 2px 5px 10px;
+  padding: 0 2px 5px 30px;
   text-align: left;
 }
 .post-toc ol > ol {
