@@ -4178,7 +4178,7 @@ commit;<br>
 <h4 id="定义非空">定义非空</h4>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">test</span>(</span><br><span class="line">        a <span class="built_in">VARCHAR2</span>(<span class="number">2</span>) <span class="keyword">DEFAULT</span> <span class="string">'0'</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">        b <span class="built_in">VARCHAR2</span>(<span class="number">2</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <h4 id="定义主键">定义主键</h4>
-<img src="/2020/03/10/oracle/OracleSQL_part2/md_picture_backup\image-20200317162230483.png" alt="image-20200317162230483" style="zoom:67%;">
+<img src="/2020/03/10/oracle/OracleSQL_part2/image-20200317162230483.png" alt="image-20200317162230483" style="zoom:67%;">
 <h4 id="定义唯一性约束">定义唯一性约束</h4>
 <img src="/2020/03/10/oracle/OracleSQL_part2/image-20200418185519693.png" alt="image-20200418185519693" style="zoom:80%;">
 <h4 id="定义外键">定义外键</h4>
@@ -4189,7 +4189,7 @@ commit;<br>
 <li>on delete cascade：连着这个部门的员工一起删除</li>
 <li>on delete set null：将在这个部门的员工部门号清空（null）</li>
 </ul>
-<img src="/2020/03/10/oracle/OracleSQL_part2/md_picture_backup\image-20200317162547204.png" alt="image-20200317162547204" style="zoom:60%;">
+<img src="/2020/03/10/oracle/OracleSQL_part2/image-20200317162547204.png" alt="image-20200317162547204" style="zoom:67%;">
 <h4 id="check约束">check约束</h4>
 <p>约束不满足，不允许插入</p>
 <img src="/2020/03/10/oracle/OracleSQL_part2/image-20200418185946648.png" alt="image-20200418185946648" style="zoom: 80%;">
