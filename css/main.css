@@ -867,7 +867,7 @@ pre .javascript .function {
 }
 .pdfobject-container iframe,
 .pdfobject-container embed {
-  height: 700px;
+  height: 800px;
   width: 100%;
 }
 .pagination .prev,
@@ -1307,7 +1307,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #0a85b8;
+  background: #cb3bdb;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2919,6 +2919,9 @@ ul.breadcrumb li + li:last-child {
 ::-webkit-selection {
   background: #f90;
   color: #fff;
+}
+.ol.nav {
+  display: block;
 }
 .headband {
   display: none;
