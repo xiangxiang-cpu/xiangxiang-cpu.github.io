@@ -44,7 +44,7 @@
 <meta property="og:description" content="1.sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-14T11:33:22.426Z">
+<meta property="article:modified_time" content="2020-04-19T14:13:27.867Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
@@ -163,7 +163,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 19:33:22" itemprop="dateModified" datetime="2020-04-14T19:33:22+08:00">2020-04-14</time>
+                <time title="修改时间：2020-04-19 22:13:27" itemprop="dateModified" datetime="2020-04-19T22:13:27+08:00">2020-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -354,6 +354,14 @@
 <h3 id="查看Oracle错误信息">查看Oracle错误信息</h3>
 <p>退出Oracle，在/下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oerr ora [错误代码]</span><br></pre></td></tr></table></figure>
+<h3 id="查看警告日志文件">查看警告日志文件</h3>
+<p>记录死锁、Oracle内部错误等等重大事件</p>
+<p>知道是哪一个参数不对</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;diag&#x2F;rdbms&#x2F;db12c&#x2F;trace&#x2F;alert_db12c.log</span><br></pre></td></tr></table></figure>
+<p>这个文件可以删，记录日志时会自动产生</p>
+<h3 id="adrci">adrci</h3>
+<p>到另一个tab的os下，使用adrci命令查看警告日志文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">adrci</span><br><span class="line">adrci&gt; help</span><br><span class="line">adrci&gt; show homes</span><br><span class="line">ADR Homes:</span><br><span class="line">diag/rdbms/db12c/db12c</span><br><span class="line">diag/rdbms/dummy/sales</span><br><span class="line">diag/rdbms/sales/sales</span><br><span class="line">diag/rdbms/oradup/oradup</span><br><span class="line">diag/rdbms/kwra_pitr_sales/kwra</span><br><span class="line">diag/rdbms/eyhf_pitr_sales/EyhF</span><br><span class="line">diag/rdbms/cdb/cdb</span><br><span class="line">diag/clients/user_oracle/host_901187968_107</span><br><span class="line">diag/tnslsnr/ocp/listener</span><br><span class="line"></span><br><span class="line">adrci&gt; set home diag/rdbms/db12c/db12c</span><br><span class="line">adrci&gt; show home</span><br><span class="line">ADR Homes:</span><br><span class="line">diag/rdbms/db12c/db12c</span><br><span class="line"></span><br><span class="line">adrci&gt; show alert -tail 30</span><br><span class="line"><span class="comment">-- 从后往前看，30行</span></span><br><span class="line">Errors in file /u01/app/oracle/diag/rdbms/db12c/db12c/trace/db12c_lgwr_28757.trc:</span><br><span class="line">ORA-00313: ??????? 1 (???? 1) ???</span><br><span class="line">ORA-00312: ???? 1 ?? 1: '/u01/app/oracle/oradata/db12c/redo01.log'</span><br><span class="line">ORA-27037: ????????</span><br><span class="line">Linux-x86_64 Error: 2: No such file or directory</span><br><span class="line"><span class="comment">-- 发现是redo01.log这个文件坏了</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br></pre></td></tr></table></figure>
 <h3 id="linux环境变量">linux环境变量</h3>
 <p>环境变量一般是指操作系统中指定操作系统运行环境的一些参数。它相当于一个指针，想要查看变量的值，需要加上“$”</p>
 <p>按作用的范围分。在Linux中的变量，可以分为环境变量和本地变量：</p>
@@ -485,7 +493,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sqlplus常用命令"><span class="nav-text">1.sqlplus常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlplus-startup-shutdown"><span class="nav-text">sqlplus startup shutdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect切换用户"><span class="nav-text">connect切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit退出登录"><span class="nav-text">exit退出登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#password更改用户密码"><span class="nav-text">password更改用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-show"><span class="nav-text">set &amp; show</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#会话级别设置"><span class="nav-text">会话级别设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局设置显示格式"><span class="nav-text">全局设置显示格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#column设置列"><span class="nav-text">column设置列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行sql脚本"><span class="nav-text">@执行sql脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#desc"><span class="nav-text">desc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-moba常用操作"><span class="nav-text">2. moba常用操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Oracle常用操作"><span class="nav-text">3. Oracle常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查数据字典"><span class="nav-text">查数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dict-columns"><span class="nav-text">dict_columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dict"><span class="nav-text">dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#users"><span class="nav-text">_users</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#views"><span class="nav-text">_views</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tables"><span class="nav-text">_tables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqldeveloper"><span class="nav-text">sqldeveloper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Oracle错误信息"><span class="nav-text">查看Oracle错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux环境变量"><span class="nav-text">linux环境变量</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sqlplus常用命令"><span class="nav-text">1.sqlplus常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlplus-startup-shutdown"><span class="nav-text">sqlplus startup shutdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect切换用户"><span class="nav-text">connect切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit退出登录"><span class="nav-text">exit退出登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#password更改用户密码"><span class="nav-text">password更改用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-show"><span class="nav-text">set &amp; show</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#会话级别设置"><span class="nav-text">会话级别设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局设置显示格式"><span class="nav-text">全局设置显示格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#column设置列"><span class="nav-text">column设置列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行sql脚本"><span class="nav-text">@执行sql脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#desc"><span class="nav-text">desc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-moba常用操作"><span class="nav-text">2. moba常用操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Oracle常用操作"><span class="nav-text">3. Oracle常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查数据字典"><span class="nav-text">查数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dict-columns"><span class="nav-text">dict_columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dict"><span class="nav-text">dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#users"><span class="nav-text">_users</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#views"><span class="nav-text">_views</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tables"><span class="nav-text">_tables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqldeveloper"><span class="nav-text">sqldeveloper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Oracle错误信息"><span class="nav-text">查看Oracle错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看警告日志文件"><span class="nav-text">查看警告日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adrci"><span class="nav-text">adrci</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux环境变量"><span class="nav-text">linux环境变量</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -501,7 +509,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
