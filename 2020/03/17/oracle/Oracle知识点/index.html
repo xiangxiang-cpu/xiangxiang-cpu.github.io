@@ -43,26 +43,18 @@
 <meta property="og:site_name" content="翔翔の据点">
 <meta property="og:description" content="数据字典   数据字典系统表（dict），保存在system表空间中   DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）   dict表（视图）中有table_name, comments字段：看某个表有什么用   动态静态都能查到   1select table_na">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320080400696.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320103835250.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130607997-1586189129451.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320080400696.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082001607.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082032418.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082617109.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320082759535.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320085717461.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320100247037.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320100757114.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320103354004.png">
-<meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup/image-20200320103835250.png">
 <meta property="article:published_time" content="2020-03-17T14:13:55.000Z">
-<meta property="article:modified_time" content="2020-04-19T02:13:02.784Z">
+<meta property="article:modified_time" content="2020-04-19T13:58:28.769Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326130527532-1586189129451.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320080400696.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
 
@@ -269,7 +261,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 10:13:02" itemprop="dateModified" datetime="2020-04-19T10:13:02+08:00">2020-04-19</time>
+                <time title="修改时间：2020-04-19 21:58:28" itemprop="dateModified" datetime="2020-04-19T21:58:28+08:00">2020-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,81 +352,6 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">desc dict <span class="comment">-- 两个字段：table_name, comments</span></span><br><span class="line"><span class="comment">-- select table_name from dict; -- 四千多行，需要筛选</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict <span class="keyword">where</span> table_name <span class="keyword">like</span> <span class="string">'%SGA%'</span>; <span class="comment">-- 剩二十多行</span></span><br><span class="line"></span><br><span class="line">desc V$SGAINFO; <span class="comment">-- sga各部分的信息（里面有sga各部分大小：共享池等）</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">sizes</span> <span class="keyword">from</span> V$SGAINFO; <span class="comment">-- 单位换算成MB</span></span><br></pre></td></tr></table></figure>
 <p>在数据库启动时，Oracle动态创建X$表。在此基础上，Oracle创建了GV$和V$视图，GV$即Global V$，除了一些特例外，每个V$都对应一个GV$。GV$产生是为了OPS/RAC环境的需要，每个V$都是基于GV$的，只是GV$多了INST_ID列来显示实例ID。 在非Sys用户下，我们访问的都是同义词，而不是V$视图或GV$视图。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">查询V$视图时，报的错却是V_$视图不存在，V_$视图不是基于V$视图创建的吗，怎么反向报错了？</span><br><span class="line"></span><br><span class="line">为了防止普通用户的误操作，Oracle对通过软件机制对V$视图的访问做了限制，它不允许普通用户直接访问V$视图，但我们平时不是经常访问吗？这其实是Oracle引入了V_$视图。</span><br><span class="line">在建立V$视图后，Oracle就建立了V_$视图，随后为V_$视图建立了与V$视图同名的共用同义词。这些工作都是通过catalog.sql脚本（该脚本位于$ORACLE_HOME&#x2F;rdbms&#x2F;admin&#x2F;目录下）实现的。</span><br><span class="line"></span><br><span class="line">如：</span><br><span class="line">create or replace view v_$fixed_table as select * from v$fixed_table;</span><br><span class="line">create or replace public synonym v$fixed_table for v_$fixed_table;   --同名同义词</span><br><span class="line"></span><br><span class="line">也就是说，大部分用户访问的V$对象，并不是视图，而是执行V_$视图的同义词；而V_$视图时基于真正V$视图创建的。</span><br></pre></td></tr></table></figure>
-<h3 id="数据库和实例">数据库和实例</h3>
-<p>数据库实例名是用于和操作系统进行联系的标识，就是说<strong>数据库和操作系统之间的交互用的是数据库实例名</strong></p>
-<p>数据库名和实例名可以相同也可以不同。</p>
-<p>在一般情况下，数据库名和实例名是一对一的关系</p>
-<p>但如果在oracle并行服务器架构（即oracle实时应用<strong>集群</strong>）中，数据库名和实例名是一对多的关系。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询当前数据库实例名，两种方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> instance_name,<span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">instance</span> <span class="comment">-- 出来好多</span></span><br></pre></td></tr></table></figure>
-<!--more-->
-<h3 id="数据库服务">数据库服务</h3>
-<p>注册就是将数据库作为一个服务注册到监听程序。</p>
-<p>客户端不需要知道数据库名和实例名，只需要知道该数据库对外提供的服务名就可以申请连接到数据库。</p>
-<p>在数据库服务器和客户端之间有一监听程序（Listener）</p>
-<p>在监听程序中，会记录相应数据库对应的服务名（一个数据库可能对应有多个服务名，一对一时，一般数据库名和服务名相同），当客户端需要连接数据库时，只需要提供服务名，就可以建立客户端和服务器之间的连接。</p>
-<p>_connect_identifier，在tnsnames.ora中定义？？？</p>
-<h3 id="大小写问题">大小写问题</h3>
-<ul>
-<li>
-<p>关键字不区分大小写</p>
-</li>
-<li>
-<p>建表时，表名和字段名不要加双引号，系统自动全部转为大写存储</p>
-<p>不加引号查表时，不会区分大小写</p>
-<p>加双引号查表时，双引号内的必须全部大写才能匹配到（双引号内的大小写保留？？？）</p>
-</li>
-<li>
-<p>建表时加上双引号，系统不会处理，保留原样；查表时，就要双引号且严格符合大小写</p>
-<p>特殊情况，如果建表时，某字段/表名双引号内全部大写，那么这个特定的字段/表名查询时不区分大小写，其余未全部大写的字段&amp;表名仍然区分大小写</p>
-</li>
-<li>
-<p>表中数据：查询时区分大小写</p>
-<p>注意一种特殊情况：查数据字典时，有的表明和字段名是作为数据存储在表中的，查询时就要区分大小写</p>
-</li>
-</ul>
-<h3 id="回滚和闪回的区别">回滚和闪回的区别</h3>
-<p>scott下</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- 闪回这个表到删除之前flashback complete</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- rollback</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> emp; <span class="comment">-- 忘了加条件，删除了所有行</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- no rows selected</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- rollback complete？？？</span></span><br></pre></td></tr></table></figure>
-<p>回滚适用于DML，闪回操作一般对应于DDL</p>
-<ul>
-<li>
-<p>闪回适用于<strong>逻辑错误</strong>：误删一张表、DDL</p>
-</li>
-<li>
-<p>回滚适用于<strong>物理错误</strong>：磁盘损坏、数据文件被删除</p>
-</li>
-<li>
-<p>flashback 原数据块保留：数据块出了问题直接拿过来备份【直接换一个新的备份手机】</p>
-</li>
-<li>
-<p>rollback 使用对冲机制：delete之后想要回滚，要insert【修手机】</p>
-<p>看起来什么都没干，但实际上做了两件相反的事</p>
-<p>也就是说回滚INSERT对应产生了DELETE的日志信息</p>
-</li>
-</ul>
-<h3 id="restore-recover区别">restore recover区别</h3>
-<ul>
-<li>restore还原，backup逆过程</li>
-<li>recover == redo == 前滚，重新打开数据库就ok，用的是日志文件【用新的覆盖旧的】</li>
-</ul>
-<ol>
-<li>备份时，将所有的数据文件（dbf文件）变成一个备份文件（bak文件）【压缩 - 解压缩】</li>
-<li>还原时，将这一个bak文件还原成多个dbf文件</li>
-</ol>
-<h4 id="instance-recovery例程恢复">instance recovery例程恢复</h4>
-<p>数据在内存中丢失，没有来得及写入磁盘</p>
-<h4 id="media-recovery介质恢复">media recovery介质恢复</h4>
-<p>数据在介质文件中丢失</p>
-<h3 id="数据文件的扩展">数据文件的扩展</h3>
-<p>备份文件越来越大，数据放在数据文件中，数据文件不够大</p>
-<p>两者矛盾：性能开销（dba和db的开销成反比，人不做的事情交给机器）</p>
-<h4 id="自动扩展">自动扩展</h4>
-<p>使用情形：数据库目前运行流畅</p>
-<p>开发人员设计后台进程，跟踪数据文件的使用情况，指定一个临界值（10%），此时触发自动扩展</p>
-<h4 id="手动扩展">手动扩展</h4>
-<p>适用情形：卡顿严重，性能不行的时候，需要手动优化</p>
-<p>ban掉自动扩展，管理员手册中加一条：每天手动监控数据文件使用情况，手动敲命令扩展，不是监控</p>
 <h3 id="表">表</h3>
 <p>==表 &lt; 表空间 - 数据文件==，表空间为了放表，表空间是逻辑概念，数据文件是物理概念</p>
 <p>一个表空间（数据库存储的逻辑单位）由一个或多个数据文件组成？？？</p>
@@ -458,6 +375,167 @@
 <p>堆 - 表中的数据不是按顺序存放的，插入数据的时候，发现哪一块是空的插哪里</p>
 <p>显示结果的时候，需要按顺序显示，需要排序区（在PGA中）</p>
 <p>一个会话使用order by查询了，另一个会话不用order by的查询结果不会变</p>
+<h4 id></h4>
+<h3 id="例程管理、配置">例程管理、配置</h3>
+<h4 id="关闭例程">关闭例程</h4>
+<p>四种模式</p>
+<p>eg</p>
+<ul>
+<li>
+<p>超市关门，门口站个人说不能进 == 禁止新的连接</p>
+</li>
+<li>
+<p>等所有人走完，关门 == 等所有会话结束</p>
+</li>
+<li>
+<p>等正在买东西的顾客 == 等所有事务结束</p>
+</li>
+<li>
+<p>正在买东西的顾客，放下东西赶出去 == 立即关闭</p>
+</li>
+<li>
+<p>商店火灾，</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>正常关闭(normal，默认模式)</p>
+<p>等所有会话结束（sqlplus的exit）才能关闭，所以时间比较长</p>
+</li>
+<li>
+<p>事务性关闭(transactional)</p>
+<p>等所有事务结束（commit或rollback）才能关闭，比1快</p>
+</li>
+<li>
+<p>立即关闭(==immediate==)</p>
+<p>不需要等事务结束，如果事务还没有commit，会回滚之后关闭</p>
+<p><strong>123会做检查点（缓存数据会写到数据文件中），对数据库没有什么伤害</strong></p>
+</li>
+<li>
+<p>中止退出(abort) 丢数据</p>
+<p>不做检查点，会丢失数据</p>
+</li>
+</ol>
+<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320080400696.png" alt="image-20200320080400696" style="zoom:67%;">
+<h4 id="启动例程">启动例程</h4>
+<p>分配内存 + 启动后台进程</p>
+<p>startup</p>
+<p>默认为 startup open</p>
+<p>怎么看位于哪个阶段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="1-例程启动（nomount阶段）">1.例程启动（nomount阶段）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup nomount <span class="comment">-- 分配内存，同时启动后台进程</span></span><br></pre></td></tr></table></figure>
+<p>条件：需要访问正确的<strong>初始化参数文件</strong></p>
+<p>功能：在nomount下，只能访问一部分动态性能视图（内容来自内存）</p>
+<p>动态性能视图来自内存和控制文件，不能访问数据文件</p>
+<p>初始化参数文件中，知道了控制文件的路径，但还没有加载控制文件？？？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> v$sga;         <span class="comment">-- ok</span></span><br><span class="line">desc v$datafile; <span class="comment">-- 只能看到结构，不能访问内容</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--不存在，因为数据库没有打开，数据文件还没打开，查不到数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在</span></span><br></pre></td></tr></table></figure>
+<p><strong>初始化参数文件</strong></p>
+<p>1.文本文件</p>
+<ul>
+<li>
+<p>文件名格式：<code>init&lt;sid&gt;.ora</code></p>
+</li>
+<li>
+<p>pfile（parameter file、dba管理的参数文件），文本文件</p>
+<p>每次修改这个文件，重启数据库读这个文件才能生效</p>
+<p>生产中，重启数据库要减少频率</p>
+</li>
+<li>
+<p>sid == 服务名</p>
+</li>
+</ul>
+<p>2.二进制文件</p>
+<ul>
+<li>文件名格式：<code>spfile&lt;sid&gt;.ora</code>（server管理的pfile）</li>
+<li>有这个就不需要pfile了</li>
+<li>不由可显示字符组成，不可用文本编辑器修改，否则文件会被破坏</li>
+<li>spfile是用来服务器的启动的，不可以随便修改，要用命令修改，修改之后直接生效不用重启</li>
+</ul>
+<p><strong>查看初始化参数（spfile里的）</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter                   <span class="comment">--看所有初始化参数</span></span><br><span class="line"><span class="keyword">show</span> parameter shared_pool_size  <span class="comment">--看具体某一个（共享池大小）</span></span><br><span class="line"><span class="comment">-- 模糊查询</span></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">share</span>             <span class="comment">--查询所有名字包含子字符串share的参数</span></span><br></pre></td></tr></table></figure>
+<p><strong>如何看自己用什么启动</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter <span class="keyword">spfile</span></span><br><span class="line"><span class="comment">-- 如果为空，则说明用pfile启动的；如果有值，则说明用spfile启动的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改为spfile启动，Oracle会检测这个文件是否存在</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> <span class="keyword">spfile</span>=<span class="string">'/u01/app/oracle/product/12.2.0/dbhome_1/dbs/spfiledb12c.ora'</span>;</span><br><span class="line"><span class="comment">-- 修改为pfile启动</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> <span class="keyword">spfile</span>=<span class="string">''</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>例程在启动时选择初始化参数文件的顺序</strong></p>
+<p>Oracle在$ORACLE_HOME/dbs下找这几个文件，如果你的参数文件不在这里，则需要用4)</p>
+<p>1)spfile<sid>.ora有此文件，其他文件都不看，第一顺位</sid></p>
+<p>2)spfile.ora 第二顺位</p>
+<p>3)init<sid>.ora</sid></p>
+<p>4)都找不到就报错=&gt;解决：利用指定的q初始化参数文件启动startup pfile=d:\a\a.ora</p>
+<p>路径不加引号</p>
+<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320103835250.png" alt="image-20200320103835250" style="zoom:80%;">
+<p>如果在操作系统级别把所有初始化参数文件（spfile和pfile）改名，则会起不了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">startup nomount</span><br><span class="line"></span><br><span class="line">ORA-01078: failure in processing system parameters</span><br><span class="line">LRM-00109: could not open parameter file '/u01/app/oracle/product/12.2.0/dbhome_1/dbs/initdb12c.ora'</span><br></pre></td></tr></table></figure>
+<h5 id="2-加载数据库-mount阶段">2.加载数据库(mount阶段)</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;  <span class="comment">--已经进行了startup nomount就不可以再进行startup mount</span></span><br></pre></td></tr></table></figure>
+<p>条件：需要能访问到<strong>控制文件</strong>（记录数据库状态）</p>
+<p>功能：可以访问所有的动态视图</p>
+<p>现在加载了控制文件，知道了联机重做日志文件、数据文件的位置，但还没有加载他们？？？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter control_files  <span class="comment">--查询出oracle的控制文件</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（mounted），表示处于mount阶段</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--可以访问</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在，表在数据文件中</span></span><br></pre></td></tr></table></figure>
+<p>alter mount时，如果访问不到正确的控制文件（改个名字）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-00205</span>: <span class="keyword">error</span> <span class="keyword">in</span> identifying control <span class="keyword">file</span>, <span class="keyword">check</span> alert <span class="keyword">log</span> <span class="keyword">for</span> more info</span><br></pre></td></tr></table></figure>
+<h5 id="3-打开数据库（open阶段）">3.打开数据库（open阶段）</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<p>条件：需要访问<strong>联机重做日志文件和数据文件</strong>（在控制文件中定义好的）</p>
+<p>功能：可以访问所有的文件（包括数据文件，静态字典视图）</p>
+<p>如果在open前，把日志文件改个名，会启动失败</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">alter database open</span><br><span class="line">*</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-03113: end-of-file on communication channel</span><br><span class="line">Process ID: 28800</span><br><span class="line">Session ID: 9 Serial number: 61831</span><br></pre></td></tr></table></figure>
+<p>到另一个tab的os下，使用adrci命令查看警告日志文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">adrci</span><br><span class="line">adrci&gt; help</span><br><span class="line">adrci&gt; show homes</span><br><span class="line">ADR Homes:</span><br><span class="line">diag/rdbms/db12c/db12c</span><br><span class="line">diag/rdbms/dummy/sales</span><br><span class="line">diag/rdbms/sales/sales</span><br><span class="line">diag/rdbms/oradup/oradup</span><br><span class="line">diag/rdbms/kwra_pitr_sales/kwra</span><br><span class="line">diag/rdbms/eyhf_pitr_sales/EyhF</span><br><span class="line">diag/rdbms/cdb/cdb</span><br><span class="line">diag/clients/user_oracle/host_901187968_107</span><br><span class="line">diag/tnslsnr/ocp/listener</span><br><span class="line"></span><br><span class="line">adrci&gt; set home diag/rdbms/db12c/db12c</span><br><span class="line">adrci&gt; show home</span><br><span class="line">ADR Homes:</span><br><span class="line">diag/rdbms/db12c/db12c</span><br><span class="line"></span><br><span class="line">adrci&gt; show alert -tail 30</span><br><span class="line"><span class="comment">-- 部分</span></span><br><span class="line">Errors in file /u01/app/oracle/diag/rdbms/db12c/db12c/trace/db12c_lgwr_28757.trc:</span><br><span class="line">ORA-00313: ??????? 1 (???? 1) ???</span><br><span class="line">ORA-00312: ???? 1 ?? 1: '/u01/app/oracle/oradata/db12c/redo01.log'</span><br><span class="line">ORA-27037: ????????</span><br><span class="line">Linux-x86_64 Error: 2: No such file or directory</span><br><span class="line"><span class="comment">-- 发现是redo01.log这个文件坏了</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br></pre></td></tr></table></figure>
+<p>在open之前把数据文件改个名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-01157</span>: cannot identify/<span class="keyword">lock</span> <span class="keyword">data</span> <span class="keyword">file</span> <span class="number">7</span> - see DBWR <span class="keyword">trace</span> <span class="keyword">file</span></span><br><span class="line">ORA<span class="number">-01110</span>: <span class="keyword">data</span> <span class="keyword">file</span> <span class="number">7</span>: <span class="string">'/u01/app/oracle/oradata/db12c/users01.dbf'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SYS</span>@db12c&gt;<span class="keyword">select</span> <span class="keyword">file</span><span class="comment">#,name from v$datafile;</span></span><br><span class="line"><span class="comment">-- 把名字改回来</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>; <span class="comment">-- 恢复正常</span></span><br></pre></td></tr></table></figure>
+<p>1）只读的方式打开数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">startup open read only;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> current_scn <span class="keyword">from</span> v$<span class="keyword">database</span>;          <span class="comment">--这个是不变的，平常是变化的</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>; <span class="comment">--报错！数据库只读，不可以修改</span></span><br></pre></td></tr></table></figure>
+<p>2）以受限的模式打开数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">startup restrict;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> instance_name,logins <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">-- 让有些用户连，有些用户不连（有restriction权限的可以访问）</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">restricted</span> <span class="keyword">session</span> <span class="keyword">to</span> hr;              <span class="comment">--hr就可以登录了</span></span><br><span class="line">    禁用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">disable</span> <span class="keyword">restricted</span> <span class="keyword">session</span>;</span><br><span class="line">    启用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">enable</span> restricited <span class="keyword">session</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="例程的配置">例程的配置</h4>
+<h5 id="修改初始化参数">修改初始化参数</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size = <span class="number">128</span>m; <span class="comment">-- 参数为big integer类型</span></span><br><span class="line"><span class="comment">-- alter system为例程级别</span></span><br><span class="line"><span class="keyword">show</span> parameter shared_pool_size</span><br><span class="line"><span class="comment">-- 生效，重启后仍然有效</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 这个参数是静态参数，无法动态修改，先写到文件里，重启才可生效。</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">2000</span>m;</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-02095: specified initialization parameter cannot be modified</span><br></pre></td></tr></table></figure>
+<p>查看参数类型（静态/动态）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看参数类型</span></span><br><span class="line">desc v$parameter</span><br><span class="line"><span class="comment">-- ISSYS_MODIFIABLE字段有三种类型</span></span><br><span class="line">  deferred       <span class="comment">--延时，不会马上/也不需要生效，对以后登录的会话生效（重新连接就可生效）</span></span><br><span class="line">  immediate      <span class="comment">--可立即改，并立即生效</span></span><br><span class="line">  false          <span class="comment">--说明是静态参数，不可直接改，只能先写到文件中，必须重启才能生效</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,ISSYS_MODIFIABLE <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'sga_max_size'</span>; <span class="comment">-- false类型</span></span><br></pre></td></tr></table></figure>
+<h5 id="scope子句">scope子句</h5>
+<ul>
+<li>是否生效：看show parameter 有没有改变</li>
+<li>是否写到spfile中： 可以用文本编辑器打开spfile看一下，但千万不要编辑！！！</li>
+</ul>
+<ol>
+<li>memory：只在内存改，不在spfile文件改（临时生效）</li>
+<li>spfile：先写在文件中，下次重启数据库生效</li>
+<li>both：（默认）立即生效，同时在文件中修改</li>
+</ol>
+<p>注：静态类型参数只能spfile</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">memory</span>;</span><br><span class="line"><span class="comment">-- 立即生效，但文件没有修改，下次修改还是原来的值</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">both</span>;</span><br><span class="line"><span class="comment">-- 立即生效，且文件已经被修改</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">spfile</span>;</span><br><span class="line"><span class="comment">-- 没有生效，但是已经写到spfile文件里面了，下次启动Oracle生效（shutdown之后重新startup）</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size=<span class="number">5000</span>m <span class="keyword">scope</span> = <span class="keyword">spfile</span>;</span><br><span class="line"><span class="comment">-- 用memory和both都会报错</span></span><br><span class="line"><span class="comment">-- ORA-02095: specified initialization parameter cannot be modified</span></span><br></pre></td></tr></table></figure>
+<h5 id="reset将某个初始化参数还原成默认值">reset将某个初始化参数还原成默认值</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter shared_server</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">reset</span> shared_server;  <span class="comment">--复位，重启数据库之后才生效</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">reset</span> shared_pool_size;</span><br></pre></td></tr></table></figure>
+<h5 id="将所有初始化参数都还原成默认值">将所有初始化参数都还原成默认值</h5>
+<p>初始化参数文件中没有说明的参数，就取他们的默认值</p>
+<p>所以可以直接创建一个空的初始化参数文件，这样所有的参数就都是默认值了</p>
+<p>先把原来的spfile改个名，让Oracle认不得</p>
+<p>然后再把pfile中的所有内容都删掉，但这样会报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">db12c.__data_transfer_cache_size&#x3D;0</span><br><span class="line">db12c.__db_cache_size&#x3D;1275068416</span><br><span class="line">db12c.__inmemory_ext_roarea&#x3D;0</span><br><span class="line">db12c.__inmemory_ext_rwarea&#x3D;0</span><br><span class="line">db12c.__java_pool_size&#x3D;16777216</span><br><span class="line">db12c.__large_pool_size&#x3D;33554432</span><br><span class="line">db12c.__oracle_base&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#39;#ORACLE_BASE set from environment</span><br><span class="line">db12c.__pga_aggregate_target&#x3D;603979776</span><br><span class="line">db12c.__sga_target&#x3D;1811939328</span><br><span class="line">db12c.__shared_io_pool_size&#x3D;83886080</span><br><span class="line">db12c.__shared_pool_size&#x3D;385875968</span><br><span class="line">db12c.__streams_pool_size&#x3D;0</span><br><span class="line">*.audit_file_dest&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;admin&#x2F;db12c&#x2F;adump&#39;</span><br><span class="line">*.audit_trail&#x3D;&#39;db&#39;</span><br><span class="line">*.compatible&#x3D;&#39;12.2.0&#39;</span><br><span class="line">*.control_files&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;db12c&#x2F;control01.ctl&#39;,&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;recovery_area&#x2F;db12c&#x2F;control02.ctl&#39;</span><br><span class="line">*.db_block_size&#x3D;8192</span><br><span class="line">*.db_name&#x3D;&#39;db12c&#39;</span><br><span class="line">*.db_recovery_file_dest&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;recovery_area&#39;</span><br><span class="line">*.db_recovery_file_dest_size&#x3D;8016m</span><br><span class="line">*.diagnostic_dest&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#39;</span><br><span class="line">*.dispatchers&#x3D;&#39;(PROTOCOL&#x3D;TCP) (SERVICE&#x3D;db12cXDB)&#39;</span><br><span class="line">*.local_listener&#x3D;&#39;LISTENER_DB12C&#39;</span><br><span class="line">*.nls_language&#x3D;&#39;SIMPLIFIED CHINESE&#39;</span><br><span class="line">*.nls_territory&#x3D;&#39;CHINA&#39;</span><br><span class="line">*.open_cursors&#x3D;300</span><br><span class="line">*.pga_aggregate_target&#x3D;571m</span><br><span class="line">*.processes&#x3D;320</span><br><span class="line">*.remote_login_passwordfile&#x3D;&#39;EXCLUSIVE&#39;</span><br><span class="line">*.sga_max_size&#x3D;1811939328</span><br><span class="line">*.sga_target&#x3D;1713m</span><br><span class="line">*.undo_tablespace&#x3D;&#39;UNDOTBS1&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">startup nomount</span><br><span class="line">ORA-01506: missing or illegal database name</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 把这个加到文件里</span></span><br><span class="line">*.db_name='db12c'</span><br><span class="line"></span><br><span class="line">startup nomount <span class="comment">-- 起来了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;</span><br><span class="line">ORA-00205: error in identifying control file, <span class="keyword">check</span> alert <span class="keyword">log</span> <span class="keyword">for</span> more info</span><br><span class="line"><span class="comment">-- 把这个加到文件里</span></span><br><span class="line">*.control_files=<span class="string">'/u01/app/oracle/oradata/db12c/control01.ctl'</span>,<span class="string">'/u01/app/oracle/recovery_area/db12c/control02.ctl'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">shutdown</span> <span class="keyword">immediate</span> <span class="comment">-- 内存中pfile不会即时更新，需要shut之后，重新读一次pfile</span></span><br><span class="line"><span class="keyword">startup</span> <span class="keyword">mount</span> <span class="comment">-- 起来了</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>; <span class="comment">-- 起来了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">spfile</span></span><br><span class="line"><span class="keyword">NAME</span>                                 <span class="keyword">TYPE</span>                   <span class="keyword">VALUE</span></span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line"><span class="keyword">spfile</span>                               <span class="keyword">string</span></span><br><span class="line"><span class="comment">-- 此时是以pfile启动的</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果无法shutdown immediate</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> checkpoint; <span class="comment">-- 手动做检查点</span></span><br><span class="line">shutdown abort</span><br></pre></td></tr></table></figure>
+<h5 id="修复错误的初始化参数（要会">修复错误的初始化参数（要会</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter <span class="keyword">spfile</span> <span class="comment">-- 查看是不是用spfile启动的，如果是空，则用pfile；不空则用spfile</span></span><br><span class="line"><span class="comment">-- 保证这里是spfile启动的</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">200</span>G <span class="keyword">scope</span>=<span class="keyword">spfile</span>; <span class="comment">-- 下次生效（虽然下次都不一定能起来</span></span><br><span class="line">shutdown immediate</span><br><span class="line">startup</span><br><span class="line"><span class="comment">-- 搞坏参数，用spfile起不来了，startup报错sga_target总空间太小，其中的一部分太大</span></span><br><span class="line"><span class="comment">-- 只能用pfile起了</span></span><br><span class="line">ORA-00821: Specified value of sga_target 2048M is too small, needs to be at least 207360M</span><br><span class="line">ORA-01078: failure in processing system parameters</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">160</span>m <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br><span class="line"><span class="comment">-- Oracle没启动哈哈哈改不了</span></span><br></pre></td></tr></table></figure>
+<p>==查看警告日志文件，知道是哪一个参数不对==</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat app&#x2F;oracle&#x2F;diag&#x2F;rdbms&#x2F;db12c&#x2F;trace&#x2F;alert_db12c.log</span><br></pre></td></tr></table></figure>
+<p>这个文件可以删，记录日志时会自动产生</p>
+<p>pfile，用于修复错误时用，人可以修改</p>
+<p>根据现在的spfile创建pfile文件（不要用刚刚的空pfile，spfile中的参数会丢掉）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> pfile <span class="keyword">from</span> <span class="keyword">spfile</span>;</span><br><span class="line"><span class="comment">-- 不startup nomount就能建？？？</span></span><br></pre></td></tr></table></figure>
+<p>生成initdb12c.ora（覆盖了原来的空pfile），是文本文件可修改</p>
+<p>把那个错误参数shared_pool_size修改160m，保存</p>
+<p>将原来的spfile改名，让Oracle找不到spfile，只能用pfile启动</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup nomount</span><br></pre></td></tr></table></figure>
+<p>出现了莫名其妙的错误。shared_pool_reserved_min_alloc必须位于4000和0之间</p>
+<p>解决方法</p>
+<ul>
+<li>直接把那个shared_pool_size参数去掉，当作默认值</li>
+<li>或者两个参数都加上？</li>
+</ul>
+<p>再根据pfile创建spfile</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">spfile</span> <span class="keyword">from</span> pfile;</span><br></pre></td></tr></table></figure>
+<p>重启之后，show parameter spfile – 发现又按spfile启动了</p>
+<h2 id="小问题">小问题</h2>
 <h3 id="关闭数据库发生的事情">关闭数据库发生的事情</h3>
 <p>1，关闭数据库，oracle将<strong>重做日志高速缓存</strong>中的内容写入重做日志文件，并且将<strong>数据库高速缓存</strong>中被改动过的数据写入数据文件，然后再关闭所有的数据文件和重做日志文件，这时数据库的控制文件仍然处于打开状态，但是由于数据库处于关闭状态，所以用户无法访问数据库</p>
 <p>2，卸载数据库，关闭数据库后，例程才能被卸载，控制文件再这个时候被关闭，但例程仍然存在</p>
@@ -542,137 +620,81 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_territory=america;</span><br></pre></td></tr></table></figure>
 <p>￥变成了＄</p>
 <h4 id="nls-language">nls_language</h4>
-<h3 id="例程管理、配置">例程管理、配置</h3>
-<h4 id="关闭例程">关闭例程</h4>
-<p>四种模式</p>
-<p>eg</p>
-<p>超市关门，不能进 == 禁止新的连接</p>
-<p>等所有人走完，关门 == 等所有会话结束</p>
-<ol>
-<li>
-<p>正常关闭(normal，默认模式)                     --等所有回话结束才能关闭，所以时间比较长</p>
-</li>
-<li>
-<p>事务性关闭(transactional)            --等所有事务结束才能关闭，比1快</p>
-</li>
-<li>
-<p>立即关闭(==immediate==) – 不需要等事务结束    --上面三个会做检查点，对数据库没有什么伤害</p>
-</li>
-<li>
-<p>中止退出(abort) 丢数据              --不做检查点，会丢失数据</p>
-</li>
-</ol>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320080400696.png" alt="image-20200320080400696" style="zoom:67%;">
-<p>–说明</p>
-<p>3是不需要等事务结束，如果事务还没有commit，会回滚之后关闭</p>
-<h4 id="启动例程">启动例程</h4>
-<p>startup 默认为 startup open</p>
-<h5 id="1-例程启动（nomount阶段）">1.例程启动（nomount阶段）</h5>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup nomount <span class="comment">-- 分配内存，同时启动后台进程</span></span><br></pre></td></tr></table></figure>
-<p>条件：需要访问正确的初始化参数文件（下图白色）</p>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082001607.png" alt="image-20200320082001607" style="zoom: 67%;">
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082032418.png" alt="image-20200320082032418" style="zoom:80%;">
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082617109.png" alt="image-20200320082617109" style="zoom:67%;">
-<p>查看spfile文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $ORACLE_HOME&#x2F;dbs</span><br><span class="line">cat spfiledb12c.ora</span><br></pre></td></tr></table></figure>
-<p>功能：在nomount下，只能访问一部分动态性能视图（内容来自内存），因为动态性能视图来自<strong>内存和控制文件</strong>，不能访问数据文件</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">conn sys/admin as sysdba</span><br><span class="line">desc v$instance</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（nomounted）</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> v$sga；          <span class="comment">-- ok</span></span><br><span class="line"><span class="keyword">desc</span> v$<span class="keyword">datafile</span>; <span class="comment">-- 只能看到结构，不能访问内容</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--不存在，因为数据库没有打开，数据文件还没打开，查不到数据</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在</span></span><br></pre></td></tr></table></figure>
-<h5 id="2-加载数据库-mount阶段">2.加载数据库(mount阶段)</h5>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;  <span class="comment">--已经进行了startup nomount就不可以在进行startup mount</span></span><br></pre></td></tr></table></figure>
-<p>条件：需要访问控制文件</p>
-<p>功能：可以访问所有的动态视图</p>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320082759535.png" alt="image-20200320082759535" style="zoom:67%;">
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter control_files  <span class="comment">--查询出oracle的控制文件</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;  <span class="comment">--查询处于什么阶段（mounted），表示处于mount阶段</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;    <span class="comment">--可以访问</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;        <span class="comment">--不存在，表在数据文件中</span></span><br></pre></td></tr></table></figure>
-<p>linux mv命令？</p>
-<h5 id="3-打开数据库（open阶段）">3.打开数据库（open阶段）</h5>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
-<p>条件：需要联机重做日志文件和数据文件（在数据文件中定义好的）</p>
-<p>adrci命令？</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo03.log</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo02.log</span><br><span class="line">/u01/app/oracle/oradata/db12c/redo01.log</span><br><span class="line"></span><br><span class="line">app/oracle/oradata/db12c/redo01.log <span class="comment">-- .LOG文件：日志文件</span></span><br><span class="line">app/oracle/oradata/db12c/sales01.dbf <span class="comment">-- .DBF文件：数据文件</span></span><br><span class="line">app/oracle/diag/rdbms/db12c/trace/alert_db12c.log <span class="comment">-- .log文件</span></span><br></pre></td></tr></table></figure>
-<p>可以访问所有的文件（包括数据文件，静态字典视图）</p>
-<p>1）只读的方式打开数据库</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">startup open read only;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> current_scn <span class="keyword">from</span> v$<span class="keyword">database</span>;          <span class="comment">--这个是不变的，平常是变化的</span></span><br><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>; <span class="comment">--报错！数据库只读，不可以修改</span></span><br></pre></td></tr></table></figure>
-<p>2）以受限的模式打开数据库</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">startup restrict;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;       <span class="comment">--查询打开模式</span></span><br><span class="line"><span class="keyword">select</span> instance_name,logins <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line">    </span><br><span class="line"><span class="comment">-- 让有些用户连，有些用户不连（有restriction权限的可以访问）</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">restricted</span> <span class="keyword">session</span> <span class="keyword">to</span> hr;              <span class="comment">--hr就可以登录了</span></span><br><span class="line">    禁用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">disable</span> <span class="keyword">restricted</span> <span class="keyword">session</span>;</span><br><span class="line">    启用受限模式</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">enable</span> restricited <span class="keyword">session</span>;</span><br></pre></td></tr></table></figure>
-<h4 id="例程的配置">例程的配置</h4>
-<h5 id="初始化参数文件">初始化参数文件</h5>
-<p>1.文本文件</p>
+<h3 id="数据库和实例">数据库和实例</h3>
+<p>数据库实例名是用于和操作系统进行联系的标识，就是说<strong>数据库和操作系统之间的交互用的是数据库实例名</strong></p>
+<p>数据库名和实例名可以相同也可以不同。</p>
+<p>在一般情况下，数据库名和实例名是一对一的关系</p>
+<p>但如果在oracle并行服务器架构（即oracle实时应用<strong>集群</strong>）中，数据库名和实例名是一对多的关系。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询当前数据库实例名，两种方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> instance_name,<span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>;</span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">instance</span> <span class="comment">-- 出来好多</span></span><br></pre></td></tr></table></figure>
+<!--more-->
+<h3 id="数据库服务">数据库服务</h3>
+<p>注册就是将数据库作为一个服务注册到监听程序。</p>
+<p>客户端不需要知道数据库名和实例名，只需要知道该数据库对外提供的服务名就可以申请连接到数据库。</p>
+<p>在数据库服务器和客户端之间有一监听程序（Listener）</p>
+<p>在监听程序中，会记录相应数据库对应的服务名（一个数据库可能对应有多个服务名，一对一时，一般数据库名和服务名相同），当客户端需要连接数据库时，只需要提供服务名，就可以建立客户端和服务器之间的连接。</p>
+<p>_connect_identifier，在tnsnames.ora中定义？？？</p>
+<h3 id="大小写问题">大小写问题</h3>
 <ul>
-<li>文件名格式：init&lt; sid &gt;.ora</li>
-<li>pfile 参数文件，文本文件，每次重启数据库时修改，重启生效？？？</li>
-<li>sid == 服务名</li>
+<li>
+<p>关键字不区分大小写</p>
+</li>
+<li>
+<p>建表时，表名和字段名不要加双引号，系统自动全部转为大写存储</p>
+<p>不加引号查表时，不会区分大小写</p>
+<p>加双引号查表时，双引号内的必须全部大写才能匹配到（双引号内的大小写保留？？？）</p>
+</li>
+<li>
+<p>建表时加上双引号，系统不会处理，保留原样；查表时，就要双引号且严格符合大小写</p>
+<p>特殊情况，如果建表时，某字段/表名双引号内全部大写，那么这个特定的字段/表名查询时不区分大小写，其余未全部大写的字段&amp;表名仍然区分大小写</p>
+</li>
+<li>
+<p>表中数据：查询时区分大小写</p>
+<p>注意一种特殊情况：查数据字典时，有的表明和字段名是作为数据存储在表中的，查询时就要区分大小写</p>
+</li>
 </ul>
-<p>2.二进制文件</p>
+<h3 id="回滚和闪回的区别">回滚和闪回的区别</h3>
+<p>scott下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- flashback</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> emp; <span class="comment">-- 删除一个表</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- table or view does not exist</span></span><br><span class="line">flashback table emp to before <span class="keyword">drop</span>; <span class="comment">-- 闪回这个表到删除之前flashback complete</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- rollback</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> emp; <span class="comment">-- 忘了加条件，删除了所有行</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp; <span class="comment">-- no rows selected</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- rollback complete？？？</span></span><br></pre></td></tr></table></figure>
+<p>回滚适用于DML，闪回操作一般对应于DDL</p>
 <ul>
-<li>文件名格式：spfile&lt; sid &gt;.ora</li>
-<li>有这个就不需要pfile了</li>
-<li>spfile 服务器管理的参数文件（不由可显示字符组成）不可用文本编辑器修改，文件会破坏</li>
-<li>spfile是用来服务器的启动的，不可以随便修改，要用命令修改，修改之后直接生效不用重启</li>
+<li>
+<p>闪回适用于<strong>逻辑错误</strong>：误删一张表、DDL</p>
+</li>
+<li>
+<p>回滚适用于<strong>物理错误</strong>：磁盘损坏、数据文件被删除</p>
+</li>
+<li>
+<p>flashback 原数据块保留：数据块出了问题直接拿过来备份【直接换一个新的备份手机】</p>
+</li>
+<li>
+<p>rollback 使用对冲机制：delete之后想要回滚，要insert【修手机】</p>
+<p>看起来什么都没干，但实际上做了两件相反的事</p>
+<p>也就是说回滚INSERT对应产生了DELETE的日志信息</p>
+</li>
 </ul>
-<h5 id="查看初始化参数（spfile里的）">查看初始化参数（spfile里的）</h5>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter                   <span class="comment">--看所有初始化参数</span></span><br><span class="line"><span class="keyword">show</span> parameter shared_pool_size  <span class="comment">--看具体某一个（共享池大小）</span></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">share</span>             <span class="comment">--查询所有名字包含share的参数</span></span><br></pre></td></tr></table></figure>
-<p>如何看自己用什么启动</p>
-<p><img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200320085717461.png" alt="image-20200320085717461"></p>
-<h5 id="修改初始化参数">修改初始化参数</h5>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size = <span class="number">128</span>m;   <span class="comment">--big integer类型 -- alter system为例程级别？？</span></span><br><span class="line"><span class="keyword">show</span> parameter sga_max_size  </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">5000</span>m;  <span class="comment">--这个参数是静态参数，无法动态修改，先写到文件里，重启才可生效。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size = <span class="number">2000</span>m;</span><br><span class="line"></span><br><span class="line">desc v$parameter</span><br><span class="line"><span class="comment">-- ISSYS_MODIFIABLE字段有三种类型</span></span><br><span class="line">  deferred       <span class="comment">--延时，不会马上/也不需要生效，重新连接就可生效</span></span><br><span class="line">  immediate      <span class="comment">--可立即改</span></span><br><span class="line">  false          <span class="comment">--不可直接改，先写到文件中，必须重启才能生效</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,ISSYS_MODIFIABLE <span class="keyword">from</span> v$parameter <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'s%'</span>;</span><br></pre></td></tr></table></figure>
-<h5 id="scope">scope</h5>
+<h3 id="restore-recover区别">restore recover区别</h3>
+<ul>
+<li>restore还原，backup逆过程</li>
+<li>recover == redo == 前滚，重新打开数据库就ok，用的是日志文件【用新的覆盖旧的】</li>
+</ul>
 <ol>
-<li>memory:只在内存改，不在spfile文件改（临时生效）</li>
-<li>spfile:先写在文件中，下次重启生效</li>
-<li>both:立即生效，同时在文件中修改</li>
+<li>备份时，将所有的数据文件（dbf文件）变成一个备份文件（bak文件）【压缩 - 解压缩】</li>
+<li>还原时，将这一个bak文件还原成多个dbf文件</li>
 </ol>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">memory</span>; <span class="comment">--文件没有修改，下次修改还是原来的值</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> shared_pool_size=<span class="number">256</span>m <span class="keyword">scope</span> = <span class="keyword">both</span>; <span class="comment">--文件被修改</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> sga_max_size=<span class="number">5000</span>m <span class="keyword">scope</span> = <span class="keyword">spfile</span>;    <span class="comment">--发现没有生效，但是已经写到spfile文件里面了，下次启动生效（shutdown之后重新startup）</span></span><br></pre></td></tr></table></figure>
-<h5 id="将某个初始化参数还原成默认值">将某个初始化参数还原成默认值</h5>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter shared_server</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">reset</span> shared_server;  <span class="comment">--复位重启之后才可以看到恢复的结果</span></span><br></pre></td></tr></table></figure>
-<h5 id="将所有初始化参数都还原成默认值（待实验）">将所有初始化参数都还原成默认值（待实验）</h5>
-<p>初始化参数文件中没有的都取默认值，删掉文件18.3.0/database/initdb18c.dba</p>
-<p>shutdown immediate</p>
-<p>startup找不到初始化参数文件</p>
-<p>nodepad写一个空文件到18.3.0/database/initdb18c.dba</p>
-<p>参数库文件中要加数据库名字:</p>
-<p>文件中加*.dbname=‘db12c’</p>
-<p>再加1属性，控制文件路径</p>
-<p>*.control_files=‘F:/app/oracle/produce/18.3.0/database/control01.ctl’ ‘D:app/oracle/<br>
-……/control02.ctl’</p>
-<p>(其他默认)再重启</p>
-<h5 id="修复错误的初始化参数（要会">修复错误的初始化参数（要会</h5>
-<p>pfile，用于修复错误时用，人可以修改</p>
-<p>show parameter cpu_count</p>
-<p>show parameter spfile – 查看是不是用spfile启动的，如果是空，则用pfile；不空则用spfile</p>
-<p>alter system set shared_pool_size=200G scope=spfile;  --下次重启生效</p>
-<p>搞坏参数，起不来了，startup报错sga_target 4864M太小，其中的一部分太大</p>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320100247037.png" alt="image-20200320100247037" style="zoom:50%;">
-<p>==查看警告日志文件，知道是哪一个参数不对==</p>
-<p>app/oracle/diag/rdbms/db12c/trace/alert_db12c.log</p>
-<p>这个文件可以删，记录日志时会自动产生</p>
-<p>==根据一个spfile创建pfile文件==</p>
-<p>create pfile from spfile;</p>
-<p>initdb12c.ora文本文件可修改</p>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320100757114.png" alt="image-20200320100757114" style="zoom:67%;">
-<p>修改128m，保存</p>
-<p>将原来的spfile改名，让Oracle找不到spfile，只能用pfile启动</p>
-<p>老师的解决方法，直接把那个shared_pool_size参数去掉了，当作默认值</p>
-<p>或者两个参数都加上？</p>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320103354004.png" alt="image-20200320103354004" style="zoom: 80%;">
-<p>==根据pfile创建spfile==</p>
-<p>show parameter spfile – 发现又按spfile启动了？？？</p>
-<h5 id="例程在启动时选择初始化参数文件的顺序">例程在启动时选择初始化参数文件的顺序</h5>
-<p>1)spfile<sid>.ora有此文件，其他文件都不看，第一顺位</sid></p>
-<p>2)spfile.ora 第二顺位</p>
-<p>3)init<sid>.ora</sid></p>
-<p>4)都找不到就报错=&gt;解决：利用指定的q初始化参数文件启动startup pfile=d:\a\a.ora</p>
-<img src="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/md_picture_backup\image-20200320103835250.png" alt="image-20200320103835250" style="zoom:67%;">
-<h5 id="利用指定的初始化参数文件启动">利用指定的初始化参数文件启动</h5>
-<p>用a.ora启动<br>
-startup pfile = filePath;  --文件路径</p>
-<ol>
-<li>创建oracle的服务oracleservicedemo<br>
-要在管理员权限下进行<br>
-oradim -new -sid demo<br>
-输入oracle服务用户口令：*****</li>
-<li>将当前进程设为demo<br>
-set oracle_sid=demo</li>
-</ol>
+<h4 id="instance-recovery例程恢复">instance recovery例程恢复</h4>
+<p>数据在内存中丢失，没有来得及写入磁盘</p>
+<h4 id="media-recovery介质恢复">media recovery介质恢复</h4>
+<p>数据在介质文件中丢失</p>
+<h3 id="数据文件的扩展">数据文件的扩展</h3>
+<p>备份文件越来越大，数据放在数据文件中，数据文件不够大</p>
+<p>两者矛盾：性能开销（dba和db的开销成反比，人不做的事情交给机器）</p>
+<h4 id="自动扩展">自动扩展</h4>
+<p>使用情形：数据库目前运行流畅</p>
+<p>开发人员设计后台进程，跟踪数据文件的使用情况，指定一个临界值（10%），此时触发自动扩展</p>
+<h4 id="手动扩展">手动扩展</h4>
+<p>适用情形：卡顿严重，性能不行的时候，需要手动优化</p>
+<p>ban掉自动扩展，管理员手册中加一条：每天手动监控数据文件使用情况，手动敲命令扩展，不是监控</p>
 <h3 id="自学）实例恢复">自学）实例恢复</h3>
 <p><a href="http://blog.itpub.net/29863023/viewspace-2652139/" target="_blank" rel="noopener">http://blog.itpub.net/29863023/viewspace-2652139/</a></p>
 <p>update事务为例</p>
@@ -834,7 +856,7 @@ set oracle_sid=demo</li>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内部RDBMS表"><span class="nav-text">1. 内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据字典表-（Data-dictionary-table）"><span class="nav-text">2. 数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-静态数据字典视图"><span class="nav-text">3. 静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态性能视图"><span class="nav-text">4. 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库发生的事情"><span class="nav-text">关闭数据库发生的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database-session"><span class="nav-text">alter system &#x2F; database &#x2F; session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nls"><span class="nav-text">nls</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-date-format"><span class="nav-text">nls_date_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-territory"><span class="nav-text">nls_territory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-language"><span class="nav-text">nls_language</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例程管理、配置"><span class="nav-text">例程管理、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭例程"><span class="nav-text">关闭例程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动例程"><span class="nav-text">启动例程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-例程启动（nomount阶段）"><span class="nav-text">1.例程启动（nomount阶段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-加载数据库-mount阶段"><span class="nav-text">2.加载数据库(mount阶段)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-打开数据库（open阶段）"><span class="nav-text">3.打开数据库（open阶段）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例程的配置"><span class="nav-text">例程的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化参数文件"><span class="nav-text">初始化参数文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看初始化参数（spfile里的）"><span class="nav-text">查看初始化参数（spfile里的）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改初始化参数"><span class="nav-text">修改初始化参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope"><span class="nav-text">scope</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将某个初始化参数还原成默认值"><span class="nav-text">将某个初始化参数还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将所有初始化参数都还原成默认值（待实验）"><span class="nav-text">将所有初始化参数都还原成默认值（待实验）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修复错误的初始化参数（要会"><span class="nav-text">修复错误的初始化参数（要会</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#例程在启动时选择初始化参数文件的顺序"><span class="nav-text">例程在启动时选择初始化参数文件的顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用指定的初始化参数文件启动"><span class="nav-text">利用指定的初始化参数文件启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自学）实例恢复"><span class="nav-text">自学）实例恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sql语句解析"><span class="nav-text">1.sql语句解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-将数据块读入数据库高速缓存中"><span class="nav-text">2.将数据块读入数据库高速缓存中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-保留一份修改前的数据块映像"><span class="nav-text">3.保留一份修改前的数据块映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-写入重做日志缓存"><span class="nav-text">4.写入重做日志缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行commit命令"><span class="nav-text">5.执行commit命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三个后台进程"><span class="nav-text">三个后台进程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内部RDBMS表"><span class="nav-text">1. 内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据字典表-（Data-dictionary-table）"><span class="nav-text">2. 数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-静态数据字典视图"><span class="nav-text">3. 静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态性能视图"><span class="nav-text">4. 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例程管理、配置"><span class="nav-text">例程管理、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭例程"><span class="nav-text">关闭例程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动例程"><span class="nav-text">启动例程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-例程启动（nomount阶段）"><span class="nav-text">1.例程启动（nomount阶段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-加载数据库-mount阶段"><span class="nav-text">2.加载数据库(mount阶段)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-打开数据库（open阶段）"><span class="nav-text">3.打开数据库（open阶段）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例程的配置"><span class="nav-text">例程的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改初始化参数"><span class="nav-text">修改初始化参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope子句"><span class="nav-text">scope子句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reset将某个初始化参数还原成默认值"><span class="nav-text">reset将某个初始化参数还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将所有初始化参数都还原成默认值"><span class="nav-text">将所有初始化参数都还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修复错误的初始化参数（要会"><span class="nav-text">修复错误的初始化参数（要会</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小问题"><span class="nav-text">小问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库发生的事情"><span class="nav-text">关闭数据库发生的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database-session"><span class="nav-text">alter system &#x2F; database &#x2F; session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nls"><span class="nav-text">nls</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-date-format"><span class="nav-text">nls_date_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-territory"><span class="nav-text">nls_territory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-language"><span class="nav-text">nls_language</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自学）实例恢复"><span class="nav-text">自学）实例恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sql语句解析"><span class="nav-text">1.sql语句解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-将数据块读入数据库高速缓存中"><span class="nav-text">2.将数据块读入数据库高速缓存中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-保留一份修改前的数据块映像"><span class="nav-text">3.保留一份修改前的数据块映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-写入重做日志缓存"><span class="nav-text">4.写入重做日志缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行commit命令"><span class="nav-text">5.执行commit命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三个后台进程"><span class="nav-text">三个后台进程</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
