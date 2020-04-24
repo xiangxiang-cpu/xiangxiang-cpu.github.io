@@ -3247,6 +3247,7 @@ F:\exp&gt;expdp scott/tiger file=empdp.dmp tables=emp<br>
 <p>创建数据库时，自动产生控制文件，保证数据库完整性</p>
 </li>
 </ul>
+<a id="more"></a>
 <h3 id="控制文件位置">控制文件位置</h3>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter control_files</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>;</span><br></pre></td></tr></table></figure>
 <h3 id="控制文件内容">控制文件内容</h3>
