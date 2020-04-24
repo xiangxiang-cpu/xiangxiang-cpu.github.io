@@ -51,7 +51,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200303170141238.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/image-20200326131510091.png">
 <meta property="article:published_time" content="2020-03-17T14:13:55.000Z">
-<meta property="article:modified_time" content="2020-04-19T15:29:42.142Z">
+<meta property="article:modified_time" content="2020-04-20T13:30:45.974Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
@@ -171,7 +171,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -262,7 +262,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 23:29:42" itemprop="dateModified" datetime="2020-04-19T23:29:42+08:00">2020-04-19</time>
+                <time title="修改时间：2020-04-20 21:30:45" itemprop="dateModified" datetime="2020-04-20T21:30:45+08:00">2020-04-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -401,7 +401,7 @@
 <ol>
 <li>
 <p>正常关闭(normal，默认模式)</p>
-<p>等所有会话结束（sqlplus的exit）才能关闭，所以时间比较长</p>
+<p>等所有会话结束（sqlplus的exit、或者rman连接数据库也算）才能关闭，所以时间比较长</p>
 </li>
 <li>
 <p>事务性关闭(transactional)</p>
@@ -539,7 +539,6 @@
 <p>再根据pfile创建spfile</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">spfile</span> <span class="keyword">from</span> pfile;</span><br></pre></td></tr></table></figure>
 <p>重启之后，show parameter spfile – 发现又按spfile启动了</p>
-<h2 id="小问题">小问题</h2>
 <h3 id="关闭数据库发生的事情">关闭数据库发生的事情</h3>
 <p>1，关闭数据库，oracle将<strong>重做日志高速缓存</strong>中的内容写入重做日志文件，并且将<strong>数据库高速缓存</strong>中被改动过的数据写入数据文件，然后再关闭所有的数据文件和重做日志文件，这时数据库的控制文件仍然处于打开状态，但是由于数据库处于关闭状态，所以用户无法访问数据库</p>
 <p>2，卸载数据库，关闭数据库后，例程才能被卸载，控制文件再这个时候被关闭，但例程仍然存在</p>
@@ -745,6 +744,36 @@
 <li>redo 日志切换 触发dbwr写</li>
 <li>表空间 offline /online 触发dbwr写</li>
 </ul>
+<p>DBWR作为一个后台进程，只有在某些条件满足了才会触发。这些条件包括：</p>
+<ol>
+<li>
+<p>当进程在辅助LRU链表和主LRU链表上扫描以查找可以覆盖的buffer header时，如果已经扫描的buffer header的数量到达一定的限度（由隐藏参数：_db_block_max_scan_pct决定）时，触发DBWR进程。_db_block_max_scan_pct表示已经扫描的buffer header的个数占整个LRU链表上buffer header总数的百分比。这时，搜索可用buffer header的进程挂起，在v$session_wait中表现为等待“free buffer wait”事件，同时增加v$sysstat中的“dirty buffers inspected”的值。</p>
+</li>
+<li>
+<p>当DBWR在主LRUW链表上查找已经更新完而正在等待被写入数据文件的buffer header时，如果找到的buffer header的数量超过一定限度（由隐藏参数：_db_writer_scan_depth_pct决定）时，DBWR就不再继续往下扫描了，而转到辅助LRUW链表上将其上的脏数据块写入数据文件。_db_writer_scan_depth_pct表示已经扫描的脏数据块的个数占整个主LRUW链表上buffer header总数的百分比。</p>
+</li>
+<li>
+<p>如果主LRUW链表和辅助LRUW链表上的脏数据块的总数超过一定限度，也将触发DBWR进程。该限度由隐藏参数：_db_large_dirty_queue决定。</p>
+</li>
+<li>
+<p>发生增量检查点（incremental checkpoint）或完全检查点（complete checkpoint）时触发DBWR。</p>
+</li>
+<li>
+<p>每隔三秒钟启动一次DBWR。</p>
+</li>
+<li>
+<p>将表空间设置为离线（offline）状态时触发DBWR。</p>
+</li>
+<li>
+<p>发出命令：alter tablespace … begin backup，从而将表空间设置为热备份状态时触发DBWR。</p>
+</li>
+<li>
+<p>将表空间设置为只读状态时，触发DBWR。</p>
+</li>
+<li>
+<p>删除对象时（比如删除某个表）会触发DBWR。</p>
+</li>
+</ol>
 <p>LGWR：日志写入器（Log Writer）负责将SGA中重做日志缓冲区的内容刷新输出到磁盘。</p>
 <p>触发LGWn工作的时点有几个：</p>
 <ol>
@@ -860,7 +889,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内部RDBMS表"><span class="nav-text">1. 内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据字典表-（Data-dictionary-table）"><span class="nav-text">2. 数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-静态数据字典视图"><span class="nav-text">3. 静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态性能视图"><span class="nav-text">4. 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例程管理、配置"><span class="nav-text">例程管理、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭例程"><span class="nav-text">关闭例程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动例程"><span class="nav-text">启动例程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-例程启动（nomount阶段）"><span class="nav-text">1.例程启动（nomount阶段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-加载数据库-mount阶段"><span class="nav-text">2.加载数据库(mount阶段)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-打开数据库（open阶段）"><span class="nav-text">3.打开数据库（open阶段）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例程的配置"><span class="nav-text">例程的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改初始化参数"><span class="nav-text">修改初始化参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope子句"><span class="nav-text">scope子句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reset将某个初始化参数还原成默认值"><span class="nav-text">reset将某个初始化参数还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将所有初始化参数都还原成默认值"><span class="nav-text">将所有初始化参数都还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修复错误的初始化参数（要会"><span class="nav-text">修复错误的初始化参数（要会</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小问题"><span class="nav-text">小问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库发生的事情"><span class="nav-text">关闭数据库发生的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database-session"><span class="nav-text">alter system &#x2F; database &#x2F; session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nls"><span class="nav-text">nls</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-date-format"><span class="nav-text">nls_date_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-territory"><span class="nav-text">nls_territory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-language"><span class="nav-text">nls_language</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自学）实例恢复"><span class="nav-text">自学）实例恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sql语句解析"><span class="nav-text">1.sql语句解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-将数据块读入数据库高速缓存中"><span class="nav-text">2.将数据块读入数据库高速缓存中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-保留一份修改前的数据块映像"><span class="nav-text">3.保留一份修改前的数据块映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-写入重做日志缓存"><span class="nav-text">4.写入重做日志缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行commit命令"><span class="nav-text">5.执行commit命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三个后台进程"><span class="nav-text">三个后台进程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据字典"><span class="nav-text">数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-内部RDBMS表"><span class="nav-text">1. 内部RDBMS表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据字典表-（Data-dictionary-table）"><span class="nav-text">2. 数据字典表 （Data dictionary table）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-静态数据字典视图"><span class="nav-text">3. 静态数据字典视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-动态性能视图"><span class="nav-text">4. 动态性能视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例程管理、配置"><span class="nav-text">例程管理、配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭例程"><span class="nav-text">关闭例程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动例程"><span class="nav-text">启动例程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-例程启动（nomount阶段）"><span class="nav-text">1.例程启动（nomount阶段）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-加载数据库-mount阶段"><span class="nav-text">2.加载数据库(mount阶段)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-打开数据库（open阶段）"><span class="nav-text">3.打开数据库（open阶段）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例程的配置"><span class="nav-text">例程的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改初始化参数"><span class="nav-text">修改初始化参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#scope子句"><span class="nav-text">scope子句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#reset将某个初始化参数还原成默认值"><span class="nav-text">reset将某个初始化参数还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将所有初始化参数都还原成默认值"><span class="nav-text">将所有初始化参数都还原成默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修复错误的初始化参数（要会"><span class="nav-text">修复错误的初始化参数（要会</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库发生的事情"><span class="nav-text">关闭数据库发生的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#做服务名"><span class="nav-text">做服务名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全局数据库名和SID"><span class="nav-text">全局数据库名和SID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter-system-database-session"><span class="nav-text">alter system &#x2F; database &#x2F; session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nls"><span class="nav-text">nls</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-date-format"><span class="nav-text">nls_date_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-territory"><span class="nav-text">nls_territory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nls-language"><span class="nav-text">nls_language</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库和实例"><span class="nav-text">数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库服务"><span class="nav-text">数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#大小写问题"><span class="nav-text">大小写问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚和闪回的区别"><span class="nav-text">回滚和闪回的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restore-recover区别"><span class="nav-text">restore recover区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#instance-recovery例程恢复"><span class="nav-text">instance recovery例程恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#media-recovery介质恢复"><span class="nav-text">media recovery介质恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的扩展"><span class="nav-text">数据文件的扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自动扩展"><span class="nav-text">自动扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动扩展"><span class="nav-text">手动扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自学）实例恢复"><span class="nav-text">自学）实例恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sql语句解析"><span class="nav-text">1.sql语句解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-将数据块读入数据库高速缓存中"><span class="nav-text">2.将数据块读入数据库高速缓存中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-保留一份修改前的数据块映像"><span class="nav-text">3.保留一份修改前的数据块映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-写入重做日志缓存"><span class="nav-text">4.写入重做日志缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-执行commit命令"><span class="nav-text">5.执行commit命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三个后台进程"><span class="nav-text">三个后台进程</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -876,7 +905,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
