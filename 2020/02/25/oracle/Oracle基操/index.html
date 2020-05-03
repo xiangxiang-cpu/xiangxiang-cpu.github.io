@@ -36,15 +36,15 @@
         border-left-color: #1E92FB;    /*左边框颜色*/
     }
 </style>
-  <meta name="description" content="1.sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
+  <meta name="description" content="1. sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle 基操">
 <meta property="og:url" content="http://yoursite.com/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/index.html">
 <meta property="og:site_name" content="翔翔の据点">
-<meta property="og:description" content="1.sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
+<meta property="og:description" content="1. sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-20T07:36:42.230Z">
+<meta property="article:modified_time" content="2020-05-03T04:12:57.163Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="Oracle">
 <meta name="twitter:card" content="summary">
@@ -163,7 +163,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-20 15:36:42" itemprop="dateModified" datetime="2020-04-20T15:36:42+08:00">2020-04-20</time>
+                <time title="修改时间：2020-05-03 12:12:57" itemprop="dateModified" datetime="2020-05-03T12:12:57+08:00">2020-05-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,7 +277,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="1-sqlplus常用命令">1.sqlplus常用命令</h2>
+        <h2 id="1-sqlplus常用命令">1. sqlplus常用命令</h2>
 <p>sql语句关键字 != sqlplus命令</p>
 <p>不产生歧义的时候可以缩写</p>
 <p>如何学习sqlplus命令：登陆SQL plus后，help index</p>
@@ -330,54 +330,6 @@
 <h2 id="2-moba常用操作">2. moba常用操作</h2>
 <p>CTRL + L 清屏</p>
 <h2 id="3-Oracle常用操作">3. Oracle常用操作</h2>
-<h3 id="常用数据字典">常用数据字典</h3>
-<ol>
-<li>dba_data_files 数据文件位于哪个表空间</li>
-<li>dba_tables 表位于哪个表空间</li>
-<li>dba_extents 表位于哪个数据文件id &amp; 位于哪个表空间</li>
-</ol>
-<ul>
-<li>
-<p>dba_data_files – tablespace_name, file_id, file_name, bytes</p>
-</li>
-<li>
-<p>v$datafile – name（带路径）</p>
-</li>
-<li>
-<p>dba_temp_files – file_name, file_id, tablespace_name, bytes, status</p>
-</li>
-<li>
-<p>v$tempfile – name, bytes</p>
-</li>
-<li>
-<p>dba_tables – table_name, tablespace_name, owner, num_rows</p>
-</li>
-<li>
-<p>dba_extents – file_id, segment_name, BYTES, TABLESPACE_NAME, OWNER</p>
-</li>
-<li>
-<p>dba_tablespaces – tablespace_name, contents, status, bigfile, extent_management</p>
-<p>contents表空间类型，bigfile是否为大文件表空间，extent_management空间管理类型</p>
-</li>
-<li>
-<p>v$tablespace – name</p>
-</li>
-<li>
-<p>database_properties – property_name, property_value</p>
-<p>– 查看各种类型表空间的默认值</p>
-<p>– default_tbs_type默认为小文件表空间</p>
-</li>
-</ul>
-<p>dba_data_files、v$datafile没有临时表空间的数据文件，需要在dba_temp_files、v$tempfile查找</p>
-<p>只能在dba_tablespaces、v$tablespace中查到临时表空间</p>
-<p>查一个表位于哪个数据文件</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> file_name,file_id <span class="keyword">from</span> dba_data_files <span class="keyword">where</span> file_id <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">distinct</span> file_id <span class="keyword">from</span> dba_extents <span class="keyword">where</span> segment_name=<span class="string">'EMP'</span>);</span><br></pre></td></tr></table></figure>
-<p>查一个数据文件里有哪些表</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select segment_name from dba_extents where file_id&#x3D;</span><br><span class="line">(select file_id from dba_data_files wherefile_name&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;users01.dbf&#39;);</span><br></pre></td></tr></table></figure>
-<p>查看数据文件（临时文件比较特殊）的信息</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> tablespace_name, file_id, file_name, <span class="keyword">round</span>(<span class="keyword">bytes</span> / (<span class="number">1024</span> * <span class="number">1024</span>), <span class="number">0</span>) total_space <span class="keyword">FROM</span> dba_data_files</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> tablespace_name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, <span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="string">"size(M)"</span> <span class="keyword">from</span> v$tempfile <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">bytes</span>;</span><br></pre></td></tr></table></figure>
-<p>需要把用户的表单独开一个表空间</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 那么emp放在哪里</span></span><br><span class="line"><span class="keyword">select</span> table_name,tablespace_name,owner <span class="keyword">from</span> dba_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>;</span><br><span class="line"></span><br><span class="line">TABLESPACE_NAME</span><br><span class="line"><span class="comment">------------------------------------------------------------</span></span><br><span class="line">SYSTEM</span><br><span class="line"><span class="comment">-- 已经很忙了，不能再把用户数据放到系统表里了</span></span><br><span class="line"></span><br><span class="line">desc scott.demo1 <span class="comment">-- 不加scott识别不出来？？？</span></span><br></pre></td></tr></table></figure>
 <h3 id="查数据字典">查数据字典</h3>
 <h4 id="dict-columns">dict_columns</h4>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> TABLE_NAME=<span class="string">'DICT'</span>; </span><br><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> table_name=<span class="string">'DBA_TABLESPACES'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询某个表中字段是啥意思</span></span><br><span class="line"><span class="comment">-- 我们可以在catalog.sql脚本中找到DICT_COLUMNS视图的创建语句</span></span><br></pre></td></tr></table></figure>
@@ -541,7 +493,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sqlplus常用命令"><span class="nav-text">1.sqlplus常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlplus-startup-shutdown"><span class="nav-text">sqlplus startup shutdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect切换用户"><span class="nav-text">connect切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit退出登录"><span class="nav-text">exit退出登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#password更改用户密码"><span class="nav-text">password更改用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-show"><span class="nav-text">set &amp; show</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#会话级别设置"><span class="nav-text">会话级别设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局设置显示格式"><span class="nav-text">全局设置显示格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#column设置列"><span class="nav-text">column设置列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行sql脚本"><span class="nav-text">@执行sql脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#desc"><span class="nav-text">desc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-moba常用操作"><span class="nav-text">2. moba常用操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Oracle常用操作"><span class="nav-text">3. Oracle常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用数据字典"><span class="nav-text">常用数据字典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查数据字典"><span class="nav-text">查数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dict-columns"><span class="nav-text">dict_columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dict"><span class="nav-text">dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#users"><span class="nav-text">_users</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#views"><span class="nav-text">_views</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tables"><span class="nav-text">_tables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqldeveloper"><span class="nav-text">sqldeveloper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Oracle错误信息"><span class="nav-text">查看Oracle错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看警告日志文件"><span class="nav-text">查看警告日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adrci"><span class="nav-text">adrci</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux环境变量"><span class="nav-text">linux环境变量</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sqlplus常用命令"><span class="nav-text">1. sqlplus常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlplus-startup-shutdown"><span class="nav-text">sqlplus startup shutdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect切换用户"><span class="nav-text">connect切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit退出登录"><span class="nav-text">exit退出登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#password更改用户密码"><span class="nav-text">password更改用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-show"><span class="nav-text">set &amp; show</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#会话级别设置"><span class="nav-text">会话级别设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局设置显示格式"><span class="nav-text">全局设置显示格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#column设置列"><span class="nav-text">column设置列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行sql脚本"><span class="nav-text">@执行sql脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#desc"><span class="nav-text">desc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-moba常用操作"><span class="nav-text">2. moba常用操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Oracle常用操作"><span class="nav-text">3. Oracle常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查数据字典"><span class="nav-text">查数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dict-columns"><span class="nav-text">dict_columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dict"><span class="nav-text">dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#users"><span class="nav-text">_users</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#views"><span class="nav-text">_views</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tables"><span class="nav-text">_tables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqldeveloper"><span class="nav-text">sqldeveloper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Oracle错误信息"><span class="nav-text">查看Oracle错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看警告日志文件"><span class="nav-text">查看警告日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adrci"><span class="nav-text">adrci</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux环境变量"><span class="nav-text">linux环境变量</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -557,7 +509,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

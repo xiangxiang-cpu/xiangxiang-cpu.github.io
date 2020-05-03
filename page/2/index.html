@@ -160,7 +160,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -220,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/Java%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E8%AF%A6%E8%A7%A32/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -234,7 +234,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/" class="post-title-link" itemprop="url">Oracle 安全3A</a>
+            <a href="/2020/04/30/java/Java%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E8%AF%A6%E8%A7%A32/" class="post-title-link" itemprop="url">java/Java常用功能详解2</a>
         </h2>
 
         <div class="post-meta">
@@ -244,23 +244,82 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
+              <time title="创建时间：2020-04-30 08:38:00" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-11 14:13:47" itemprop="dateModified" datetime="2020-04-11T14:13:47+08:00">2020-04-11</time>
+                <time title="修改时间：2018-11-14 11:45:18" itemprop="dateModified" datetime="2018-11-14T11:45:18+08:00">2018-11-14</time>
               </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Java常用功能详解2</h1>
+<h2 id="Java中时间的测量">Java中时间的测量</h2>
+<p>实例：测试ArrayList和LinkedList在读写遍历中的性能差异</p>
+<ul>
+<li>long startTime1 = System.nanoTime();    //获取开始时间</li>
+<li>干点事情</li>
+<li>long endTime1 = System.nanoTime();    //获取结束时间</li>
+<li>System.out.println(“ArrayList的add程序运行时间：” + (endTime1 - startTime1) + “ns”);</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Benchmark</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> runTime;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ArrayList&lt;Integer&gt; intArrayList;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> LinkedList&lt;Integer&gt; intLinkedList;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        runTime = <span class="number">100_000</span>;</span><br><span class="line">        intArrayList = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        intLinkedList = <span class="keyword">new</span> LinkedList&lt;Integer&gt;();</span><br><span class="line">        <span class="comment">/*********************************************************/</span></span><br><span class="line">        <span class="keyword">long</span> startTime1 = System.nanoTime();    <span class="comment">//获取开始时间</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; runTime; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            intArrayList.add(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> endTime1 = System.nanoTime();    <span class="comment">//获取结束时间</span></span><br><span class="line">        <span class="comment">// 输出程序运行时间</span></span><br><span class="line">        System.out.println(<span class="string">"ArrayList的add程序运行时间："</span> + (endTime1 - startTime1) + <span class="string">"ns"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/Java%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/30/java/Java%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">java/Java常用功能详解</a>
+        </h2>
+
+        <div class="post-meta">
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-30 08:38:00 / 修改时间：08:37:40" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
             </span>
 
           
@@ -274,373 +333,524 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li>验证【第一步得现有身份证】</li>
-<li>授权【有身份证还得有登机牌才能上飞机】</li>
-<li>审核【飞机掉下去找黑匣子，找问题的原因】</li>
+          <p>Java常用功能详解</p>
+<h2 id="Scanner">Scanner</h2>
+<p>原文：<a href="https://blog.csdn.net/Megustas_JJC/article/details/68960433" target="_blank" rel="noopener">https://blog.csdn.net/Megustas_JJC/article/details/68960433</a></p>
+<p><code>import java.util.Scanner</code></p>
+<h3 id="关于nextInt-、next-和nextLine-的理解">关于nextInt()、next()和nextLine()的理解</h3>
+<p><strong>nextInt(), nextDouble(), …:</strong></p>
+<p>it only reads the int value, nextInt() places the cursor（光标） in the same line after reading the input.</p>
+<p>（nextInt()只读取数值，剩下”\n”还没有读取，并将cursor放在本行中）</p>
+<p><strong>next():</strong></p>
+<p>read the input only till the space. It can’t read two words separated by space. Also, next() places the cursor in the same line after reading the input.</p>
+<p>（next()只读空格之前的数据，并且cursor指向本行）<br>
+next() 方法遇见第一个有效字符（非空格，非换行符）时，开始扫描，当遇见第一个分隔符或结束符(空格或换行符)时，结束扫描，获取扫描到的内容，即获得第一个扫描到的不含空格、换行符的单个字符串。</p>
+<p><strong>nextLine():</strong></p>
+<p>reads input including space between the words (that is, it reads till the end of line \n). Once the input is read, nextLine() positions the cursor in the next line.</p>
+<p>nextLine()时，则可以扫描到一行内容并作为一个字符串而被获取到。</p>
+<h4 id="实例">实例</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NextTest</span></span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">        String s1,s2;  </span><br><span class="line">        Scanner sc=<span class="keyword">new</span> Scanner(System.in);  </span><br><span class="line">        System.out.print(<span class="string">"请输入第一个字符串："</span>);  </span><br><span class="line">        s1=sc.nextLine();  </span><br><span class="line">        System.out.print(<span class="string">"请输入第二个字符串："</span>);  </span><br><span class="line">        s2=sc.next();  </span><br><span class="line">        System.out.println(<span class="string">"输入的字符串是："</span>+s1+<span class="string">" "</span>+s2);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p>请输入第一个字符串：home<br>
+请输入第二个字符串：work<br>
+输入的字符串是：home work</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改程序</span></span><br><span class="line">s1=sc.next();  </span><br><span class="line">s2=sc.nextLine();</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p>请输入第一个字符串：home<br>
+请输入第二个字符串：输入的字符串是：home</p>
+<h4 id="解析">解析</h4>
+<p>​	可以看到，nextLine()自动读取了被next()去掉的Enter，作为他的结束符，所以没办法给s2从键盘输入值。</p>
+<p>​	经过验证，我发现其他的next的方法，如double nextDouble() ， float nextFloat() ， int nextInt() 等与nextLine()连用时都存在这个问题。</p>
+<p>​	解决的办法是：在每一个 next()、nextDouble() 、 nextFloat()、nextInt() 等语句之后加一个nextLine()语句，将被next()去掉的Enter结束符过滤掉。</p>
+<p>ps：如果nextInt() 输入了String，会抛错误</p>
+<h2 id="将String转换为int">将String转换为int</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> m = Integer.parseInt(<span class="string">"hahah"</span>);<span class="comment">// will throw NumberFormatException</span></span><br><span class="line"><span class="keyword">int</span> m = Integer.parseInt(<span class="string">"2"</span>);<span class="comment">// 正常</span></span><br></pre></td></tr></table></figure>
+<h2 id="命令行输入参数">命令行输入参数</h2>
+<p>run-&gt;  edit configurations-&gt;  program arguments</p>
+<h3 id="Java命令行的参数">Java命令行的参数</h3>
+<p>1、什么是命令行的参数？</p>
+<p>如: java Test1 365 156 “China”</p>
+<p>注意：（以上Test1必须为主类，否则不能运行）</p>
+<p>2、命令行的参数由谁来接收？</p>
+<p>一个程序开始于对函数main()的调用。在这样做的时候，有两个参数被送给main(),</p>
+<p>其中的一个描述了命令行参数的个数，通常称为argc；另一个是命令行参数的数组，通常称为argv。（C语言中，标准的main函数就是这样的）</p>
+<p>命令行参数都是字符串，所以argv的类型是char* [argc+1]。该程序的名字也作为argv[0]传进来，</p>
+<p>所以argc的值至少是1。这个参数的表总以0结束，也就是说，argv[argc]==0。[1]</p>
+<p>3、在命令行给定参数时，应注意什么？</p>
+<p>命令行的参数以空格隔开。但是，若命令行的参数本身包含空格时，则</p>
+<p>该参数必须用一对双引号括起来。</p>
+<p>如: java Test1 365 156 China “Beijing of China”</p>
+<p>4、命令行中输入*（表示乘法）的方法：若直接在命令行中输入*（乘法），系统会处理成当前路径名的几个字符串，若要<em>表示乘法，应该输入“ <em>”或“ * ”，由args取得该字符串后，再用trim()去掉两端空格即可，当然也可输入“#</em>”，然后再想办法去掉前面的#即可，即只要不单独输入</em>即可。</p>
+<p>5、Total Commander启动时可以把一个或两个文件夹做为命令行参数。这些文件夹用来设置一侧或两侧的文件窗口。这样你可以在程序或启动菜单为Total Commander创建多个图标，每个Total Commander启动后打开不同文件夹甚至压缩包。而且可以指定不同的ini文件，不止默认的wincmd.ini，这样同一机器上的不同用户可以拥有不同的设置。作者：奋斗的小程序员<br>
+来源：CSDN<br>
+原文：<a href="https://blog.csdn.net/sum_tw/article/details/55820376" target="_blank" rel="noopener">https://blog.csdn.net/sum_tw/article/details/55820376</a></p>
+<h2 id="获得字符串某一位的字符">获得字符串某一位的字符 &amp;</h2>
+<h2 id="判断字符包含内容是否为数字">判断字符包含内容是否为数字</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"12haha"</span>;</span><br><span class="line">        <span class="keyword">char</span> ch1 = str.charAt(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">char</span> ch2 = str.charAt(<span class="number">3</span>);</span><br><span class="line">        <span class="keyword">if</span> (Character.isDigit(ch1))</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(ch1 + <span class="string">" is Digit"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!Character.isDigit(ch2))</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(ch2 + <span class="string">" is NOT Digit"</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p>1 is Digit<br>
+a is NOT Digit</p>
+<h2 id="如何输出一个对象">如何输出一个对象</h2>
+<p>重载toString()函数</p>
+<h2 id="用EOFException？读到文件结尾后">用EOFException？读到文件结尾后</h2>
+<h2 id="相对路径">相对路径</h2>
+<p>在project中，相对路径的根目录是project的根文件夹（IdeaProject文件夹）</p>
+<p>相对路径用  …/ 来表示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">InputStream is = <span class="keyword">new</span> FileInputStream(<span class="string">"../exp6/exp6_score.txt"</span>);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/Java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/30/java/Java%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">java/Java数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-30 08:38:00" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-11-14 10:16:40" itemprop="dateModified" datetime="2018-11-14T10:16:40+08:00">2018-11-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Java中栈的应用</h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Stack;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Stack(栈)继承了Vector类，底层实现是数组。</span></span><br><span class="line"><span class="comment"> * 此处只介绍了Stack自己定义的方法,父类中的方法不再一一介绍。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 定义一个栈</span></span><br><span class="line">        Stack&lt;String&gt; stack;</span><br><span class="line">        <span class="comment">// 实例化栈变量</span></span><br><span class="line">        stack = <span class="keyword">new</span> Stack&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// add方法向栈中添加元素,添加成功返回true</span></span><br><span class="line">        stack.add(<span class="string">"1"</span>);</span><br><span class="line">        stack.add(<span class="string">"2"</span>);</span><br><span class="line">        stack.add(<span class="string">"3"</span>);</span><br><span class="line">        stack.add(<span class="string">"4"</span>);</span><br><span class="line">        stack.add(<span class="string">"5"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// push方法向栈中添加元素,返回结果是当前添加的元素</span></span><br><span class="line">        stack.push(<span class="string">"a"</span>);</span><br><span class="line">        stack.push(<span class="string">"b"</span>);</span><br><span class="line">        stack.push(<span class="string">"c"</span>);</span><br><span class="line">        stack.push(<span class="string">"d"</span>);</span><br><span class="line">        stack.push(<span class="string">"e"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// push和add都是向栈中添加元素,底层实现也是一样的,都是先将Vector扩容,再添加</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*******************************************************/</span></span><br><span class="line">        String pop = stack.pop();</span><br><span class="line">        System.out.println(pop); <span class="comment">// e</span></span><br><span class="line">        System.out.println(stack); <span class="comment">// [1, 2, 3, 4, 5, a, b, c, d]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*******************************************************/</span></span><br><span class="line">        String peek = stack.peek();</span><br><span class="line">        System.out.println(peek); <span class="comment">// d</span></span><br><span class="line">        System.out.println(stack); <span class="comment">// [1, 2, 3, 4, 5, a, b, c, d]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*******************************************************/</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> isEmpty = stack.empty();</span><br><span class="line">        System.out.println(isEmpty); <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*******************************************************/</span></span><br><span class="line">        <span class="keyword">int</span> index = stack.search(<span class="string">"1"</span>);</span><br><span class="line">        System.out.println(index); <span class="comment">// 9</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/IO%20&%20File/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/30/java/IO%20&%20File/" class="post-title-link" itemprop="url">java/IO & File</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-30 08:38:00" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-10-29 21:45:00" itemprop="dateModified" datetime="2018-10-29T21:45:00+08:00">2018-10-29</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>IO &amp; File</h1>
+<h2 id="Java-语言的IO类库">Java 语言的IO类库</h2>
+<p>必须借助输入输出包java.ios，实现输入输出和文件操作</p>
+<h3 id="流的概念">流的概念</h3>
+<ul>
+<li>
+<p>从内容划分，字节流和字符流</p>
+<ol>
+<li>
+<p>字节流处理字节数据，基本类型为：InputStream和OutputStream</p>
+<p>处理图片、视频、音频、.class文件等二进制数据（不能被解释为字符），也可以处理文本文件</p>
+<p>字节流不能处理Unicode字符，汉子可能会出现乱码</p>
+<p>一次读写8位二进制数</p>
+</li>
+<li>
+<p>字符流处理字符数据，基本类型为：Reader和Writer</p>
+<p>处理文本文件</p>
+<p>一次读写16位二进制数</p>
+<p>Java中的字符使用的是16位的Unicode编码，每个字符占2字节</p>
+</li>
 </ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">Oracle 零碎知识点</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-17 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-17T22:13:55+08:00">2020-03-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-20 21:30:45" itemprop="dateModified" datetime="2020-04-20T21:30:45+08:00">2020-04-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="数据字典">数据字典</h3>
-<ul>
-<li>
-<p>数据字典系统表（dict），保存在system表空间中</p>
 </li>
 <li>
-<p>DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）</p>
+<p>从传输方向，输入流和输出流</p>
 </li>
 <li>
-<p>dict表（视图）中有table_name, comments字段：看某个表有什么用</p>
-</li>
-<li>
-<p>动态静态都能查到</p>
+<p>流 即为位组合或字符构成的序列</p>
 </li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">UPPER</span>(<span class="string">'user_tables'</span>); <span class="comment">-- 注意大小写</span></span><br></pre></td></tr></table></figure>
-<p>数据字典主要可分为四部分：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">Oracle 服务器架构</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-13 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-13T22:13:55+08:00">2020-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-20 17:48:38" itemprop="dateModified" datetime="2020-04-20T17:48:38+08:00">2020-04-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>服务器</strong>：提供服务的计算机，计算机经过优化处理，在某方面功能强大</p>
-<p><strong>文件服务器</strong>：存储容量强</p>
-<p><strong>应用服务器</strong>：CPU、内存强</p>
-<p><strong>Oracle服务器</strong>干两件事：**数据存储（database）、数据处理（instance）**功能强大的计算机</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/oracle/OracleSQL_part2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/oracle/OracleSQL_part2/" class="post-title-link" itemprop="url">Oracle SQL_part2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 11:58:57" itemprop="dateModified" datetime="2020-04-19T11:58:57+08:00">2020-04-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="2-DML">2 DML</h2>
-<h3 id="insert">insert</h3>
-<p><img src="/2020/03/10/oracle/OracleSQL_part2/image-20200313103122536.png" alt="image-20200313103122536"></p>
-<p>如果全部字段都有值，则可以不写列名</p>
-<p>如果部分字段为null，两种方法（显式/隐式）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/10/oracle/OracleSQL_part2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/oracle/OracleSQL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/10/oracle/OracleSQL/" class="post-title-link" itemprop="url">Oracle SQL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-18 21:02:37" itemprop="dateModified" datetime="2020-04-18T21:02:37+08:00">2020-04-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="0-SQL">0 SQL</h2>
-<h3 id="sql简介">sql简介</h3>
+<h4 id="输入输出流">输入输出流</h4>
 <ul>
-<li>结构化查询语言</li>
-<li>任何关系型数据库都支持</li>
-<li>第四代 4GL</li>
-<li>描述性语言，只说做什么，不说怎么做</li>
+<li>文件属于外设或外存</li>
+<li>使程序的输入输出独立于相关设备，增强可移植性</li>
+<li>沿着数据序列顺序进行</li>
 </ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/10/oracle/OracleSQL/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+<h4 id="缓冲流">缓冲流</h4>
+<p>为一个流配备一个缓冲区（专门用来传送数据的一块内存）</p>
+<p>读写都经过缓冲区过渡</p>
+<ol>
+<li>写数据时，缓冲区满时，将全部数据发送至相应外设</li>
+<li>读数据时，缓冲区空时，读取尽可能多的数据填满缓冲区</li>
+</ol>
+<h3 id="使用InputStream和OutputStream">使用InputStream和OutputStream</h3>
+<ul>
+<li>InputStream常用方法P177</li>
+<li>流中的方法都声明抛出异常，调用时必须try-catch，否则编译不能通过</li>
+<li>fout = new FileOutputStream(“myfile.txt”);如果指定的文件不存在，创建新文件，若存在，则清楚源文件的内容</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//filename：App10_1.java       利用输入输出流读写文本文件</span></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App10_1</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="comment">// 声明文件字节输入（出）流对象，完成与外设的连接</span></span><br><span class="line">    FileInputStream fin;</span><br><span class="line">    FileOutputStream fout;</span><br><span class="line">    <span class="keyword">char</span> ch;</span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">// 向文件中写</span></span><br><span class="line">      fin =<span class="keyword">new</span> FileInputStream(FileDescriptor.in);</span><br><span class="line">      fout =<span class="keyword">new</span> FileOutputStream(<span class="string">"d:\\cgj\\myfile.txt"</span>); </span><br><span class="line">      System.out.println(<span class="string">"请输入一串字符，并以 # 结束："</span>);</span><br><span class="line">      <span class="keyword">while</span> ((ch=(<span class="keyword">char</span>)fin.read())!=<span class="string">'#'</span>)</span><br><span class="line">      &#123;</span><br><span class="line">        	fout.write(ch);</span><br><span class="line">      &#125;</span><br><span class="line">      fin.close();</span><br><span class="line">      fout.close();</span><br><span class="line">      System.out.println();</span><br><span class="line">      <span class="comment">// 向int变量写</span></span><br><span class="line">      fin=<span class="keyword">new</span> FileInputStream(<span class="string">"d:\\cgj\\myfile.txt"</span>);</span><br><span class="line">      fout=<span class="keyword">new</span> FileOutputStream(FileDescriptor.out);</span><br><span class="line">      <span class="keyword">while</span> (fin.available()&gt;<span class="number">0</span>)</span><br><span class="line">      &#123;</span><br><span class="line">        data=fin.read();</span><br><span class="line">        fout.write(data);</span><br><span class="line">      &#125;</span><br><span class="line">      fin.close();</span><br><span class="line">      fout.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (FileNotFoundException e)</span><br><span class="line">    &#123;</span><br><span class="line">      System.out.println(<span class="string">"文件没找到！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (IOException e)</span><br><span class="line">    &#123;  &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/Java%20Exception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/30/java/Java%20Exception/" class="post-title-link" itemprop="url">java/Java Exception</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-30 08:38:00" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-10-27 20:22:14" itemprop="dateModified" datetime="2018-10-27T20:22:14+08:00">2018-10-27</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Java Exception</h1>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/04/30/java/Java%20Exception/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5CJava%E5%BC%82%E5%B8%B8.png" alt="Java异常"></p>
+<h2 id="异常处理的基本概念">异常处理的基本概念</h2>
+<h3 id="错误的分类">错误的分类</h3>
+<h4 id="性质">性质</h4>
+<ol>
+<li>
+<p>语法错：（编译系统负责检测和报告）能给出错误的位置和性质，不能通过源代码到字节码的编译过程</p>
+</li>
+<li>
+<p>语义错（运行错）：eg除数为零，变量赋值超出范围，下标越界，打开文件不存在，网络连接中断。</p>
+<p>​				必须进行异常处理</p>
+</li>
+<li>
+<p>逻辑错</p>
+</li>
+</ol>
+<h4 id="严重程度">严重程度</h4>
+<ol>
+<li>错误（致命）：硬件或操作系统的错误。内存溢出，虚拟机错误（找不到.class文件，没有main方法）</li>
+<li>异常：由异常处理代码调整程序运行方向</li>
+</ol>
+<h2 id="异常处理类">异常处理类</h2>
+<ul>
+<li>
+<p>Error子类，定义了应用程序无法捕获的错误，由系统保留</p>
+<ul>
+<li>error类及其子类的对象，代表了程序运行时Java系统内部的错误（内存、栈溢出等）</li>
+<li>由Java虚拟机生成并抛给系统，Java程序不对这种错误进行处理，必须交给操作系统处理</li>
+</ul>
+</li>
+<li>
+<p>Exception子类是给Java程序使用的，是用户能捕捉到的异常类型</p>
+</li>
+<li>
+<p>程序对错误和异常的处理3种方式：</p>
+<ol>
+<li>error，不能处理</li>
+<li>runtime 应当避免</li>
+<li>非runtime异常，必须捕获</li>
+</ol>
+</li>
+</ul>
+<h2 id="异常的处理">异常的处理</h2>
+<ul>
+<li>
+<p>runtime异常：程序终止在第一个异常，之后的程序无法运行，不希望这样</p>
+</li>
+<li>
+<p>捕获异常的意义：接受和处理异常，不影响其他语句的执行</p>
+</li>
+</ul>
+<h3 id="try-catch-finally语句">try-catch-finally语句</h3>
+<ul>
+<li>
+<p><strong>try</strong> is used to monitor method invocation 要检查的语句序列（直接的throw 和 包含throw的方法）</p>
+<ul>
+<li>发生第一个异常之后，直接跳到catch，不再执行之后的语句</li>
+</ul>
+</li>
+<li>
+<p><strong>catch</strong> is used to catch thrown exceptions 异常发生的处理，紧跟在try后面</p>
+<p>当catch中包含System.exit(0)时，程序直接终止</p>
+</li>
+<li>
+<p><strong>finally</strong> is used for execute essential code –whether there are exceptions or not 一定会运行的语句块</p>
+<p>为异常处理提供一个统一出口，统一管理程序状态，<strong>对一些资源做清理工作（关闭打开的文件）</strong></p>
+</li>
+<li>
+<p>3个不能只有一个</p>
+</li>
+<li>
+<pre><code class="language-Java"></code></pre>
+</li>
+</ul>
+<p>public void demo(String filename)<br>
+{<br>
+File file = new File(filename);<br>
+FileInputStream fis = null;<br>
+try<br>
+{<br>
+FileInputStream fis = new FileInputStream(f);<br>
+int b = fis.read();<br>
+} catch (IOException e)<br>
+{<br>
+System.out.println(e);<br>
+} finally<br>
+{<br>
+try<br>
+{<br>
+if (fis != null)<br>
+{<br>
+fis.close();<br>
+}<br>
+} catch (IOException e)<br>
+{<br>
+System.out.println(e);<br>
+}<br>
+}<br>
+}</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">### 多异常处理</span><br><span class="line"></span><br><span class="line">- 一个try后紧跟若干个catch块实现</span><br><span class="line"></span><br><span class="line">- 认真设计catch的顺序</span><br><span class="line"></span><br><span class="line">  - 将较具体、较常见的放前面</span><br><span class="line">  - 若将catch子类异常语句块，写到了catch父类异常语句块的前面，编译不能通过</span><br><span class="line"></span><br><span class="line">- 异常类对象进入哪个catch：</span><br><span class="line"></span><br><span class="line">  1. catch这个异常类本身 </span><br><span class="line"></span><br><span class="line">  2. catch这个异常类的父类（所有的子类都是父类）</span><br><span class="line"></span><br><span class="line">- 所有catch都不能处理，程序自动流转到上层（如果上层也有try-catch块）</span><br><span class="line"></span><br><span class="line">- 如果全部不行，由java运行系统处理（一般终止程序），退出JVM返回到操作系统 </span><br><span class="line"></span><br><span class="line">## 抛出异常</span><br><span class="line"></span><br><span class="line">- 抛出系统已经定义好的异常没有太大意义，系统会自动抛出，只需要写catch</span><br><span class="line"></span><br><span class="line">  - 括号中加字符串，将会追加错误的详细描述或信息</span><br><span class="line"></span><br><span class="line">  - &#96;&#96;&#96;Java</span><br><span class="line">    throw new IllegalArgumentException(&quot;&quot;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通常从代码中抛出的是自定义异常</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">zhx</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">multi</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">double</span> s =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i&lt;n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            s*=i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//int m = Integer.parseInt(args[0]);</span></span><br><span class="line">            <span class="comment">//int m = Integer.parseInt("hahaha");</span></span><br><span class="line">            <span class="comment">//int m = Integer.parseInt("-1");</span></span><br><span class="line">            System.out.println(m+<span class="string">"!="</span>+multi(m));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(ArrayIndexOutOfBoundsException e)</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">"命令行无参数"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (NumberFormatException e)</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">"应输入一个整数"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (IllegalArgumentException e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 输出异常的名称，如下</span></span><br><span class="line">            <span class="comment">// 出现的异常是：java.lang.IllegalArgumentException</span></span><br><span class="line">            System.out.println(<span class="string">"出现的异常是："</span>+e.toString());</span><br><span class="line">            e.printStackTrace();<span class="comment">// 输出当前异常对象的堆栈使用轨迹</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="文件操作的异常">文件操作的异常</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IODemo</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">(String filename)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		File f = <span class="keyword">new</span> File(filename);</span><br><span class="line">		<span class="keyword">try</span></span><br><span class="line">		&#123;</span><br><span class="line">			FileInputStream fis = <span class="keyword">new</span> FileInputStream(f);</span><br><span class="line">			<span class="keyword">int</span> b = fis.read();</span><br><span class="line">			fis.close();</span><br><span class="line">		&#125;</span><br><span class="line">    	<span class="keyword">catch</span> (IOException e)</span><br><span class="line">   	 	&#123;</span><br><span class="line">			System.out.println(e);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ps：为什么Java 是void main() 而c++ 是int main() ?</p>
+<p>​	main函数可以向外抛异常，虚拟机接受？有异常机制</p>
+<p><img src="/2020/04/30/java/Java%20Exception/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5CFileException.png" alt="FileException"></p>
+<h2 id="throw-and-throws">throw and throws</h2>
+<ul>
+<li><strong>所有声明都带 s：implements，throws，extends</strong></li>
+<li><strong>throw</strong> throws exceptions in method body</li>
+<li><strong>throws</strong> Declare Possible Exceptions，defines Exception Specification</li>
+<li>异常的处理是强制的，声明throws异常列表后，必须处理（写相应的catch语句块）
+<ul>
+<li>error意味着程序必须结束，不能挽回（虚拟机无法提供资源，或崩溃）</li>
+<li>有两个例外：
+<ul>
+<li>Runtime Exception：编译可以通过，尽量在调试中避免，不用try-catch-finally捕获他</li>
+<li>Java编译器要求Java程序必须捕捉或声明所有的非运行时异常</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkFile</span><span class="params">(File file)</span> <span class="keyword">throws</span> IOException, IllegalArgumentException</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (!file.exists())</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IOException(<span class="string">"File Don't exist!"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span> <span class="keyword">if</span> (file.isDirectory())</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"File is a Directory"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span></span><br><span class="line">       &#123;</span><br><span class="line">       <span class="comment">//。。。</span></span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"Blabla"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Rethrow-Exceptions">Rethrow Exceptions</h2>
+<p>向上抛出异常</p>
+<p>大工程实用？显示每一层的路径</p>
+<h2 id="自定义异常类">自定义异常类</h2>
+<p>课本第169页</p>
+<h3 id="创建步骤">创建步骤</h3>
+<ol>
+<li>
+<p>确定继承自哪个父类（必须是Throwable的直接或间接子类）</p>
+</li>
+<li>
+<p>定义属性和方法</p>
+<ul>
+<li>
+<p>一般加入两个构造方法：无参的，和含String的</p>
+</li>
+<li>
+<pre><code class="language-java">// 自定义异常父类
+public class InvalidCarException extends Exception
+{
+
+}
+// 自定义异常子类
+public class InvalidCarPriceException extends InvalidCarException
+{
+    double price;
+	// 异常子类也可以有构造函数
+    InvalidCarPriceException(double p)
+    {
+        price = p;
+    }
+
+// toString()函数可重载
+    public String toString()
+    {
+        return (&quot;错误的价格参数: &quot; + price);
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;java</span><br><span class="line">&#x2F;&#x2F; 父类</span><br><span class="line">public class Car</span><br><span class="line">&#123;</span><br><span class="line">    int speed;</span><br><span class="line">    double regularPrice;</span><br><span class="line">    String color;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 父类构造方法抛出异常</span><br><span class="line">    Car(int speedVal, double priceVal, String colorVal) throws</span><br><span class="line">                                                        InvalidCarSpeedException,</span><br><span class="line">                                                        InvalidCarPriceException</span><br><span class="line">    &#123;</span><br><span class="line">        if (speedVal &lt; 0)	&#x2F;&#x2F; 注意不要把成员变量和参数写错!</span><br><span class="line">        &#123;</span><br><span class="line">            throw new InvalidCarSpeedException(speedVal);&#x2F;&#x2F; 抛出一个new出来的异常类的对象</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            speed &#x3D; speedVal;</span><br><span class="line">        &#125;</span><br><span class="line">        if (priceVal &lt; 0)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new InvalidCarPriceException(priceVal);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            regularPrice &#x3D; priceVal;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        color &#x3D; colorVal;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 子类的构造方法记得throws和父类相同的异常</span><br></pre></td></tr></table></figure>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主类</span></span><br><span class="line">		<span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            cars[<span class="number">0</span>] = <span class="keyword">new</span> Truck(<span class="number">100</span>, -<span class="number">5</span>, <span class="string">"Black"</span>, <span class="number">3000</span>);</span><br><span class="line">            cars[<span class="number">1</span>] = <span class="keyword">new</span> Truck(-<span class="number">1</span>, <span class="number">10000</span>, <span class="string">"Black"</span>, <span class="number">1000</span>);</span><br><span class="line">            cars[<span class="number">2</span>] = <span class="keyword">new</span> Ford(<span class="number">100</span>, <span class="number">10000</span>, <span class="string">"Black"</span>, <span class="number">3000</span>);</span><br><span class="line">            cars[<span class="number">3</span>] = <span class="keyword">new</span> Ford(<span class="number">100</span>, <span class="number">10000</span>, <span class="string">"Black"</span>, <span class="number">5000</span>);</span><br><span class="line">            cars[<span class="number">4</span>] = <span class="keyword">new</span> Sedan(<span class="number">100</span>, <span class="number">10000</span>, <span class="string">"Black"</span>, <span class="number">25</span>);</span><br><span class="line">            cars[<span class="number">5</span>] = <span class="keyword">new</span> Sedan(<span class="number">100</span>, <span class="number">10000</span>, <span class="string">"Black"</span>, <span class="number">19</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InvalidCarException e)<span class="comment">// catch 异常类的对象</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 调用对象的.toString()方法打印异常信息</span></span><br><span class="line">            System.out.println(<span class="string">"自定义异常："</span> + e.toString() + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="继承自">继承自</h3>
+<ol>
+<li>
+<p>Exception为直接父类</p>
+</li>
+<li>
+<p>某个已经存在的系统异常类</p>
+</li>
+<li>
+<p>已经自定义的异常类</p>
+</li>
+</ol>
+<h3 id="Exception-in-Overriding">Exception in Overriding</h3>
+<ul>
+<li>
+<p>子类覆盖的函数抛出的<strong>异常范围不能扩大</strong>！</p>
+<p>Remember the compatibility<br>
+• the return type is reduced<br>
+• the access control is enlarged<br>
+• the exception type is reduced</p>
+</li>
+</ul>
+<p>try 和 catch 作用域问题？</p>
+<h3 id="Exception-Idioms（今后看）">Exception Idioms（今后看）</h3>
+<ul>
+<li>Use exceptions only for exceptional conditions</li>
+<li>Use checked exceptions for recoverable conditions and runtime</li>
+<li>exceptions for programming errors</li>
+<li>Avoid unnecessary use of checked exceptions</li>
+<li>Favor the use of standard Exceptions</li>
+<li>Throw exceptions appropriate to the abstraction</li>
+<li>Document all exceptions thrown by each method</li>
+<li>Include failure-capture information in detail messages</li>
+<li>Strive for failure atomicity</li>
+<li>Don’t ignore exceptions</li>
+</ul>
+
       
     </div>
 
@@ -658,7 +868,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -725,7 +935,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -160,7 +160,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -220,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/hexo%E6%90%AD%E5%BB%BA/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -234,7 +234,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/21/hexo%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">hexo搭建</a>
+            <a href="/2020/03/23/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/" class="post-title-link" itemprop="url">Oracle 文件部分</a>
         </h2>
 
         <div class="post-meta">
@@ -244,14 +244,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-12-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-21T00:00:00+08:00">2018-12-21</time>
+              <time title="创建时间：2020-03-23 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-23T22:13:55+08:00">2020-03-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 18:05:15" itemprop="dateModified" datetime="2020-04-08T18:05:15+08:00">2020-04-08</time>
+                <time title="修改时间：2020-05-03 12:50:44" itemprop="dateModified" datetime="2020-05-03T12:50:44+08:00">2020-05-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,7 +259,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a>
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
                 </span>
             </span>
 
@@ -274,26 +274,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-常用命令简化和组合">-1. 常用命令简化和组合</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hexo g    # 等同于hexo generate，生成静态文件</span><br><span class="line">hexo s    # 等同于hexo server，在本地服务器运行</span><br><span class="line">hexo s --debug</span><br><span class="line">Ctrl + C 退出本地服务器</span><br><span class="line"></span><br><span class="line">hexo p    # 等同于hexo port</span><br><span class="line">hexo d    # 等同于hexo deploy，用于将本地文件发布到github上 </span><br><span class="line">hexo n 	  # 等同于hexo new，用于新建一篇文章</span><br></pre></td></tr></table></figure>
-<p>当本地不想使用默认的4000端口时（比如在服务器上，默认使用80端口），可以使用 port 命令更改启动端口</p>
-<p>另外，<strong>hexo</strong>支持命令合并，比方说 生成静态文件 → 本地启动80端口，我们可以执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s -g -p 80</span><br></pre></td></tr></table></figure>
-<p>生成静态文件并发布</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
-<h3 id="hexo文件结构及作用">hexo文件结构及作用</h3>
-<h2 id="0-准备">0. 准备</h2>
-<ol>
-<li>注册github账号</li>
-<li>本地安装好git</li>
-</ol>
-<h2 id="1-创建github仓库">1. 创建github仓库</h2>
-<p>仓库名为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[your_github_username].github.io</span><br></pre></td></tr></table></figure>
-<p>仓库名字一定不能写错！</p>
+          <h2 id="管理控制文件">管理控制文件</h2>
+<ul>
+<li>
+<p>二进制文件 - Oracle读的 - 效率高</p>
+</li>
+<li>
+<p>控制文件定义整个数据库的状态</p>
+<p>Oracle实例要访问存储时，要知道有哪些文件，是什么名字，分别存储在什么地方，有哪些表文件。。。</p>
+<p>所以初始化参数文件中要规定好控制文件的位置</p>
+</li>
+<li>
+<p>在mount阶段读取控制文件，无控制文件则无法mount</p>
+</li>
+<li>
+<p>不能随便拷出来备份，有时间号，每个数据库有独有的控制文件</p>
+</li>
+<li>
+<p>创建数据库时，自动产生控制文件，保证数据库完整性</p>
+</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/21/hexo%E6%90%AD%E5%BB%BA/#more" rel="contents">
+              <a class="btn" href="/2020/03/23/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -317,7 +320,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/oracle/Oracle%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93sales/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -331,7 +334,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">Linux C network programming</a>
+            <a href="/2020/03/23/oracle/Oracle%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93sales/" class="post-title-link" itemprop="url">Oracle 手动创建数据库sales</a>
         </h2>
 
         <div class="post-meta">
@@ -341,14 +344,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-12-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-21T00:00:00+08:00">2018-12-21</time>
+              <time title="创建时间：2020-03-23 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-23T22:13:55+08:00">2020-03-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-26 11:39:21" itemprop="dateModified" datetime="2020-04-26T11:39:21+08:00">2020-04-26</time>
+                <time title="修改时间：2020-04-19 23:51:23" itemprop="dateModified" datetime="2020-04-19T23:51:23+08:00">2020-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -356,7 +359,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a>
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
                 </span>
             </span>
 
@@ -371,91 +374,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>n大多数网络应用系统可分为两个部分：客户端©和服务器端(S) 。</p>
-<p>一个server经常同时和多个client建立连接</p>
-<p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426101748109.png" alt="image-20200426101748109"></p>
-<p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426101803094.png" alt="image-20200426101803094"></p>
-<h2 id="TCP-套接字通信工作流程">TCP 套接字通信工作流程</h2>
-<p>面向连接的套接字Socket通信工作流程</p>
-<p>为了实现服务器与客户机的通信,服务器和客户机都必须建立套接字。服务器与客户机的工作原理可以用下面的过程来描述。</p>
-<p>1.服务器先用 socket 函数来建立一个套接字,<strong>用这个套接字完成通信的监听</strong>。</p>
-<p>2.用 bind 函数来绑定一个端口号和 IP 地址。因为本地计算机可能有多个网址和 IP,每一个 IP 和端口有多个端口。需要指定一个 IP 和端口进行监听。</p>
-<p>3.服务器调用 listen 函数,使服务器的这个端口和 IP 处于监听状态,等待客户机的连接。</p>
-<p>4.客户机用 socket 函数建立一个套接字,设定远程 IP 和端口。</p>
-<p>5.客户机调用 connect 函数连接远程计算机指定的端口。</p>
-<p>6.服务器用 accept 函数来接受远程计算机的连接,建立起与客户机之间的通信。</p>
-<p>7.建立连接以后,客户机用 write 函数向 socket 中写入数据。也可以用 read 函数读取服务器发送来的数据。</p>
-<p>8.服务器用 read 函数读取客户机发送来的数据,也可以用 write 函数来发送数据。</p>
-<p>9.完成通信以后,用 close 函数关闭 socket 连接。</p>
-<h3 id="基础概念">基础概念</h3>
-<h4 id="socket套接口">socket套接口</h4>
-<p>套接口是应用层到传输层的接口；类似于Unix管道，可以向/从“套接口”中写/读数据</p>
-<h4 id="sockfd套接字">sockfd套接字</h4>
-<p>套接口的描述字</p>
-<h3 id="报文格式">报文格式</h3>
-<h4 id="封装过程">封装过程</h4>
-<p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426113810817.png" alt="image-20200426113810817"></p>
-<h4 id="TCP报文格式">TCP报文格式</h4>
-<p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426113855858.png" alt="image-20200426113855858"></p>
-<p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/64380cd7912397ddb480a4110c5c4ab2d1a28709.jpeg" alt="img"></p>
-<p>其中比较重要的字段有：</p>
-<p>（1）序号（sequence number）：Seq序号，占32位，用来标识从TCP源端向目的端发送的字节流，发起方发送数据时对此进行标记。</p>
-<p>（2）确认号（acknowledgement number）：==Ack序号==，占32位，只有ACK标志位为1时，确认序号字段才有效，Ack=Seq+1。</p>
-<p>（3）==标志位（Flags）==：共6个，即URG、ACK、PSH、RST、SYN、FIN等。具体含义如下：</p>
-<ul>
-<li>URG：紧急指针（urgent pointer）有效。</li>
-<li>ACK：确认序号有效。（和2的Ack确认号不同）</li>
-<li>PSH：接收方应该尽快将这个报文交给应用层。</li>
-<li>RST：重置连接。</li>
-<li>SYN：发起一个新连接。</li>
-<li>FIN：释放一个连接。</li>
-</ul>
-<h3 id="状态转换图">状态转换图</h3>
-<p>==实线：client==的正常状态转换</p>
-<p>==虚线：server==的正常状态转换</p>
-<p>app：应用？？？</p>
-<img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426104739547.png" alt="image-20200426104739547" style="zoom:150%;">
-<h3 id="TCP连接的建立（三次握手）">TCP连接的建立（三次握手）</h3>
-<p>在TCP/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接。</p>
-<p><em>SYN</em>：同步序列编号（<em>Syn</em>chronize Sequence Numbers）。是TCP/IP建立连接时使用的握手信号。</p>
-<h4 id="为什么需要三次握手">为什么需要三次握手</h4>
-<p>首先非常明确的是两次握手是最基本的。第一次握手，客户端发了个连接请求消息到服务端，服务端收到信息后知道自己与客户端是可以连接成功的，但此时客户端并不知道服务端是否已经接收到了它的请求，所以服务端接收到消息后的应答，客户端得到服务端的反馈后，才确定自己与服务端是可以连接上的，这就是第二次握手。</p>
-<p>客户端只有确定了自己能与服务端连接上才能开始发数据。所以两次握手肯定是最基本的。</p>
-<p>看到这里，你或许会问，那么为什么需要第三次握手呢？我们来看一下，假设一下如果没有第三次握手，而是两次握手后我们就认为连接成功了，那么会发生什么？</p>
-<p>第三次握手是为了防止已经失效的连接请求报文段突然又传到服务端，因而产生错误。</p>
-<p>譬如发起请求遇到类似这样的情况：客户端发出去的第一个连接请求由于某些原因在网络节点中滞留了导致延迟，直到连接释放的某个时间点才到达服务端，这是一个早已失效的报文，但是此时服务端仍然认为这是客户端的建立连接请求第一次握手，于是服务端回应了客户端，第二次握手。</p>
-<p>如果只有两次握手，那么到这里，连接就建立了，但是此时客户端并没有任何数据要发送，而服务端还在傻傻的等候佳音，造成很大的资源浪费。所以需要第三次握手，只有客户端再次回应一下，就可以避免这种情况。</p>
-<h4 id="三次握手过程">三次握手过程</h4>
-<img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426105615672.png" alt="image-20200426105615672" style="zoom:150%;">
-<p>服务器必须准备好接受外来的连接。这通过调用socket、 bind和listen函数来完成，称为被动打开(passive open)。</p>
-<p>第一次握手：客户通过调用connect进行主动打开(active open)。这引起客户TCP发送一个SYN(表示同步)分节(SYN=J)，它告诉服务器客户将<strong>在连接中发送到数据的初始序列号</strong>。并进入SYN_SEND状态，等待服务器的确认。</p>
-<p>第二次握手：服务器必须确认客户的SYN，同时自己也得发送一个SYN分节，它含有服务器将在同一连接中发送的数据的初始序列号。服务器以单个字节向客户发送SYN和对客户SYN的<strong>ACK(表示确认)</strong>，此时服务器进入SYN_RECV状态。</p>
-<p>第三次握手：客户收到服务器的SYN+ACK。向服务器发送确认分节，此分节发送完毕，客户服务器进入ESTABLISHED状态，完成三次握手。</p>
-<p>客户端的初始序列号为J，而服务器的初始序列号为K。在ACK里的确认号为发送这个ACK的一端所期待的下一个序列号。因为SYN只占一个字节的序列号空间，所以每一个SYN的ACK中的确认号都是相应的初始序列号加1.类似地，每一个**FIN(表示结束)**的ACK中的确认号为FIN的序列号加1.</p>
-<h3 id="TCP连接的终止">TCP连接的终止</h3>
-<p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426104628587.png" alt="image-20200426104628587"></p>
-<p>Step 1.应用首先调用close，主动关闭，发送一个FIN，表示数据发送完毕。</p>
-<p>Step 2.另一端执行被动关闭，FIN由TCP确认，接收也作为文件结束符传递给接收方，在此连接上再也收不到数据</p>
-<p>Step 3.收到文件结束的应用将调用close关闭它的套接口，它的TCP也发送一个FIN。</p>
-<p>Step 4.接收到这个FIN的发送方TCP对之确认。</p>
-<p>图中是客户执行主动关闭，而实际上，不管客户还是服务器都可以执行主动关闭，通常是由客户主动关闭，然而，如HTTP是客户端/服务器执行主动关闭？</p>
-<p>第一次握手：某个应用进程首先调用close，我们称这一端执行主动关闭。这一端的TCP于是发送一个FIN分节，表示数据发送完毕。</p>
-<p>第二次握手：接收到FIN的另一端执行被动关闭(passive close)。这个FIN由TCP确认。它的接收也作为文件结束符传递给接收端应用进程(放在已排队等候应用进程接收到任何其他数据之后)</p>
-<p>第三次握手：一段时间后，接收到文件结束符的应用进程将调用close关闭它的套接口。这导致它的TCP也发送一个FIN。</p>
-<p>第四次握手：接收到这个FIN的原发送端TCP对它进行确认。</p>
-<p>面向字节的数据传送流(如TCP字节流、Unix管道等)也使用EOF表示在某个方向上不再有数据待传送。在TCP字节流中，EOF的读或写通过收发一个特殊的FIN分节来实现。</p>
-<img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426105449109.png" alt="image-20200426105449109" style="zoom:150%;">
-<p>如何计算时延，抖动？？？时延一会小一会大</p>
-<h3 id="datetimes-c">datetimes.c</h3>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/****************************************************/</span></span><br><span class="line"><span class="comment">/************* datetime Example Server **************/</span></span><br><span class="line"><span class="comment">/****************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"datetime.h"</span></span></span><br><span class="line"><span class="comment">// #include &lt;sys/time.h&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> listenfd, connfd; <span class="comment">// file discripter</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">servaddr</span>;</span></span><br><span class="line">	<span class="keyword">char</span> buff[MAXLINE];</span><br><span class="line">	<span class="keyword">time_t</span> ticks;</span><br><span class="line">	listenfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">	<span class="built_in">memset</span>(&amp;servaddr, <span class="number">0</span>, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">	servaddr.sin_family = AF_INET;</span><br><span class="line">	servaddr.sin_port = htons(<span class="number">50000</span>);</span><br><span class="line">	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line">	bind(listenfd, (struct sockaddr *)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</span><br><span class="line">	<span class="built_in">listen</span>(listenfd, <span class="number">1024</span>);</span><br><span class="line">	<span class="keyword">char</span>* str = <span class="string">"Start listening"</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%s\n"</span>, str);</span><br><span class="line">	<span class="comment">// fflush(stdout); // printf如果没有换行符，则不会立即输出，需要调用fflush</span></span><br><span class="line">	<span class="keyword">for</span> (;;)</span><br><span class="line">	&#123;</span><br><span class="line">		connfd = accept(listenfd, (struct sockaddr *)<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">		ticks = time(<span class="literal">NULL</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"client: %s:%d\n"</span>,servaddr.sin_addr,servaddr.sin_port);</span><br><span class="line">		<span class="built_in">snprintf</span>(buff, <span class="keyword">sizeof</span>(buff), <span class="string">"%.24s\r\n"</span>, ctime(&amp;ticks));</span><br><span class="line">		<span class="built_in">write</span>(connfd, buff, <span class="built_in">strlen</span>(buff));</span><br><span class="line">		<span class="built_in">close</span>(connfd);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>相关函数</p>
-<h2 id="不清楚的概念">不清楚的概念</h2>
-<p>TCP/IP</p>
-<p>FTP/Telnet</p>
-<p>API</p>
-<p>网络编程API有两种：sockets和XTI？？？</p>
-<p>协议族</p>
-
+          <p>为了防止后面对各种文件的操作，对db12c造成不可逆转的损害，重新建一个sales库来操作</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/23/oracle/Oracle%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93sales/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -474,7 +401,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/28/guitar/oshio_kotaro/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -488,7 +415,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/10/28/guitar/oshio_kotaro/" class="post-title-link" itemprop="url">押尾指弹曲练习记录！</a>
+            <a href="/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/" class="post-title-link" itemprop="url">Oracle 安全3A</a>
         </h2>
 
         <div class="post-meta">
@@ -498,14 +425,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-10-28 00:00:00" itemprop="dateCreated datePublished" datetime="2018-10-28T00:00:00+08:00">2018-10-28</time>
+              <time title="创建时间：2020-03-21 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-21T22:13:55+08:00">2020-03-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 20:19:15" itemprop="dateModified" datetime="2020-04-08T20:19:15+08:00">2020-04-08</time>
+                <time title="修改时间：2020-04-11 14:13:47" itemprop="dateModified" datetime="2020-04-11T14:13:47+08:00">2020-04-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -513,7 +440,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Guitar/" itemprop="url" rel="index"><span itemprop="name">Guitar</span></a>
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
                 </span>
             </span>
 
@@ -528,8 +455,200 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="pdfobject-container" data-target="wind_song.pdf" data-height="800px"></div>
+          <ol>
+<li>验证【第一步得现有身份证】</li>
+<li>授权【有身份证还得有登机牌才能上飞机】</li>
+<li>审核【飞机掉下去找黑匣子，找问题的原因】</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/21/oracle/Oracle%E5%AE%89%E5%85%A83A/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">Oracle 零碎知识点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-17 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-17T22:13:55+08:00">2020-03-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-03 12:02:17" itemprop="dateModified" datetime="2020-05-03T12:02:17+08:00">2020-05-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="数据字典">数据字典</h3>
+<ul>
+<li>
+<p>数据字典系统表（dict），保存在system表空间中</p>
+</li>
+<li>
+<p>DICTIONARY contains descriptions of data dictionary tables and views. （只有数据字典表和视图，没有用户表）</p>
+</li>
+<li>
+<p>dict表（视图）中有table_name, comments字段：看某个表有什么用</p>
+</li>
+<li>
+<p>动态静态都能查到</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">UPPER</span>(<span class="string">'user_tables'</span>); <span class="comment">-- 注意大小写</span></span><br></pre></td></tr></table></figure>
+<p>数据字典主要可分为四部分：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/17/oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">Oracle 服务器架构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-13 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-13T22:13:55+08:00">2020-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-20 17:48:38" itemprop="dateModified" datetime="2020-04-20T17:48:38+08:00">2020-04-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>服务器</strong>：提供服务的计算机，计算机经过优化处理，在某方面功能强大</p>
+<p><strong>文件服务器</strong>：存储容量强</p>
+<p><strong>应用服务器</strong>：CPU、内存强</p>
+<p><strong>Oracle服务器</strong>干两件事：**数据存储（database）、数据处理（instance）**功能强大的计算机</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/13/oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -547,7 +666,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -614,7 +733,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

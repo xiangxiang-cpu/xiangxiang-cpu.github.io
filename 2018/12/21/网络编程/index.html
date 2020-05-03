@@ -53,7 +53,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426104628587.png">
 <meta property="og:image" content="http://yoursite.com/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426105449109.png">
 <meta property="article:published_time" content="2018-12-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-26T03:39:21.964Z">
+<meta property="article:modified_time" content="2020-05-01T16:04:10.425Z">
 <meta property="article:author" content="zhx">
 <meta property="article:tag" content="network programming">
 <meta name="twitter:card" content="summary">
@@ -173,7 +173,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -264,7 +264,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-26 11:39:21" itemprop="dateModified" datetime="2020-04-26T11:39:21+08:00">2020-04-26</time>
+                <time title="修改时间：2020-05-02 00:04:10" itemprop="dateModified" datetime="2020-05-02T00:04:10+08:00">2020-05-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -315,12 +315,18 @@
 <p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/image-20200426113855858.png" alt="image-20200426113855858"></p>
 <p><img src="/2018/12/21/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/64380cd7912397ddb480a4110c5c4ab2d1a28709.jpeg" alt="img"></p>
 <p>其中比较重要的字段有：</p>
-<p>（1）序号（sequence number）：Seq序号，占32位，用来标识从TCP源端向目的端发送的字节流，发起方发送数据时对此进行标记。</p>
-<p>（2）确认号（acknowledgement number）：==Ack序号==，占32位，只有ACK标志位为1时，确认序号字段才有效，Ack=Seq+1。</p>
+<p>注意区分两个ACK：ACK确认Ack是否有效（大写的单词表示标志位）</p>
+<p>（1）序号（sequence number）：Seq序号，占32位</p>
+<p>TCP连接中传送的<strong>字节流中的每个字节都按顺序编号</strong>，第一个字节的编号由本地随机产生</p>
+<p>seq其实就是这个报文段中的第一个字节的数据编号。</p>
+<p>例如，一段报文的seq字段值是 200 ，而携带的数据共有100字节，显然下一个报文段（如果还有的话）的数据序号应该从300开始；</p>
+<p>（2）确认号（acknowledgement number）：Ack序号，占32位</p>
+<p>只有ACK标志位为1时，确认序号字段才有效</p>
+<p>Ack=Seq+1。期待收到对方下一个报文段的seq（第一个数据字节的序号）；序列号表示报文段携带数据的第一个字节的编号；而确认号指的是期望接收到下一个字节的编号；因此当前报文段最后一个字节的编号+1即为确认号。</p>
 <p>（3）==标志位（Flags）==：共6个，即URG、ACK、PSH、RST、SYN、FIN等。具体含义如下：</p>
 <ul>
 <li>URG：紧急指针（urgent pointer）有效。</li>
-<li>ACK：确认序号有效。（和2的Ack确认号不同）</li>
+<li>ACK：确认序号有效。占1位，仅当ACK=1时，确认号字段才有效。ACK=0时，确认号无效</li>
 <li>PSH：接收方应该尽快将这个报文交给应用层。</li>
 <li>RST：重置连接。</li>
 <li>SYN：发起一个新连接。</li>
@@ -338,7 +344,7 @@
 <p>首先非常明确的是两次握手是最基本的。第一次握手，客户端发了个连接请求消息到服务端，服务端收到信息后知道自己与客户端是可以连接成功的，但此时客户端并不知道服务端是否已经接收到了它的请求，所以服务端接收到消息后的应答，客户端得到服务端的反馈后，才确定自己与服务端是可以连接上的，这就是第二次握手。</p>
 <p>客户端只有确定了自己能与服务端连接上才能开始发数据。所以两次握手肯定是最基本的。</p>
 <p>看到这里，你或许会问，那么为什么需要第三次握手呢？我们来看一下，假设一下如果没有第三次握手，而是两次握手后我们就认为连接成功了，那么会发生什么？</p>
-<p>第三次握手是为了防止已经失效的连接请求报文段突然又传到服务端，因而产生错误。</p>
+<p>第三次握手是为了<strong>防止已经失效的连接请求报文段突然又传到服务端，因而产生错误</strong>。</p>
 <p>譬如发起请求遇到类似这样的情况：客户端发出去的第一个连接请求由于某些原因在网络节点中滞留了导致延迟，直到连接释放的某个时间点才到达服务端，这是一个早已失效的报文，但是此时服务端仍然认为这是客户端的建立连接请求第一次握手，于是服务端回应了客户端，第二次握手。</p>
 <p>如果只有两次握手，那么到这里，连接就建立了，但是此时客户端并没有任何数据要发送，而服务端还在傻傻的等候佳音，造成很大的资源浪费。所以需要第三次握手，只有客户端再次回应一下，就可以避免这种情况。</p>
 <h4 id="三次握手过程">三次握手过程</h4>
@@ -371,7 +377,7 @@
 <p>API</p>
 <p>网络编程API有两种：sockets和XTI？？？</p>
 <p>协议族</p>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -412,8 +418,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/10/28/guitar/oshio_kotaro/" rel="prev" title="押尾指弹曲练习记录！">
-      <i class="fa fa-chevron-left"></i> 押尾指弹曲练习记录！
+    <a href="/2018/12/21/javaSE/" rel="prev" title="Linux C network programming">
+      <i class="fa fa-chevron-left"></i> Linux C network programming
     </a></div>
       <div class="post-nav-item">
     <a href="/2018/12/21/hexo%E6%90%AD%E5%BB%BA/" rel="next" title="hexo搭建">
@@ -492,7 +498,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

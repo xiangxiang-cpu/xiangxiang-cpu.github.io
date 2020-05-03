@@ -160,7 +160,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">18</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">31</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -220,7 +220,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/GUI/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -234,7 +234,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/" class="post-title-link" itemprop="url">Oracle 基操</a>
+            <a href="/2020/04/30/java/GUI/" class="post-title-link" itemprop="url">java/GUI</a>
         </h2>
 
         <div class="post-meta">
@@ -244,14 +244,448 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-25T00:00:00+08:00">2020-02-25</time>
+              <time title="创建时间：2020-04-30 08:38:00" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-20 15:36:42" itemprop="dateModified" datetime="2020-04-20T15:36:42+08:00">2020-04-20</time>
+                <time title="修改时间：2018-12-06 17:07:08" itemprop="dateModified" datetime="2018-12-06T17:07:08+08:00">2018-12-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>GUI</h1>
+<p>Graphical User Interface（用户图形界面）</p>
+<ul>
+<li>Java的GUI提供的对象都存在 java.Awt 和 javax.Swing 两个包中.</li>
+</ul>
+<ul>
+<li>java.Awt:Abstract Window ToolKit(抽象 窗口工具包)</li>
+</ul>
+<ul>
+<li>java.Swing：在AWT的基础上，建立的一套图形界面系统，提供了更多的组件，而且完全由java实现，增强了移植性，属于轻量级控件。(跨平台很好)</li>
+</ul>
+<h1>IDEA 开发GUI</h1>
+<ol>
+<li>在项目下的src文件夹上右键,新建GUI Form</li>
+<li>在界面上任意选择一个组件，然后点Ｆ４，跳转到GUI所绑定的Class对象,找到主panel的位置,点击Alt+insert,弹出快捷操作.</li>
+</ol>
+<h1>设计步骤</h1>
+<h2 id="创建组件-Component">创建组件 Component</h2>
+<ul>
+<li>Container（顶层/中间）
+<ul>
+<li>Window（JFrame、JDialog）</li>
+<li>Panel（JApplet）</li>
+</ul>
+</li>
+<li>JComponent</li>
+<li>辅助类（颜色、字体等）</li>
+</ul>
+<p><strong>JComponent记住关键属性</strong></p>
+<h3 id="按钮">按钮</h3>
+<ul>
+<li>
+<p>按钮</p>
+</li>
+<li>
+<p>单选</p>
+</li>
+<li>
+<p>多选</p>
+<p>ButtonGroup是纯逻辑显示</p>
+</li>
+</ul>
+<h3 id="文本区">文本区</h3>
+<ul>
+<li>文本行（单行）</li>
+<li>文本区（多行）</li>
+</ul>
+<h2 id="指定布局-Layout">指定布局 Layout</h2>
+<ul>
+<li>
+<p>只有容器和他的子类可以设置布局</p>
+</li>
+<li>
+<p>如果有同类的组件，最好用数组放在一起</p>
+</li>
+<li>
+<p>GridLayout的行数和列数都可以是1，实现纵向和横向切割</p>
+<p>狗日的Layout</p>
+</li>
+<li>
+<p>BorderLayout拖动时：上下的高度不变，左右的宽度不变</p>
+</li>
+<li>
+<p>注意ButtonGroup的应用</p>
+</li>
+</ul>
+<h3 id="布局管理器分类">布局管理器分类</h3>
+<h4 id="setLayout-null-：没有布局">setLayout(null)：没有布局</h4>
+<p>// 将容器的布局管理器设置为null</p>
+<h4 id="重点：FlowLayout：流式">重点：FlowLayout：流式</h4>
+<ul>
+<li>大小和位置：大小不变，自左而右，自上而下</li>
+<li>对齐，间距</li>
+<li>P274</li>
+</ul>
+<p>根据内容确定大小，可能在行之间流动</p>
+<h4 id="重点：BorderLayout：边界式">重点：BorderLayout：边界式</h4>
+<ul>
+<li>将容器分为5个区域：东南西北中（上&amp;下是完整的），默认为中间</li>
+<li>经常将两种布局嵌套起来用</li>
+</ul>
+<h4 id="GridLayout：网格式">GridLayout：网格式</h4>
+<h5 id="1、GridLayout布局特征">1、GridLayout布局特征</h5>
+<p>网格布局特点：</p>
+<ol>
+<li>
+<p>使容器中的各组件呈M行×N列的网格状分布。</p>
+</li>
+<li>
+<p>网格每列宽度相同，等于容器的宽度除以网格的列数。<br>
+网格每行高度相同，等于容器的高度除以网格的行数。</p>
+</li>
+<li>
+<p>各组件的排列方式为：从上到下，从左到右。<br>
+容器大小改变时，组件的相对位置不变，大小会改变。</p>
+</li>
+<li>
+<p>设置行数和列数时，行数或者列数可以有一个为<strong>零（即不限）</strong><br>
+若rows为0，cols为3，则列固定为3，行不限，每行只能放3个</p>
+</li>
+</ol>
+<p>若cols为0，rows为3，则行固定为3，列不限，每行必定有控件</p>
+<ol start="5">
+<li>至于其他规则，很明显啦。<br>
+假设你有13个控件，你又设置了三行，一行五个，你觉得第三行应该有多少个？</li>
+</ol>
+<p>并且如果组件数量超过设定的个数，布局管理器会自动增加网格个数，原则是保持行数不变。就是</p>
+<p>假设还是13个控件，你设置了两行，一行五个，放不下系统就给加了行，第三行放多出来的三个）</p>
+<h5 id="2、网格布局GridLayout类的常用构造函数和方法">2、网格布局GridLayout类的常用构造函数和方法</h5>
+<p><img src="/2020/04/30/java/GUI/C:%5CUsers%5Czhx%5CPictures%5CMD%E7%AC%94%E8%AE%B0%E5%9B%BE%5CGridLayout1.png" alt="GridLayout1"></p>
+<p><img src="/2020/04/30/java/GUI/C:%5CUsers%5Czhx%5CPictures%5CMD%E7%AC%94%E8%AE%B0%E5%9B%BE%5CGridLayout2.png" alt="GridLayout2"></p>
+<h5 id="3、网格布局实例：">3、网格布局实例：</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>原文：<a href="https://blog.csdn.net/qq_33639584/article/details/55050948" target="_blank" rel="noopener">https://blog.csdn.net/qq_33639584/article/details/55050948</a></p>
+<h4 id="GridBagLayout">GridBagLayout</h4>
+<p><a href="https://www.cnblogs.com/taoweiji/archive/2012/12/14/2818787.html" target="_blank" rel="noopener">https://www.cnblogs.com/taoweiji/archive/2012/12/14/2818787.html</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.awt.*;</span><br><span class="line"><span class="keyword">import</span> javax.swing.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GridBagDemo</span> <span class="keyword">extends</span> <span class="title">JFrame</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    JButton B1;</span><br><span class="line">    JButton B2;</span><br><span class="line">    JButton B3;</span><br><span class="line">    JPanel P1;</span><br><span class="line">    JComboBox C1;</span><br><span class="line">    JTextField TF1;</span><br><span class="line">    JButton B7;</span><br><span class="line">    JList L1;</span><br><span class="line">    JTextArea TA1;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        GridBagDemo demo = <span class="keyword">new</span> GridBagDemo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造函数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">GridBagDemo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        init();</span><br><span class="line">        <span class="keyword">this</span>.setSize(<span class="number">600</span>, <span class="number">600</span>);</span><br><span class="line">        <span class="keyword">this</span>.setVisible(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        B1 = <span class="keyword">new</span> JButton(<span class="string">"打开"</span>);</span><br><span class="line">        B2 = <span class="keyword">new</span> JButton(<span class="string">"保存"</span>);</span><br><span class="line">        B3 = <span class="keyword">new</span> JButton(<span class="string">"另存为"</span>);</span><br><span class="line">        P1 = <span class="keyword">new</span> JPanel();</span><br><span class="line">        String[] str = &#123;<span class="string">"java笔记"</span>, <span class="string">"C#笔记"</span>, <span class="string">"HTML5笔记"</span>&#125;;</span><br><span class="line">        C1 = <span class="keyword">new</span> JComboBox(str);</span><br><span class="line">        TF1 = <span class="keyword">new</span> JTextField();</span><br><span class="line">        B7 = <span class="keyword">new</span> JButton(<span class="string">"清空"</span>);</span><br><span class="line">        L1 = <span class="keyword">new</span> JList(str);</span><br><span class="line">        TA1 = <span class="keyword">new</span> JTextArea();</span><br><span class="line">        TA1.setBackground(Color.PINK);<span class="comment">//为了看出效果，设置了颜色</span></span><br><span class="line"></span><br><span class="line">        GridBagLayout layout = <span class="keyword">new</span> GridBagLayout();</span><br><span class="line">        <span class="keyword">this</span>.setLayout(layout);</span><br><span class="line">        <span class="keyword">this</span>.add(B1);<span class="comment">//把组件添加进jFrame</span></span><br><span class="line">        <span class="keyword">this</span>.add(B2);</span><br><span class="line">        <span class="keyword">this</span>.add(B3);</span><br><span class="line">        <span class="keyword">this</span>.add(P1);</span><br><span class="line">        <span class="keyword">this</span>.add(C1);</span><br><span class="line">        <span class="keyword">this</span>.add(TF1);</span><br><span class="line">        <span class="keyword">this</span>.add(B7);</span><br><span class="line">        <span class="keyword">this</span>.add(L1);</span><br><span class="line">        <span class="keyword">this</span>.add(TA1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定义一个GridBagConstraints，</span></span><br><span class="line">        GridBagConstraints constraint = <span class="keyword">new</span> GridBagConstraints();</span><br><span class="line">        <span class="comment">// 是用来控制添加进的组件的显示位置</span></span><br><span class="line">        constraint.fill = GridBagConstraints.BOTH;<span class="comment">// 使组件完全填满其显示区域</span></span><br><span class="line">        <span class="comment">//该方法是为了设置如果组件所在的区域比组件本身要大时的显示情况</span></span><br><span class="line">        <span class="comment">//NONE：不调整组件大小。</span></span><br><span class="line">        <span class="comment">//HORIZONTAL：加宽组件，使它在水平方向上填满其显示区域，但是不改变高度。</span></span><br><span class="line">        <span class="comment">//VERTICAL：加高组件，使它在垂直方向上填满其显示区域，但是不改变宽度。</span></span><br><span class="line">        <span class="comment">//BOTH：使组件完全填满其显示区域。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 该方法是设置组件水平所占用的格子数，如果为0，就说明该组件是该行的最后一个</span></span><br><span class="line">        constraint.gridwidth = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 该方法设置组件水平的拉伸幅度，如果为0就说明不拉伸，不为0就随着窗口增大进行拉伸，0到1之间</span></span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 该方法设置组件垂直的拉伸幅度，如果为0就说明不拉伸，不为0就随着窗口增大进行拉伸，0到1之间</span></span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//设置组件</span></span><br><span class="line">        layout.setConstraints(B1, constraint);</span><br><span class="line"></span><br><span class="line">        constraint.gridwidth = <span class="number">1</span>;</span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        layout.setConstraints(B2, constraint);</span><br><span class="line"></span><br><span class="line">        constraint.gridwidth = <span class="number">1</span>;</span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        layout.setConstraints(B3, constraint);</span><br><span class="line"></span><br><span class="line">        constraint.gridwidth = <span class="number">0</span>;<span class="comment">//该方法是设置组件水平所占用的格子数，如果为0，就说明该组件是该行的最后一个</span></span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//不能为1，P1是占了4个格，并且可以横向拉伸，</span></span><br><span class="line">        <span class="comment">//但是如果为1，后面行的列的格也会跟着拉伸,导致B7所在的列也可以拉伸</span></span><br><span class="line">        <span class="comment">//所以应该是跟着TF1进行拉伸</span></span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        layout.setConstraints(P1, constraint);<span class="comment">// 用Panel占空位置</span></span><br><span class="line"></span><br><span class="line">        constraint.gridwidth = <span class="number">2</span>;</span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        layout.setConstraints(C1, constraint);</span><br><span class="line">        ;</span><br><span class="line">        constraint.gridwidth = <span class="number">4</span>;</span><br><span class="line">        constraint.weightx = <span class="number">1</span>;</span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        layout.setConstraints(TF1, constraint);</span><br><span class="line">        ;</span><br><span class="line">        constraint.gridwidth = <span class="number">0</span>;</span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        constraint.weighty = <span class="number">0</span>;</span><br><span class="line">        layout.setConstraints(B7, constraint);</span><br><span class="line">        ;</span><br><span class="line">        constraint.gridwidth = <span class="number">2</span>;</span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        constraint.weighty = <span class="number">1</span>;</span><br><span class="line">        layout.setConstraints(L1, constraint);</span><br><span class="line">        ;</span><br><span class="line">        constraint.gridwidth = <span class="number">5</span>;</span><br><span class="line">        constraint.weightx = <span class="number">0</span>;</span><br><span class="line">        constraint.weighty = <span class="number">1</span>;</span><br><span class="line">        layout.setConstraints(TA1, constraint);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="响应事件-Event">响应事件 Event</h2>
+<p>连续显示：先getText、再+新的文本一起set回去</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/30/java/Collection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/30/java/Collection/" class="post-title-link" itemprop="url">java/Collection</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-30 08:38:00" itemprop="dateCreated datePublished" datetime="2020-04-30T08:38:00+08:00">2020-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-11-08 16:53:32" itemprop="dateModified" datetime="2018-11-08T16:53:32+08:00">2018-11-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1>Arrays</h1>
+<h2 id="数组的初始化方式">数组的初始化方式</h2>
+<h3 id="Fill">Fill</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String[] actorArray = <span class="keyword">new</span> String[<span class="number">5</span>];</span><br><span class="line">        <span class="comment">// 把全部位置都用“Bill”填充</span></span><br><span class="line">        Arrays.fill(actorArray,<span class="string">"Bill"</span>);         					                           System.out.println(Arrays.toString(actorArray));</span><br><span class="line">        <span class="comment">// 输出为[Bill, Bill, Bill, Bill, Bill]</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="CopyOf-CopyOfRange">CopyOf / CopyOfRange</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String[] actorArray = &#123;<span class="string">"0"</span>, <span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>&#125;;</span><br><span class="line"><span class="comment">// 从开始点的length个长度</span></span><br><span class="line">String[] actorArray2 = Arrays.copyOf(actorArray, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// [开始下标，结束下标)，前闭后开</span></span><br><span class="line">String[] actorArray3 = Arrays.copyOfRange(actorArray, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">System.out.println(Arrays.toString(actorArray));</span><br><span class="line">System.out.println(Arrays.toString(actorArray2));</span><br><span class="line">System.out.println(Arrays.toString(actorArray3));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出为</span></span><br><span class="line"><span class="comment">// [0, 1, 2, 3, 4]</span></span><br><span class="line"><span class="comment">// [0, 1]</span></span><br><span class="line"><span class="comment">// [1, 2]</span></span><br></pre></td></tr></table></figure>
+<h3 id="先声明，再赋值-声明的同时赋值">先声明，再赋值 &amp; 声明的同时赋值</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] a = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">	a[i] = i * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span>[] b = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="comment">// 会报错！</span></span><br><span class="line"><span class="comment">// int[] b1 = new int[3]&#123;0, 1, 2&#125;;</span></span><br></pre></td></tr></table></figure>
+<h2 id="sort-方法">sort()方法</h2>
+<h3 id="重载compare-方法">重载compare()方法</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScoreArray</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> BufferedReader br;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Double[] d = <span class="keyword">new</span> Double[<span class="number">13</span>];</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Comparator&lt;Double&gt; c = <span class="keyword">new</span> Mycomparator();   <span class="comment">// 实例化一个Comparator对象</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> FileReader(<span class="string">"../exp6/exp6_score.txt"</span>));</span><br><span class="line">            String s1;</span><br><span class="line">            <span class="keyword">while</span> ((s1 = br.readLine()) != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                d[count++] = Double.valueOf(s1);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 重写compare函数，实现从大到小排序</span></span><br><span class="line">            Arrays.sort(d, c);</span><br><span class="line">            <span class="comment">//Arrays.sort(d);</span></span><br><span class="line">            System.out.println(Arrays.toString(d));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (FileNotFoundException e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (IOException e)</span><br><span class="line">        &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Mycomparator</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Double</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Double o1, Double o2)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        BigDecimal b1 = <span class="keyword">new</span> BigDecimal(Double.toString(o1));</span><br><span class="line">        BigDecimal b2 = <span class="keyword">new</span> BigDecimal(Double.toString(o2));</span><br><span class="line">        <span class="keyword">if</span>(b1.compareTo(b2)==-<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(b1.compareTo(b2)==<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 这一行不能写if  系统会认为可能没有返回值</span></span><br><span class="line">        <span class="comment">// 用else表示程序会有一个 确定的出口</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 返回值 -1 小于 0 等于 1 大于</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="BinarySearch">BinarySearch</h2>
+<ul>
+<li>二分查找前提是已经<strong>排好序</strong>的数组（字符串也可以排序）</li>
+</ul>
+<p><a href="https://blog.csdn.net/cxhply/article/details/49423501" target="_blank" rel="noopener">https://blog.csdn.net/cxhply/article/details/49423501</a></p>
+<h3 id="binarySearch-Object-Object-key">binarySearch(Object[], Object key)</h3>
+<p>a: 要搜索的数组；key：要搜索的值</p>
+<p>如果key在数组中，则返回搜索值的索引；否则返回-1或“-”（插入点）。插入点是索引键将要插入数组的那一点，即第一个大于该键的元素的索引。</p>
+<p><strong>技巧：</strong></p>
+<p>[1] 搜索值是数组元素，得搜索值的下标（从0开始计数）；</p>
+<p>[2] 搜索值不是数组元素，且<strong>在数组范围内</strong>，得“ - 待插入点下标（从1开始计数）”；</p>
+<p>[3] 搜索值不是数组元素，且<strong>大于</strong>数组内元素，返回 – (length + 1);</p>
+<p>[4] 搜索值不是数组元素，且<strong>小于</strong>数组内元素，返回 – 1。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> arr[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">        Arrays.sort(arr);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index1 = Arrays.binarySearch(arr, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index2 = Arrays.binarySearch(arr, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index3 = Arrays.binarySearch(arr, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index4 = Arrays.binarySearch(arr, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"index1 = "</span> +</span><br><span class="line">                index1 +</span><br><span class="line">                <span class="string">", index2 = "</span> +</span><br><span class="line">                index2 +</span><br><span class="line">                <span class="string">", index3 = "</span> +</span><br><span class="line">                index3 +</span><br><span class="line">                <span class="string">", index4 = "</span> +</span><br><span class="line">                index4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// index1 = -5, index2 = 2, index3 = -1, index4 = -7</span></span><br></pre></td></tr></table></figure>
+<h3 id="binarySearch-Object-int-fromIndex-int-toIndex-Object-key">binarySearch(Object[], int fromIndex, int toIndex, Object key)</h3>
+<p>a：要搜索的数组</p>
+<p>fromIndex：指定范围的开始处索引</p>
+<p>toIndex：指定范围的结束处索引</p>
+<p><strong>均为从0开始计数，且前闭后开</strong></p>
+<p>key：要搜索的值</p>
+<p>如果要搜索的元素key在指定的范围内，则返回搜索值的索引；否则返回-1或“-”（插入点）。</p>
+<p><strong>技巧：</strong></p>
+<p>[1] 该搜索键在范围内，搜索值是数组元素，得搜索值的下标（从0开始计数）；</p>
+<p>[2] 该搜索键在范围内，搜索值不是数组元素，且<strong>在数组范围内</strong>，得“ - 待插入点下标（从1开始计数）”；</p>
+<p>[3] 该搜索键不在范围内，搜索值不是数组元素，且<strong>大于</strong>数组内元素，返回–(toIndex + 1)；</p>
+<p>[4] 该搜索键不在范围内，搜索值不是数组元素，且<strong>小于</strong>数组内元素，返回 –(fromIndex  + 1)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[] = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line"></span><br><span class="line">        System.out.println(arr.length + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        Arrays.sort(arr);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index5 = Arrays.binarySearch(arr, <span class="number">1</span>, <span class="number">4</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index6 = Arrays.binarySearch(arr, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index7 = Arrays.binarySearch(arr, <span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index8 = Arrays.binarySearch(arr, <span class="number">1</span>, <span class="number">3</span>, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> index9 = Arrays.binarySearch(arr, <span class="number">1</span>, <span class="number">3</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"index5 = "</span> +</span><br><span class="line">                index5 +</span><br><span class="line">                <span class="string">", index6 = "</span> +</span><br><span class="line">                index6 +</span><br><span class="line">                <span class="string">", index7 = "</span> +</span><br><span class="line">                index7 +</span><br><span class="line">                <span class="string">", index8 = "</span> +</span><br><span class="line">                index8 +</span><br><span class="line">                <span class="string">", index9 = "</span> +</span><br><span class="line">                index9);</span><br><span class="line"><span class="comment">// index5 = -5, index6 = 2, index7 = -2, index8 = -4, index9 = -2</span></span><br></pre></td></tr></table></figure>
+<h2 id="toString-方法">toString()方法</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String[] actorArray=&#123;<span class="string">"b"</span>,<span class="string">"a"</span>,<span class="string">"c"</span>&#125;;</span><br><span class="line">System.out.println(Arrays.toString(actorArray));</span><br><span class="line">Arrays.sort(actorArray);</span><br><span class="line">System.out.println(Arrays.toString(actorArray));</span><br><span class="line">System.out.println(actorArray);</span><br><span class="line">System.out.println(actorArray.toString());</span><br><span class="line"><span class="comment">//[b, a, c]</span></span><br><span class="line"><span class="comment">//[a, b, c]</span></span><br><span class="line"><span class="comment">//[Ljava.lang.String;@1b6d3586</span></span><br><span class="line"><span class="comment">//[Ljava.lang.String;@1b6d3586</span></span><br></pre></td></tr></table></figure>
+<h2 id="equals-方法">equals()方法</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String[] actorArray = &#123;<span class="string">"b"</span>, <span class="string">"a"</span>, <span class="string">"c"</span>&#125;;</span><br><span class="line">String[] actorArray2 = &#123;<span class="string">"b"</span>, <span class="string">"a"</span>, <span class="string">"c"</span>&#125;;</span><br><span class="line">String[] actorArray3 = &#123;<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 引用值（地址）不相同</span></span><br><span class="line">System.out.println(actorArray == actorArray2);<span class="comment">// false</span></span><br><span class="line">System.out.println(Arrays.equals(actorArray, actorArray2));<span class="comment">// true</span></span><br><span class="line"><span class="comment">// 顺序不同也被认为是不同的数组</span></span><br><span class="line">System.out.println(Arrays.equals(actorArray3, actorArray2));<span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h2 id="hashcode">hashcode</h2>
+<p>hashCode是jdk根据对象的地址或者字符串或者数字算出来的int类型的数值 。</p>
+<p>public int <strong>hashCode</strong>()返回该对象的哈希码值。支持此方法是为了提高哈希表（例如 java.util.Hashtable 提供的哈希表）的性能。</p>
+<p><img src="/2020/04/30/java/Collection/C:%5CUsers%5Czhx%5CPictures%5CMD%E7%AC%94%E8%AE%B0%E5%9B%BE%5C%E5%AE%B9%E5%99%A8%E7%B1%BB%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg" alt="容器类继承关系图"></p>
+<h1>collection主要方法:</h1>
+<p><a href="http://www.cnblogs.com/taiwan/p/6954135.html" target="_blank" rel="noopener">http://www.cnblogs.com/taiwan/p/6954135.html</a></p>
+<ul>
+<li>boolean add(Object o)添加对象到集合</li>
+<li>boolean remove(Object o)删除指定的对象</li>
+<li>boolean contains(Object o)查找集合中是否有指定的对象</li>
+<li>int size()返回当前集合中元素的数量</li>
+<li>boolean isEmpty()判断集合是否为空</li>
+<li>void clear()删除集合中所有元素</li>
+<li>boolean containsAll(Collection c)查找集合中是否有集合c中的元素</li>
+<li>boolean addAll(Collection c)将集合c中所有的元素添加给该集合</li>
+<li>void removeAll(Collection c)从集合中删除c集合中也有的元素</li>
+<li>void retainAll(Collection c)从集合中删除集合c中不包含的元素</li>
+<li>Iterator iterator()返回一个迭代器</li>
+</ul>
+<h2 id="List">List</h2>
+<p>(collection的抽象子接口，可重复<strong>有序</strong>)</p>
+<p><strong>主要方法：</strong></p>
+<ul>
+<li>void add(int index,Object element)在指定位置上添加一个对象</li>
+<li>boolean addAll(int index,Collection c)将集合c的元素添加到指定的位置</li>
+<li>Object get(int index)返回List中指定位置的元素</li>
+<li>int indexOf(Object o)返回第一个出现元素o的位置.</li>
+<li>Object remove(int index)删除指定位置的元素</li>
+<li>Object set(int index,Object element)用元素element取代位置index上的元素,返回被取代的元素</li>
+<li>void sort()</li>
+</ul>
+<h3 id="LinkedList和ArrayList比较">LinkedList和ArrayList比较</h3>
+<ul>
+<li>
+<p>LinkedList没有同步方法</p>
+</li>
+<li>
+<p>ArrayList非同步的（unsynchronized）</p>
+</li>
+<li>
+<p>LinkedList中插入元素很快，而ArrayList中插入元素很慢</p>
+</li>
+<li>
+<p>LinkedList中随机访问很慢，而ArrayList中随机访问很快</p>
+</li>
+<li>
+<p>Vector(同步) 非常类似ArrayList，但是Vector是同步的</p>
+</li>
+<li>
+<p>Stack 记住 push和pop方法，还有peek方法得到栈顶的元素，empty方法测试堆栈是否为空，search方法检测一个元素在堆栈中的位置。注意：Stack刚创建后是空栈。</p>
+</li>
+</ul>
+<h3 id="ArrayList">ArrayList</h3>
+<p>原文：<a href="https://blog.csdn.net/robert_chen1988/article/details/73381641" target="_blank" rel="noopener">https://blog.csdn.net/robert_chen1988/article/details/73381641</a></p>
+<h4 id="常用的方法">常用的方法</h4>
+<ul>
+<li>add(E e):                     在数组<strong>末尾</strong>添加元素</li>
+<li>size():                           数组中实际元素个数，并不是数组容量</li>
+<li>add(int index, E e):    在数组指定位置添加元素</li>
+<li>clear():                         将数组中元素清空</li>
+<li>contains(E e):             判断数组中是否含有某个元素</li>
+<li>get(int index):             返回数组指定位置的元素</li>
+<li>indexOf(E e):              返回数组指定元素<strong>第一次</strong>出现的位置</li>
+<li>set(int index, E e):     替换数组指定位置的值</li>
+<li>remove(int index):     移除数组指定位置的元素</li>
+<li>remove(E e):              移除数组中<strong>第一次</strong>出现的指定元素</li>
+<li>addAll(Collection&lt;? extends E&gt; c):                     在数组末尾添加另一个数组</li>
+<li>addAll(int index, collection&lt;? extends E&gt; c):     在数组指定位置添加另一个数组</li>
+<li>removeAll(Collection&lt;?&gt;c):                                   将数组中属于数组 c 中的元素全部删除</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; list1 = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">       	<span class="comment">// 添加到末尾位置</span></span><br><span class="line">        list1.add(<span class="number">1</span>);</span><br><span class="line">        list1.add(<span class="number">2</span>);</span><br><span class="line">        list1.add(<span class="number">3</span>);</span><br><span class="line">        System.out.println(list1.size());<span class="comment">// 3</span></span><br><span class="line">        System.out.println(list1);<span class="comment">// [1, 2, 3]</span></span><br><span class="line"></span><br><span class="line">       	<span class="comment">// 插入到特定位置</span></span><br><span class="line">        list1.add(<span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">        System.out.println(list1);<span class="comment">// [1, 2, 4, 3]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// clear</span></span><br><span class="line">        list1.clear();</span><br><span class="line">        System.out.println(list1);<span class="comment">// []</span></span><br><span class="line"></span><br><span class="line">        list1.add(<span class="number">5</span>);</span><br><span class="line">        ArrayList&lt;Integer&gt; list2 = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        list2.add(<span class="number">1</span>);</span><br><span class="line">        list2.add(<span class="number">2</span>);</span><br><span class="line">        list2.add(<span class="number">3</span>);</span><br><span class="line">        </span><br><span class="line">		<span class="comment">// 把括号中ArrayList中的全部元素加到list2的末端</span></span><br><span class="line">        list2.addAll(list1);</span><br><span class="line">        System.out.println(list2);<span class="comment">// [1, 2, 3, 5]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断是否含有特定元素</span></span><br><span class="line">        System.out.println(list2.contains(<span class="number">5</span>));<span class="comment">// true</span></span><br><span class="line">        <span class="comment">// get</span></span><br><span class="line">        System.out.println(list2.get(<span class="number">2</span>));<span class="comment">// 3</span></span><br><span class="line">        <span class="comment">// 返回某个元素所在的位置，如果不包含则返回</span></span><br><span class="line">        System.out.println(list2.indexOf(<span class="number">5</span>));<span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// set</span></span><br><span class="line">        list2.set(<span class="number">2</span>, <span class="number">10</span>);</span><br><span class="line">        System.out.println(list2);<span class="comment">// [1, 2, 10, 5]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Removes</span></span><br><span class="line">        list2.remove(<span class="number">2</span>);</span><br><span class="line">        System.out.println(list2);<span class="comment">// [1, 2, 5]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将某个元素首次出现位置删除（如果存在）</span></span><br><span class="line">        list2.remove(Integer.valueOf(<span class="number">1</span>));</span><br><span class="line">        System.out.println(list2);<span class="comment">// [2, 5]</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 把某个元素出现的所有位置全部删除</span></span><br><span class="line">        list2.removeAll(Arrays.asList(<span class="number">5</span>));</span><br><span class="line">        System.out.println(list2);<span class="comment">// [2]</span></span><br></pre></td></tr></table></figure>
+<h3 id="LinkedList">LinkedList</h3>
+<p><a href="https://blog.csdn.net/gongchuangsu/article/details/51527042" target="_blank" rel="noopener">https://blog.csdn.net/gongchuangsu/article/details/51527042</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line">LinkedList&lt;Integer&gt; linkedList = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/************************** 基本操作 ************************/</span></span><br><span class="line">        linkedList.addFirst(<span class="number">0</span>);    <span class="comment">// 添加元素到列表开头</span></span><br><span class="line">        linkedList.add(<span class="number">1</span>);         <span class="comment">// 在列表结尾添加元素</span></span><br><span class="line">        linkedList.add(<span class="number">2</span>, <span class="number">2</span>);       <span class="comment">// 在指定位置添加元素</span></span><br><span class="line">        linkedList.addLast(<span class="number">3</span>);     <span class="comment">// 添加元素到列表结尾</span></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"LinkedList: "</span> + linkedList);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"getFirst(): "</span> + linkedList.getFirst());       <span class="comment">// 返回此列表的第一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"getLast(): "</span> + linkedList.getLast());         <span class="comment">// 返回此列表的最后一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"removeFirst(): "</span> + linkedList.removeFirst()); <span class="comment">// 移除并返回此列表的第一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"removeLast(): "</span> + linkedList.removeLast());   <span class="comment">// 移除并返回此列表的最后一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"After remove:"</span> + linkedList);</span><br><span class="line">        System.out.println(<span class="string">"contains(1) is :"</span> + linkedList.contains(<span class="number">1</span>));  <span class="comment">// 判断此列表包含指定元素，如果是，则返回true</span></span><br><span class="line">        System.out.println(<span class="string">"size is : "</span> + linkedList.size());             <span class="comment">// 返回此列表的元素个数</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/************************** 位置访问操作 ************************/</span></span><br><span class="line">        System.out.println(<span class="string">"-----------------------------------------"</span>);</span><br><span class="line">        linkedList.set(<span class="number">1</span>, <span class="number">3</span>);                                             <span class="comment">// 将此列表中指定位置的元素替换为指定的元素</span></span><br><span class="line">        System.out.println(<span class="string">"After set(1, 3):"</span> + linkedList);</span><br><span class="line">        System.out.println(<span class="string">"get(1): "</span> + linkedList.get(<span class="number">1</span>));               <span class="comment">// 返回此列表中指定位置处的元素</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/************************** Search操作  ************************/</span></span><br><span class="line">        System.out.println(<span class="string">"-----------------------------------------"</span>);</span><br><span class="line">        linkedList.add(<span class="number">3</span>);</span><br><span class="line">        System.out.println(<span class="string">"indexOf(3): "</span> + linkedList.indexOf(<span class="number">3</span>));        <span class="comment">// 返回此列表中首次出现的指定元素的索引</span></span><br><span class="line">        System.out.println(<span class="string">"lastIndexOf(3): "</span> + linkedList.lastIndexOf(<span class="number">3</span>));<span class="comment">// 返回此列表中最后出现的指定元素的索引</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/************************** Queue操作   ************************/</span></span><br><span class="line">        System.out.println(<span class="string">"-----------------------------------------"</span>);</span><br><span class="line">        System.out.println(<span class="string">"peek(): "</span> + linkedList.peek());                <span class="comment">// 获取但不移除此列表的头</span></span><br><span class="line">        System.out.println(<span class="string">"element(): "</span> + linkedList.element());          <span class="comment">// 获取但不移除此列表的头</span></span><br><span class="line">        linkedList.poll();                                                 <span class="comment">// 获取并移除此列表的头</span></span><br><span class="line">        System.out.println(<span class="string">"After poll():"</span> + linkedList);</span><br><span class="line">        linkedList.remove();</span><br><span class="line">        System.out.println(<span class="string">"After remove():"</span> + linkedList);                <span class="comment">// 获取并移除此列表的头</span></span><br><span class="line">        linkedList.offer(<span class="number">4</span>);</span><br><span class="line">        System.out.println(<span class="string">"After offer(4):"</span> + linkedList);                <span class="comment">// 将指定元素添加到此列表的末尾</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/************************** Deque操作   ************************/</span></span><br><span class="line">        System.out.println(<span class="string">"-----------------------------------------"</span>);</span><br><span class="line">        linkedList.offerFirst(<span class="number">2</span>);                                          <span class="comment">// 在此列表的开头插入指定的元素</span></span><br><span class="line">        System.out.println(<span class="string">"After offerFirst(2):"</span> + linkedList);</span><br><span class="line">        linkedList.offerLast(<span class="number">5</span>);                                           <span class="comment">// 在此列表末尾插入指定的元素</span></span><br><span class="line">        System.out.println(<span class="string">"After offerLast(5):"</span> + linkedList);</span><br><span class="line">        System.out.println(<span class="string">"peekFirst(): "</span> + linkedList.peekFirst());      <span class="comment">// 获取但不移除此列表的第一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"peekLast(): "</span> + linkedList.peekLast());        <span class="comment">// 获取但不移除此列表的第一个元素</span></span><br><span class="line">        linkedList.pollFirst();                                            <span class="comment">// 获取并移除此列表的第一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"After pollFirst():"</span> + linkedList);</span><br><span class="line">        linkedList.pollLast();                                             <span class="comment">// 获取并移除此列表的最后一个元素</span></span><br><span class="line">        System.out.println(<span class="string">"After pollLast():"</span> + linkedList);</span><br><span class="line">        linkedList.push(<span class="number">2</span>);                                                <span class="comment">// 将元素推入此列表所表示的堆栈（插入到列表的头）</span></span><br><span class="line">        System.out.println(<span class="string">"After push(2):"</span> + linkedList);</span><br><span class="line">        linkedList.pop();                                                  <span class="comment">// 从此列表所表示的堆栈处弹出一个元素（获取并移除列表第一个元素）</span></span><br><span class="line">        System.out.println(<span class="string">"After pop():"</span> + linkedList);</span><br><span class="line">        linkedList.add(<span class="number">3</span>);</span><br><span class="line">        linkedList.removeFirstOccurrence(<span class="number">3</span>);                               <span class="comment">// 从此列表中移除第一次出现的指定元素（从头部到尾部遍历列表）</span></span><br><span class="line">        System.out.println(<span class="string">"After removeFirstOccurrence(3):"</span> + linkedList);</span><br><span class="line">        linkedList.removeLastOccurrence(<span class="number">3</span>);                                <span class="comment">// 从此列表中移除最后一次出现的指定元素（从头部到尾部遍历列表）</span></span><br><span class="line">        System.out.println(<span class="string">"After removeFirstOccurrence(3):"</span> + linkedList);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/************************** 遍历操作   ************************/</span></span><br><span class="line">        System.out.println(<span class="string">"-----------------------------------------"</span>);</span><br><span class="line">        linkedList.clear();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            linkedList.add(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 迭代器遍历</span></span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        Iterator&lt;Integer&gt; iterator = linkedList.iterator();</span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext())</span><br><span class="line">        &#123;</span><br><span class="line">            iterator.next();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"Iterator："</span> + (end - start) + <span class="string">" ms"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 顺序遍历(随机遍历)</span></span><br><span class="line">        start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; linkedList.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            linkedList.get(i);</span><br><span class="line">        &#125;</span><br><span class="line">        end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"for："</span> + (end - start) + <span class="string">" ms"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 另一种for循环遍历</span></span><br><span class="line">        start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (Integer i : linkedList)</span><br><span class="line">            ;</span><br><span class="line">        end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"for2："</span> + (end - start) + <span class="string">" ms"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  通过pollFirst()或pollLast()来遍历LinkedList</span></span><br><span class="line">        LinkedList&lt;Integer&gt; temp1 = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        temp1.addAll(linkedList);</span><br><span class="line">        start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">while</span> (temp1.size() != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            temp1.pollFirst();</span><br><span class="line">        &#125;</span><br><span class="line">        end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"pollFirst()或pollLast()："</span> + (end - start) + <span class="string">" ms"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过removeFirst()或removeLast()来遍历LinkedList</span></span><br><span class="line">        LinkedList&lt;Integer&gt; temp2 = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        temp2.addAll(linkedList);</span><br><span class="line">        start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">while</span> (temp2.size() != <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            temp2.removeFirst();</span><br><span class="line">        &#125;</span><br><span class="line">        end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(<span class="string">"removeFirst()或removeLast()："</span> + (end - start) + <span class="string">" ms"</span>);</span><br><span class="line">          </span><br><span class="line">        <span class="comment">/**Output</span></span><br><span class="line"><span class="comment">         LinkedList: [0, 1, 2, 3]</span></span><br><span class="line"><span class="comment">         getFirst(): 0</span></span><br><span class="line"><span class="comment">         getLast(): 3</span></span><br><span class="line"><span class="comment">         removeFirst(): 0</span></span><br><span class="line"><span class="comment">         removeLast(): 3</span></span><br><span class="line"><span class="comment">         After remove:[1, 2]</span></span><br><span class="line"><span class="comment">         contains(1) is :true</span></span><br><span class="line"><span class="comment">         size is : 2</span></span><br><span class="line"><span class="comment">         -----------------------------------------</span></span><br><span class="line"><span class="comment">         After set(1, 3):[1, 3]</span></span><br><span class="line"><span class="comment">         get(1): 3</span></span><br><span class="line"><span class="comment">         -----------------------------------------</span></span><br><span class="line"><span class="comment">         indexOf(3): 1</span></span><br><span class="line"><span class="comment">         lastIndexOf(3): 2</span></span><br><span class="line"><span class="comment">         -----------------------------------------</span></span><br><span class="line"><span class="comment">         peek(): 1</span></span><br><span class="line"><span class="comment">         element(): 1</span></span><br><span class="line"><span class="comment">         After poll():[3, 3]</span></span><br><span class="line"><span class="comment">         After remove():[3]</span></span><br><span class="line"><span class="comment">         After offer(4):[3, 4]</span></span><br><span class="line"><span class="comment">         -----------------------------------------</span></span><br><span class="line"><span class="comment">         After offerFirst(2):[2, 3, 4]</span></span><br><span class="line"><span class="comment">         After offerLast(5):[2, 3, 4, 5]</span></span><br><span class="line"><span class="comment">         peekFirst(): 2</span></span><br><span class="line"><span class="comment">         peekLast(): 5</span></span><br><span class="line"><span class="comment">         After pollFirst():[3, 4, 5]</span></span><br><span class="line"><span class="comment">         After pollLast():[3, 4]</span></span><br><span class="line"><span class="comment">         After push(2):[2, 3, 4]</span></span><br><span class="line"><span class="comment">         After pop():[3, 4]</span></span><br><span class="line"><span class="comment">         After removeFirstOccurrence(3):[4, 3]</span></span><br><span class="line"><span class="comment">         After removeFirstOccurrence(3):[4]</span></span><br><span class="line"><span class="comment">         -----------------------------------------</span></span><br><span class="line"><span class="comment">         Iterator：17 ms</span></span><br><span class="line"><span class="comment">         for：8419 ms</span></span><br><span class="line"><span class="comment">         for2：12 ms</span></span><br><span class="line"><span class="comment">         pollFirst()或pollLast()：12 ms</span></span><br><span class="line"><span class="comment">         removeFirst()或removeLast()：10 ms</span></span><br><span class="line"><span class="comment">         */</span></span><br></pre></td></tr></table></figure>
+<h2 id="Set">Set</h2>
+<p>(不包含重复的元素，没有顺序）</p>
+<h2 id="Collections">Collections</h2>
+<p>sort（collection没有）</p>
+<p>binarySearch</p>
+<p>fill</p>
+<p>reverse()</p>
+<h2 id="Java中Collection和Collections的区别"><a href="http://www.cnblogs.com/dashi/p/3597937.html" target="_blank" rel="noopener">Java中Collection和Collections的区别</a></h2>
+<p>1、java.util.Collection 是一个<strong>集合接口（集合类的一个顶级接口）</strong>。</p>
+<ul>
+<li>它提供了对集合对象进行基本操作的通用接口方法。Collection接口在Java 类库中有很多具体的实现。Collection接口的意义是为各种具体的集合提供了最大化的统一操作方式。</li>
+<li>其直接继承接口有List与Set。</li>
+</ul>
+<p>Collection<br>
+├List<br>
+│├LinkedList<br>
+│├ArrayList<br>
+│└Vector<br>
+│　└Stack<br>
+└Set</p>
+<p>2、java.util.Collections 是一个helper class/包装类（工具类/帮助类）</p>
+<ul>
+<li>它包含有各种有关集合操作的<strong>静态多态方法</strong>。</li>
+<li>此类<strong>不能实例化</strong>，就像一<strong>个工具类</strong>，用于对集合中元素进行排序、搜索以及线程安全等各种操作，服务于Java的Collection框架。</li>
+</ul>
+<h1>Map</h1>
+<ul>
+<li>
+<p>map特点：高效查找，不能排序（需要转换为List）TBD</p>
+</li>
+<li>
+<p>Map没有继承Collection接口，Map提供key到value的映射通常来说，Map是一个由键值对组成的数据结构，且在集合中每个键是唯一的。下面就以K和V来代表键和值，来说明一下java中关于Map的九大问题。</p>
+</li>
+</ul>
+<p>方法：</p>
+<ul>
+<li>
+<p>boolean equals(Object o)比较对象</p>
+</li>
+<li>
+<p>boolean remove(Object o)删除一个对象</p>
+</li>
+<li>
+<p>put(Object key,Object value)添加key和value</p>
+</li>
+</ul>
+<p><strong>Map.Entry说明</strong></p>
+<p>Map是java中的接口，Map.Entry是Map的一个内部接口。</p>
+<p>Map提供了一些常用方法，如keySet()、entrySet()等方法，keySet()方法返回值是Map中key值的集合；entrySet()的返回值也是返回一个Set集合，此集合的类型为Map.Entry。</p>
+<p>Map.Entry是Map声明的一个内部接口，此接口为泛型，定义为Entry&lt;K,V&gt;。它表示Map中的一个实体（一个key-value对）。接口中有getKey(),getValue方法。</p>
+<h2 id="四种遍历方法：">四种遍历方法：</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.首先我们要知道map储存数据的方式，map储存数据的形式是一个key和一个value对应，即</span></span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">        <span class="comment">// 其储存的数据类型可以是任意的。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.接下来我们简单的介绍一下它添加数据和遍历数据的方法：</span></span><br><span class="line"></span><br><span class="line">        map.put(<span class="string">"key1"</span>, <span class="string">"value1"</span>);</span><br><span class="line">        map.put(<span class="string">"key2"</span>, <span class="string">"value2"</span>);</span><br><span class="line">        map.put(<span class="string">"key3"</span>, <span class="string">"value3"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第一种：普遍使用，二次取值</span></span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"通过Map.keySet遍历key和value："</span>);</span><br><span class="line">		<span class="comment">// foreach循环，遍历 ：后的所有内容</span></span><br><span class="line">        <span class="keyword">for</span> (String key : map.keySet())</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">"key= "</span> + key + <span class="string">" and value= "</span> + map.get(key));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第二种</span></span><br><span class="line">        System.out.println(<span class="string">"通过Map.entrySet使用iterator遍历key和value："</span>);</span><br><span class="line">		<span class="comment">// entrySet()的返回值也是返回一个Set集合，此集合的类 型为Map.Entry</span></span><br><span class="line">        Iterator&lt;Map.Entry&lt;String, String&gt;&gt; it = map.entrySet().iterator();  <span class="comment">//通过构造操作符来遍历</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (it.hasNext())</span><br><span class="line">        &#123;</span><br><span class="line">            Map.Entry&lt;String, String&gt; entry = it.next();</span><br><span class="line">            System.out.println(<span class="string">"key= "</span> + entry.getKey() + <span class="string">" and value= "</span> + entry.getValue());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第三种：推荐，尤其是容量大时</span></span><br><span class="line">        System.out.println(<span class="string">"通过Map.entrySet遍历key和value"</span>);  <span class="comment">//同样是foreach方法</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : map.entrySet())</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">"key= "</span> + entry.getKey() + <span class="string">" and value= "</span> + entry.getValue());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第四种</span></span><br><span class="line">        System.out.println(<span class="string">"通过Map.values()遍历所有的value，但不能遍历key"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String v : map.values())</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">"value= "</span> + v);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//https://blog.csdn.net/qq_36719861/article/details/79503456</span></span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<p>通过Map.keySet遍历key和value：<br>
+key= key1 and value= value1<br>
+key= key2 and value= value2<br>
+key= key3 and value= value3<br>
+通过Map.entrySet使用iterator遍历key和value：<br>
+key= key1 and value= value1<br>
+key= key2 and value= value2<br>
+key= key3 and value= value3<br>
+通过Map.entrySet遍历key和value<br>
+key= key1 and value= value1<br>
+key= key2 and value= value2<br>
+key= key3 and value= value3<br>
+通过Map.values()遍历所有的value，但不能遍历key<br>
+value= value1<br>
+value= value2<br>
+value= value3</p>
+<p>这里要特别说明（ Map.Entry，是Map的内部类，它用来描述Map中的键/值对）。 Map是一个接口，我们平时多用它的实现类HashMap。</p>
+<h2 id="常用方法">常用方法</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="comment">//map使用方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Hello</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// map实例化</span></span><br><span class="line">        Map&lt;String, Integer&gt; maps = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="comment">// 添加元素</span></span><br><span class="line">        maps.put(<span class="string">"A"</span>, <span class="number">10</span>);</span><br><span class="line">        maps.put(<span class="string">"B"</span>, <span class="number">20</span>);</span><br><span class="line">        maps.put(<span class="string">"C"</span>, <span class="number">30</span>);</span><br><span class="line">        maps.put(<span class="string">"D"</span>, <span class="number">40</span>);</span><br><span class="line">        maps.put(<span class="string">"E"</span>, <span class="number">50</span>);</span><br><span class="line">        maps.put(<span class="string">"F"</span>, <span class="number">60</span>);</span><br><span class="line">        <span class="comment">// 修改元素</span></span><br><span class="line">        maps.replace(<span class="string">"F"</span>, <span class="number">65</span>);</span><br><span class="line">        <span class="comment">// 删除元素</span></span><br><span class="line">        maps.remove(<span class="string">"E"</span>);</span><br><span class="line">        <span class="comment">// 遍历map-原始方法</span></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : maps.entrySet())</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">"key:"</span> + entry.getKey() + <span class="string">";value:"</span> + entry.getValue());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="comment">// 遍历map-forEach方法（Java8新特性）</span></span><br><span class="line">        maps.forEach((k, v) -&gt; System.out.println(<span class="string">"key : "</span> + k + <span class="string">"; value : "</span> + v));<span class="comment">// 查询元素</span></span><br><span class="line">        <span class="keyword">int</span> f = maps.get(<span class="string">"F"</span>);</span><br><span class="line">        System.out.println(<span class="string">"F的值为:"</span> + f);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/" class="post-title-link" itemprop="url">Oracle 12c中的c</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-17 22:13:55" itemprop="dateCreated datePublished" datetime="2020-04-17T22:13:55+08:00">2020-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-19 00:30:51" itemprop="dateModified" datetime="2020-04-19T00:30:51+08:00">2020-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,13 +708,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-sqlplus常用命令">1.sqlplus常用命令</h2>
-<p>sql语句关键字 != sqlplus命令</p>
-<p>不产生歧义的时候可以缩写</p>
-<p>如何学习sqlplus命令：登陆SQL plus后，help index</p>
+          <h2 id="创建容器数据库（cdb）">创建容器数据库（cdb）</h2>
+<p>不建议手工创建，否则一堆问题</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/02/25/oracle/Oracle%E5%9F%BA%E6%93%8D/#more" rel="contents">
+              <a class="btn" href="/2020/04/17/oracle/Oracle12c%E4%B8%AD%E7%9A%84c/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -304,7 +736,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -318,7 +750,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/" class="post-title-link" itemprop="url">tensorflow安装</a>
+            <a href="/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/" class="post-title-link" itemprop="url">Oracle 数据库备份&恢复</a>
         </h2>
 
         <div class="post-meta">
@@ -328,14 +760,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-10-28 00:00:00" itemprop="dateCreated datePublished" datetime="2019-10-28T00:00:00+08:00">2019-10-28</time>
+              <time title="创建时间：2020-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-05T00:00:00+08:00">2020-04-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 14:04:29" itemprop="dateModified" datetime="2020-04-08T14:04:29+08:00">2020-04-08</time>
+                <time title="修改时间：2020-04-19 00:33:38" itemprop="dateModified" datetime="2020-04-19T00:33:38+08:00">2020-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -358,13 +790,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-python3-7">1. python3.7</h2>
-<p>下载并安装python3.7版本的anaconda</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.anaconda.com&#x2F;distribution&#x2F;</span><br></pre></td></tr></table></figure>
-<img src="/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/image-20200313234202516.png" alt="image-20200313234202516" style="zoom:67%;">
+          <ul>
+<li>演示logMiner</li>
+<li>演示【备份-破坏-恢复】操作</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/10/28/%E9%85%8D%E7%BD%AEtensorflow/#more" rel="contents">
+              <a class="btn" href="/2020/04/05/oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -388,7 +820,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/linux_vmware/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/27/oracle/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar/yeah.jpg">
@@ -402,7 +834,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/21/linux_vmware/" class="post-title-link" itemprop="url">VMware和linux</a>
+            <a href="/2020/03/27/oracle/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/" class="post-title-link" itemprop="url">Oracle 数据移动&外部表</a>
         </h2>
 
         <div class="post-meta">
@@ -412,14 +844,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-03-21T00:00:00+08:00">2019-03-21</time>
+              <time title="创建时间：2020-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-27T00:00:00+08:00">2020-03-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 00:29:45" itemprop="dateModified" datetime="2020-04-14T00:29:45+08:00">2020-04-14</time>
+                <time title="修改时间：2020-04-14 20:28:02" itemprop="dateModified" datetime="2020-04-14T20:28:02+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -442,229 +874,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="1-vmware">1.vmware</h2>
-<p>发现隐藏的虚拟机</p>
-<p>隐藏 – 只是选择移除，没有删除磁盘文件</p>
+          <h2 id="1-数据移动">1.数据移动</h2>
+<ul>
+<li>数据文件 ----- 数据库</li>
+<li>数据库 ----- 数据文件</li>
+<li>数据库 ----- 数据库</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/03/21/linux_vmware/#more" rel="contents">
+              <a class="btn" href="/2020/03/27/oracle/Oracle%E6%95%B0%E6%8D%AE%E7%A7%BB%E5%8A%A8_%E5%A4%96%E9%83%A8%E8%A1%A8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/hexo%E7%BE%8E%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/25/hexo%E7%BE%8E%E5%8C%96/" class="post-title-link" itemprop="url">hexo美化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-25T00:00:00+08:00">2019-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 20:28:18" itemprop="dateModified" datetime="2020-04-08T20:28:18+08:00">2020-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>测试quote功能</p>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>Elegant in code, simple in core</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-<h2 id="1-官方文档">-1. 官方文档</h2>
-<p>官方文档http://theme-next.iissnan.com/getting-started.html</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/25/hexo%E7%BE%8E%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/25/hhh/svg/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar/yeah.jpg">
-      <meta itemprop="name" content="zhx">
-      <meta itemprop="description" content="中国南京 东南大学 软件学院">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="翔翔の据点">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/25/hhh/svg/" class="post-title-link" itemprop="url">svg学习笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-25 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-25T00:00:00+08:00">2019-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 21:22:15" itemprop="dateModified" datetime="2020-04-08T21:22:15+08:00">2020-04-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="简介">简介</h2>
-<p>什么是SVG？</p>
-<ul>
-<li>SVG 指可伸缩矢量图形 (Scalable Vector Graphics)</li>
-<li>SVG 用来定义用于网络的基于矢量的图形</li>
-<li>SVG 使用 XML 格式定义图形（纯粹的xml）</li>
-<li>SVG 图像在放大或改变尺寸的情况下其<strong>图形质量不会有所损失</strong></li>
-<li>SVG 是万维网联盟的标准</li>
-<li>SVG 与诸如 DOM 和 XSL 之类的 W3C 标准是一个整体</li>
-</ul>
-<p>与其他图像格式相比，使用 SVG 的优势在于：</p>
-<ul>
-<li>SVG 可被非常多的工具读取和修改（比如记事本）</li>
-<li>SVG 与 JPEG 和 GIF 图像比起来，尺寸更小，且可压缩性更强。</li>
-<li>SVG 是可伸缩的</li>
-<li>SVG 图像可在任何的分辨率下被高质量地打印</li>
-<li>SVG 可在图像质量不下降的情况下被放大</li>
-<li>SVG 图像中的文本是可选的，同时也是可搜索的（很适合制作地图）</li>
-<li>SVG 可以与 Java 技术一起运行</li>
-<li>SVG 是开放的标准</li>
-<li>SVG 文件是纯粹的 XML</li>
-</ul>
-<p>SVG 的主要竞争者是 Flash。</p>
-<p>与 Flash 相比，SVG 最大的优势是与其他标准（比如 XSL 和 DOM）相兼容。而 Flash 则是未开源的私有技术。</p>
-<h2 id="例子">例子</h2>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; standalone&#x3D;&quot;no&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE svg PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD SVG 1.1&#x2F;&#x2F;EN&quot; </span><br><span class="line">&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;Graphics&#x2F;SVG&#x2F;1.1&#x2F;DTD&#x2F;svg11.dtd&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;svg width&#x3D;&quot;100%&quot; height&#x3D;&quot;100%&quot; version&#x3D;&quot;1.1&quot;</span><br><span class="line">xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;circle cx&#x3D;&quot;100&quot; cy&#x3D;&quot;50&quot; r&#x3D;&quot;40&quot; stroke&#x3D;&quot;black&quot;</span><br><span class="line">stroke-width&#x3D;&quot;2&quot; fill&#x3D;&quot;blue&quot;&#x2F;&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;svg&gt;</span><br></pre></td></tr></table></figure>
-<img src="/2019/01/25/hhh/svg/image-20200408211835100.png" alt="image-20200408211835100" style="zoom:80%;">
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">第一行包含了 XML 声明。</span><br><span class="line">注意 standalone 属性！该属性规定此 SVG 文件是否是“独立的”，或含有对外部文件的引用。</span><br><span class="line">standalone&#x3D;&quot;no&quot; 意味着【不独立】 SVG 文档会引用一个外部文件 - 在这里，是 DTD 文件。</span><br><span class="line"></span><br><span class="line">第二和第三行引用了这个外部的 SVG DTD。该 DTD 位于“http:&#x2F;&#x2F;www.w3.org&#x2F;Graphics&#x2F;SVG&#x2F;1.1&#x2F;DTD&#x2F;svg11.dtd”。</span><br><span class="line">该 DTD 位于 W3C，含有所有允许的 SVG 元素。</span><br><span class="line"></span><br><span class="line">SVG 代码以 &lt;svg&gt; 元素开始，包括开启标签 &lt;svg&gt; 和关闭标签 &lt;&#x2F;svg&gt; 。</span><br><span class="line">&lt;svg&gt; 是根元素。</span><br><span class="line">width 和 height 属性可设置此 SVG 文档的宽度和高度。</span><br><span class="line">version 属性可定义所使用的 SVG 版本。</span><br><span class="line">xmlns 属性定义 SVG 命名空间。</span><br><span class="line"></span><br><span class="line">关闭标签的作用是关闭 SVG 元素和文档本身。</span><br></pre></td></tr></table></figure>
-<p>SVG 的 <code>&lt;circle&gt;</code> 用来创建一个圆。</p>
-<ul>
-<li>
-<p>cx 和 cy 属性定义圆中心的 x 和 y 坐标。如果忽略这两个属性，那么圆点会被设置为 (0, 0)。</p>
-</li>
-<li>
-<p>r 属性定义圆的半径。</p>
-</li>
-<li>
-<p>stroke 和 stroke-width 属性控制如何显示形状的轮廓。我们把圆的轮廓设置为 2px 宽，黑边框。</p>
-</li>
-<li>
-<p>fill 属性设置形状内的颜色。我们把填充颜色设置为红色。</p>
-</li>
-</ul>
-<p>**注释：**所有的开启标签必须有关闭标签！</p>
-<h2 id="svg如何嵌入html">svg如何嵌入html</h2>
-<p>SVG 文件可通过以下标签嵌入 HTML 文档：embed、object或者iframe。</p>
-<p>embed</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">object</span> <span class="attr">data</span>=<span class="string">"rect.svg"</span> <span class="attr">width</span>=<span class="string">"300"</span> <span class="attr">height</span>=<span class="string">"100"</span> </span></span><br><span class="line"><span class="tag"><span class="attr">type</span>=<span class="string">"image/svg+xml"</span></span></span><br><span class="line"><span class="tag"><span class="attr">codebase</span>=<span class="string">"http://www.adobe.com/svg/viewer/install/"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<p>iframe</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"rect.svg"</span> <span class="attr">width</span>=<span class="string">"300"</span> <span class="attr">height</span>=<span class="string">"100"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
       
     </div>
 
@@ -682,7 +905,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -749,7 +972,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
