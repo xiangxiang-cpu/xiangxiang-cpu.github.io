@@ -259,9 +259,9 @@
 <p>就推送到服务器啦</p>
 <h2 id="9-bug">9. bug</h2>
 <p>TypeError [ERR_INVALID_ARG_TYPE]: The “mode” argument must be of type number.</p>
-<p><img src="/2018/12/21/Blog/hexo%E6%90%AD%E5%BB%BA/E:%5Cblog%5Chexo%5Csource_posts%5CBlog%5Chexo%E6%90%AD%E5%BB%BA%5Cimage-20240112213129975.png" alt="image-20240112213129975"></p>
+<p><img src="/2018/12/21/Blog/hexo%E6%90%AD%E5%BB%BA/hexo%E6%90%AD%E5%BB%BA%5Cimage-20240112213129975.png" alt="image-20240112213129975"></p>
 <p>原因：node 版本太高了</p>
-<p><img src="/2018/12/21/Blog/hexo%E6%90%AD%E5%BB%BA/E:%5Cblog%5Chexo%5Csource_posts%5CBlog%5Chexo%E6%90%AD%E5%BB%BA%5Cimage-20240112213312194.png" alt="image-20240112213312194"></p>
+<p><img src="/2018/12/21/Blog/hexo%E6%90%AD%E5%BB%BA/hexo%E6%90%AD%E5%BB%BA%5Cimage-20240112213312194.png" alt="image-20240112213312194"></p>
 <p><a href="https://www.jb51.net/article/202124.htm" target="_blank" rel="noopener">https://www.jb51.net/article/202124.htm</a></p>
 <h4 id="出现404">出现404</h4>
 <p><a href="https://www.jianshu.com/p/2349c763cc02?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation" target="_blank" rel="noopener">https://www.jianshu.com/p/2349c763cc02?utm_campaign=maleskine&amp;utm_content=note&amp;utm_medium=seo_notes&amp;utm_source=recommendation</a></p>
