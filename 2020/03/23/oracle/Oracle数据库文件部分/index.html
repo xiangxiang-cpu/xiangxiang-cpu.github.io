@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="管理控制文件   二进制文件 - Oracle读的 - 效率高   控制文件定义整个数据库的状态 Oracle实例要访问存储时，要知道有哪些文件，是什么名字，分别存储在什么地方，有哪些表文件。。。 所以初始化参数文件中要规定好控制文件的位置   在mount阶段读取控制文件，无控制文件则无法mount   不能随便拷出来备份，有时间号，每个数据库有独有的控制文件   创建数据库时，自动产生控制文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 文件部分">
+<meta property="og:url" content="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="管理控制文件   二进制文件 - Oracle读的 - 效率高   控制文件定义整个数据库的状态 Oracle实例要访问存储时，要知道有哪些文件，是什么名字，分别存储在什么地方，有哪些表文件。。。 所以初始化参数文件中要规定好控制文件的位置   在mount阶段读取控制文件，无控制文件则无法mount   不能随便拷出来备份，有时间号，每个数据库有独有的控制文件   创建数据库时，自动产生控制文件">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200324151311899.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200325124546258.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200329181135042.png">
+<meta property="article:published_time" content="2020-03-23T14:13:55.000Z">
+<meta property="article:modified_time" content="2022-03-28T08:06:01.970Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200324151311899.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle 文件部分 | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!--     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.inactive').click(function(){
+      if($(this).siblings('ul').css('display')=='none'){
+        $(this).addClass('inactives');
+        $(this).siblings('ul').slideDown(100).children('li');
+      }else{
+        $(this).removeClass('inactives');
+        $(this).siblings('ul').slideUp(100);
+      }
+    })
+  });
+  </script> -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle 文件部分
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-23 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-23T22:13:55+08:00">2020-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 16:06:01" itemprop="dateModified" datetime="2022-03-28T16:06:01+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="管理控制文件">管理控制文件</h2>
+<ul>
+<li>
+<p>二进制文件 - Oracle读的 - 效率高</p>
+</li>
+<li>
+<p>控制文件定义整个数据库的状态</p>
+<p>Oracle实例要访问存储时，要知道有哪些文件，是什么名字，分别存储在什么地方，有哪些表文件。。。</p>
+<p>所以初始化参数文件中要规定好控制文件的位置</p>
+</li>
+<li>
+<p>在mount阶段读取控制文件，无控制文件则无法mount</p>
+</li>
+<li>
+<p>不能随便拷出来备份，有时间号，每个数据库有独有的控制文件</p>
+</li>
+<li>
+<p>创建数据库时，自动产生控制文件，保证数据库完整性</p>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="控制文件位置">控制文件位置</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter control_files</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="控制文件内容">控制文件内容</h3>
+<img src="/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200324151311899.png" alt="image-20200324151311899" style="zoom: 67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> dbid,<span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- 名称和标识</span></span><br></pre></td></tr></table></figure>
+<h3 id="如何查看控制文件内容">如何查看控制文件内容</h3>
+<p>oradebug将二进制转成文本文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- oradebug在数据库登录时</span></span><br><span class="line">oradebug <span class="keyword">help</span></span><br><span class="line">oradebug setmypid <span class="comment">-- 指定一个进程做这件事</span></span><br><span class="line">oradebug dump controlf <span class="number">3</span> <span class="comment">-- 转储为trc文本文件，3级别</span></span><br><span class="line">oradebug tracefile_name <span class="comment">-- 输出，转储后文件路径</span></span><br><span class="line"><span class="comment">-- /u01/app/oracle/diag/rdbms/sales/sales/trace/sales_ora_22343.trc</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 这里在数据库外面做</span></span><br><span class="line"><span class="keyword">export</span> DISPLAY=<span class="number">192.168</span><span class="number">.11</span><span class="number">.1</span>:<span class="number">0.0</span></span><br><span class="line">gedit 文件路径</span><br></pre></td></tr></table></figure>
+<p>SCN号</p>
+<ul>
+<li>database entry：建库的相关信息</li>
+<li>log file records：记录日志文件名称和位置（如果os级别日志文件位置变了，要敲命令更新控制文件）</li>
+<li>data file records：数据文件名称和位置</li>
+<li>tempfile records：临时文件名称和位置</li>
+<li>tablespace record：表空间名和对应的数据文件</li>
+<li>rman configuration records</li>
+<li>flashback logfile records：闪回日志位置等相关信息</li>
+<li>MTTR records：自动检查点</li>
+<li>archived log records：归档日志情况</li>
+</ul>
+<p>==3.24考试：闪回数据库，闪不回来，原因？==</p>
+<p>如果把控制文件重建了，闪回日志信息丢失</p>
+<h3 id="控制文件的多路复用">控制文件的多路复用</h3>
+<p>multiplexing the control file using spfile</p>
+<p>最少一个，最多8个</p>
+<p>内容全部相同，只是为了保险，一个坏了，其他拿来直接用</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 需要使用spfile启动（使用show parameter spfile检查）</span></span><br><span class="line"><span class="comment">-- 否则修改scope=spfile时报错no spfile is in use</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 第一步先将control files静态参数修改掉（注意scope），为了让Oracle知道控制文件在哪里</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> control_files=<span class="string">'/u01/app/oracle/oradata/sales/control01.ctl'</span>,<span class="string">'/u01/app/oracle/recovery_area/sales/control02.ctl'</span>,<span class="string">'/u01/demo/control03.ctl'</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br><span class="line"><span class="comment">-- 修改静态参数后，shut</span></span><br><span class="line">shutdown immediate</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第二步，复制一份控制文件到指定目录/u01/demo/</span></span><br><span class="line">cp /u01/app/oracle/oradata/sales/control01.ctl /u01/demo/control03.ctl</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 第三步</span></span><br><span class="line">startup</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>;</span><br><span class="line"><span class="comment">-- 复用完成</span></span><br><span class="line"><span class="comment">-- 发现有三个控制文件了，如果有一个坏了，直接拷过去就行？？？</span></span><br></pre></td></tr></table></figure>
+<p>模拟有一个控制文件损坏了（直接os删除）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rm /u01/demo/control03.ctl</span><br><span class="line"></span><br><span class="line">startup mount;</span><br><span class="line"></span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-00205: error in identifying control file, <span class="keyword">check</span> alert <span class="keyword">log</span> <span class="keyword">for</span> more info</span><br></pre></td></tr></table></figure>
+<p>查看警告日志文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">adrci</span><br><span class="line"><span class="keyword">show</span> homes</span><br><span class="line"><span class="keyword">set</span> home diag/rdbms/sales/sales</span><br><span class="line"><span class="keyword">show</span> alert -tail <span class="number">30</span></span><br><span class="line"></span><br><span class="line">ORA<span class="number">-00202</span>: ????: <span class="string">''</span>/u01/demo/control03.ctl<span class="string">''</span></span><br><span class="line">ORA<span class="number">-27037</span>: ????????</span><br><span class="line">Linux-x86_64 <span class="keyword">Error</span>: <span class="number">2</span>: <span class="keyword">No</span> such <span class="keyword">file</span> <span class="keyword">or</span> <span class="keyword">directory</span></span><br></pre></td></tr></table></figure>
+<p>数据库nomount或shutdown时，拷贝一份控制文件到这个缺失的地方（记得改名）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /u01/app/oracle/oradata/sales/control01.ctl /u01/demo/control03.ctl</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>;</span><br><span class="line"><span class="comment">-- 就起来了</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建控制文件">创建控制文件</h3>
+<p>如果所有控制文件坏了：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- shutdown之后，在Oracle里（或者外面）将三个控制文件全部删除</span></span><br><span class="line">! rm /u01/app/oracle/oradata/sales/control01.ctl</span><br><span class="line">! rm /u01/app/oracle/recovery_area/sales/control02.ctl</span><br><span class="line">! rm /u01/demo/control03.ctl</span><br></pre></td></tr></table></figure>
+<h4 id="方法一">方法一</h4>
+<p>没有控制文件，只能起到nomount状态</p>
+<p>如果用之前拷出去的控制文件拷回来</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">startup</span><br><span class="line">ORA-00205: error in identifying control file, <span class="keyword">check</span> alert <span class="keyword">log</span> <span class="keyword">for</span> more info</span><br><span class="line"></span><br><span class="line">!cp /u01/demo/control04.ctl /u01/app/<span class="keyword">oracle</span>/<span class="keyword">oradata</span>/sales/control01.ctl</span><br><span class="line">!cp /u01/demo/control04.ctl /u01/app/<span class="keyword">oracle</span>/recovery_area/sales/control02.ctl</span><br><span class="line">!cp /u01/demo/control04.ctl /u01/demo/control03.ctl</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">mount</span>; <span class="comment">-- 可以</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br><span class="line">ORA-01122: database file 1 failed verification <span class="keyword">check</span></span><br><span class="line">ORA<span class="number">-01110</span>: <span class="keyword">data</span> <span class="keyword">file</span> <span class="number">1</span>: <span class="string">'/u01/app/oracle/oradata/sales/system01.dbf'</span></span><br><span class="line">ORA<span class="number">-01207</span>: <span class="keyword">file</span> <span class="keyword">is</span> more recent <span class="keyword">than</span> control <span class="keyword">file</span> - <span class="keyword">old</span> control <span class="keyword">file</span></span><br></pre></td></tr></table></figure>
+<p>会提示数据文件比控制文件新，实际上就是控制文件中记录的checkpoint_change#比数据文件头中的checkpoint_change#要小，这种情况是不能打开数据库的</p>
+<p>但数据可以启动到mount状态</p>
+<p>此时可以执行下面的命令，把<strong>创建控制文件的命令</strong>，写到trace文件中去，同时要使用as将这个文件定位</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 只能在mount时做</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">backup</span> <span class="keyword">controlfile</span> <span class="keyword">to</span> <span class="keyword">trace</span> <span class="keyword">as</span> <span class="string">'/u01/demo/create_control6.txt'</span>; <span class="comment">-- 创建成功</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 去外面查看这个文件的内容，把里面的一段代码在Oracle中执行一遍</span></span><br><span class="line"><span class="comment">-- NORESETLOGS  NOARCHIVELOG注意是这两个参数对应的代码</span></span><br><span class="line"><span class="comment">-- 不是很相似的代码，RESETLOGS  ARCHIVELOG</span></span><br><span class="line"><span class="comment">-- 如果执行错代码，则会发生下面的错误，此时只要重新一遍执行正确代码即可</span></span><br><span class="line">SYS@sales&gt;alter database open;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-01589</span>: must <span class="keyword">use</span> <span class="keyword">RESETLOGS</span> <span class="keyword">or</span> <span class="keyword">NORESETLOGS</span> <span class="keyword">option</span> <span class="keyword">for</span> <span class="keyword">database</span> <span class="keyword">open</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删掉代码中间的【--】</span></span><br><span class="line"><span class="comment">-- 为什么是noarchivelog？？？</span></span><br><span class="line"><span class="comment">-- 必须在nomount下运行</span></span><br><span class="line"><span class="keyword">STARTUP</span> NOMOUNT</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">CONTROLFILE</span> <span class="keyword">REUSE</span> <span class="keyword">DATABASE</span> <span class="string">"SALES"</span> <span class="keyword">NORESETLOGS</span>  <span class="keyword">ARCHIVELOG</span></span><br><span class="line">    <span class="keyword">MAXLOGFILES</span> <span class="number">16</span></span><br><span class="line">    <span class="keyword">MAXLOGMEMBERS</span> <span class="number">2</span></span><br><span class="line">    MAXDATAFILES <span class="number">30</span></span><br><span class="line">    <span class="keyword">MAXINSTANCES</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">MAXLOGHISTORY</span> <span class="number">292</span></span><br><span class="line"><span class="keyword">LOGFILE</span></span><br><span class="line">  <span class="keyword">GROUP</span> <span class="number">2</span> <span class="string">'/u01/app/oracle/oradata/sales/redo02.log'</span>  <span class="keyword">SIZE</span> <span class="number">10</span>M <span class="keyword">BLOCKSIZE</span> <span class="number">512</span>,</span><br><span class="line">  <span class="keyword">GROUP</span> <span class="number">3</span> <span class="string">'/u01/app/oracle/oradata/sales/redo03.log'</span>  <span class="keyword">SIZE</span> <span class="number">10</span>M <span class="keyword">BLOCKSIZE</span> <span class="number">512</span>,</span><br><span class="line">  <span class="keyword">GROUP</span> <span class="number">4</span> <span class="string">'/u01/app/oracle/oradata/sales/redo04b.log'</span>  <span class="keyword">SIZE</span> <span class="number">10</span>M <span class="keyword">BLOCKSIZE</span> <span class="number">512</span></span><br><span class="line"><span class="keyword">DATAFILE</span></span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/system01.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/sysaux01.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/undotbs01.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/users01.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/undotbs02.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/tbs101.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/tbs201.dbf'</span>,</span><br><span class="line">  <span class="string">'/u01/app/oracle/oradata/sales/users02.dbf'</span></span><br><span class="line"><span class="built_in">CHARACTER</span> <span class="keyword">SET</span> US7ASCII</span><br><span class="line">;</span><br><span class="line"></span><br><span class="line">Control file created.</span><br></pre></td></tr></table></figure>
+<p>如果控制文件丢了，nomount阶段，不能生成那个txt。只有mount时才可以</p>
+<h4 id="方法二手写语句">方法二手写语句</h4>
+<p>其中，重建的控制文件至少需要以下信息：</p>
+<p>按照上面语句自己手写</p>
+<ul>
+<li>
+<p>数据库名：create pfile from spfile，打开就可以看到</p>
+</li>
+<li>
+<p>字符集：启动到nomount状态， select userenv(‘language’) from dual;</p>
+</li>
+<li>
+<p>数据文件名称：os下找到所有数据文件 + 日志文件的路径</p>
+<p>这里不包括临时文件。存在但是Oracle不知道？？？只有临时表空间</p>
+</li>
+<li>
+<p>几个初始化参数（怎么设置？？？反正是max，随便设置得大一些？？？）</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>; <span class="comment">-- 发现已经自动mount</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br><span class="line"><span class="comment">-- 可能会有的错误</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-01113</span>: <span class="keyword">file</span> <span class="number">1</span> needs media <span class="keyword">recovery</span></span><br><span class="line"><span class="comment">-- ORA-01110: data file 1: \'/u01/app/oracle/oradata/HOEGH/system01.dbf\'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">recover</span> <span class="keyword">database</span>;</span><br><span class="line">Media recovery complete.</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>; <span class="comment">-- 已经全部恢复</span></span><br></pre></td></tr></table></figure>
+<h2 id="管理日志文件">管理日志文件</h2>
+<h3 id="了解日志文件">了解日志文件</h3>
+<p>日志是恢复用的，例程或者介质出了问题，用日志恢复</p>
+<ul>
+<li>
+<p>instance recovery 数据在内存中，还没写出来就丢掉了</p>
+</li>
+<li>
+<p>media recovery 已经写出来到数据文件，数据文件丢了</p>
+</li>
+</ul>
+<img src="/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200325124546258.png" alt="image-20200325124546258" style="zoom:67%;">
+<ul>
+<li>
+<p>日志文件以组安排，至少要有两个组，组之间循环工作</p>
+</li>
+<li>
+<p>一个组的两个成员是镜像关系，内容完全相同。只是放的位置不同，安全</p>
+</li>
+</ul>
+<h3 id="了解日志文件组信息-v-log">了解日志文件组信息 v$log</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">col status for a12</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">GROUP</span><span class="comment">#,MEMBERS,SEQUENCE#,STATUS,FIRST_CHANGE#,NEXT_CHANGE#,ARCHIVED from v$log;</span></span><br><span class="line"><span class="comment">-- members为组中的成员数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- first_time和first_change#作用相同，一个是date，一个是scn</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> nls_date_format=<span class="string">'yyyy-mm-dd hh24:mi:ss'</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">GROUP</span><span class="comment">#,MEMBERS,SEQUENCE#,STATUS,FIRST_TIME,NEXT_TIME from v$log;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment">#    MEMBERS  SEQUENCE# STATUS       FIRST_CHANGE# NEXT_CHANGE#</span></span><br><span class="line"><span class="comment">---------- ---------- ---------- ------------ ------------- ------------</span></span><br><span class="line">         <span class="number">2</span>          <span class="number">1</span>         <span class="number">37</span> INACTIVE           <span class="number">2664938</span>      <span class="number">2766162</span></span><br><span class="line">         <span class="number">4</span>          <span class="number">1</span>         <span class="number">39</span> <span class="keyword">CURRENT</span>            <span class="number">2770810</span>   <span class="number">1.8447E+19</span></span><br><span class="line">         <span class="number">3</span>          <span class="number">1</span>         <span class="number">38</span> INACTIVE           <span class="number">2766162</span>      <span class="number">2770810</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>FIRST_CHANGE# 表示哪个时间点<strong>开始使用</strong>的这个组</p>
+</li>
+<li>
+<p>NEXT_CHANGE# 表示哪个时间点<strong>结束使用</strong>的这个组</p>
+<p>非常大的那个说明这个组还在使用</p>
+</li>
+<li>
+<p>firstchange和nextchange<strong>用来定位</strong>，如果发生故障的时间位于这两者中间，则就用这个日志组恢复</p>
+<p>【账本写满了，换一本，原来的封面上写上起止日期】</p>
+</li>
+</ul>
+<p>日志组状态：</p>
+<ul>
+<li>active：此时该日志组中提交的事务引起的数据改变还没有完全从DB buffer cache写入到数据文件中。例程恢复时需要用到这个日志文件。</li>
+<li>inactive：做完检查点之后，acive变为inactive，日志已经写到数据文件中了，不需要了，删掉也不会丢数据（介质恢复还是需要这些inactive的日志）</li>
+<li>current： LGWR进程正把redo log buffer的日志写进日志组中</li>
+<li>unused：新增的组，还没有开始用的</li>
+</ul>
+<h3 id="查询日志文件成员-v-logfile">查询日志文件成员 v$logfile</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">GROUP</span><span class="comment">#,type,STATUS,MEMBER from v$logfile;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment"># TYPE           STATUS</span></span><br><span class="line"><span class="comment">---------- -------------- ------------</span></span><br><span class="line"><span class="keyword">MEMBER</span></span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">         <span class="number">3</span> <span class="keyword">ONLINE</span></span><br><span class="line">/u01/app/<span class="keyword">oracle</span>/<span class="keyword">oradata</span>/sales/redo03.log</span><br><span class="line"></span><br><span class="line">         <span class="number">2</span> <span class="keyword">ONLINE</span></span><br><span class="line">/u01/app/<span class="keyword">oracle</span>/<span class="keyword">oradata</span>/sales/redo02.log</span><br><span class="line"></span><br><span class="line">         <span class="number">4</span> <span class="keyword">ONLINE</span></span><br><span class="line">/u01/app/<span class="keyword">oracle</span>/<span class="keyword">oradata</span>/sales/redo04b.log</span><br><span class="line"></span><br><span class="line"><span class="comment">-- status有时会变成stale、invalid</span></span><br><span class="line"><span class="keyword">Status</span> <span class="keyword">of</span> the <span class="keyword">log</span> <span class="keyword">member</span>:</span><br><span class="line">INVALID - <span class="keyword">File</span> <span class="keyword">is</span> inaccessible</span><br><span class="line">STALE - <span class="keyword">File</span><span class="string">'s contents are incomplete</span></span><br><span class="line"><span class="string">-- 手动切换下日志组就好了</span></span><br></pre></td></tr></table></figure>
+<h3 id="自动切换日志组时Oracle做的事情"><strong>自动</strong>切换日志组时Oracle做的事情</h3>
+<ol>
+<li>
+<p>做检查点</p>
+</li>
+<li>
+<p>相关信息<strong>写控制文件</strong>（当前日志序列号等）</p>
+<p>将旧日志组的nextchange和新日志组的firstchange，更新为当时的SCN</p>
+</li>
+</ol>
+<p>==考试：归档日志模式下，自动切换时，哪些进程在工作？多选题==</p>
+<ul>
+<li>LGWR，LGWR转向新的日志组写日志（指针改变？）</li>
+<li>CKPT，做检查点</li>
+<li>DBWR，检查点最后要写盘，发信号给database writer</li>
+<li>ARC，归档进程</li>
+</ul>
+<h3 id="手动切换日志文件组">手动切换日志文件组</h3>
+<p>原来的组变成active（未写入数据文件），新的组为current</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> current_scn,CHECKPOINT_CHANGE<span class="comment"># from v$database;</span></span><br><span class="line"><span class="comment">-- scn随时在更新，如果数据库没有open，则为0；系统检查点</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">switch</span> <span class="keyword">logfile</span>; <span class="comment">-- 手动切换日志文件</span></span><br><span class="line"><span class="comment">-- 切换日志调用的是进程，所以是system</span></span><br></pre></td></tr></table></figure>
+<p><strong>手工做检查点</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> checkpoint;</span><br><span class="line"><span class="comment">-- 所有active的日志组全部变为inactive，日志中的操作都写入数据文件</span></span><br></pre></td></tr></table></figure>
+<p><strong>ps：自动做检查点</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show parameter fast_start_mttr_target</span><br></pre></td></tr></table></figure>
+<p>默认是0，修改为300s</p>
+<p>解释：积累了【使用日志需要300s才能恢复】的脏数据时，做一次检查点</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> fast_start_mttr_target=<span class="number">300</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="添加-删除日志组-日志文件">添加/删除日志组/日志文件</h3>
+<h4 id="增加日志组">增加日志组</h4>
+<p>生产中，可能会出现日志文件等待现象</p>
+<p>如果只有两个组，一个组A写满了去归档。</p>
+<p>如果另一个组B也写满的时候，前面那个组A归档还没有完成，造成等待</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">4</span> (<span class="string">'/u01/app/oracle/oradata/sales/redo04a.log'</span>) <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"><span class="comment">-- 这个组状态此时为unused</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--alter database add logfile group 5 '/u01/app/oracle/oradata/sales/redo05a.log' size 10m ,'/u01/app/oracle/oradata/sales/redo05b.log' size 10m;</span></span><br><span class="line"><span class="comment">-- 添加多个时，后一个文件自动加到组1里了？？？（此时组1不存在）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 正确添加方法</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">5</span> (<span class="string">'/u01/app/oracle/oradata/sales/redo05a.log'</span> ,<span class="string">'/u01/app/oracle/oradata/sales/redo05b.log'</span>) <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"><span class="comment">-- 日志组内成员，文件大小都一样，最后说一下就行</span></span><br></pre></td></tr></table></figure>
+<h4 id="添加日志文件组成员">添加日志文件组成员</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> <span class="keyword">logfile</span> <span class="keyword">member</span> <span class="string">'/u01/app/oracle/oradata/sales/redo04b.log'</span> <span class="keyword">to</span> <span class="keyword">group</span> <span class="number">4</span>;</span><br><span class="line"><span class="comment">-- 不需要写大小，因为成员之间是镜像关系</span></span><br><span class="line"><span class="comment">-- alter 语句中不可设定redo04b.log的大小</span></span><br></pre></td></tr></table></figure>
+<p>成员状态为invalid（stale），开始使用就没有了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">!ls -l /u01/app/oracle/oradata/sales/redo04*.<span class="built_in">log</span></span><br><span class="line"><span class="comment"># 两个文件一样大的</span></span><br></pre></td></tr></table></figure>
+<h4 id="删除日志文件组">删除日志文件组</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">1</span>; <span class="comment">-- 1为组名</span></span><br></pre></td></tr></table></figure>
+<p>current组不能删，一定要删就只能切换日志</p>
+<p>active组也不能删，在系统恢复时需要使用</p>
+<p>一定要删就只能将active日志组的内容写入数据文件（alter system checkpoint），变为inactive</p>
+<p>组1删完之后，文件redo01.log还在</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">! rm /u01/app/oracle/oradata/sales/redo01.log</span><br></pre></td></tr></table></figure>
+<p>需要操作系统rm掉这个log文件给Oracle擦屁股？引出OMF</p>
+<h4 id="删除日志文件成员">删除日志文件成员</h4>
+<p><strong>不能删掉一个组里唯一的成员</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> <span class="keyword">logfile</span> <span class="keyword">member</span> <span class="string">'/u01/app/oracle/oradata/sales/redo02.log'</span>;</span><br><span class="line"></span><br><span class="line">ORA-00361: cannot remove last log member /u01/app/oracle/oradata/sales/redo02.log for group 2</span><br></pre></td></tr></table></figure>
+<p><strong>current组的成员不能删</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">GROUP</span><span class="comment">#,MEMBERS,SEQUENCE#,STATUS,FIRST_CHANGE#,NEXT_CHANGE# from v$log;</span></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment">#    MEMBERS  SEQUENCE# STATUS       FIRST_CHANGE# NEXT_CHANGE#</span></span><br><span class="line"><span class="comment">---------- ---------- ---------- ------------ ------------- ------------</span></span><br><span class="line">         <span class="number">2</span>          <span class="number">1</span>         <span class="number">43</span> INACTIVE           <span class="number">2878349</span>      <span class="number">2878946</span></span><br><span class="line">         <span class="number">3</span>          <span class="number">1</span>         <span class="number">44</span> INACTIVE           <span class="number">2878946</span>      <span class="number">2881486</span></span><br><span class="line">         <span class="number">4</span>          <span class="number">2</span>         <span class="number">45</span> <span class="keyword">CURRENT</span>            <span class="number">2881486</span>   <span class="number">1.8447E+19</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> <span class="keyword">logfile</span> <span class="keyword">member</span> <span class="string">'/u01/app/oracle/oradata/sales/redo04a.log'</span>;</span><br><span class="line"></span><br><span class="line">ORA-01609: log 4 is the current log for thread 1 - cannot <span class="keyword">drop</span> members</span><br><span class="line">ORA<span class="number">-00312</span>: <span class="keyword">online</span> <span class="keyword">log</span> <span class="number">4</span> <span class="keyword">thread</span> <span class="number">1</span>: <span class="string">'/u01/app/oracle/oradata/sales/redo04b.log'</span></span><br><span class="line">ORA<span class="number">-00312</span>: <span class="keyword">online</span> <span class="keyword">log</span> <span class="number">4</span> <span class="keyword">thread</span> <span class="number">1</span>: <span class="string">'/u01/app/oracle/oradata/sales/redo04a.log'</span></span><br></pre></td></tr></table></figure>
+<p><strong>切换之后，active组的成员能不能删？</strong></p>
+<p>不是这个组的最后一个就行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">switch</span> <span class="keyword">logfile</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">GROUP</span><span class="comment">#,MEMBERS,SEQUENCE#,STATUS,FIRST_CHANGE#,NEXT_CHANGE# from v$log;</span></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment">#    MEMBERS  SEQUENCE# STATUS       FIRST_CHANGE# NEXT_CHANGE#</span></span><br><span class="line"><span class="comment">---------- ---------- ---------- ------------ ------------- ------------</span></span><br><span class="line">         <span class="number">2</span>          <span class="number">1</span>         <span class="number">46</span> <span class="keyword">CURRENT</span>            <span class="number">2884681</span>   <span class="number">1.8447E+19</span></span><br><span class="line">         <span class="number">3</span>          <span class="number">1</span>         <span class="number">44</span> INACTIVE           <span class="number">2878946</span>      <span class="number">2881486</span></span><br><span class="line">         <span class="number">4</span>          <span class="number">2</span>         <span class="number">45</span> ACTIVE             <span class="number">2881486</span>      <span class="number">2884681</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> <span class="keyword">logfile</span> <span class="keyword">member</span> <span class="string">'/u01/app/oracle/oradata/sales/redo04a.log'</span>;</span><br><span class="line"></span><br><span class="line">    GROUP<span class="comment">#    MEMBERS  SEQUENCE# STATUS       FIRST_CHANGE# NEXT_CHANGE#</span></span><br><span class="line"><span class="comment">---------- ---------- ---------- ------------ ------------- ------------</span></span><br><span class="line">         2          1         46 CURRENT            2884681   1.8447E+19</span><br><span class="line">         3          1         44 INACTIVE           2878946      2881486</span><br><span class="line">         4          1         45 ACTIVE             2881486      2884681</span><br></pre></td></tr></table></figure>
+<h3 id="clear“清除”日志文件组（成员）">clear“清除”日志文件组（成员）</h3>
+<p>clear 适用情况：如果一个组的成员只有一个，还坏掉了，需要修理</p>
+<p>（clear作用是删旧加新）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">clear</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">clear</span> <span class="keyword">logfile</span> <span class="string">''</span>;</span><br></pre></td></tr></table></figure>
+<p>如果不用clear，则要加一个新名字的log，删除旧的log，改回名字</p>
+<h3 id="归档模式">归档模式</h3>
+<h4 id="设置归档-非归档模式">设置归档 / 非归档模式</h4>
+<p>如何改成归档模式，这个命令必须在mount状态，还没open时做</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 如何查看现在是什么状态</span></span><br><span class="line"><span class="keyword">select</span> log_mode <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- 方法一</span></span><br><span class="line">archive log list <span class="comment">-- 方法二</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">status</span> <span class="keyword">from</span> v$<span class="keyword">instance</span>; <span class="comment">-- 查看处于open状态时</span></span><br><span class="line">shutdown immediate</span><br><span class="line">startup mount</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">archivelog</span>; <span class="comment">-- 修改为归档模式，日志写满之后，文件自动归档？？？</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">noarchivelog</span>; <span class="comment">-- 关闭归档模式</span></span><br></pre></td></tr></table></figure>
+<p>以后都归档！！！</p>
+<p>归档的日志文件可以通过LOGMNR进行分析</p>
+<p>归档时：将日志中的操作写入数据文件，然后归档，切换日志组</p>
+<h4 id="查询归档日志信息-v-archived-log">查询归档日志信息 v$archived_log</h4>
+<p>recovery_area == 闪回区</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$archived_log;</span><br></pre></td></tr></table></figure>
+<h4 id="设置归档目的地并手工归档">设置归档目的地并手工归档</h4>
+<p>归档目的地设置为/u01/arch</p>
+<p>如果怕丢，在初始化参数中设置两个子归档目的地，这两个目录里存放的归档日志是完全相同的（复用）</p>
+<p>/u01/arch/1</p>
+<p>/u01/arch/2</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter log_archive_dest</span><br><span class="line"><span class="keyword">NAME</span>                                 <span class="keyword">TYPE</span>                   <span class="keyword">VALUE</span></span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line">log_archive_dest                     <span class="keyword">string</span></span><br><span class="line">log_archive_dest_1                   <span class="keyword">string</span>                 location=/u01/arch/<span class="number">1</span></span><br><span class="line">log_archive_dest_2                   <span class="keyword">string</span>                 location=/u01/arch/<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 存放归档日志的路径，可以复用（最多30个）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 下面这种方法会报错，需要指定在本地还是远程</span></span><br><span class="line"><span class="comment">-- alter system set log_archive_dest_1='/u01/arch/1';</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> log_archive_dest_1=<span class="string">'location=/u01/arch/1'</span>; <span class="comment">-- 本地</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> log_archive_dest_2=<span class="string">'location=/u01/arch/2'</span>;</span><br><span class="line"><span class="comment">-- 远程，service填写一个服务名（指向远程的数据库）</span></span><br><span class="line"><span class="comment">-- alter system set log_archive_dest_3='[db12c]=/u01/arch/1'; -- 报错</span></span><br><span class="line">ORA-32017: failure in updating SPFILE</span><br><span class="line">ORA-16179: incremental changes to "log_archive_dest_3" not allowed <span class="keyword">with</span> <span class="keyword">SPFILE</span></span><br></pre></td></tr></table></figure>
+<p><strong>手动归档</strong></p>
+<p>可以将当前使用的日志组手动归档，此时不会写盘</p>
+<p>（最好先手动做一个检查点，再手工归档。需要先将日志中的操作写入数据文件？？？）</p>
+<p>ps：自动归档发生在：当前使用的日志组容量已满时，此时做检查点、写脏数据、切换日志组、顺便就归档</p>
+<p>不是等到要被覆盖了才归档。后面循环到这一组时就可以直接覆盖了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看下一条待归档的日志（next log sequence to archive）</span></span><br><span class="line">archive log list</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">archive</span> <span class="keyword">log</span> <span class="keyword">current</span>;</span><br></pre></td></tr></table></figure>
+<p>归档之后，完成切换日志组。上述参数规定的两个路径里出现新的归档文件，完全一致两个文件</p>
+<p><strong>归档日志文件命名</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter log_archive</span><br><span class="line"><span class="comment">-- 发现有一个关于归档日志命名格式的参数</span></span><br><span class="line">log_archive_format                   <span class="keyword">string</span>                 %t_%s_%r.dbf</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> log_archive_format=<span class="string">'%t_%s_%r.arc'</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>; <span class="comment">-- 静态参数</span></span><br></pre></td></tr></table></figure>
+<h3 id="日志文件丢失处理处理方法">日志文件丢失处理处理方法</h3>
+<h4 id="1-非当前current日志丢失">1 非当前current日志丢失</h4>
+<p>数据库shutdown之后，将非current日志rm掉，模拟日志文件丢失</p>
+<p>shut时，做检查点，将日志文件中对应的脏数据写盘了，例程恢复不再用到这几个日志文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">shutdown immediate</span><br><span class="line"></span><br><span class="line">!ls -l /u01/app/oracle/oradata/sales/redo03.log</span><br><span class="line"><span class="comment">-- 有文件</span></span><br><span class="line"></span><br><span class="line">!rm /u01/app/oracle/oradata/sales/redo03.log</span><br><span class="line"></span><br><span class="line">!ls -l /u01/app/oracle/oradata/sales/redo03.log</span><br><span class="line"><span class="comment">-- ls: 无法访问/u01/app/oracle/oradata/sales/redo03.log: 没有那个文件或目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 日志文件删除成功</span></span><br><span class="line"></span><br><span class="line">startup <span class="comment">-- 起不来了，只能到mount阶段（具体哪个文件缺了也不告你）</span></span><br></pre></td></tr></table></figure>
+<p>在oracle外，使用adrci工具，查看警告日志文件里，哪一个日志缺失了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ocp demo]$ adrci</span><br><span class="line"></span><br><span class="line">ADRCI: Release 12.2.0.1.0 - Production on Tue Mar 24 17:20:21 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2017, Oracle and&#x2F;or its affiliates.  All rights reserved.</span><br><span class="line"></span><br><span class="line">ADR base &#x3D; &quot;&#x2F;u01&#x2F;app&#x2F;oracle&quot;</span><br><span class="line">adrci&gt; show home</span><br><span class="line">ADR Homes:</span><br><span class="line">diag&#x2F;rdbms&#x2F;db12c&#x2F;db12c</span><br><span class="line">diag&#x2F;rdbms&#x2F;sales&#x2F;sales</span><br><span class="line">diag&#x2F;tnslsnr&#x2F;ocp&#x2F;listener</span><br><span class="line"></span><br><span class="line">adrci&gt; set home diag&#x2F;rdbms&#x2F;sales&#x2F;sales</span><br><span class="line"></span><br><span class="line">adrci&gt; show alert -tail 50</span><br></pre></td></tr></table></figure>
+<p>查到是这个文件没有了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ORA-00313: ??????? 3 (???? 1) ???</span><br><span class="line">ORA-00312: ???? 3 ?? 1: &#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo03.log&#39;</span><br><span class="line">ORA-27037: ????????</span><br><span class="line">Linux-x86_64 Error: 2: No such file or directory</span><br><span class="line">Additional information: 7</span><br><span class="line">Errors in file &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;diag&#x2F;rdbms&#x2F;sales&#x2F;sales&#x2F;trace&#x2F;sales_lgwr_3494.trc:</span><br><span class="line">ORA-00313: ??????? 3 (???? 1) ???</span><br><span class="line">ORA-00312: ???? 3 ?? 1: &#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo03.log&#39;</span><br><span class="line">ORA-27037: ????????</span><br><span class="line">Linux-x86_64 Error: 2: No such file or directory</span><br><span class="line">Additional information: 7</span><br><span class="line">Errors in file &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;diag&#x2F;rdbms&#x2F;sales&#x2F;sales&#x2F;trace&#x2F;sales_ora_3544.trc:</span><br><span class="line">ORA-00313: open failed for members of log group 1 of thread</span><br><span class="line">ORA-00312: online log 3 thread 1: &#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo03.log&#39;</span><br><span class="line">USER (ospid: 3544): terminating the instance due to error 313</span><br></pre></td></tr></table></figure>
+<p>查找到哪个文件缺失之后，直接clear一下，就能恢复</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">conn / as sysdba</span><br><span class="line">startup mount</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">clear</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">3</span>; <span class="comment">-- log 3说明了这个日志文件位于group3</span></span><br><span class="line"></span><br><span class="line">!ls -l /u01/app/oracle/oradata/sales/redo03.log</span><br><span class="line"><span class="comment">-- 有文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,sequence#,status from v$log;</span></span><br><span class="line"></span><br><span class="line">         <span class="number">3</span>          <span class="number">0</span> <span class="keyword">UNUSED</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-当前current日志丢失">2 当前current日志丢失</h4>
+<p>只能全部重建</p>
+<p>在scott用户下更新emp表的数据，并commit。保证写到日志文件里，但没有在数据文件中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> scott.emp <span class="keyword">set</span> sal=<span class="number">4399</span> <span class="keyword">where</span> empno=<span class="number">7369</span>;</span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
+<p>此时这个更新操作已经放到current日志组</p>
+<p>然后把这个文件删除掉（open时删掉就出大问题了，需要用备份恢复了）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">!rm &#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo04b.log&#39;</span><br><span class="line"></span><br><span class="line">shutdown immediate</span><br></pre></td></tr></table></figure>
+<p>然后到mount状态，用clear，发现不能用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">startup mount</span><br><span class="line">alter database clear logfile group 4;</span><br><span class="line">*</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-00350: log 4 of instance sales (thread 1) needs to be archived</span><br><span class="line">ORA-00312: online log 4 thread 1: &#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;redo04b.log&#39;</span><br></pre></td></tr></table></figure>
+<p>recover</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">recover database until cancel;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>; <span class="comment">-- 还不能</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span> <span class="keyword">resetlogs</span>; <span class="comment">-- open了</span></span><br></pre></td></tr></table></figure>
+<p>日志文件全部清零（包括omf，但归档的日志还在）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,status,member from v$logfile;</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">GROUP</span><span class="comment">#,MEMBERS,SEQUENCE#,STATUS,FIRST_CHANGE#,NEXT_CHANGE#,ARCHIVED from v$log;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment">#    MEMBERS  SEQUENCE# STATUS       FIRST_CHANGE# NEXT_CHANGE# ARCHIV</span></span><br><span class="line"><span class="comment">---------- ---------- ---------- ------------ ------------- ------------ ------</span></span><br><span class="line">         <span class="number">2</span>          <span class="number">1</span>          <span class="number">1</span> <span class="keyword">CURRENT</span>            <span class="number">2890755</span>   <span class="number">1.8447E+19</span> <span class="keyword">NO</span></span><br><span class="line">         <span class="number">3</span>          <span class="number">1</span>          <span class="number">0</span> <span class="keyword">UNUSED</span>                   <span class="number">0</span>            <span class="number">0</span> YES</span><br><span class="line">         <span class="number">4</span>          <span class="number">1</span>          <span class="number">0</span> <span class="keyword">UNUSED</span>                   <span class="number">0</span>            <span class="number">0</span> YES</span><br></pre></td></tr></table></figure>
+<h2 id="OMF">OMF</h2>
+<p>omf = oracle manage file</p>
+<p>每个omf目录下还会有[数据库名]/[文件类型名]细分（因为Oracle可以管理的文件有很多类型）</p>
+<h3 id="未实现omf时，数据文件的操作">未实现omf时，数据文件的操作</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">tablespace</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> tbs1;</span><br><span class="line"><span class="comment">-- 没有打开omf时，不指定路径会报错</span></span><br><span class="line">ORA-02199: missing DATAFILE/TEMPFILE clause</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> tbs1 <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/tbs1.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"><span class="comment">-- 这样才能成功</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name,file_name <span class="keyword">from</span> dba_data_files;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 不打开omf时，删表空间时不会实际删除文件</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> tbs1;</span><br></pre></td></tr></table></figure>
+<h3 id="数据文件的omf">数据文件的omf</h3>
+<p>通过一个初始化参数就可以打开</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter db_create_file_dest</span><br><span class="line"><span class="comment">-- 同样适用于日志文件</span></span><br></pre></td></tr></table></figure>
+<p>为啥没有后缀1、2、3，数据文件不需要多路复用hhh</p>
+<p>这个参数默认为空，适用于所有类型文件？？？</p>
+<p>创建目录/u01/omf（指定好创建数据文件的默认目的地）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_create_file_dest=<span class="string">'/u01/omf'</span>;</span><br></pre></td></tr></table></figure>
+<p>设置好omf之后，create tablespace 和drop tablespace都简单了（不用加任何参数，不用rm）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> tbs3;</span><br><span class="line"><span class="comment">-- 上面目录里自动创建了数据文件</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> tbs3;</span><br><span class="line"><span class="comment">-- 目录里的数据文件自动删除，不用写including就连着删了，为啥？？？</span></span><br><span class="line"><span class="comment">-- 如果开了omf，不加datafiles也会帮你删掉数据文件</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> small <span class="keyword">including</span> <span class="keyword">contents</span>;</span><br></pre></td></tr></table></figure>
+<p>取消数据文件omf</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 把这个参数去掉，默认omf？？？没有把</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_create_file_dest=<span class="string">''</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="日志文件的omf">日志文件的omf</h3>
+<p>omf和手动指定文件混合使用时：</p>
+<p>eg：omf自动创建一个组，成员多路复用</p>
+<p>此时如果手动添加一个日志组成员文件，删除组时不会自动管理</p>
+<p>omf隐含了成员数就是多路复用的数量，无法自动添加一个</p>
+<p><strong>日志文件默认OMF位置</strong></p>
+<p>日志文件比较特殊，没有指定omf参数时，也会有一个默认路径，还是会有omf</p>
+<p>在闪回区(Oracle Flash recovery area)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> <span class="keyword">logfile</span>;</span><br><span class="line"><span class="comment">-- 不用指定组名</span></span><br><span class="line"><span class="comment">-- 自动新加了一个组，组名从1开始看，哪个位置缺了，就在哪建一个组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">add</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">5</span>;</span><br><span class="line"><span class="comment">-- 也可以指定组名（如果有多路复用，则成员数就是复用的数量）</span></span><br></pre></td></tr></table></figure>
+<p>ps：如果设置了db_create_file_dest，那么这个地方也会有镜像</p>
+<p>默认路径时，也会自动删除log文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">drop</span> <span class="keyword">logfile</span> <span class="keyword">group</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>设置omf路径后</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter db_create</span><br><span class="line"><span class="comment">-- 有6个备选复用地址</span></span><br><span class="line"><span class="comment">-- 新建组（加成员）的时候，会在这些路径中，每个路径放一个镜像文件成员</span></span><br><span class="line"><span class="comment">-- 要加同时加，要删同时删，仍然会覆盖omf</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_create_online_log_dest_1=<span class="string">'/u01/omf1'</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_create_online_log_dest_2=<span class="string">'/u01/omf2'</span>;</span><br><span class="line"></span><br><span class="line">         1 ONLINE</span><br><span class="line">/u01/omf1/SALES/onlinelog/o1_mf_1_h9tzk75t_.log</span><br><span class="line"></span><br><span class="line">         1 ONLINE</span><br><span class="line">/u01/omf2/SALES/onlinelog/o1_mf_1_h9tzk7by_.log</span><br><span class="line"><span class="comment">-- 这两个文件内容一样</span></span><br></pre></td></tr></table></figure>
+<p>如果db_create_file_dest、db_create_online_log_dest_1参数共存</p>
+<ul>
+<li>
+<p>两边设置的路径相同时，只有一份日志文件被写出</p>
+</li>
+<li>
+<p>路径不同时，下面的覆盖db_create_file_dest，只有db_create_online_log_dest_1被写出</p>
+</li>
+</ul>
+<h3 id="控制文件、归档日志文件">控制文件、归档日志文件</h3>
+<p>TBS</p>
+<h2 id="管理表空间和数据文件">管理表空间和数据文件</h2>
+<h3 id="数据库存的结构层次">数据库存的结构层次</h3>
+<img src="/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/image-20200329181135042.png" alt="image-20200329181135042" style="zoom:80%;">
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">oracle使用逻辑结构来管理数据存储</span><br><span class="line"></span><br><span class="line">逻辑结构        物理结构</span><br><span class="line">database   </span><br><span class="line">    |</span><br><span class="line">tablespace    --&gt;datafile (一个表空间最多有1023个数据文件)</span><br><span class="line">    |</span><br><span class="line">segment(table)</span><br><span class="line">    |</span><br><span class="line">extent</span><br><span class="line">    |</span><br><span class="line">db_block    --&gt;os_block</span><br></pre></td></tr></table></figure>
+<p>表空间将相关的逻辑结构（段，区）组合在一起，表空间是数据库最大逻辑划分区域，通常用来存放数据表、索引、回滚段等数据对象，任何数据对象在创建时都必须指定存储在某个表空间中。</p>
+<ul>
+<li>一个数据库由一个或多个表空间构成，一个表空间只能属于一个数据库（不能跨越数据库）</li>
+<li>一个表空间由一个或多个数据文件构成，一个数据文件只能属于一个表空间（数据文件也不跨越数据库）</li>
+</ul>
+<p>==表空间、段、区、db块都是逻辑单位==</p>
+<p>按顺序访问则大的数据文件比较好，否则小的好</p>
+<p>读写的最小的单位是块（Oracle数据块），哪怕访问，也是把包含这条记录的调掉进内存</p>
+<h4 id="段segment">段segment</h4>
+<p>一种==存储结构==</p>
+<p>视图不是段，因为视图不是存储结构</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 段的类型（表属于段的一种）</span></span><br><span class="line">desc dba_segments</span><br><span class="line"><span class="comment">-- 查看有哪些类型的段</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">unique</span> segment_type <span class="keyword">from</span> dba_segments;</span><br><span class="line"></span><br><span class="line">SEGMENT_TYPE</span><br><span class="line"><span class="comment">------------------------------------</span></span><br><span class="line">LOBINDEX</span><br><span class="line">INDEX PARTITION</span><br><span class="line">TABLE SUBPARTITION</span><br><span class="line">TABLE PARTITION</span><br><span class="line">NESTED TABLE</span><br><span class="line"><span class="keyword">ROLLBACK</span></span><br><span class="line"><span class="keyword">LOB</span> <span class="keyword">PARTITION</span></span><br><span class="line">LOBSEGMENT</span><br><span class="line"><span class="keyword">INDEX</span></span><br><span class="line"><span class="keyword">TABLE</span></span><br><span class="line">CLUSTER</span><br><span class="line">TYPE2 <span class="keyword">UNDO</span></span><br><span class="line"></span><br><span class="line"><span class="number">12</span> <span class="keyword">rows</span> selected.</span><br></pre></td></tr></table></figure>
+<h6 id="表">表</h6>
+<p>==表 &lt; 表空间 - 数据文件==，表空间为了放表，表空间是逻辑概念，数据文件是物理概念</p>
+<p>【数据库其实就是柜子，柜中的抽屉是表空间，抽屉中的文件夹是数据文件，文件夹中的纸是表，写在纸上的信息就是数据】</p>
+<ul>
+<li>
+<p>由操作系统识别的 – 物理</p>
+</li>
+<li>
+<p>由数据库识别的 – 逻辑</p>
+</li>
+<li>
+<p>数据库的物理设计 – 数据库里有哪些数据文件，应该放在什么地方，多大</p>
+</li>
+<li>
+<p>数据库的逻辑设计 – 数据库中对象的设计（表、视图、索引等）</p>
+</li>
+</ul>
+<p>表 table，全称为堆表 heap table（见Oracle concepts）</p>
+<p>堆 - 表中的数据不是按顺序存放的，插入数据的时候，发现哪一块是空的插哪里</p>
+<p>显示结果的时候，需要按顺序显示，需要排序区（在PGA中）</p>
+<p>一个会话使用order by查询了，另一个会话不用order by的查询结果不会变</p>
+<h6 id="簇cluster索引？？？">簇cluster索引？？？</h6>
+<p>经常在一起使用的小表，放在一起【铅笔和橡皮放在一起】</p>
+<p>比如说，EMP表和DEPT表，这两个表存储在不同的segment中，甚至有可能存储在不同的TABLESPACE中，因此，他们的数据一定不会在同一个BLOCK里。</p>
+<p>而我们有会经常对这两个表做<strong>关联查询</strong>，比如说：select * from emp,dept where emp.deptno = dept.deptno。</p>
+<p>仔细想想，查询主要是对BLOCK的操作，查询的BLOCK越多，系统IO就消耗越大。如果我把这<strong>两个表的数据聚集在少量的BLOCK里</strong>，查询效率一定会提高不少。</p>
+<p>eg 快递两张表，既要知道订单信息，也要知道客户信息</p>
+<p>orders customers，两个表如果属于一个簇，则用簇键连接，放到同一块里，查起来比较方便</p>
+<p>建立顺序是：簇→簇表→数据→簇索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">2、创建簇（定义簇键），分配好空间</span><br><span class="line"><span class="keyword">create</span> cluster my_clu (deptno <span class="built_in">number</span> )</span><br><span class="line">    <span class="keyword">pctused</span> <span class="number">60</span></span><br><span class="line">    pctfree <span class="number">10</span></span><br><span class="line">    <span class="keyword">size</span> <span class="number">1024</span></span><br><span class="line">    <span class="keyword">tablespace</span> <span class="keyword">users</span></span><br><span class="line">    <span class="keyword">storage</span> (</span><br><span class="line">       <span class="keyword">initial</span> <span class="number">128</span> k</span><br><span class="line">       <span class="keyword">next</span> <span class="number">128</span> k</span><br><span class="line">       <span class="keyword">minextents</span> <span class="number">2</span></span><br><span class="line">       <span class="keyword">maxextents</span> <span class="number">20</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">3、创建簇表，定义哪个字段是簇键，直接放到簇空间里</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t1_dept(</span><br><span class="line">      deptno <span class="built_in">number</span> ,</span><br><span class="line">      dname <span class="built_in">varchar2</span> ( <span class="number">20</span> )</span><br><span class="line">    )</span><br><span class="line">    cluster my_clu(deptno);</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t1_emp(</span><br><span class="line">      empno <span class="built_in">number</span> ,</span><br><span class="line">      ename <span class="built_in">varchar2</span> ( <span class="number">20</span> ),</span><br><span class="line">      birth_date <span class="built_in">date</span> ,</span><br><span class="line">      deptno <span class="built_in">number</span></span><br><span class="line">    )</span><br><span class="line">    cluster my_clu(deptno);</span><br><span class="line"></span><br><span class="line">4、为簇创建索引</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> clu_index <span class="keyword">on</span> cluster my_clu;</span><br></pre></td></tr></table></figure>
+<h6 id="嵌套表nested-table">嵌套表nested table</h6>
+<p>eg 学生表中一列【推荐图书】又是一个表</p>
+<h4 id="区extent">区extent</h4>
+<p>dba_extents</p>
+<p>oracle==最小的空间分配单位==</p>
+<p>分配的时候以区为单位，使用的时候以块为单位</p>
+<p>【问爸妈要钱，百元大钞；在外花钱，以角为单位】</p>
+<ul>
+<li>区是由一组<strong>连续的</strong>oracle数据块所构成</li>
+<li>一个或者多个数据块组成一个数据区，一个或者多个数据区再组成一个段</li>
+<li>创建表的时候，从指定的表空间对应的数据文件中，拿多个区分配给表</li>
+<li>当一个段中所有的空间被使用完后，oracle系统将自动分配一个新的数据区</li>
+<li>Oracle就以数据区为单位进行存储空间的扩展</li>
+</ul>
+<h4 id="块block">块block</h4>
+<p>oracle==最小的io单位==，oracle逻辑存储结构中最小的逻辑单元，不能小于操作系统块，一般为其整数倍</p>
+<p>每次读记录，不是一条一条读，而是读一整块</p>
+<ul>
+<li>
+<p>访问的数据量多，块大比较好，减少IO</p>
+</li>
+<li>
+<p>访问的数据量少，块小比较好</p>
+</li>
+</ul>
+<p>也是执行数据输入输出操作的最小单元</p>
+<p>Oracle数据存放在“oracle数据块”中，而不是在“操作系统数据块”。</p>
+<h3 id="文件部分常用数据字典-操作">文件部分常用数据字典+操作</h3>
+<ol>
+<li>dba_data_files 数据文件位于哪个表空间</li>
+<li>dba_tables 表位于哪个表空间</li>
+<li>dba_extents 表位于哪个数据文件id &amp; 位于哪个表空间</li>
+</ol>
+<p><strong>数据文件、临时文件</strong></p>
+<ul>
+<li>dba_data_files – tablespace_name, file_id, file_name, bytes</li>
+<li>v$datafile – name（带路径）</li>
+<li>dba_temp_files – file_name, file_id, tablespace_name, bytes, status</li>
+<li>v$tempfile – name, bytes</li>
+</ul>
+<p>dba_data_files、v$datafile没有临时表空间的数据文件，需要在dba_temp_files、v$tempfile查找</p>
+<p><strong>表、段、区</strong></p>
+<ul>
+<li>dba_tables – table_name, tablespace_name, owner, num_rows</li>
+<li>dba_segments – owner, segment_name, tablespace_name, segment_type, bytes,</li>
+<li>dba_extents – file_id, segment_name, BYTES, TABLESPACE_NAME, OWNER</li>
+</ul>
+<p><strong>表空间</strong></p>
+<ul>
+<li>
+<p>dba_tablespaces – tablespace_name, contents, status, bigfile, extent_management</p>
+<p>contents表空间类型，bigfile是否为大文件表空间，extent_management空间管理类型</p>
+</li>
+<li>
+<p>v$tablespace – name</p>
+<p>只能在dba_tablespaces、v$tablespace中查到临时表空间</p>
+</li>
+</ul>
+<p><strong>数据库属性</strong></p>
+<ul>
+<li>
+<p>database_properties – property_name, property_value</p>
+<p>查看各种类型表空间的默认值</p>
+<p>default_tbs_type，默认为小文件表空间</p>
+</li>
+<li>
+<p>v$database</p>
+</li>
+</ul>
+<p><strong>实例</strong></p>
+<ul>
+<li>v$instance – version, status, instance_name, instance_number, host_name</li>
+</ul>
+<p>查一个表位于哪个数据文件，位于哪个表空间</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> file_name,file_id <span class="keyword">from</span> dba_data_files <span class="keyword">where</span> file_id <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">distinct</span> file_id <span class="keyword">from</span> dba_extents <span class="keyword">where</span> segment_name=<span class="string">'EMP'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> table_name,tablespace_name,owner <span class="keyword">from</span> dba_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>;</span><br></pre></td></tr></table></figure>
+<p>查一个数据文件里有哪些表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select segment_name from dba_extents where file_id&#x3D;</span><br><span class="line">(select file_id from dba_data_files wherefile_name&#x3D;&#39;&#x2F;u01&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;sales&#x2F;users01.dbf&#39;);</span><br></pre></td></tr></table></figure>
+<p>查看数据文件（临时文件比较特殊）的信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> tablespace_name, file_id, file_name, <span class="keyword">round</span>(<span class="keyword">bytes</span> / (<span class="number">1024</span> * <span class="number">1024</span>), <span class="number">0</span>) total_space <span class="keyword">FROM</span> dba_data_files</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> tablespace_name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, <span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span> <span class="keyword">as</span> <span class="string">"size(M)"</span> <span class="keyword">from</span> v$tempfile <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">bytes</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="表空间的类型（创建-alter设默认）">表空间的类型（创建&amp;alter设默认）</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看表空间</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">tablespace</span>;</span><br><span class="line">NAME</span><br><span class="line"><span class="comment">------------------------------------------------------------</span></span><br><span class="line">SYSTEM 放系统数据，不要把用户数据放到系统表空间，增加负担</span><br><span class="line">SYSAUX 放自动化管理的元数据</span><br><span class="line">辅助系统表空间，10g版本之后增加了自管理自优化功能，相关数据单独放出来了，不再放在system中</span><br><span class="line">UNDOTBS1 放回滚数据（撤销表空间）</span><br><span class="line">TEMP 临时表空间？？？</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表空间的类型</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name,<span class="keyword">contents</span> <span class="keyword">from</span> dba_tablespaces;</span><br></pre></td></tr></table></figure>
+<h4 id="常规表空间">常规表空间</h4>
+<p>（可读可写）permanent， 存放永久性数据，如表，索引等</p>
+<p><strong>创建users表空间并设为数据库默认的表空间</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">col property_name for a50</span><br><span class="line"><span class="keyword">select</span> property_name,property_value <span class="keyword">from</span> database_properties;</span><br><span class="line"><span class="comment">-- 查看各种类型默认表空间，现在在system</span></span><br><span class="line">DEFAULT_PERMANENT_TABLESPACE</span><br><span class="line">DEFAULT_TEMP_TABLESPACE</span><br><span class="line">DEFAULT_TBS_TYPE <span class="comment">-- 默认的表空间类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> <span class="keyword">users</span> <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/user01.dbf'</span> <span class="keyword">size</span> <span class="number">20</span>m;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">default</span> <span class="keyword">tablespace</span> <span class="keyword">users</span>;<span class="comment">-- 设为默认，以后创建表时不指定，就放在users表空间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看默认表空间，发现已修改</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> tablespace_name <span class="keyword">from</span> dba_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>; <span class="comment">-- 查看一个表所属的表空间</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.emp <span class="keyword">move</span> <span class="keyword">tablespace</span> <span class="keyword">users</span>; <span class="comment">-- 将表移到其他表空间</span></span><br></pre></td></tr></table></figure>
+<h4 id="大小文件表空间">大小文件表空间</h4>
+<p>创建tablespace默认就是smallfile类型的</p>
+<p>一个bigfile表空间，大小是【无限】的，只能放一个数据文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建Oracle小文件 表空间</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> <span class="keyword">smallfile</span> <span class="keyword">tablespace</span> tbs1 <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/tbs1.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看是不是大文件表空间</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">bigfile</span> <span class="keyword">from</span> dba_tablespaces;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> tbs1 <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/tbs1.dbf'</span> <span class="keyword">size</span> <span class="number">20</span>m;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">smallfile</span> <span class="keyword">tablespace</span> smalltbs <span class="keyword">datafile</span> </span><br><span class="line"><span class="string">'/u01/app/oracle/oradata/sales/small01.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m,</span><br><span class="line"><span class="string">'/u01/app/oracle/oradata/sales/small02.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 会报错，因为一个大文件表空间只能放一个数据文件</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">bigfile</span> <span class="keyword">tablespace</span> bigtbs <span class="keyword">datafile</span></span><br><span class="line"><span class="string">'/u01/app/oracle/oradata/sales/big01.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m,</span><br><span class="line"><span class="string">'/u01/app/oracle/oradata/sales/big02.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">bigfile</span> <span class="keyword">tablespace</span> bigtbs <span class="keyword">datafile</span></span><br><span class="line"><span class="string">'/u01/app/oracle/oradata/sales/big01.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看是大文件还是小文件表空间</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name,<span class="keyword">bigfile</span> <span class="keyword">from</span> dba_tablespaces;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">blocksize 2k;-- 表空间块大小2k不匹配内存中没有地方可以放2k的块</span><br><span class="line">  show parameter cache -- db_2k_cache_size   value&#x3D;0</span><br><span class="line">alter system set db_2k_cache_size &#x3D; 16m; --在内存开辟一个16m</span><br><span class="line">create tablespace smalltbs datafile&#39;F:&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;demo&#x2F;small01.dbf&#39; size 10m</span><br><span class="line">blocksize 2k;</span><br><span class="line">create tablespace bigtbs datafile&#39;F:&#x2F;app&#x2F;oracle&#x2F;oradata&#x2F;demo&#x2F;big01.dbf&#39; size 10m</span><br><span class="line">blocksize 16k;  --创建大块</span><br></pre></td></tr></table></figure>
+<h4 id="撤销表空间">撤销表空间</h4>
+<p>（放回滚数据）undo 保存数据修改前的镜象</p>
+<p>回滚段在这个表空间</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter undo_tablespace <span class="comment">--undo为当前表空间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建撤销表空间undotbs2且设为数据库默认的撤销表空间</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">undo</span> <span class="keyword">tablespace</span> undotbs2 <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/undotbs02.dbf'</span></span><br><span class="line"><span class="keyword">size</span> <span class="number">20</span>m;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> undo_tablespace=undotbs2; <span class="comment">-- 修改初始化参数——默认撤销表空间</span></span><br><span class="line"><span class="keyword">show</span> parameter undo_tablespace <span class="comment">-- 已修改</span></span><br></pre></td></tr></table></figure>
+<h4 id="临时表空间">临时表空间</h4>
+<p>排序用的</p>
+<p>内存不够用的话，就在这个空间排序。不能存放永久性对象，用于保存数据库排序，分组时产生的临时数据</p>
+<p>数据文件不等同于临时文件，虽然后缀都是dbf</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> tablespace_name,<span class="keyword">contents</span> <span class="keyword">from</span> dba_tablespaces;  <span class="comment">--查看表空间类型</span></span><br><span class="line"><span class="keyword">show</span> parameter default_temporary_tablespace</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建临时表空间tempdef并设为数据库默认的临时表空间</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">temporary</span> <span class="keyword">tablespace</span> tempdef tempfile <span class="string">'/u01/app/oracle/oradata/sales/tempdef.dbf'</span> <span class="keyword">size</span> <span class="number">20</span>m;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">default</span> <span class="keyword">temporary</span> <span class="keyword">tablespace</span> tempdef; <span class="comment">-- 设置默认</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> property_name,property_value <span class="keyword">from</span> database_properties;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 为临时表空间添加临时数据文件</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLESPACE</span> temp <span class="keyword">ADD</span> TEMPFILE <span class="string">'/u01/app/oracle/oradata/sales/temp01.dbf'</span> <span class="keyword">SIZE</span> <span class="number">20</span>m;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLESPACE</span> temp <span class="keyword">ADD</span> TEMPFILE <span class="string">'/u01/app/oracle/oradata/sales/temp02.dbf'</span> <span class="keyword">SIZE</span> <span class="number">20</span>m;</span><br><span class="line"><span class="comment">-- 设置omf之后，不用指定路径和文件名也可</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除临时数据文件</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLESPACE</span> temp <span class="keyword">drop</span> TEMPFILE [file_id]; <span class="comment">-- 或者是文件路径</span></span><br></pre></td></tr></table></figure>
+<h4 id="临时表空间组">临时表空间组</h4>
+<p>适用：多个用户同时访问一个（临时）表空间，产生争用</p>
+<p>打包多个临时表空间，不同表空间放在不同磁盘上，不同用户使用不同的临时表空间，减少争用</p>
+<p>不需要创建和删除组</p>
+<p>有成员-自动有组，没有成员-组自动消失</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看临时表空间组，和内部的成员</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dba_tablespace_groups;</span><br><span class="line"></span><br><span class="line"> <span class="comment">-- 如果有成员，组自动创建；如果没有成员，组自动删除</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> temp <span class="keyword">tablespace</span> <span class="keyword">group</span> group1; <span class="comment">-- 将temp加到group1中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建临时表空间的时候就加入组中</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">temporary</span> <span class="keyword">tablespace</span> temp1 tempfile <span class="string">'/u01/app/oracle/oradata/sales/temp101.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m <span class="keyword">tablespace</span> <span class="keyword">group</span> group1;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">temporary</span> <span class="keyword">tablespace</span> temp2 tempfile <span class="string">'/u01/app/oracle/oradata/sales/temp201.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m <span class="keyword">tablespace</span> <span class="keyword">group</span> group1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将默认临时表空间设置为group1</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">default</span> <span class="keyword">temporary</span> <span class="keyword">tablespace</span> group1;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表空间信息</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name,<span class="keyword">contents</span> <span class="keyword">from</span> dba_tablespaces;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将temp1加到group2中</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> temp1 <span class="keyword">tablespace</span> <span class="keyword">group</span> group2;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将temp2退出临时表空间组</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> temp2 <span class="keyword">tablespace</span> <span class="keyword">group</span> <span class="string">''</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="表空间的空间管理">表空间的空间管理</h3>
+<p>（区的管理？？？）了解一下</p>
+<ul>
+<li>字典管理：全库所有的空间分配都放在数据字典中。容易引起字典争用，而导致性能问题。</li>
+<li>本地管理：空间分配不放在数据字典，而在每个数据文件头部的第3到第8个块的位图块，来管理空间分配。</li>
+</ul>
+<h4 id="本地管理">本地管理</h4>
+<p>有关区可用或者不可用的信息存储在数据文件，每个数据文件的头部都放了一个位图</p>
+<p>就是01组成的图，0表示可用，1表示区已经被分配</p>
+<p>==本地管理的优点==</p>
+<ol>
+<li>减少对数据字典表的增用</li>
+<li>增加或者减少空间需要修改数据字典，会有回滚</li>
+<li>不用碎片的合并</li>
+<li>每个区是一样大的</li>
+</ol>
+<h4 id="数据字典管理（不太用了）">数据字典管理（不太用了）</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--查看是本地管理还是数据字典管理</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name,extent_management <span class="keyword">from</span> dba_tablespaces;</span><br><span class="line"><span class="comment">-- 注意system表空间的管理方式是local还是dictionary</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建数据字典方式管理的表空间</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> userdata <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/userdata01.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m <span class="keyword">extent</span> <span class="keyword">management</span> dictionary;</span><br></pre></td></tr></table></figure>
+<p>建不好的原因：system表空间的管理方式是local</p>
+<p>如果system是本地管理的，则只能创建本地管理表空间</p>
+<p>是字典管理，则两个都可以</p>
+<h3 id="表空间的状态">表空间的状态</h3>
+<p>1）联机可读写online</p>
+<p>2）只读read only（数据文件只读）</p>
+<p>3）脱机offline【驱动程序卸载之后，设备还在，但是不能访问管理】</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> [表空间名] <span class="keyword">offline</span>;<span class="comment">--只可对临时文件脱机，不可对临时表空间脱机</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> [数据文件名] <span class="keyword">offline</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> [表空间名] <span class="keyword">read</span> write;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> [表空间名] <span class="keyword">read</span> <span class="keyword">only</span>;</span><br></pre></td></tr></table></figure>
+<p>将表空间改为只读：修改完成后</p>
+<p>不可对表进行插入记录/删字段，可查+增加字段+删表（不涉及表空间的操作，只修改数据字典的操作）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.demo1(<span class="keyword">id</span> <span class="built_in">int</span>) <span class="keyword">tablespace</span> tbs1;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.demo1 <span class="keyword">values</span>(<span class="number">100</span>);</span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> checkpoint;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> tbs1 <span class="keyword">read</span> <span class="keyword">only</span>;</span><br><span class="line"><span class="keyword">select</span> tablespace_name,<span class="keyword">status</span> <span class="keyword">from</span> dba_tablespaces; <span class="comment">-- 查询表空间状态</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.demo2(<span class="keyword">id</span> <span class="built_in">int</span>) <span class="keyword">tablespace</span> tbs1;  <span class="comment">--不能增加一个表</span></span><br><span class="line"><span class="keyword">show</span> parameter defer</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> deferred_segment_creation=<span class="literal">true</span>;<span class="comment">-- 延迟分配</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.demo2(<span class="keyword">id</span> <span class="built_in">int</span>) <span class="keyword">tablespace</span> tbs1; <span class="comment">-- 并没有分配表空间，只是有了一个表的定义</span></span><br><span class="line"><span class="keyword">select</span> segment_name <span class="keyword">from</span> dba_segments <span class="keyword">where</span> segment_name=<span class="string">'DEMO2'</span>; <span class="comment">-- 空</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.demo1 <span class="keyword">values</span>(<span class="number">200</span>); <span class="comment">-- 不能插数据</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.demo1 <span class="keyword">add</span> <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>);      <span class="comment">--可增加字段</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.demo2 <span class="keyword">add</span> <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>);      <span class="comment">--可增加字段</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.demo1 <span class="keyword">drop</span> <span class="keyword">column</span> <span class="keyword">name</span>;          <span class="comment">--不可删除某一字段</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.demo2 <span class="keyword">drop</span> <span class="keyword">column</span> <span class="keyword">name</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> scott.demo1; <span class="comment">--可删表，这里删了之后物理文件上还有？？？</span></span><br><span class="line"><span class="keyword">select</span> segment_name <span class="keyword">from</span> dba_segments <span class="keyword">where</span> segment_name=<span class="string">'DEMO1'</span>; <span class="comment">-- 没了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.demo2 <span class="keyword">values</span>(<span class="number">200</span>); <span class="comment">-- 此时还是没有分配空间，重启也没用</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 这张表有了说明就分配空间了</span></span><br><span class="line"><span class="keyword">select</span> segment_name <span class="keyword">from</span> dba_segments <span class="keyword">where</span> segment_name=<span class="string">'DEMO2'</span>; </span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> tbs1 <span class="keyword">read</span> write; <span class="comment">-- 改了之后就把demo1删了？？？</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> deferred_segment_creation=<span class="literal">false</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.demo2 <span class="keyword">values</span>(<span class="number">200</span>,<span class="string">'hahaha'</span>); <span class="comment">-- 插入数据时才分配空间，段表里也有定义了</span></span><br></pre></td></tr></table></figure>
+<p>（考试选择题）不能脱机的3个表空间：</p>
+<ol>
+<li>system表空间，系统数据一定要用。eg select的时候，首先要查数据字典，看这个表是否存在</li>
+</ol>
+<p>数据字典在里面除非shutdown，系统表空间不可脱机</p>
+<ol start="2">
+<li>
+<p><strong>当前的</strong>撤销表</p>
+</li>
+<li>
+<p>临时表空间</p>
+</li>
+</ol>
+<p>其他表空间都是可以脱机的</p>
+<ul>
+<li>sysaux可脱机，辅助系统表空间，但脱了就不能用自优化自管理（10g之后增强了）自动化功能了</li>
+<li>非当前撤销表空间可以脱</li>
+<li>只可对临时文件脱机，不可对临时表空间脱机（无论是否是当前使用的）</li>
+</ul>
+<h3 id="删除表空间">删除表空间</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 只有空的表空间才能删除</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> smalltbs; <span class="comment">-- 删除表空间后，对应的数据文件还在，要手动删除</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> bigtbs;  <span class="comment">--如果表空间有表（表里有无记录无所谓），则不能删</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- contents指表空间中所有表的定义和所有记录</span></span><br><span class="line"><span class="comment">-- datafiles指这个表空间对应的所有数据文件</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">tablespace</span> bigtbs <span class="keyword">including</span> <span class="keyword">contents</span> <span class="keyword">and</span> <span class="keyword">datafiles</span>; <span class="comment">-- 表的定义、内容+数据文件一块删掉</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果开了omf，不加datafiles也会帮你删掉数据文件，content呢？？？</span></span><br></pre></td></tr></table></figure>
+<p>==create和drop都是DDL语句，只对数据字典操作==，不会涉及物理文件</p>
+<p>DDL – 数据定义，只对数据字典操作</p>
+<ul>
+<li>create只是增加定义【公司招聘】</li>
+<li>delete只是删除定义【公司开除一个人，没有把他物理上消灭】</li>
+</ul>
+<h3 id="扩展表空间大小">扩展表空间大小</h3>
+<p>表空间大小 == 包含数据文件大小的和</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查出来每个表空间对应的大小</span></span><br><span class="line"><span class="keyword">SELECT</span> t.tablespace_name, <span class="keyword">round</span>(<span class="keyword">SUM</span>(<span class="keyword">bytes</span> / (<span class="number">1024</span> * <span class="number">1024</span>)), <span class="number">0</span>) ts_size</span><br><span class="line"><span class="keyword">FROM</span> dba_tablespaces t, dba_data_files d</span><br><span class="line"><span class="keyword">WHERE</span> t.tablespace_name = d.tablespace_name</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> t.tablespace_name;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改表空间中原数据文件大小</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 手动扩展：</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/user01.dbf'</span> <span class="keyword">resize</span> <span class="number">30</span>m;</span><br><span class="line"><span class="comment">-- 自动扩展：（一次增加5m）</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/user01.dbf'</span> <span class="keyword">autoextend</span> <span class="keyword">on</span> <span class="keyword">next</span> <span class="number">10</span>m <span class="keyword">maxsize</span> <span class="number">500</span>m;</span><br><span class="line"><span class="comment">-- 关掉自动扩展</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/user01.dbf'</span> <span class="keyword">autoextend</span> <span class="keyword">off</span>;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>给表空间增加新数据文件</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> tbs <span class="keyword">add</span> <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/sales/user02.dbf'</span> <span class="keyword">size</span> <span class="number">20</span>m;</span><br></pre></td></tr></table></figure>
+<h3 id="数据文件的移动或重命名">数据文件的移动或重命名</h3>
+<p>12c之前按旧方法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>; <span class="comment">--所有的数据文件在哪（来自控制文件）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 1.将表空间脱机</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> <span class="keyword">users</span> <span class="keyword">offline</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2.将数据文件在os移到别的目录下（这里也可以改名）</span></span><br><span class="line"><span class="comment">-- alter tablespace users online; --这里会失败，Oracle还是按照控制文件中的路径去找的数据文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3.Oracle是不知道的，所以要改控制文件，二进制不能手动改</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">rename</span> <span class="keyword">file</span> <span class="string">'/u01/app/oracle/oradata/sales/users02.dbf'</span> <span class="keyword">to</span> <span class="string">'/u01/users02.dbf'</span>;<span class="comment">--第二处写新的文件路径（可能重命名）</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>; <span class="comment">-- 控制文件变化</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">tablespace</span> <span class="keyword">users</span> <span class="keyword">online</span>; <span class="comment">-- 成功</span></span><br></pre></td></tr></table></figure>
+<p>新方法（12c后可以online移动）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 物理上也移动了，原来文件没有了，相当于移动</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">move</span> <span class="keyword">datafile</span> <span class="string">'/u01/users02.dbf'</span> <span class="keyword">to</span> <span class="string">'/u01/app/oracle/oradata/sales/users02.dbf'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 加keep原来文件还有，相当于复制</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">move</span> <span class="keyword">datafile</span><span class="string">'D:app/omf/data01.dbf'</span> <span class="keyword">to</span></span><br><span class="line"><span class="string">'D:app/oracle/oradata/demo/userdata01.dbf'</span> <span class="keyword">keep</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="没有备份（归档模式）恢复数据文件">没有备份（归档模式）恢复数据文件</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 在userdata表空间下创建一张新表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.demo3(<span class="keyword">id</span> <span class="built_in">int</span>,<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>)) <span class="keyword">tablespace</span> userdata;</span><br><span class="line"><span class="keyword">select</span> segment_name <span class="keyword">from</span> dba_extents <span class="keyword">where</span> file_id=</span><br><span class="line"> (<span class="keyword">select</span> file_id <span class="keyword">from</span> dba_data_files <span class="keyword">where</span> file_name=<span class="string">'/u01/app/oracle/oradata/sales/userdata01.dbf'</span>); <span class="comment">-- 创建成功</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.demo3 <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.demo3 <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'Jerry'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> checkpoint;</span><br><span class="line">shutdown immediate</span><br><span class="line"><span class="comment">-- os中删掉'/u01/app/oracle/oradata/sales/userdata01.dbf'</span></span><br><span class="line">startup <span class="comment">-- 报错没有一个数据文件，无法启动，只能起到mount阶段</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 先将数据文件脱机，open数据库，打开再慢慢恢复</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> [file_id] <span class="keyword">offline</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建一个数据文件</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">create</span> <span class="keyword">datafile</span> [file_id];</span><br><span class="line"><span class="comment">-- 试着将这个文件联机，失败</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> [file_id] <span class="keyword">online</span>;</span><br><span class="line"></span><br><span class="line">ORA-01113: file 6 needs media recovery</span><br><span class="line">ORA-01110: data file 6: '/u01/app/oracle/oradata/sales/userdata01.dbf'</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不采用备份的恢复（因为这个新的数据文件处于基线以下，需要使用归档日志）</span></span><br><span class="line">recover datafile 6;</span><br><span class="line">Specify log: &#123;&lt;RET&gt;=suggested | filename | AUTO | CANCEL&#125;</span><br><span class="line"></span><br><span class="line">ORA-00279: <span class="keyword">change</span> <span class="number">794281</span> <span class="keyword">generated</span> <span class="keyword">at</span> <span class="number">03</span>/<span class="number">27</span>/<span class="number">2020</span> <span class="number">10</span>:<span class="number">00</span>:<span class="number">48</span> needed <span class="keyword">for</span> <span class="keyword">thread</span> <span class="number">1</span></span><br><span class="line">ORA<span class="number">-00289</span>: suggestion : /u01/arch/<span class="number">2</span>/<span class="number">1</span>_8_1036012339.arc</span><br><span class="line">ORA<span class="number">-00280</span>: <span class="keyword">change</span> <span class="number">794281</span> <span class="keyword">for</span> <span class="keyword">thread</span> <span class="number">1</span> <span class="keyword">is</span> <span class="keyword">in</span> <span class="keyword">sequence</span> <span class="comment">#8</span></span><br><span class="line"><span class="comment">-- 输入auto</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">datafile</span> [file_id] <span class="keyword">online</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.demo3; <span class="comment">-- 数据恢复成功</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/03/23/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E9%83%A8%E5%88%86/" title="Oracle 文件部分">http://yoursite.com/2020/03/23/Oracle/Oracle数据库文件部分/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/21/Oracle/Oracle%E5%AE%89%E5%85%A83A/" rel="prev" title="Oracle 安全3A">
+      <i class="fa fa-chevron-left"></i> Oracle 安全3A
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/23/Oracle/Oracle%E6%89%8B%E5%8A%A8%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93sales/" rel="next" title="Oracle 手动创建数据库sales">
+      Oracle 手动创建数据库sales <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#管理控制文件"><span class="nav-text">管理控制文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#控制文件位置"><span class="nav-text">控制文件位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制文件内容"><span class="nav-text">控制文件内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何查看控制文件内容"><span class="nav-text">如何查看控制文件内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制文件的多路复用"><span class="nav-text">控制文件的多路复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建控制文件"><span class="nav-text">创建控制文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一"><span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二手写语句"><span class="nav-text">方法二手写语句</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理日志文件"><span class="nav-text">管理日志文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#了解日志文件"><span class="nav-text">了解日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#了解日志文件组信息-v-log"><span class="nav-text">了解日志文件组信息 v$log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询日志文件成员-v-logfile"><span class="nav-text">查询日志文件成员 v$logfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动切换日志组时Oracle做的事情"><span class="nav-text">自动切换日志组时Oracle做的事情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动切换日志文件组"><span class="nav-text">手动切换日志文件组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-删除日志组-日志文件"><span class="nav-text">添加&#x2F;删除日志组&#x2F;日志文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#增加日志组"><span class="nav-text">增加日志组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加日志文件组成员"><span class="nav-text">添加日志文件组成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除日志文件组"><span class="nav-text">删除日志文件组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除日志文件成员"><span class="nav-text">删除日志文件成员</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clear“清除”日志文件组（成员）"><span class="nav-text">clear“清除”日志文件组（成员）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归档模式"><span class="nav-text">归档模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设置归档-非归档模式"><span class="nav-text">设置归档 &#x2F; 非归档模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询归档日志信息-v-archived-log"><span class="nav-text">查询归档日志信息 v$archived_log</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置归档目的地并手工归档"><span class="nav-text">设置归档目的地并手工归档</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志文件丢失处理处理方法"><span class="nav-text">日志文件丢失处理处理方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-非当前current日志丢失"><span class="nav-text">1 非当前current日志丢失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-当前current日志丢失"><span class="nav-text">2 当前current日志丢失</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OMF"><span class="nav-text">OMF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#未实现omf时，数据文件的操作"><span class="nav-text">未实现omf时，数据文件的操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的omf"><span class="nav-text">数据文件的omf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志文件的omf"><span class="nav-text">日志文件的omf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制文件、归档日志文件"><span class="nav-text">控制文件、归档日志文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理表空间和数据文件"><span class="nav-text">管理表空间和数据文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库存的结构层次"><span class="nav-text">数据库存的结构层次</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#段segment"><span class="nav-text">段segment</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#表"><span class="nav-text">表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#簇cluster索引？？？"><span class="nav-text">簇cluster索引？？？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#嵌套表nested-table"><span class="nav-text">嵌套表nested table</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区extent"><span class="nav-text">区extent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#块block"><span class="nav-text">块block</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件部分常用数据字典-操作"><span class="nav-text">文件部分常用数据字典+操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表空间的类型（创建-alter设默认）"><span class="nav-text">表空间的类型（创建&amp;alter设默认）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常规表空间"><span class="nav-text">常规表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大小文件表空间"><span class="nav-text">大小文件表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#撤销表空间"><span class="nav-text">撤销表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临时表空间"><span class="nav-text">临时表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临时表空间组"><span class="nav-text">临时表空间组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表空间的空间管理"><span class="nav-text">表空间的空间管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本地管理"><span class="nav-text">本地管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据字典管理（不太用了）"><span class="nav-text">数据字典管理（不太用了）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表空间的状态"><span class="nav-text">表空间的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除表空间"><span class="nav-text">删除表空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展表空间大小"><span class="nav-text">扩展表空间大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件的移动或重命名"><span class="nav-text">数据文件的移动或重命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有备份（归档模式）恢复数据文件"><span class="nav-text">没有备份（归档模式）恢复数据文件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ 2284648070 → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ 2284648070</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin 13182988567 → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin 13182988567</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://creeper121386.github.io/" title="https:&#x2F;&#x2F;creeper121386.github.io" rel="noopener" target="_blank">WHY's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+
+
+  <!-- 动态背景 -->
+  
+</body>
+</html>
+

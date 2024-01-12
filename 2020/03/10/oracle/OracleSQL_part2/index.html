@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="2 DML insert  如果全部字段都有值，则可以不写列名 如果部分字段为null，两种方法（显式&#x2F;隐式）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle SQL_part2">
+<meta property="og:url" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="2 DML insert  如果全部字段都有值，则可以不写列名 如果部分字段为null，两种方法（显式&#x2F;隐式）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200313103122536.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415122923453.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415123218099.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415123136515.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415123421013.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200317140650155.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415123918356.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415123612794.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415123713405.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200415125047943.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200313110349993.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200313111635286.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200317141638218.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200416220506116.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200317150747877.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200419101522747.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200419102910947.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200419111526695.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200419112145101.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200419112119386.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200419112417920.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200317162230483.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200418185519693.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200418185610756.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200317162547204.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200418185946648.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200418190532268.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200418193318378.png">
+<meta property="article:published_time" content="2020-03-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T08:06:11.873Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/image-20200313103122536.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle SQL_part2 | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!--     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.inactive').click(function(){
+      if($(this).siblings('ul').css('display')=='none'){
+        $(this).addClass('inactives');
+        $(this).siblings('ul').slideDown(100).children('li');
+      }else{
+        $(this).removeClass('inactives');
+        $(this).siblings('ul').slideUp(100);
+      }
+    })
+  });
+  </script> -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle SQL_part2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 16:06:11" itemprop="dateModified" datetime="2022-03-28T16:06:11+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="2-DML">2 DML</h2>
+<h3 id="insert">insert</h3>
+<p><img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200313103122536.png" alt="image-20200313103122536"></p>
+<p>如果全部字段都有值，则可以不写列名</p>
+<p>如果部分字段为null，两种方法（显式/隐式）</p>
+<a id="more"></a>
+<p><img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415122923453.png" alt="image-20200415122923453"></p>
+<p>没听到？？？</p>
+<p>插入日期类型时，注意用to_date</p>
+<p>插入数据和用户交互，用&amp;</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415123218099.png" alt="image-20200415123218099" style="zoom:80%;">
+<p>嵌入子查询，可以同时插入很多条记录</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415123136515.png" alt="image-20200415123136515" style="zoom:80%;">
+<h3 id="update">update</h3>
+<p>注意写where条件，否则全部更新</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415123421013.png" alt="image-20200415123421013" style="zoom:80%;">
+<p>如果更新多个字段，set后用逗号隔开</p>
+<p>子查询嵌入set部分，提高效率（省的取两次数据）</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200317140650155.png" alt="image-20200317140650155" style="zoom:67%;">
+<p>子查询嵌入where部分</p>
+<p><img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415123918356.png" alt="image-20200415123918356"></p>
+<h3 id="delete">delete</h3>
+<p>不加条件则全部删除</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415123612794.png" alt="image-20200415123612794" style="zoom:80%;">
+<p>嵌入子查询</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415123713405.png" alt="image-20200415123713405" style="zoom: 80%;">
+<p>truncate</p>
+<p>不是DML语句</p>
+<h3 id="merge">merge</h3>
+<p>表的合并（没有的就insert，有的就update）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- db12c下的scott中</span></span><br><span class="line"><span class="comment">-- 汇总hz、工作gz</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.emp_hz <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> scott.emp <span class="keyword">where</span> deptno = <span class="number">30</span>;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.emp_gz <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz <span class="keyword">where</span> <span class="number">1</span>=<span class="number">2</span>; <span class="comment">-- 空表，数据模式相同</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_gz <span class="keyword">values</span>(<span class="number">1234</span>,<span class="string">'Tom'</span>,<span class="number">3000</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_gz <span class="keyword">values</span>(<span class="number">7900</span>,<span class="string">'JAMES'</span>,<span class="number">1900</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz;</span><br><span class="line">     EMPNO ENAME                       SAL</span><br><span class="line"><span class="comment">---------- -------------------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600</span><br><span class="line">      7521 WARD                       1250</span><br><span class="line">      7654 MARTIN                     1250</span><br><span class="line">      7698 BLAKE                      2850</span><br><span class="line">      7844 TURNER                     1500</span><br><span class="line">      7900 JAMES                      1900</span><br><span class="line">      1234 Tom                        3000</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_gz;</span><br><span class="line">     EMPNO ENAME                       SAL</span><br><span class="line"><span class="comment">---------- -------------------- ----------</span></span><br><span class="line">      1234 Tom                        3000</span><br><span class="line">      7900 JAMES                      1900</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将gz表合并到hz表中</span></span><br><span class="line"><span class="keyword">merge</span> <span class="keyword">into</span> scott.emp_hz hz</span><br><span class="line"><span class="keyword">using</span> scott.emp_gz gz</span><br><span class="line"><span class="keyword">on</span> (hz.empno=gz.empno)</span><br><span class="line"><span class="keyword">when</span> <span class="keyword">matched</span> <span class="keyword">then</span></span><br><span class="line"><span class="keyword">update</span> <span class="keyword">set</span> hz.ename = gz.ename, hz.sal = gz.sal</span><br><span class="line"><span class="keyword">when</span> <span class="keyword">not</span> <span class="keyword">matched</span> <span class="keyword">then</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">values</span>(gz.empno,gz.ename,gz.sal);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 实际操作为更新Tom，插入James</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz;</span><br><span class="line">     EMPNO ENAME                       SAL</span><br><span class="line"><span class="comment">---------- -------------------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600</span><br><span class="line">      7521 WARD                       1250</span><br><span class="line">      7654 MARTIN                     1250</span><br><span class="line">      7698 BLAKE                      2850</span><br><span class="line">      7844 TURNER                     1500</span><br><span class="line">      7900 JAMES                      1900</span><br><span class="line">      1234 Tom                        3000</span><br></pre></td></tr></table></figure>
+<h2 id="3-TCL">3 TCL</h2>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200415125047943.png" alt="image-20200415125047943" style="zoom:80%;">
+<h3 id="commit-rollback-savepoint">commit rollback savepoint</h3>
+<p>commit和rollback只是显式提交、显式回滚</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 全部回滚</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_hz <span class="keyword">values</span>(<span class="number">1111</span>,<span class="string">'aaa'</span>,<span class="number">2000</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz;</span><br><span class="line"><span class="keyword">savepoint</span> aaa;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> scott.emp_hz <span class="keyword">where</span> empno=<span class="number">7900</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 发现删错了James，rollback</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- 回滚事务的所有操作（会连insert一起回滚）</span></span><br></pre></td></tr></table></figure>
+<p>只要事务结束（commit / rollback），则savepoints都会被擦除，不能rollback to savepoint aaa;了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 回滚到记录点</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_hz <span class="keyword">values</span>(<span class="number">1111</span>,<span class="string">'aaa'</span>,<span class="number">2000</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz;</span><br><span class="line"><span class="keyword">savepoint</span> aaa;</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> scott.emp_hz <span class="keyword">where</span> empno=<span class="number">7900</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 发现删错了James，rollback</span></span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> <span class="keyword">savepoint</span> aaa; <span class="comment">-- 回滚到某一个记录点，insert没有被回滚</span></span><br></pre></td></tr></table></figure>
+<h3 id="alter">alter</h3>
+<p>修改表的默认值</p>
+<p>有坑！！！</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 本来有7条记录</span></span><br><span class="line">     EMPNO ENAME                       SAL</span><br><span class="line"><span class="comment">---------- -------------------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600</span><br><span class="line">      7521 WARD                       1250</span><br><span class="line">      7654 MARTIN                     1250</span><br><span class="line">      7698 BLAKE                      2850</span><br><span class="line">      7844 TURNER                     1500</span><br><span class="line">      7900 JAMES                      1900</span><br><span class="line">      1111 aaa                        2000</span><br><span class="line">      </span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_hz (empno) <span class="keyword">values</span>(<span class="number">2222</span>);</span><br><span class="line"><span class="comment">-- 实际8，外部看7</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.emp_hz <span class="keyword">modify</span> ename <span class="keyword">default</span> <span class="string">'zhangsan'</span>; <span class="comment">-- 此时隐式提交了</span></span><br><span class="line"><span class="comment">-- 实际8，外部看8</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_hz (empno) <span class="keyword">values</span>(<span class="number">3333</span>);</span><br><span class="line"><span class="comment">-- 实际9，外部看还是8，因为新的事务未提交</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp_hz <span class="keyword">to</span> hr; <span class="comment">-- sys或者scott下赋权限，此时也会隐式提交</span></span><br><span class="line"><span class="comment">-- 实际9，外部看9</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_hz (empno) <span class="keyword">values</span>(<span class="number">4444</span>);</span><br><span class="line"><span class="comment">-- 实际10，外部看9</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="comment">-- 实际10，外部看10</span></span><br><span class="line"></span><br><span class="line">     EMPNO ENAME                       SAL</span><br><span class="line"><span class="comment">---------- -------------------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600</span><br><span class="line">      7521 WARD                       1250</span><br><span class="line">      7654 MARTIN                     1250</span><br><span class="line">      7698 BLAKE                      2850</span><br><span class="line">      7844 TURNER                     1500</span><br><span class="line">      7900 JAMES                      1900</span><br><span class="line">      1111 aaa                        2000</span><br><span class="line">      2222</span><br><span class="line">      3333 zhangsan</span><br><span class="line">      4444 zhangsan</span><br></pre></td></tr></table></figure>
+<p>事务未结束时，别的用户看不到（ACID中的I）</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200313110349993.png" alt="image-20200313110349993" style="zoom:67%;">
+<h3 id="显示提交-隐式提交">显示提交&amp;隐式提交</h3>
+<h4 id="显式提交">显式提交</h4>
+<p>用COMMIT命令直接完成的提交为显式提交</p>
+<h4 id="隐式提交">隐式提交</h4>
+<p>用SQL命令间接完成的提交为隐式提交，==隐式提交==的情形</p>
+<ul>
+<li>正常执行完DDL：create，alter，drop，truncate，rename。</li>
+<li>正常执行完DCL：grant，revoke</li>
+<li>正常退出：exit，没有明确发出commit或者rollback</li>
+<li>异常退出：点x退出，会==回滚==。</li>
+</ul>
+<p>（此隐式提交是在自己的session，如果在其他人的session(如用户a)中正在修改相同的数据，则引起隐式提交的语句（用户a的k另一个session)则必需等待）</p>
+<p><strong>隐式提交的注意事项</strong></p>
+<p>1、执行ddl语句时，前面的dml操作也会被提交到数据库中</p>
+<p>因为是在一个session里，那执行ddl语句的时候前面的dml语句肯定也会“不可幸免”的被提交到库中。</p>
+<p>2、即使ddl语句执行失败，前面的dml操作也会被提交到数据库中</p>
+<p>这就有点儿让人奇怪了，ddl都执行失败了，怎么还会提交呢？这就需要探究一下隐式提交的本质了（下文有叙述）。</p>
+<p>3、在前面1和2的基础上总结</p>
+<p>为了避免隐式提交或者回滚，尽量保证一条或者几条DML操作完成后有显示的提交或者回滚，防止后续执行的DCL或者DDL自动提交前期的DML操作。</p>
+<p><strong>隐式提交的本质</strong></p>
+<p>1、一条ddl语句执行了两次commit<br>
+commit;<br>
+ddl statement;<br>
+commit;<br>
+第一个commit将当前session中未提交的事务隐式提交，以保证ddl语句失败时的回滚位置。<br>
+第二个commit将ddl提交</p>
+<p>2、为什么需要隐式提交？</p>
+<p>为了保证事务的一致性。我们在执行ddl语句的时候，oracle需要在它的系统表中进行元数据的记录操作（即：除了建表还会进行不少insert操作），如果它不隐式提交就无法保证一致性；从内部运行机制来看ddl语句和dml语句还是有很大区别的，dml会对每个语句的每条记录都做日志记录以便于回滚，而ddl往往没必要搞这么复杂，从功能和易用性上看隐式提交都是最好的选择。</p>
+<h4 id="自动提交">自动提交</h4>
+<p>若把AUTOCOMMIT设置为ON，则在插入、修改、删除语句执行后，系统将自动进行提交，这就是自动提交。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET AUTOCOMMIT ON;</span><br></pre></td></tr></table></figure>
+<p>查看当前是否是自动提交：show autocommit</p>
+<h3 id="读的一致性">读的一致性</h3>
+<p>（重要）（考试？？？）</p>
+<p>概念：事务开始前和事务开始后，别的事务看到的数据都是一样的</p>
+<ul>
+<li>没有事务的时候，“当前读”？？？</li>
+<li>事务开始后，别的事务都从回滚段内访问数据，一样</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- Scott下</span></span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> ename=<span class="string">'BBB'</span> <span class="keyword">where</span> empno=<span class="number">1111</span>; <span class="comment">-- 在这一行加锁</span></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> ename=<span class="string">'CCC'</span> <span class="keyword">where</span> empno=<span class="number">1111</span>; <span class="comment">-- 上面如果不提交，这里会阻塞</span></span><br><span class="line"><span class="comment">-- scott下commit或者rollback，可以解除等待</span></span><br><span class="line"><span class="comment">-- sys下commit或者rollback</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz;</span><br><span class="line"><span class="comment">-- 别的数据库：事务未结束时，给表加锁，别的用户不能访问</span></span><br><span class="line"><span class="comment">-- oracle：读一致性。读不用等写，写不用等读，写需要等写</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200313111635286.png" alt="image-20200313111635286"></p>
+<ul>
+<li>
+<p>当事务t1进行数据修改（删除）的时候，会将旧数据复制一份到回滚带上</p>
+<p>（其他事务不允许修改，被锁住？？？）</p>
+</li>
+<li>
+<p>脏数据在高速缓存中，别的事务不能访问</p>
+</li>
+<li>
+<p>如果另外的事务前来查询发现这条记录被锁，不用等事务结束，会到回滚带上查询（查到的是旧数据）</p>
+</li>
+</ul>
+<h3 id="回滚段的三个作用">回滚段的三个作用</h3>
+<p>（考试）</p>
+<p>A. 读一致性：</p>
+<p>见上</p>
+<p>B. 回滚：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 都删掉</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 无</span></span><br><span class="line"><span class="comment">-- 此时所有数据都在回滚段</span></span><br><span class="line"><span class="keyword">rollback</span>; <span class="comment">-- 自动把在回滚段的都拿回来（对冲操作？？？）</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 回来了</span></span><br></pre></td></tr></table></figure>
+<p>C. 闪回恢复？？？：已提交后也数据不怕丢掉，还可以从回滚段里把数据捞出来</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 都删掉</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 无</span></span><br><span class="line"><span class="comment">-- rollback自动回滚回不来，但数据仍在回滚段？？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查找回滚带（as of）上，3min之前，某个表的数据</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz <span class="keyword">as</span> <span class="keyword">of</span> <span class="built_in">timestamp</span>(systimestamp-<span class="built_in">interval</span> <span class="string">'3'</span> <span class="keyword">minute</span>);</span><br><span class="line"><span class="comment">-- 将这些数据插进去</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.emp_hz <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz <span class="keyword">as</span> <span class="keyword">of</span> <span class="built_in">timestamp</span>(systimestamp-<span class="built_in">interval</span> <span class="string">'3'</span> <span class="keyword">minute</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz; <span class="comment">-- 有</span></span><br></pre></td></tr></table></figure>
+<h3 id="锁">锁</h3>
+<p>两个会话的事务都有脏数据，两边update一行数据时，会有锁</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 会话A，改1111</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> sal=<span class="number">2500</span> <span class="keyword">where</span> empno=<span class="number">1111</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 会话B，改2222</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> ename=<span class="string">'CCCC'</span> <span class="keyword">where</span> empno=<span class="number">2222</span>;</span><br><span class="line"><span class="comment">-- 可以更新，说明加的不是表锁</span></span><br><span class="line"><span class="comment">-- AB此时互相看不到对方的脏数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 会话A，改2222，卡死</span></span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> sal=<span class="number">3500</span> <span class="keyword">where</span> empno=<span class="number">2222</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 会话B，改1111，卡死</span></span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> ename=<span class="string">'DDD'</span> <span class="keyword">where</span> empno=<span class="number">1111</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 死锁产生~</span></span><br><span class="line"><span class="comment">-- 会话A提示这条语句会产生死锁，自动回滚</span></span><br><span class="line"><span class="keyword">update</span> scott.emp_hz <span class="keyword">set</span> sal=<span class="number">3500</span> <span class="keyword">where</span> empno=<span class="number">2222</span></span><br><span class="line">                        *</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-00060</span>: deadlock detected <span class="keyword">while</span> waiting <span class="keyword">for</span> <span class="keyword">resource</span></span><br><span class="line"><span class="comment">-- 现在B还因为1111锁着，需要A commit或者rollback</span></span><br></pre></td></tr></table></figure>
+<p>现在死锁变成锁了，如何解决</p>
+<p>dba如何解决锁的问题，一般是杀进程，委婉一点就是通知那个会话的用户结束你的事务</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- dba上线（再开一个会话）</span></span><br><span class="line">desc v$<span class="keyword">lock</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sid</span> <span class="keyword">from</span> v$<span class="keyword">lock</span> <span class="keyword">where</span> <span class="keyword">block</span>=<span class="number">1</span>; <span class="comment">-- （1阻住，0未阻住）135，会话A造成的阻塞？？？</span></span><br><span class="line"></span><br><span class="line">desc v$session</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sid</span>,<span class="built_in">serial</span><span class="comment"># from v$session where sid=135; -- 查找干掉这个进程的参数serial#</span></span><br><span class="line"><span class="comment">-- session == 会话</span></span><br><span class="line"><span class="comment">-- A被杀了，更新1111的sal的语句也被回滚</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">kill</span> <span class="keyword">session</span> <span class="string">'135,2022'</span>;</span><br><span class="line"><span class="comment">-- B解锁了，1111 name更新为DDD</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- A被杀了，提示会话被杀</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp_hz</span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-00028</span>: your <span class="keyword">session</span> has been killed</span><br></pre></td></tr></table></figure>
+<h2 id="4-DCL">4 DCL</h2>
+<p>grant</p>
+<p>revoke</p>
+<h2 id="5-DDL">5 DDL</h2>
+<ol>
+<li>DML（增删改）只能改用户数据，不能不能直接操作系统数据（不能insert user_tables）</li>
+<li>系统数据对用户来说是只读的，但对dba可以用DDL修改（增删改系统数据）</li>
+</ol>
+<p>数据定义语言</p>
+<ul>
+<li>增删改【对象】create、alter、drop</li>
+<li>清空表truncate</li>
+<li>给表rename</li>
+<li>加注释comment</li>
+</ul>
+<h3 id="oracle常见对象">oracle常见对象</h3>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200317141638218.png" alt="image-20200317141638218" style="zoom:67%;">
+<ol>
+<li>
+<p>表：</p>
+</li>
+<li>
+<p>视图：指向表</p>
+</li>
+<li>
+<p>序列：自动产生？？？</p>
+</li>
+<li>
+<p>索引：无索引 / 有索引【一页一页翻 / 看目录】</p>
+</li>
+<li>
+<p>同义词synonym，用于缩短名字？</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">desc user_objects</span><br><span class="line">col object_name for a20</span><br><span class="line">col object_type for a20</span><br><span class="line"><span class="keyword">select</span> object_name,object_type,namespace <span class="keyword">from</span> user_objects <span class="keyword">fetch</span> <span class="keyword">first</span> <span class="number">20</span> <span class="keyword">rows</span> <span class="keyword">only</span>;</span><br><span class="line"><span class="comment">-- 查找同一个namespace下会放哪些类型的对象</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">unique</span> object_type <span class="keyword">from</span> user_objects <span class="keyword">where</span> namespace=<span class="string">'1'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查同一类型对象是不是会位于两个namespace</span></span><br><span class="line"><span class="comment">-- 除了undefined这个奇怪的对象类型，还有一个对象类型没有表空间</span></span><br><span class="line"><span class="keyword">select</span> a.object_type <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">unique</span> object_type, namespace <span class="keyword">from</span> user_objects) a</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> object_type</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">count</span>(<span class="number">1</span>)&gt;<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 各种对象</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> user_tables;</span><br><span class="line"><span class="keyword">select</span> view_name <span class="keyword">from</span> user_views;</span><br><span class="line"><span class="keyword">select</span> sequence_name <span class="keyword">from</span> user_sequences;</span><br><span class="line"><span class="keyword">select</span> index_name <span class="keyword">from</span> user_indexes; <span class="comment">-- user_indexes同义词ind</span></span><br><span class="line"><span class="keyword">select</span> synonym_name <span class="keyword">from</span> user_synonyms;</span><br><span class="line"><span class="keyword">select</span> trigger_name <span class="keyword">from</span> user_triggers;</span><br></pre></td></tr></table></figure>
+<p>任何对象不可和同一用户下==相同名称空间namespace==的对象同名</p>
+<p>表名不能为Oracle保留关键字：为procedure可以，trigger不行，function行</p>
+<h3 id="表">表</h3>
+<h4 id="建表">建表</h4>
+<p>表名要合法</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200416220506116.png" alt="image-20200416220506116" style="zoom:50%;">
+<p>建表的两个必须条件：</p>
+<p>A、<strong>有创建的权限</strong></p>
+<p>先创建一个用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> demo1 <span class="keyword">identified</span> <span class="keyword">by</span> abc;</span><br><span class="line"><span class="keyword">select</span> username,<span class="keyword">password</span>,ACCOUNT_STATUS <span class="keyword">from</span> dba_users <span class="keyword">where</span> username=<span class="string">'DEMO1'</span>;</span><br><span class="line"><span class="comment">-- 密码不显示？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 此时demo1没有create session的权限</span></span><br><span class="line">conn demo1/abc</span><br><span class="line">ERROR:</span><br><span class="line">ORA-01045: ▒û▒ DEMO1 û▒▒ <span class="keyword">CREATE</span> <span class="keyword">SESSION</span> Ȩ▒▒; ▒▒¼▒▒▒ܾ▒</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 用oerr ora 01045查错误</span></span><br><span class="line"><span class="comment">-- sys下授权</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> demo1;</span><br><span class="line">conn demo1/abc</span><br></pre></td></tr></table></figure>
+<p>开始建表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- demo1下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t1(<span class="keyword">id</span> <span class="built_in">int</span>);</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-01031: insufficient privileges</span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下授权</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">to</span> demo1;</span><br></pre></td></tr></table></figure>
+<p>B、<strong>必须在一个表空间</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- demo1下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t1(<span class="keyword">id</span> <span class="built_in">int</span>);</span><br><span class="line"><span class="comment">-- 创建到用户的默认表空间</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>; <span class="comment">-- users</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">select</span> default_tablespace <span class="keyword">from</span> dba_users <span class="keyword">where</span> username=<span class="string">'DEMO1'</span>; <span class="comment">-- users</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- demo1下</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 <span class="keyword">values</span>(<span class="number">1</span>);</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-01950: no privileges on tablespace 'USERS'</span><br></pre></td></tr></table></figure>
+<p>能建表不能插入？没有对表空间的权限，为什么能建表？</p>
+<p>靠参数控制</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> parameter defer</span><br><span class="line"></span><br><span class="line"><span class="keyword">NAME</span>                                 <span class="keyword">TYPE</span>                   <span class="keyword">VALUE</span></span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line">deferred_segment_creation            <span class="built_in">boolean</span>                <span class="literal">TRUE</span></span><br></pre></td></tr></table></figure>
+<p>建好了表，但没有分配空间，第一次使用的时候才分配</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys下（demo1下无法alter system）</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> deferred_segment_creation=<span class="literal">false</span>; <span class="comment">--不允许延时，创建时就要分配表空间</span></span><br><span class="line"><span class="comment">-- demo1下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t2(<span class="keyword">id</span> <span class="built_in">int</span>); <span class="comment">-- 直接报错，没有user表空间的权限</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> demo1 <span class="keyword">quota</span> <span class="number">5</span>m <span class="keyword">on</span> <span class="keyword">users</span>; <span class="comment">-- demo1可以使用user用户空间5兆空间</span></span><br><span class="line"><span class="comment">--alter user demo1 quota unlimited on users; -- demo1可以无限制使用user用户空间</span></span><br><span class="line"><span class="comment">-- 此时可以建表，插值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 没讲</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.t1(<span class="keyword">id</span> <span class="built_in">int</span>);             <span class="comment">--不可以create仅可对自己建表</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">any</span> <span class="keyword">table</span> <span class="keyword">to</span> scott;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.t1(<span class="keyword">id</span> <span class="built_in">int</span>);             <span class="comment">--demo对scott建表</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t3 <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;<span class="comment">--基于其他表select要有权限</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> demo;</span><br></pre></td></tr></table></figure>
+<h4 id="ps：伪列">ps：伪列</h4>
+<p>eg level、rowid、rownum</p>
+<p>伪列 == 独立于表存在【伪军，编制外】</p>
+<p>由Oracle管理，不能进行增删改操作，只能查</p>
+<ul>
+<li>表的字段不能重名</li>
+<li>字段不能和伪列重名</li>
+</ul>
+<h5 id="rowid的组成">rowid的组成</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> empno,ename,<span class="keyword">rowid</span>,<span class="keyword">rownum</span> <span class="keyword">from</span> scott.emp;</span><br></pre></td></tr></table></figure>
+<p>rowid ==  行的具体物理地址（Base64 code，数字字母和±一共64个字符，调用包解析为能看懂的信息）</p>
+<ol>
+<li>
+<p>文件号</p>
+</li>
+<li>
+<p>块号</p>
+</li>
+<li>
+<p>行号</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">desc dbms_rowid <span class="comment">-- 这是一个包，里面有函数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> empno,</span><br><span class="line">dbms_rowid.ROWID_RELATIVE_FNO(<span class="keyword">rowid</span>) <span class="keyword">File</span><span class="comment">#,</span></span><br><span class="line">dbms_rowid.ROWID_BLOCK_NUMBER(<span class="keyword">rowid</span>) <span class="keyword">BLOCK</span><span class="comment">#,</span></span><br><span class="line">dbms_rowid.ROWID_ROW_NUMBER(<span class="keyword">rowid</span>) <span class="keyword">ROW</span><span class="comment">#</span></span><br><span class="line"><span class="keyword">from</span> scott.emp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> <span class="keyword">file</span><span class="comment">#=7;</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name,file_name <span class="keyword">from</span> dba_data_files;</span><br></pre></td></tr></table></figure>
+<p>==rowid“独立于表存在”，表空间存在，行号就有了==【造居民楼，为每间屋子编号，和人是否入住入关】</p>
+<p>表删了之后，列就没有了</p>
+<ul>
+<li>创建表空间时，指定数据文件，Oracle给这个数据文件编号</li>
+<li>把这个数据文件格式化为很多块，分配块号</li>
+<li>将每个块格式化为很多行，每个行已经有rowid了</li>
+<li>创建表的时候，指定表空间，将原来表空间的rowid分配给这个表</li>
+</ul>
+<h4 id="ps：数据类型">ps：数据类型</h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200317150747877.png" alt="image-20200317150747877" style="zoom:67%;">
+<ol>
+<li>
+<p>char(20)：定长，真正字符不够10Byte时，剩下的用空格填满（字符串比较时，性能好）</p>
+</li>
+<li>
+<p>varchar(20)：变长，最多20，已用10个，剩下的就空着（变长的，节省存储空间）–明确知道多长就用char，要是变化，就用varchar</p>
+<p>【学号】之类的长度基本不变，就可以用定长；【居住地址】长度不定，最好变长</p>
+</li>
+<li>
+<p>nchar()和nvarchar() 中的n表示国建。</p>
+<p>建库的时候要选字符集，表示以后的符号就是来自于你选的字符集；和国家字符集</p>
+<p>national，可以理解为第二字符集，补充字符集（一般来说第二字符集的范围比原来的大）</p>
+<p>nchar、nvarchar会到第二字符集中找</p>
+<p>如果第一字符集就选utf，则不需要第二字符集了</p>
+<p>eg 中文常用【员工都是中国人】，就用GBK；用utf16作为补充字符集【可能有外国员工】</p>
+</li>
+<li>
+<p>NUMBER：该数据类型能存储精度最多达38位的数字。每个数存储在一个变长字段中，其长度在0～22字节之间。Oracle的NUMBER类型精度很高， 远远高于许多编程语言中常规的FLOAT和DOUBLE类型。</p>
+<p>NUMBER( p,s ) p表示精度（总长度） s表示小数位数（四舍五入），s不写表示没有小数</p>
+<p>插入数据时。总长度不能超的前提下，小数位数超过则四舍五入</p>
+<p>ps：int、float、real是number的子集</p>
+</li>
+<li>
+<p>date：一个7字节的定宽日期/时间数据类型。</p>
+<p>其中总包含7个属性：世纪、世纪中哪一年、月份、月中的哪一天、小时、分钟和秒。</p>
+</li>
+</ol>
+<p>不常用的</p>
+<ol>
+<li>
+<p>long - 变长字符数据（不是整数），一张表只能有一个字段是long类型，<strong>使用clob代替</strong>。</p>
+</li>
+<li>
+<p>BLOB： (binary large object)</p>
+<p>在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。</p>
+<p>BLOB包含不需要进行字符集转换的“二进制“数据，如果要存储==电子表格、字处理文档、图像文件==等就很适合采用。</p>
+</li>
+<li>
+<p>CLOB：（Character Large Object）</p>
+<p>在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。</p>
+<p>CLOB包含<strong>要进行字符集转换的信息</strong>。这种数据类型很适合存储==纯文本==信息。</p>
+</li>
+<li>
+<p>BFILE：存放指向操作系统文件的==指针，指向外部的二进制文件==</p>
+</li>
+<li>
+<p>rowid：字段保存的是一个==物理地址==</p>
+</li>
+<li>
+<p>raw：计算机中原始的 == 二进制</p>
+<p>固定长度的二进制数据，可存放多媒体图象声音等</p>
+<p>信息给谁看。给CPU看的，则效率高</p>
+</li>
+<li>
+<p>long raw： <strong>可变长度的二进制数据</strong></p>
+</li>
+</ol>
+<p><strong>unicode和utf</strong></p>
+<p>字符集和字符编码不是一个概念，字符集定义了文字和二进制的对应关系，为字符分配了唯一的编号，而字符编码规定了如何将文字的编号存储到内存中。</p>
+<p>有的字符集在制定时就考虑到了编码的问题，是和编码结合在一起的；有的字符集只管制定字符的编号，至于怎么编码，是其他人的事情</p>
+<p><a href="https://blog.csdn.net/guxiaonuan/article/details/78678043" target="_blank" rel="noopener">https://blog.csdn.net/guxiaonuan/article/details/78678043</a></p>
+<p>16^4 = 2^16 = 65536</p>
+<p>2^32 = 4,294,967,296‬</p>
+<ul>
+<li>
+<p>unicode - 字符集（65536个字符？？？，每个字符分配一个唯一编码）</p>
+</li>
+<li>
+<p>utf -  Unicode Transformation Format 编码方式，unicode字符集中的字符如何存储</p>
+<p>放入内存中的仅仅是字符的编号，而不是真正的字符实体</p>
+<p>UTF-8、UTF-16、UTF-32 都是 Unicode 的一种实现。</p>
+<p>utf也分为定长和变长编码</p>
+</li>
+</ul>
+<p>乱码 == 编码解码标准不一致</p>
+<p>UTF-8 是兼容 ASCII 的，16和32都不兼容</p>
+<p>ASCII（7位，128个字符，但实际用一个byte）中A（65）编码01000001</p>
+<h4 id="查询表">查询表</h4>
+<p>全表扫描</p>
+<p>索引查找</p>
+<p>直接物理地址查找（通过rowid）</p>
+<h4 id="修改表">修改表</h4>
+<h5 id="修改表名">修改表名</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- db12c的demo1下</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> demo1.t1 <span class="keyword">rename</span> <span class="keyword">to</span> t11;</span><br><span class="line"><span class="comment">-- rename to 不能加所有者</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 简单方法</span></span><br><span class="line"><span class="keyword">rename</span> t11 <span class="keyword">to</span> t1;</span><br></pre></td></tr></table></figure>
+<h5 id="增加字段">增加字段</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- scott下</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">add</span> birthdate <span class="built_in">date</span>;</span><br><span class="line">desc scott.buyers</span><br><span class="line"></span><br><span class="line"><span class="comment">--alter table 表名 add(userName varchar(30) default'空' not null);</span></span><br></pre></td></tr></table></figure>
+<h5 id="修改字段">修改字段</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- scott下</span></span><br><span class="line"><span class="comment">-- 1）修改字段名称</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">RENAME</span> <span class="keyword">column</span> birthdate <span class="keyword">to</span> birth_date;</span><br><span class="line">desc scott.buyers</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2）修改字段类型</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> birth_date <span class="built_in">char</span>(<span class="number">8</span>);</span><br><span class="line"><span class="comment">-- birth_date这个字段是新加的，里面还没有数据</span></span><br><span class="line"><span class="comment">-- 字段如果原来有数据，不为null，则可能由于数据类型不兼容出错</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 3）修改宽度（和2）一致），原来是10</span></span><br><span class="line"><span class="comment">-- 一旦改到char之后，空格会一直保留！！！且空格只增不减！！！</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- A. varchar - varchar</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">30</span>);<span class="comment">-- 改大，可</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">28</span>); <span class="comment">-- 改小，看数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- B. varchar - char后，用空格填充</span></span><br><span class="line"><span class="comment">-- 不变，可</span></span><br><span class="line"><span class="comment">-- 变大，可</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">char</span>(<span class="number">25</span>); <span class="comment">-- 改小，看数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- C. char - char</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">char</span>(<span class="number">20</span>); <span class="comment">-- 改小，不可！！！</span></span><br><span class="line"><span class="comment">-- cannot decrease column length because some value is too big</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">char</span>(<span class="number">28</span>); <span class="comment">-- 改大，可，也会用空格填充</span></span><br><span class="line"><span class="comment">-- 注意此时所有数据已经变成28位（带空格）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- D. char - varchar，空格不会消失！！！</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">28</span>); <span class="comment">-- 不变，可</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">30</span>); <span class="comment">-- 变大，可</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">27</span>); <span class="comment">-- 变小，不可！！！</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> scott.buyers <span class="keyword">set</span> buyer_name = <span class="keyword">trim</span>(buyer_name); <span class="comment">-- 去除两端的空格</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">modify</span> BUYER_NAME <span class="built_in">varchar</span>(<span class="number">10</span>); <span class="comment">-- 又可了</span></span><br></pre></td></tr></table></figure>
+<h5 id="删除字段（列）">删除字段（列）</h5>
+<p>使用第一种，删除大表开销较大，不能在生产时间使用</p>
+<p>生产时间应该用第二种，数据没有真正删除</p>
+<p>为什么不直接drop，会放在回收站，可以flashback</p>
+<p>最后加purge，彻底drop</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="comment">-- 1）直接删除，注意不要忘了column 或括号</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">drop</span> <span class="keyword">column</span> birth_date;</span><br><span class="line"><span class="comment">--alter table scott.buyers add birth_date date;</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">drop</span> (birth_date);</span><br><span class="line"><span class="comment">--alter table scott.buyers add birth_date date;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- alter table 表名 drop (列名1, 列名2等);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 2）先标记为未使用，然后再删除标记为未使用的列</span></span><br><span class="line"> <span class="comment">-- 标记为未使用，desc就查不到这一列了，但数据还在表里</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">set</span> <span class="keyword">unused</span> <span class="keyword">column</span> birth_date;</span><br><span class="line"><span class="comment">-- 查总表，看看哪些列打了标记</span></span><br><span class="line"><span class="keyword">select</span> table_name <span class="keyword">from</span> dict <span class="keyword">where</span> table_name <span class="keyword">like</span> <span class="string">'%UNUSED%'</span>; <span class="comment">-- ALL_UNUSED_COL_TABS</span></span><br><span class="line">desc ALL_UNUSED_COL_TABS</span><br><span class="line">col owner for a10</span><br><span class="line">col TABLE_NAME for a20</span><br><span class="line">col COUNT for '99999'</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> ALL_UNUSED_COL_TABS; <span class="comment">-- 对同一个列名，反复add，标记未使用，count会增加</span></span><br><span class="line"><span class="comment">-- 标记过的，不可以取消标记</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将所有未使用的列删除</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.buyers <span class="keyword">drop</span> <span class="keyword">unused</span> <span class="keyword">column</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="将表改为只读">将表改为只读</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- scott下</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.emp <span class="keyword">read</span> <span class="keyword">only</span>;    <span class="comment">--只读不可删/加数据</span></span><br><span class="line"></span><br><span class="line">col table_name for a20</span><br><span class="line">col read_only for a10</span><br><span class="line"><span class="keyword">select</span> table_name,read_only <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'EMP'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> scott.emp <span class="keyword">read</span> write;</span><br></pre></td></tr></table></figure>
+<h5 id="给表添加注释">给表添加注释</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- scott下</span></span><br><span class="line"><span class="keyword">select</span> comments <span class="keyword">from</span> user_tab_comments <span class="keyword">where</span> table_name=<span class="string">'BUYERS'</span>; <span class="comment">-- 注释为空</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">table</span> buyers <span class="keyword">is</span> <span class="string">'this is a demo table'</span>;</span><br><span class="line">desc user_tab_comments</span><br><span class="line"><span class="keyword">select</span> comments <span class="keyword">from</span> user_tab_comments <span class="keyword">where</span> table_name=<span class="string">'BUYERS'</span>;</span><br><span class="line">COMMENTS</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">this is a demo table</span><br></pre></td></tr></table></figure>
+<h5 id="给表的列加注释">给表的列加注释</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> product.prod_id <span class="keyword">is</span> <span class="string">'this is product id'</span>;</span><br><span class="line">desc user_col_comments</span><br><span class="line">col COLUMN_NAME for a80</span><br><span class="line">col COMMENTS for a80</span><br><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> user_col_comments <span class="keyword">where</span> TABLE_NAME=<span class="string">'PRODUCT'</span>;</span><br><span class="line"></span><br><span class="line">COLUMN_NAME</span><br><span class="line"><span class="comment">--------------------------------------------------------------------------------</span></span><br><span class="line">COMMENTS</span><br><span class="line"><span class="comment">--------------------------------------------------------------------------------</span></span><br><span class="line">PROD_ID</span><br><span class="line">this is product id</span><br><span class="line"></span><br><span class="line">PROD_NAME</span><br></pre></td></tr></table></figure>
+<h4 id="截断表">截断表</h4>
+<p>删除表中所有记录，和delete from不加where的区别</p>
+<ul>
+<li>delete属于DML语句，truncate属于DDL</li>
+<li>delete from [表名]，速度慢，会将数据放到回滚段，可以rollback；truncate直接删除，无法rollback</li>
+<li>delete不释放存储空间，truncate释放存储空间</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> c; <span class="comment">--将表清空</span></span><br></pre></td></tr></table></figure>
+<h5 id="hwm">hwm</h5>
+<p><strong>high water marker 高水位标记（高端水印）</strong></p>
+<p>【水印之上，水没有到达】hwm之上没有数据，所以Oracle扫描数据只扫到hwm</p>
+<p>Oracle计算空余时间，只计算高端水印之上的</p>
+<p>插一条数据，hwm向上移动</p>
+<ul>
+<li>delete后，hwm不会下移</li>
+<li>truncate，hwm下移到初始值？？？，相当于改了表的定义</li>
+</ul>
+<p>DDL，truncate会将hwm下移，相当于修改了表的定义？？？</p>
+<p>演示见3.17录像</p>
+<p>user_tables中为静态的统计数据，insert之后不会更新</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.t1 <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.t1 <span class="keyword">select</span> * <span class="keyword">from</span> scott.t1; <span class="comment">-- 复制一份记录</span></span><br><span class="line">/</span><br><span class="line">/</span><br><span class="line">/</span><br><span class="line">/</span><br><span class="line"></span><br><span class="line">917504 rows created.</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 切换scott</span></span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>;</span><br><span class="line">  NUM_ROWS     BLOCKS</span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">   1835008      11120</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.t1 <span class="keyword">select</span> * <span class="keyword">from</span> scott.t1;</span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>; <span class="comment">-- 没变</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> t1 <span class="keyword">compute</span> <span class="keyword">statistics</span>;</span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>; <span class="comment">-- 变了</span></span><br><span class="line">  NUM_ROWS     BLOCKS</span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">   3670016      22212</span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> t1; <span class="comment">-- 3670016 rows deleted.</span></span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>; <span class="comment">-- 行数没清零</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> t1 <span class="keyword">compute</span> <span class="keyword">statistics</span>;</span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>;</span><br><span class="line"><span class="comment">-- 行数已清零，没有释放空间，高端水印没有下移</span></span><br><span class="line">  NUM_ROWS     BLOCKS</span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">         0      22212</span><br><span class="line"></span><br><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> t1;</span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>; <span class="comment">-- 没变</span></span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> t1 <span class="keyword">compute</span> <span class="keyword">statistics</span>;</span><br><span class="line"><span class="keyword">select</span> num_rows, blocks <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="string">'T1'</span>;</span><br><span class="line"><span class="comment">-- 空间已释放</span></span><br><span class="line">  NUM_ROWS     BLOCKS</span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">         0          0</span><br></pre></td></tr></table></figure>
+<h4 id="删除表">删除表</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> scott.buyers; <span class="comment">-- 其实没有删除</span></span><br><span class="line"><span class="keyword">show</span> recyclebin <span class="comment">-- 只能在Scott下查！还在回收站</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.recyclebin; <span class="comment">-- 或者查scott下的回收站表</span></span><br><span class="line"></span><br><span class="line">ORIGINAL NAME    RECYCLEBIN NAME                OBJECT TYPE  <span class="keyword">DROP</span> <span class="built_in">TIME</span></span><br><span class="line"><span class="comment">---------------- ------------------------------ ------------ -------------------</span></span><br><span class="line">BUYERS           <span class="keyword">BIN</span>$o45ytf5UHK7gU8gLqMDbRQ==$<span class="number">0</span> <span class="keyword">TABLE</span>        <span class="number">2020</span><span class="number">-04</span><span class="number">-18</span>:<span class="number">17</span>:<span class="number">39</span>:<span class="number">53</span></span><br><span class="line">EMP              <span class="keyword">BIN</span>$olpkxjbOISngU8gLqMBTLQ==$<span class="number">0</span> <span class="keyword">TABLE</span>        <span class="number">2020</span><span class="number">-04</span><span class="number">-03</span>:<span class="number">10</span>:<span class="number">08</span>:<span class="number">30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 数据仍然可以查到，表只是换了个名字</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="string">"BIN$o45ytf5UHK7gU8gLqMDbRQ==$0"</span>;</span><br><span class="line">  BUYER_ID BUYER_NAME</span><br><span class="line"><span class="comment">---------- --------------------</span></span><br><span class="line">         1 Adam Barr</span><br><span class="line">         2 Sean Chai</span><br><span class="line">         3 Eva Coret</span><br><span class="line">         4 Erin Melia</span><br><span class="line"></span><br><span class="line">flashback table scott.buyers to before <span class="keyword">drop</span>; <span class="comment">--闪回</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.buyers; <span class="comment">-- 回来了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--删的连回收站都没了，无法闪回</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> scott.buyers <span class="keyword">purge</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> recyclebin; <span class="comment">-- 没了</span></span><br></pre></td></tr></table></figure>
+<h3 id="视图">视图</h3>
+<p>访问视图时，先产生访问基表的sql语句，去查询相应的基表，再返回给视图</p>
+<p>虚表：不是存储结构，是语句的定义</p>
+<p>表：一种具体的存储结构</p>
+<h4 id="视图的作用"><strong>视图的作用</strong></h4>
+<ol>
+<li>收集感兴趣的数据</li>
+<li>屏蔽敏感数据【工资奖金】</li>
+<li>简化查询</li>
+<li>简化权限的管理</li>
+</ol>
+<h4 id="视图的分类"><strong>视图的分类</strong></h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200419101522747.png" alt="image-20200419101522747" style="zoom:67%;">
+<ul>
+<li>简单视图：基表不能超过一张，不能分组、函数</li>
+<li>复杂视图</li>
+</ul>
+<h4 id="查询视图数据字典">查询视图数据字典</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> owner, view_name,read_only <span class="keyword">from</span> dba_views <span class="keyword">where</span> view_name <span class="keyword">like</span> <span class="string">'EMP%'</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="创建视图">创建视图</h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200419102910947.png" alt="image-20200419102910947" style="zoom:67%;">
+<p>基于存在的表创建</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">view</span> <span class="keyword">to</span> scott;</span><br><span class="line"><span class="comment">-- 以下关于视图的操作均在scott下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal <span class="keyword">from</span> scott.emp;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br></pre></td></tr></table></figure>
+<p>基于不存在的表创建视图可以吗？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 不可以</span></span><br><span class="line"><span class="comment">-- 但是可以强制创建视图，使用force</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> scott.abc;</span><br><span class="line"><span class="comment">-- 覆盖原来的emp_info视图</span></span><br><span class="line">Warning: View created <span class="keyword">with</span> compilation errors.</span><br><span class="line"><span class="comment">-- 视图虽然创建，但是编译错误，也查询不到</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-04063: view "SCOTT.EMP_INFO" has errors</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 什么时候这个不存在的表被创建了，这些视图就可以使用了</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.abc <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info; <span class="comment">-- 有了</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改视图结构">修改视图结构</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 为视图增加一个字段部门号</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">view</span> emp_info <span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> scott.emp;</span><br><span class="line"><span class="comment">-- 保留权限</span></span><br></pre></td></tr></table></figure>
+<p>修改视图通过删除重建可以吗？</p>
+<p>这样做不好，删除之前有些用户已经拥有了这些<strong>视图的权限</strong>，删除之后权限就没了</p>
+<p>drop create，之后就是一个新的对象了，object_id不同</p>
+<h4 id="通过视图修改基表">通过视图修改基表</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改视图，表中数据会变化！</span></span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> sal = <span class="number">1800</span> <span class="keyword">where</span> empno = <span class="number">7369</span>;  <span class="comment">--修改视图就是修改基表</span></span><br><span class="line"><span class="keyword">select</span> sal <span class="keyword">from</span> emp_info <span class="keyword">where</span> empno=<span class="number">7369</span>;</span><br><span class="line">       SAL</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">      1800</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> sal <span class="keyword">from</span> scott.abc <span class="keyword">where</span> empno=<span class="number">7369</span>;</span><br><span class="line">       SAL</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">      1800</span><br></pre></td></tr></table></figure>
+<p>限制修改某个字段（相当于加了约束？？？）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info</span><br><span class="line"><span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> scott.emp</span><br><span class="line"><span class="keyword">where</span> deptno = <span class="number">30</span>;</span><br><span class="line"><span class="comment">-- 此时所有数据都可以修改</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line"></span><br><span class="line">     EMPNO ENAME                       SAL     DEPTNO</span><br><span class="line"><span class="comment">---------- -------------------- ---------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600         30</span><br><span class="line">      7521 WARD                       1250         30</span><br><span class="line">      7654 MARTIN                     1250         30</span><br><span class="line">      7698 BLAKE                      2850         30</span><br><span class="line">      7844 TURNER                     1500         30</span><br><span class="line">      7900 JAMES                       950         30</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> deptno=<span class="number">20</span> <span class="keyword">where</span> empno=<span class="number">7900</span>; <span class="comment">-- 从30部门调走了</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line"></span><br><span class="line">     EMPNO ENAME                       SAL     DEPTNO</span><br><span class="line"><span class="comment">---------- -------------------- ---------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600         30</span><br><span class="line">      7521 WARD                       1250         30</span><br><span class="line">      7654 MARTIN                     1250         30</span><br><span class="line">      7698 BLAKE                      2850         30</span><br><span class="line">      7844 TURNER                     1500         30</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不允许修改某个字段</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info</span><br><span class="line"><span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> scott.emp</span><br><span class="line"><span class="keyword">where</span> deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">check</span> <span class="keyword">option</span>;</span><br><span class="line"><span class="comment">-- 可以加约束名</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info</span><br><span class="line"><span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> scott.emp</span><br><span class="line"><span class="keyword">where</span> deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">check</span> <span class="keyword">option</span> <span class="keyword">constraint</span> emp_info_ck;</span><br><span class="line"><span class="comment">-- 查找刚建的约束（第一种方法查不到视图上的约束）</span></span><br><span class="line"><span class="keyword">select</span> a.owner,a.table_name,b.column_name,a.constraint_name,a.constraint_type</span><br><span class="line"><span class="keyword">from</span> user_constraints a, user_cons_columns b</span><br><span class="line"><span class="keyword">where</span> a.constraint_name=b.constraint_name </span><br><span class="line"><span class="keyword">and</span> a.owner=<span class="string">'SCOTT'</span>;</span><br><span class="line"><span class="keyword">select</span> owner, constraint_name, constraint_type <span class="keyword">from</span> user_constraints <span class="keyword">where</span> owner=<span class="string">'SCOTT'</span>;</span><br><span class="line"><span class="comment">-- 视图删除，约束也就没了</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 这个时候部门号就不可以修改了，只有部门号不能修改</span></span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> deptno=<span class="number">20</span> <span class="keyword">where</span> empno=<span class="number">7844</span>;</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-01402: view <span class="keyword">WITH</span> <span class="keyword">CHECK</span> <span class="keyword">OPTION</span> <span class="keyword">where</span>-clause violation</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 仍然可以涨工资</span></span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> sal=<span class="number">2000</span> <span class="keyword">where</span> empno=<span class="number">7844</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line"></span><br><span class="line">     EMPNO ENAME                       SAL     DEPTNO</span><br><span class="line"><span class="comment">---------- -------------------- ---------- ----------</span></span><br><span class="line">      7499 ALLEN                      1600         30</span><br><span class="line">      7521 WARD                       1250         30</span><br><span class="line">      7654 MARTIN                     1250         30</span><br><span class="line">      7698 BLAKE                      2850         30</span><br><span class="line">      7844 TURNER                     2000         30</span><br></pre></td></tr></table></figure>
+<p>只读视图</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 只允许读，不可以修改</span></span><br><span class="line"><span class="comment">-- 对只读视图不允许DML</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">force</span> <span class="keyword">view</span> emp_info</span><br><span class="line"><span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal,deptno <span class="keyword">from</span> scott.emp</span><br><span class="line"><span class="keyword">where</span> deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> emp_info <span class="keyword">set</span> sal=<span class="number">2000</span> <span class="keyword">where</span> empno=<span class="number">7844</span>;</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-42399: cannot perform a DML operation on a read-only view</span><br></pre></td></tr></table></figure>
+<p>创建视图时，select sal * 12 表达式需要取别名（列名不能是一个表达式）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">view</span> emp_info</span><br><span class="line"><span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal*<span class="number">12</span>,deptno <span class="keyword">from</span> scott.emp</span><br><span class="line"><span class="keyword">where</span> deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br><span class="line"></span><br><span class="line">ORA-00998: must name this expression <span class="keyword">with</span> a <span class="keyword">column</span> <span class="keyword">alias</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">view</span> emp_info</span><br><span class="line"><span class="keyword">as</span> <span class="keyword">select</span> empno,ename,sal*<span class="number">12</span> ann_sal,deptno <span class="keyword">from</span> emp</span><br><span class="line"><span class="keyword">where</span> deptno = <span class="number">30</span> <span class="keyword">with</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_info;</span><br><span class="line"></span><br><span class="line">     EMPNO ENAME                   ANN_SAL     DEPTNO</span><br><span class="line"><span class="comment">---------- -------------------- ---------- ----------</span></span><br><span class="line">      7499 ALLEN                     19200         30</span><br><span class="line">      7521 WARD                      15000         30</span><br><span class="line">      7654 MARTIN                    15000         30</span><br><span class="line">      7698 BLAKE                     34200         30</span><br><span class="line">      7844 TURNER                    24000         30</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--复杂视图不总是可以被修改</span></span><br><span class="line"><span class="comment">--行号rownum</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,ename <span class="keyword">from</span> emp <span class="keyword">where</span> <span class="keyword">rownum</span> &gt;= <span class="number">10</span>; <span class="comment">--rownum是查询之后再根据结果进行编号</span></span><br><span class="line"><span class="comment">--把查出来的结果，再进行筛选</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>，ename <span class="keyword">from</span>（<span class="keyword">select</span> <span class="keyword">rownum</span> aa,emp.* <span class="keyword">from</span> emp）<span class="keyword">where</span> aa&gt;=<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="对视图DML的限制">对视图DML的限制</h4>
+<p>删 - 改 - 增：条件越来越多</p>
+<h5 id="1-不允许删">1. 不允许删</h5>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200419111526695.png" alt="image-20200419111526695" style="zoom: 67%;">
+<h5 id="2-不能改">2. 不能改</h5>
+<p>【年薪 = sal*12】</p>
+<p>【金额 = 单价*数量】</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200419112145101.png" alt="image-20200419112145101" style="zoom:80%;">
+<h5 id="3-不能增">3. 不能增</h5>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200419112119386.png" alt="image-20200419112119386" style="zoom:80%;">
+<p>原表中有一个not null 没有被视图包括，则不能插</p>
+<p>eg</p>
+<p><img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200419112417920.png" alt="image-20200419112417920"></p>
+<p>t1为原表，v1为对应的视图</p>
+<p>向视图中插数据就是向表中插数据</p>
+<p>此时向视图插只能AB，c必为null；但原表不允许c为null，所以不允许插入数据</p>
+<h4 id="表的not-null属性">表的not null属性</h4>
+<p>能不能继承（继承即为用一张表数据创建新表）</p>
+<p>not null分显示/隐式</p>
+<ul>
+<li>
+<p>emp和emp1，将empno设置为主键</p>
+<p>主键显然不能为空，为隐式规定not null，但主键不继承</p>
+</li>
+<li>
+<p>e1和e2，将empno显示规定not null，会继承</p>
+</li>
+</ul>
+<p>scott下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">desc emp</span><br><span class="line"> Name                                                  Null?    Type</span><br><span class="line"> <span class="comment">----------------------------------------------------- -------- ---------------------------</span></span><br><span class="line"> EMPNO                                                 NOT NULL NUMBER(4)</span><br><span class="line"> ENAME                                                          VARCHAR2(10)</span><br><span class="line"> JOB                                                            VARCHAR2(9)</span><br><span class="line"> MGR                                                            NUMBER(4)</span><br><span class="line"> HIREDATE                                                       DATE</span><br><span class="line"> SAL                                                            NUMBER(7,2)</span><br><span class="line"> COMM                                                           NUMBER(7,2)</span><br><span class="line"> DEPTNO                                                         NUMBER(2)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 能不能继承（ocm ocp考试）</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> emp1 <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> scott.emp;</span><br><span class="line"><span class="comment">-- not null 没了</span></span><br><span class="line">desc emp1</span><br><span class="line"> Name                                                  Null?    Type</span><br><span class="line"> <span class="comment">----------------------------------------------------- -------- ---------------------------</span></span><br><span class="line"> EMPNO                                                          NUMBER(4)</span><br><span class="line"> ENAME                                                          VARCHAR2(10)</span><br><span class="line"> JOB                                                            VARCHAR2(9)</span><br><span class="line"> MGR                                                            NUMBER(4)</span><br><span class="line"> HIREDATE                                                       DATE</span><br><span class="line"> SAL                                                            NUMBER(7,2)</span><br><span class="line"> COMM                                                           NUMBER(7,2)</span><br><span class="line"> DEPTNO                                                         NUMBER(2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> e1(<span class="keyword">id</span> <span class="built_in">int</span>, <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>);</span><br><span class="line">desc e1</span><br><span class="line"> Name                                                  Null?    Type</span><br><span class="line"> <span class="comment">----------------------------------------------------- -------- ---------------------------</span></span><br><span class="line"> ID                                                             NUMBER(38)</span><br><span class="line"> NAME                                                  NOT NULL VARCHAR2(20)</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> e2 <span class="keyword">as</span> <span class="keyword">select</span> * <span class="keyword">from</span> e1;</span><br><span class="line"><span class="comment">-- not null还有</span></span><br><span class="line">desc e2</span><br><span class="line"> Name                                                  Null?    Type</span><br><span class="line"> <span class="comment">----------------------------------------------------- -------- ---------------------------</span></span><br><span class="line"> ID                                                             NUMBER(38)</span><br><span class="line"> NAME                                                  NOT NULL VARCHAR2(20)</span><br></pre></td></tr></table></figure>
+<h4 id="内嵌视图">内嵌视图</h4>
+<p>12c之前没有fetch子句，用内嵌视图实现</p>
+<p>先按工资从大到小排好，再取rownum小于等于多少的人（前几名）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename <span class="keyword">from</span> scott.emp;</span><br><span class="line">    ROWNUM      EMPNO ENAME</span><br><span class="line"><span class="comment">---------- ---------- --------------------</span></span><br><span class="line">         1       7369 SMITH</span><br><span class="line">         2       7499 ALLEN</span><br><span class="line">         3       7521 WARD</span><br><span class="line">         4       7566 JONES</span><br><span class="line">         5       7654 MARTIN</span><br><span class="line">         6       7698 BLAKE</span><br><span class="line">         7       7782 CLARK</span><br><span class="line">         8       7788 SCOTT</span><br><span class="line">         9       7839 KING</span><br><span class="line">        10       7844 TURNER</span><br><span class="line">        11       7876 ADAMS</span><br><span class="line">        12       7900 JAMES</span><br><span class="line">        13       7902 FORD</span><br><span class="line">        14       7934 MILLER</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 工资最多的前5个人</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename,sal <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename,sal <span class="keyword">from</span> scott.emp <span class="keyword">order</span> <span class="keyword">by</span> sal <span class="keyword">desc</span>)</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">rownum</span>&lt;=<span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>rownum是结果集的编号</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 取前三个人</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename <span class="keyword">from</span> scott.emp <span class="keyword">where</span> <span class="keyword">rownum</span>&lt;=<span class="number">3</span>;</span><br><span class="line">    ROWNUM      EMPNO ENAME</span><br><span class="line"><span class="comment">---------- ---------- --------------------</span></span><br><span class="line">         1       7369 SMITH</span><br><span class="line">         2       7499 ALLEN</span><br><span class="line">         3       7521 WARD</span><br><span class="line"><span class="comment">-- 取12以后的人</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename <span class="keyword">from</span> scott.emp <span class="keyword">where</span> <span class="keyword">rownum</span>&gt;=<span class="number">12</span>;</span><br><span class="line">no rows selected</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不是rownum不支持大于号</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename <span class="keyword">from</span> scott.emp <span class="keyword">where</span> <span class="keyword">rownum</span>&gt;<span class="number">0</span>; <span class="comment">-- 这个还是有的</span></span><br></pre></td></tr></table></figure>
+<p>起始时，结果集为空，对下一条可能符合条件的记录，rownum暂时赋值为1</p>
+<p>第一条语句，rownum是1，小于12，过滤掉了</p>
+<p>第二条语句，结果集为空，rownun还是1，小于12，又被过滤了</p>
+<p>。。。</p>
+<p>被过滤掉的行，rownum不会增加，rownum永远都是1，所以没有记录</p>
+<p>处理一下，勉强可以实现。。。但没有fetch + offset香啊</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">rownum</span>,empno,ename <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">rownum</span> aa, emp.* <span class="keyword">from</span> emp)</span><br><span class="line"><span class="keyword">where</span> aa&gt;=<span class="number">12</span>;</span><br><span class="line"><span class="comment">-- emp.*代表emp的所有字段</span></span><br><span class="line">    ROWNUM      EMPNO ENAME</span><br><span class="line"><span class="comment">---------- ---------- --------------------</span></span><br><span class="line">         1       7900 JAMES</span><br><span class="line">         2       7902 FORD</span><br><span class="line">         3       7934 MILLER</span><br></pre></td></tr></table></figure>
+<h3 id="同义词">同义词</h3>
+<h4 id="同义词-2">同义词</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- hr下</span></span><br><span class="line">desc emp</span><br><span class="line">ERROR:</span><br><span class="line">ORA-04043: object emp does not exist</span><br><span class="line">   </span><br><span class="line"><span class="keyword">create</span> <span class="keyword">synonym</span> emp <span class="keyword">for</span> scott.emp;</span><br><span class="line">desc emp</span><br><span class="line">ERROR:</span><br><span class="line">ORA-04043: object "SCOTT"."EMP" does not exist</span><br><span class="line">   </span><br><span class="line"><span class="comment">-- sys下</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">select</span> <span class="keyword">on</span> scott.emp <span class="keyword">to</span> hr; <span class="comment">-- 无权限还是不能访问</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">-- hr下</span></span><br><span class="line">desc emp <span class="comment">-- 可以看到表结构了</span></span><br></pre></td></tr></table></figure>
+<h2 id="5’-数据完整性-约束">5’ 数据完整性 - 约束</h2>
+<p>数据 + 规则 ----&gt; 保证数据的有效性、合理性</p>
+<p>无效数据【salary为-1000，成绩为855分，学生在烹饪系】</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> hr.employees</span><br><span class="line"><span class="keyword">set</span> department_id=<span class="number">55</span></span><br><span class="line"><span class="keyword">where</span> department_id=<span class="number">110</span>;</span><br><span class="line"></span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-02291: integrity constraint (HR.EMP_DEPT_FK) violated - parent key not found</span><br></pre></td></tr></table></figure>
+<p>数据完整性实现方法，开销从高到低，尽量使用约束实现</p>
+<ol>
+<li>代码</li>
+<li>触发器</li>
+<li>约束</li>
+</ol>
+<p>约束要起名字，不起系统会自动起【sys_cn】</p>
+<p>除非创建了之后就不会再去管理的那些约束</p>
+<p>可以创建表的时候定义约束，也可以在之后使用alter添加</p>
+<p>表级别的约束 =&gt; 列定义好了在定义约束列级别的约束 =&gt; 列写好了就紧接着定义约束</p>
+<h3 id="约束类型">约束类型</h3>
+<ol>
+<li>
+<p>not null</p>
+</li>
+<li>
+<p>unique</p>
+</li>
+<li>
+<p>primary key == pk（1+2）</p>
+</li>
+<li>
+<p>foreign key == fk【员工在的部门必须是存在的部门】</p>
+</li>
+<li>
+<p>check</p>
+</li>
+</ol>
+<h3 id="查询有关约束的信息">查询有关约束的信息</h3>
+<p>两个数据字典：</p>
+<p>user_constraints    --定义<strong>表级别</strong>的约束：关键字，约束名称，约束类型，字段</p>
+<p>user_cons_columns   --定义<strong>字段级别</strong>的约束：关键字，约束名称，约束类型</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> owner, constraint_name, constraint_type <span class="keyword">from</span> user_constraints;</span><br><span class="line"><span class="keyword">select</span> owner, constraint_name, TABLE_NAME, COLUMN_NAME, <span class="keyword">POSITION</span> <span class="keyword">from</span> user_cons_columns;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> a.owner,a.table_name,b.column_name,a.constraint_name,a.constraint_type</span><br><span class="line"><span class="keyword">from</span> user_constraints a, user_cons_columns b</span><br><span class="line"><span class="keyword">where</span> a.constraint_name=b.constraint_name </span><br><span class="line"><span class="keyword">and</span> a.owner=<span class="string">'HR'</span> <span class="keyword">and</span> a.table_name=<span class="string">'TEST'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="创建约束">创建约束</h3>
+<h4 id="定义约束书写格式">定义约束书写格式</h4>
+<p>列级别的约束：constraint，约束名称，约束类型</p>
+<p>表级别的约束：constraint，约束名称，约束类型，<strong>字段名</strong></p>
+<p>系统定义写约束类型就好了</p>
+<p>建表后</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> [表名] <span class="keyword">add</span> <span class="keyword">constraint</span> [约束信息];</span><br></pre></td></tr></table></figure>
+<p>建表时</p>
+<h4 id="定义非空">定义非空</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">test</span>(</span><br><span class="line">        a <span class="built_in">VARCHAR2</span>(<span class="number">2</span>) <span class="keyword">DEFAULT</span> <span class="string">'0'</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">        b <span class="built_in">VARCHAR2</span>(<span class="number">2</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h4 id="定义主键">定义主键</h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200317162230483.png" alt="image-20200317162230483" style="zoom:67%;">
+<h4 id="定义唯一性约束">定义唯一性约束</h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200418185519693.png" alt="image-20200418185519693" style="zoom:80%;">
+<h4 id="定义外键">定义外键</h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200418185610756.png" alt="image-20200418185610756" style="zoom:80%;">
+<p>删除部门的时候，查看是否有员工在这个部门，有的话删不了，除非：</p>
+<ul>
+<li>取消约束</li>
+<li>on delete cascade：连着这个部门的员工一起删除</li>
+<li>on delete set null：将在这个部门的员工部门号清空（null）</li>
+</ul>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200317162547204.png" alt="image-20200317162547204" style="zoom:67%;">
+<h4 id="check约束">check约束</h4>
+<p>约束不满足，不允许插入</p>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200418185946648.png" alt="image-20200418185946648" style="zoom: 80%;">
+<h4 id="混合例子">混合例子</h4>
+<img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200418190532268.png" alt="image-20200418190532268" style="zoom:80%;">
+<h3 id="禁用-启用约束">禁用 / 启用约束</h3>
+<p>使用禁用的条件</p>
+<ul>
+<li>
+<p>有数据违反约束会报错，如果不禁用，则一个不满足，作为一个事务整体全部都失败</p>
+<p>先把这些数据导进来，再用异常表，把违反约束的修改或者删除</p>
+</li>
+<li>
+<p>大批数据导入表中，每条数据检查约束，降低效率</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">disable</span> <span class="keyword">constraint</span> MIN_SAL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">enable</span> <span class="keyword">constraint</span> MIN_SAL;</span><br></pre></td></tr></table></figure>
+<h4 id="异常表实验">异常表实验</h4>
+<p><img src="/2020/03/10/Oracle/OracleSQL_part2/image-20200418193318378.png" alt="image-20200418193318378"></p>
+<p>模拟有一批数据插进来，但其中有一个坏数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> hr.test(<span class="keyword">id</span> <span class="built_in">number</span>(<span class="number">5</span>),<span class="keyword">name</span> <span class="built_in">char</span>(<span class="number">10</span>));</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> hr.test <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'aaa'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> hr.test <span class="keyword">values</span>(<span class="number">3</span>,<span class="string">'bbb'</span>);</span><br><span class="line"><span class="comment">-- 添加约束（删表不会删除约束？？？）</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> hr.test <span class="keyword">add</span> <span class="keyword">constraint</span> uni_name <span class="keyword">unique</span>(<span class="keyword">name</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> hr.test <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'aaa'</span>); <span class="comment">-- 名字一样，插不进来</span></span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-00001: unique constraint (HR.UNI_NAME) violated</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> hr.test <span class="keyword">disable</span> <span class="keyword">constraint</span> uni_name; <span class="comment">-- 禁用约束</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> hr.test <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'aaa'</span>);</span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
+<p>使用exceptions表（记录异常情况）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">desc exceptions</span><br><span class="line"><span class="comment">-- 如果这个表不存在，使用脚本产生这个表</span></span><br><span class="line">@?/rdbms/admin/utlexcpt</span><br><span class="line">Table created.</span><br><span class="line"></span><br><span class="line">desc exceptions</span><br><span class="line"> Name                                                  Null?    Type</span><br><span class="line"> <span class="comment">----------------------------------------------------- -------- --------------------------</span></span><br><span class="line"> ROW_ID                                                         ROWID</span><br><span class="line"> OWNER                                                          VARCHAR2(128)</span><br><span class="line"> TABLE_NAME                                                     VARCHAR2(128)</span><br><span class="line"> CONSTRAINT                                                     VARCHAR2(128)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> hr.test <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name <span class="keyword">exceptions</span> <span class="keyword">into</span> <span class="keyword">exceptions</span>; <span class="comment">-- 起不来</span></span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-02299: cannot validate (HR.UNI_NAME) - duplicate keys found</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">rowid</span>,<span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> hr.test <span class="keyword">where</span> <span class="keyword">rowid</span> <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> row_id <span class="keyword">from</span> hr.exceptions);</span><br><span class="line">ROWID                      ID NAME</span><br><span class="line"><span class="comment">------------------ ---------- --------------------</span></span><br><span class="line">AAASg8AADAAAPoGAAA          1 aaa</span><br><span class="line">AAASg8AADAAAPoGAAC          2 aaa</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 将重复的改名</span></span><br><span class="line"><span class="keyword">update</span> hr.test <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">'ccc'</span> <span class="keyword">where</span> <span class="keyword">rowid</span>=<span class="string">'AAASg8AADAAAPoGAAC'</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> hr.test <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name <span class="keyword">exceptions</span> <span class="keyword">into</span> <span class="keyword">exceptions</span>; <span class="comment">-- 起来了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> hr.test;</span><br><span class="line">        ID NAME</span><br><span class="line"><span class="comment">---------- --------------------</span></span><br><span class="line">         1 aaa</span><br><span class="line">         3 bbb</span><br><span class="line">         2 ccc</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 清空这个表，以后用的时候不会有之前的数据</span></span><br><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> <span class="keyword">exceptions</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查某个人的某张表，所有字段下的约束名称和类型</span></span><br><span class="line"><span class="keyword">select</span> a.owner,a.table_name,b.column_name,a.constraint_name,a.constraint_type</span><br><span class="line"><span class="keyword">from</span> user_constraints a, user_cons_columns b</span><br><span class="line"><span class="keyword">where</span> a.constraint_name=b.constraint_name </span><br><span class="line"><span class="keyword">and</span> a.owner=<span class="string">'HR'</span> <span class="keyword">and</span> a.table_name=<span class="string">'TEST'</span>;</span><br><span class="line">OWNER</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">CONSTRAINT_NAME</span><br><span class="line"><span class="comment">-------------------------------------------------------------------------------------------</span></span><br><span class="line">CO TABLE_NAME</span><br><span class="line"><span class="comment">-- ----------</span></span><br><span class="line">COLUMN_NAME</span><br><span class="line"><span class="comment">-------------------------------------------------------------------------------------------</span></span><br><span class="line">HR</span><br><span class="line">UNI_NAME</span><br><span class="line">U  TEST</span><br><span class="line">NAME</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">1.创建hr.test表：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">test</span>(<span class="keyword">id</span> <span class="built_in">number</span>(<span class="number">5</span>),<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>));</span><br><span class="line"></span><br><span class="line">2.插入数据：</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'aaa'</span>);</span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">3</span>,<span class="string">'bbb'</span>);</span><br><span class="line">   </span><br><span class="line">3.添加约束：</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">add</span> <span class="keyword">constraint</span> uni_name <span class="keyword">unique</span>(<span class="keyword">name</span>);<span class="comment">--name字段添加唯一性约束</span></span><br><span class="line">   <span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">test</span> <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'aaa'</span>);  <span class="comment">--报错，违反唯一性约束</span></span><br><span class="line"></span><br><span class="line">4.禁用约束</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">disable</span> <span class="keyword">constraint</span> uni_name;<span class="comment">--禁用约束</span></span><br><span class="line"></span><br><span class="line">5.使用exceptions表（找表中违反约束的lowid放入exception表中）</span><br><span class="line">desc exceptions <span class="comment">-- 不存在</span></span><br><span class="line"></span><br><span class="line">6.app/oracle/product/18.3.0/rdbms/admin中的脚本utlexcept.sql</span><br><span class="line">@?/rdbms/admin/utlexcpt.sql <span class="comment">--调用脚本创建excptions表</span></span><br><span class="line"><span class="comment">--斜线方向不能反</span></span><br><span class="line"><span class="comment">--?为oracle home，即F:\app\oracle\product\18.3.0</span></span><br><span class="line"></span><br><span class="line">7.启用约束，找表中违反约束的lowid放入exception表中：</span><br><span class="line">   <span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name <span class="keyword">exceptions</span> <span class="keyword">into</span> <span class="keyword">exceptions</span>;</span><br><span class="line">  <span class="comment">-- ORA-02299: 无法验证(HR.UNI_NAME) - 找到重复关键字</span></span><br><span class="line">   <span class="keyword">select</span> row_id,table_name <span class="keyword">from</span> <span class="keyword">exceptions</span>;</span><br><span class="line">   <span class="keyword">select</span> <span class="keyword">rowid</span>,<span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> <span class="keyword">test</span> <span class="keyword">where</span> <span class="keyword">rowid</span> <span class="keyword">in</span>(<span class="keyword">select</span> row_id <span class="keyword">from</span> <span class="keyword">exceptions</span>);</span><br><span class="line"></span><br><span class="line">8.update hr.test <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">'ccc'</span> <span class="keyword">where</span> <span class="keyword">rowid</span>=<span class="string">'AAASBdAADAAAPoFAAC'</span>; <span class="comment">-- rowid不同</span></span><br><span class="line"></span><br><span class="line">9.再次启用约束<span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">test</span> <span class="keyword">enable</span> <span class="keyword">constraint</span> uni_name;</span><br><span class="line"></span><br><span class="line">10.truncate <span class="keyword">table</span> <span class="keyword">exceptions</span>; <span class="comment">-- 截断表，清空异常表供以后使用</span></span><br><span class="line"></span><br><span class="line">11.在数据字典汇总查询约束信息(user_constraints,user_cons_columns)</span><br><span class="line"><span class="keyword">select</span> CONSTRAINT_NAME <span class="keyword">from</span> user_constraints;</span><br><span class="line"><span class="keyword">select</span> CONSTRAINT_NAME,TABLE_NAME, COLUMN_NAME <span class="keyword">from</span> user_cons_columns <span class="keyword">where</span> table_name=<span class="string">'TEST'</span>; <span class="comment">-- 区分大小写</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除约束">删除约束</h3>
+<p>约束是依赖于表的，不能直接drop constraint</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> cons_test <span class="keyword">drop</span> <span class="keyword">constraint</span> SAL_MIN;  <span class="comment">--删除约束</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/" title="Oracle SQL_part2">http://yoursite.com/2020/03/10/Oracle/OracleSQL_part2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/10/Oracle/OracleSQL/" rel="prev" title="Oracle SQL">
+      <i class="fa fa-chevron-left"></i> Oracle SQL
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" rel="next" title="Oracle 服务器架构">
+      Oracle 服务器架构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-DML"><span class="nav-text">2 DML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-text">insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update"><span class="nav-text">update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge"><span class="nav-text">merge</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-TCL"><span class="nav-text">3 TCL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#commit-rollback-savepoint"><span class="nav-text">commit rollback savepoint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alter"><span class="nav-text">alter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示提交-隐式提交"><span class="nav-text">显示提交&amp;隐式提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#显式提交"><span class="nav-text">显式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式提交"><span class="nav-text">隐式提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动提交"><span class="nav-text">自动提交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读的一致性"><span class="nav-text">读的一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回滚段的三个作用"><span class="nav-text">回滚段的三个作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-text">锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-DCL"><span class="nav-text">4 DCL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-DDL"><span class="nav-text">5 DDL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#oracle常见对象"><span class="nav-text">oracle常见对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表"><span class="nav-text">表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#建表"><span class="nav-text">建表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ps：伪列"><span class="nav-text">ps：伪列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rowid的组成"><span class="nav-text">rowid的组成</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ps：数据类型"><span class="nav-text">ps：数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询表"><span class="nav-text">查询表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改表"><span class="nav-text">修改表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改表名"><span class="nav-text">修改表名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加字段"><span class="nav-text">增加字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#修改字段"><span class="nav-text">修改字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#删除字段（列）"><span class="nav-text">删除字段（列）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将表改为只读"><span class="nav-text">将表改为只读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#给表添加注释"><span class="nav-text">给表添加注释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#给表的列加注释"><span class="nav-text">给表的列加注释</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#截断表"><span class="nav-text">截断表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#hwm"><span class="nav-text">hwm</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除表"><span class="nav-text">删除表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图"><span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视图的作用"><span class="nav-text">视图的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图的分类"><span class="nav-text">视图的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询视图数据字典"><span class="nav-text">查询视图数据字典</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建视图"><span class="nav-text">创建视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改视图结构"><span class="nav-text">修改视图结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过视图修改基表"><span class="nav-text">通过视图修改基表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对视图DML的限制"><span class="nav-text">对视图DML的限制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-不允许删"><span class="nav-text">1. 不允许删</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-不能改"><span class="nav-text">2. 不能改</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-不能增"><span class="nav-text">3. 不能增</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表的not-null属性"><span class="nav-text">表的not null属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内嵌视图"><span class="nav-text">内嵌视图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同义词"><span class="nav-text">同义词</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#同义词-2"><span class="nav-text">同义词</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5’-数据完整性-约束"><span class="nav-text">5’ 数据完整性 - 约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#约束类型"><span class="nav-text">约束类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询有关约束的信息"><span class="nav-text">查询有关约束的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建约束"><span class="nav-text">创建约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义约束书写格式"><span class="nav-text">定义约束书写格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义非空"><span class="nav-text">定义非空</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义主键"><span class="nav-text">定义主键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义唯一性约束"><span class="nav-text">定义唯一性约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义外键"><span class="nav-text">定义外键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check约束"><span class="nav-text">check约束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合例子"><span class="nav-text">混合例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁用-启用约束"><span class="nav-text">禁用 &#x2F; 启用约束</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#异常表实验"><span class="nav-text">异常表实验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除约束"><span class="nav-text">删除约束</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ 2284648070 → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ 2284648070</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin 13182988567 → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin 13182988567</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://creeper121386.github.io/" title="https:&#x2F;&#x2F;creeper121386.github.io" rel="noopener" target="_blank">WHY's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+
+
+  <!-- 动态背景 -->
+  
+</body>
+</html>
+

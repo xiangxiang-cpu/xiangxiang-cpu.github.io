@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="类与对象 类的基本概念  Java把类内的数据成员称为 域（field），封装于类内的函数称为方法(method)  main()也是方法   “类”就是把事物的数据与相关功能封装（Encapsulate）在一起，形成一种特殊的数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 类与对象">
+<meta property="og:url" content="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="类与对象 类的基本概念  Java把类内的数据成员称为 域（field），封装于类内的函数称为方法(method)  main()也是方法   “类”就是把事物的数据与相关功能封装（Encapsulate）在一起，形成一种特殊的数据结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C1.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C20160217151806391.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C20160217151831438.png">
+<meta property="og:image" content="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C20160217152321440.png">
+<meta property="article:published_time" content="2018-12-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T08:04:13.248Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C1.PNG">
+
+<link rel="canonical" href="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java 类与对象 | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!--     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.inactive').click(function(){
+      if($(this).siblings('ul').css('display')=='none'){
+        $(this).addClass('inactives');
+        $(this).siblings('ul').slideDown(100).children('li');
+      }else{
+        $(this).removeClass('inactives');
+        $(this).siblings('ul').slideUp(100);
+      }
+    })
+  });
+  </script> -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 类与对象
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-21 00:00:00" itemprop="dateCreated datePublished" datetime="2018-12-21T00:00:00+08:00">2018-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 16:04:13" itemprop="dateModified" datetime="2022-03-28T16:04:13+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1>类与对象</h1>
+<h2 id="类的基本概念">类的基本概念</h2>
+<ul>
+<li>Java把类内的数据成员称为 域（field），封装于类内的函数称为方法(method)
+<ul>
+<li>main()也是方法</li>
+</ul>
+</li>
+<li>“类”就是把事物的数据与相关功能封装（Encapsulate）在一起，形成一种特殊的数据结构</li>
+</ul>
+<a id="more"></a>
+<h2 id="定义类">定义类</h2>
+<ul>
+<li>定义类又称为声明类</li>
+</ul>
+<h3 id="class修饰符">class修饰符</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:center">任何对象都可以访问</td>
+</tr>
+<tr>
+<td style="text-align:center">abstract</td>
+<td style="text-align:center">抽象类需要子类提供方法实现，不能实例化</td>
+</tr>
+<tr>
+<td style="text-align:center">final</td>
+<td style="text-align:center">最终类，或非继承类，不能被其他的类继承</td>
+</tr>
+<tr>
+<td style="text-align:center">缺省</td>
+<td style="text-align:center">位于相同包的对象可以使用</td>
+</tr>
+</tbody>
+</table>
+<p>ps：一个类可以有多个修饰符，无先后顺序</p>
+<p>​	abstract和final对立，不能放在一起</p>
+<h3 id="field修饰符">field修饰符</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">能访问的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:center">任何对象的方法</td>
+</tr>
+<tr>
+<td style="text-align:center">private</td>
+<td style="text-align:center">只允许本类的方法访问，其他类（包括子类）的方法不能访问</td>
+</tr>
+<tr>
+<td style="text-align:center">protected</td>
+<td style="text-align:center">本类、子类（子类可以覆盖此变量）、相同包内</td>
+</tr>
+<tr>
+<td style="text-align:center">缺省</td>
+<td style="text-align:center">相同包</td>
+</tr>
+</tbody>
+</table>
+<p>ps：transient&amp;volatile？</p>
+<p>​	定义类的成员变量时可以同时赋初值</p>
+<h3 id="method修饰符">method修饰符</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">能访问的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:center">任何对象的方法</td>
+</tr>
+<tr>
+<td style="text-align:center">private</td>
+<td style="text-align:center">只允许本类的方法访问，其他类（包括子类）的方法不能访问</td>
+</tr>
+<tr>
+<td style="text-align:center">protected</td>
+<td style="text-align:center">本类、子类（子类可以覆盖此变量）、相同包内</td>
+</tr>
+<tr>
+<td style="text-align:center">缺省</td>
+<td style="text-align:center">相同包</td>
+</tr>
+<tr>
+<td style="text-align:center">final</td>
+<td style="text-align:center">方法不能被重载</td>
+</tr>
+<tr>
+<td style="text-align:center">static</td>
+<td style="text-align:center">不需要实例化一个对象就可以调用的方法</td>
+</tr>
+<tr>
+<td style="text-align:center">abstract</td>
+<td style="text-align:center">抽象方法，需要在子类中实现</td>
+</tr>
+</tbody>
+</table>
+<p>ps：成员变量和局部变量的区别</p>
+<ol>
+<li>局部变量不能被访问控制修饰符和static所修饰</li>
+<li>成员变量是对象的一部分，对象存在于堆内存中，局部变量存在于栈内存（课本P84）</li>
+<li>生命周期不同</li>
+<li>成员变量会以类型的默认值赋初值（例外：final且非static，必须显式地赋初值）
+<ul>
+<li>long类型：0L</li>
+<li>float类型：0.0F</li>
+<li>double类型：0.0D</li>
+<li>char类型：’\u0000’（表示为空）</li>
+<li>boolean类型：false</li>
+<li>所有引用类型：null</li>
+</ul>
+</li>
+</ol>
+<h2 id="对象的创建与使用">对象的创建与使用</h2>
+<ul>
+<li>
+<p>创建的对象实体存在于堆内存中，引用变量存在于栈内</p>
+<p>引用变量指向：存在于堆空间的对象的首地址</p>
+</li>
+<li>
+<p>public：定义公共类</p>
+<p>psvm：程序执行的起始点</p>
+</li>
+<li>
+<p>程序运行到调用方法语句后，程序会暂时跳到该方法中运行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> pi = <span class="number">3.14</span>;</span><br><span class="line">pi = <span class="number">3</span>;<span class="comment">// 程序自动将pi设置为3.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果要强调是 对象本身的成员，可以在成员名前加 this.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.a = a;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="参数传递">参数传递</h2>
+<h3 id="以数组作为参数或返回值的方法调用">以数组作为参数或返回值的方法调用</h3>
+<p>一位数组的传递</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 传递参数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">least</span><span class="params">(<span class="keyword">int</span>[] array)</span></span>&#123;&#125;</span><br><span class="line"><span class="comment">// 调用参数列表写数组名</span></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">least(a);</span><br></pre></td></tr></table></figure>
+<p>二维数组的传递</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[][] a = &#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;,&#123;<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;&#125;;<span class="comment">// 定义一个二维数组</span></span><br><span class="line"><span class="keyword">int</span> temp;</span><br><span class="line"><span class="comment">// 返回值和参数均为二维数组的方法</span></span><br><span class="line"><span class="keyword">int</span>[][] transpose(<span class="keyword">int</span>[][] array)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; array.length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; array[i].length; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            temp = array[i][j];</span><br><span class="line">            array[i][j] = array[j][i];</span><br><span class="line">            array[j][i] = temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br><span class="line">transpose(a);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C1.PNG" alt="1"></p>
+<h3 id="按值传参or按址传参？">按值传参or按址传参？</h3>
+<p><a href="https://blog.csdn.net/xiaosha009/article/details/50680199" target="_blank" rel="noopener">https://blog.csdn.net/xiaosha009/article/details/50680199</a></p>
+<p>基本数据类型为值传递</p>
+<p>引用数据类型传递的，也是这个引用变量的值本身</p>
+<h4 id="实例">实例</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行的结果如下：main a=[100, 101]</p>
+<p>这时候，很多人会说，看，java中的基本类型是值传递，对象类型是引用传递。如果这样认为的话，那就大错特错了。再来看看下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行结果如下：main a=[100]</p>
+<h4 id="分析">分析</h4>
+<p><code>List&lt;Integer&gt; a = new ArrayList&lt;Integer&gt;();</code></p>
+<p>语句执行完毕后：</p>
+<p><img src="/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C20160217151806391.png" alt="20160217151806391"></p>
+<p>当调用methodTwo方法时，模型变如下：</p>
+<p>这时候应该就清晰很多了，对象引用a被复制了一份出来使用，methodTwo拿到的是a的复制品。</p>
+<p><img src="/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C20160217151831438.png" alt="20160217151831438"></p>
+<p>调用完method2中的</p>
+<p>a = new ArrayList<Integer>();</Integer></p>
+<p>后，模型变化如下：</p>
+<p><img src="/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/D:%5CDocuments%5C0%E9%87%8D%E8%A6%81%E5%9B%BE%EF%BC%81%EF%BC%81%EF%BC%81%5C20160217152321440.png" alt="20160217152321440"></p>
+<p>​	在new一个新的对象出来之后，methodTwo方法的a指向了新的对象实例，所以怎么改变都不会改变main方法中a的对象。同时也可以证明，<strong>java中只有值传递没有引用传递，在传递对象时，是传递对象的引用的副本，不是直接传递对象的引用本体。</strong></p>
+<h2 id="匿名对象">匿名对象</h2>
+<h3 id="例子">例子</h3>
+<p><code>new Cylinder().set(1,2,3);</code></p>
+<p>不定义对象的引用变量</p>
+<p>new Cylinder() 即为匿名对象，语句执行完后，该对象成为垃圾</p>
+<h3 id="使用情况">使用情况</h3>
+<ol>
+<li>对一个对象只需要进行一次方法调用</li>
+<li>匿名对象作为实参传递给一个方法调用？？</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2018/12/21/Java/%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1%E7%AC%94%E8%AE%B0/" title="Java 类与对象">http://yoursite.com/2018/12/21/Java/类与对象笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/21/Network/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="prev" title="Linux C network programming">
+      <i class="fa fa-chevron-left"></i> Linux C network programming
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/21/Java/%E7%BB%A7%E6%89%BF%E3%80%81%E6%8A%BD%E8%B1%A1%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3/" rel="next" title="Java继承、抽象类和接口">
+      Java继承、抽象类和接口 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-text">类与对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类的基本概念"><span class="nav-text">类的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义类"><span class="nav-text">定义类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class修饰符"><span class="nav-text">class修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#field修饰符"><span class="nav-text">field修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#method修饰符"><span class="nav-text">method修饰符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的创建与使用"><span class="nav-text">对象的创建与使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数传递"><span class="nav-text">参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#以数组作为参数或返回值的方法调用"><span class="nav-text">以数组作为参数或返回值的方法调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按值传参or按址传参？"><span class="nav-text">按值传参or按址传参？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实例"><span class="nav-text">实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析"><span class="nav-text">分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匿名对象"><span class="nav-text">匿名对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用情况"><span class="nav-text">使用情况</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ 2284648070 → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ 2284648070</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin 13182988567 → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin 13182988567</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://creeper121386.github.io/" title="https:&#x2F;&#x2F;creeper121386.github.io" rel="noopener" target="_blank">WHY's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+
+
+  <!-- 动态背景 -->
+  
+</body>
+</html>
+

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="1. sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 基操">
+<meta property="og:url" content="http://yoursite.com/2020/02/25/Oracle/Oracle%E5%9F%BA%E6%93%8D/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="1. sqlplus常用命令 sql语句关键字 !&#x3D; sqlplus命令 不产生歧义的时候可以缩写 如何学习sqlplus命令：登陆SQL plus后，help index">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-28T08:05:54.866Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/02/25/Oracle/Oracle%E5%9F%BA%E6%93%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle 基操 | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!--     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.inactive').click(function(){
+      if($(this).siblings('ul').css('display')=='none'){
+        $(this).addClass('inactives');
+        $(this).siblings('ul').slideDown(100).children('li');
+      }else{
+        $(this).removeClass('inactives');
+        $(this).siblings('ul').slideUp(100);
+      }
+    })
+  });
+  </script> -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/25/Oracle/Oracle%E5%9F%BA%E6%93%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle 基操
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-02-25T00:00:00+08:00">2020-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 16:05:54" itemprop="dateModified" datetime="2022-03-28T16:05:54+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-sqlplus常用命令">1. sqlplus常用命令</h2>
+<p>sql语句关键字 != sqlplus命令</p>
+<p>不产生歧义的时候可以缩写</p>
+<p>如何学习sqlplus命令：登陆SQL plus后，help index</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">help index</span><br><span class="line"></span><br><span class="line">Enter Help [topic] for help.</span><br><span class="line"></span><br><span class="line"> @             COPY         PAUSE                    SHUTDOWN</span><br><span class="line"> @@            DEFINE       PRINT                    SPOOL</span><br><span class="line"> &#x2F;             DEL          PROMPT                   SQLPLUS</span><br><span class="line"> ACCEPT        DESCRIBE     QUIT                     START</span><br><span class="line"> APPEND        DISCONNECT   RECOVER                  STARTUP</span><br><span class="line"> ARCHIVE LOG   EDIT         REMARK                   STORE</span><br><span class="line"> ATTRIBUTE     EXECUTE      REPFOOTER                TIMING</span><br><span class="line"> BREAK         EXIT         REPHEADER                TTITLE</span><br><span class="line"> BTITLE        GET          RESERVED WORDS (SQL)     UNDEFINE</span><br><span class="line"> CHANGE        HELP         RESERVED WORDS (PL&#x2F;SQL)  VARIABLE</span><br><span class="line"> CLEAR         HOST         RUN                      WHENEVER OSERROR</span><br><span class="line"> COLUMN        INPUT        SAVE                     WHENEVER SQLERROR</span><br><span class="line"> COMPUTE       LIST         SET                      XQUERY</span><br><span class="line"> CONNECT       PASSWORD     SHOW</span><br><span class="line"></span><br><span class="line">help @</span><br></pre></td></tr></table></figure>
+<p>@ 调用脚本，把文件中的语句执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@&#x2F;u01&#x2F;demo&#x2F;sql1</span><br></pre></td></tr></table></figure>
+<p>list 列出当前缓存中的最后一条语句</p>
+<p>edit 只能编辑最后一条语句？？？</p>
+<p>run 运行edit中的语句</p>
+<h3 id="sqlplus-startup-shutdown">sqlplus startup shutdown</h3>
+<p>linux用oracle用户登录，不能用root</p>
+<p>~ 相当于Oracle home？？？（使用pwd查看所在文件当前路径）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># linux中环境变量以$开头，$HOME，$ORACLE_HOME</span></span><br><span class="line"><span class="comment"># 使用echo查看，使用export设置</span></span><br><span class="line"><span class="comment"># export ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1 # 等号两边不能有空格</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$ORACLE_HOME</span> <span class="comment"># /u01/app/oracle/product/12.2.0/dbhome_1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$HOME</span> <span class="comment"># /home/oracle</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># linux不支持@echo，没有pause</span></span><br></pre></td></tr></table></figure>
+<!--more-->
+<p>在~下，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl status</span><br><span class="line">lsnrctl start</span><br><span class="line">sqlplus &#x2F; as sysdba</span><br><span class="line"># 或者</span><br><span class="line">sqlplus hr&#x2F;123123</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">sqlplus &#x2F;nolog</span><br><span class="line">conn</span><br></pre></td></tr></table></figure>
+<p>用Oracle用户登录后，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startup</span><br></pre></td></tr></table></figure>
+<h3 id="connect切换用户">connect切换用户</h3>
+<p>已登录时，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conn 用户名&#x2F;密码@网络服务器名 [as sysdba&#x2F;sysoper] </span><br><span class="line">conn &#x2F; as sysdba</span><br></pre></td></tr></table></figure>
+<h3 id="exit退出登录">exit退出登录</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>该命令会断开与数据库的连接，同时会退出sqlplus</p>
+<h3 id="password更改用户密码">password更改用户密码</h3>
+<p>需要登录一个能修改密码的用户</p>
+<p>在sys登录的时候，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">password scott 可以修改其他用户的密码</span><br><span class="line">password 修改sys的密码</span><br></pre></td></tr></table></figure>
+<h3 id="set-show">set &amp; show</h3>
+<h4 id="会话级别设置">会话级别设置</h4>
+<p>show all，显示所有个性化定制</p>
+<p>在这里set show，只是会话级别的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- prompt</span></span><br><span class="line"><span class="keyword">show</span> sqlprompt <span class="comment">-- sqlprompt "_user"@"_connect_identifier&gt;"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 在prompt之前显示时间</span></span><br><span class="line"><span class="keyword">show</span> <span class="built_in">time</span></span><br><span class="line"><span class="keyword">set</span> <span class="built_in">time</span> <span class="keyword">on</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 当前登录的数据库用户</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">user</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 定义变量所用的标志</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">define</span> <span class="comment">-- 默认为&amp;，可以修改</span></span><br><span class="line"><span class="keyword">set</span> difine !</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 自动commit</span></span><br><span class="line"><span class="keyword">show</span> autoc</span><br><span class="line"><span class="keyword">set</span> autoc <span class="keyword">on</span> <span class="comment">-- 不建议，会导致性能差</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询反馈信息</span></span><br><span class="line"><span class="keyword">show</span> feed</span><br><span class="line"><span class="keyword">set</span> feed <span class="number">5</span> <span class="comment">-- 5 rows selected也会显示，4行就不显示了</span></span><br><span class="line"><span class="keyword">set</span> feed <span class="keyword">off</span> <span class="comment">-- 也可以不开启尾部的反馈</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 表头</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">head</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">head</span> <span class="keyword">off</span> <span class="comment">-- 不输出表头</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- verify，提交变量那里，显示old和new</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">verify</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">verify</span> <span class="keyword">off</span></span><br></pre></td></tr></table></figure>
+<h4 id="全局设置显示格式">全局设置显示格式</h4>
+<p>登陆时在会话里修改，则只为会话级别的，重新登陆会失效</p>
+<p>不登陆Oracle时</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim <span class="variable">$ORACLE_HOME</span>/sqlplus/admin/glogin.sql</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> linesize <span class="number">100</span></span><br><span class="line"><span class="keyword">set</span> pagesize <span class="number">50</span></span><br><span class="line"><span class="keyword">set</span> sqlprompt _user<span class="string">"@"</span>_connect_identifier&gt;</span><br><span class="line"><span class="keyword">define</span> _EDITOR=<span class="string">"vim"</span></span><br></pre></td></tr></table></figure>
+<p>登录Oracle后可以用这两个命令查看参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show linesize</span><br><span class="line">show pagesize</span><br></pre></td></tr></table></figure>
+<h3 id="column设置列">column设置列</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 设置列宽</span></span><br><span class="line">col [列名] for a20</span><br><span class="line">20指字符数量</span><br><span class="line"></span><br><span class="line">col [列名] format 9999999</span><br><span class="line">9代表一个数字</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不打印某一列</span></span><br><span class="line">col [列名] noprint</span><br><span class="line">col [列名] print</span><br></pre></td></tr></table></figure>
+<h3 id="执行sql脚本">@执行sql脚本</h3>
+<p>执行位于共享目录的sql脚本</p>
+<p>用@执行脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@&#x2F;mnt&#x2F;hgfs&#x2F;D&#x2F;software&#x2F;os&#x2F;scott.sql</span><br><span class="line">用于安装scott方案</span><br></pre></td></tr></table></figure>
+<h3 id="desc">desc</h3>
+<p>查询时记得加上表的所有者</p>
+<h2 id="2-moba常用操作">2. moba常用操作</h2>
+<p>CTRL + L 清屏</p>
+<h2 id="3-Oracle常用操作">3. Oracle常用操作</h2>
+<h3 id="查数据字典">查数据字典</h3>
+<h4 id="dict-columns">dict_columns</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> TABLE_NAME=<span class="string">'DICT'</span>; </span><br><span class="line"><span class="keyword">select</span> COLUMN_NAME,COMMENTS <span class="keyword">from</span> dict_columns <span class="keyword">where</span> table_name=<span class="string">'DBA_TABLESPACES'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询某个表中字段是啥意思</span></span><br><span class="line"><span class="comment">-- 我们可以在catalog.sql脚本中找到DICT_COLUMNS视图的创建语句</span></span><br></pre></td></tr></table></figure>
+<p>user_tab_columns？？？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> dict_columns <span class="keyword">where</span> COLUMN_NAME=<span class="string">'TABLE_NAME'</span> <span class="keyword">and</span> <span class="keyword">rownum</span>&lt;<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询都有哪些表包含指定的字段</span></span><br><span class="line"><span class="comment">-- 不加限制，可能条目太多</span></span><br></pre></td></tr></table></figure>
+<h4 id="dict">dict</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> table_name,comments <span class="keyword">from</span> dict <span class="keyword">where</span> table_name=<span class="keyword">upper</span>(<span class="string">'dba_users'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看表的作用</span></span><br></pre></td></tr></table></figure>
+<h4 id="users">_users</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> username, account_status <span class="keyword">from</span> dba_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- expired - 过期，需要修改密码</span></span><br><span class="line"><span class="comment">-- locked - 需要解锁</span></span><br><span class="line"><span class="comment">-- open - 正常</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> hr <span class="keyword">account</span> <span class="keyword">unlock</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="views">_views</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> owner,view_name <span class="keyword">from</span> dba_views <span class="keyword">where</span> view_name=<span class="keyword">upper</span>(<span class="string">'dba_tablespaces'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看是不是视图 </span></span><br><span class="line"><span class="comment">-- 动态性能视图查不到？？？</span></span><br></pre></td></tr></table></figure>
+<h4 id="tables">_tables</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- table_name, tablespace_name</span></span><br><span class="line"><span class="keyword">select</span> tablespace_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> table_name=<span class="keyword">upper</span>(<span class="string">'emp'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查某一个表所在的表空间</span></span><br><span class="line"></span><br><span class="line">desc user_indexes <span class="comment">-- 查看有哪些索引</span></span><br><span class="line"><span class="keyword">select</span> index_name <span class="keyword">from</span> user_indexes;</span><br><span class="line">desc user_triggers <span class="comment">-- 触发器</span></span><br><span class="line">desc user_jobs <span class="comment">-- </span></span><br><span class="line">desc user_users <span class="comment">-- 用户</span></span><br></pre></td></tr></table></figure>
+<p>查数据文件相关信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">desc v$datafile <span class="comment">-- 要在sys下</span></span><br><span class="line">desc dba_data_files</span><br></pre></td></tr></table></figure>
+<p>查某一个表空间所在的数据文件</p>
+<p>dba_data_files，没有all和user</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> tablespace_name,file_id,<span class="keyword">bytes</span>/<span class="number">1024</span>/<span class="number">1024</span>,file_name <span class="keyword">from</span> dba_data_files <span class="keyword">order</span> <span class="keyword">by</span> file_id;</span><br></pre></td></tr></table></figure>
+<h3 id="sqldeveloper">sqldeveloper</h3>
+<p>在/下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> DISPLAY=192.168.11.1:0.0</span><br><span class="line"><span class="comment"># echo $DISPLAY</span></span><br><span class="line">sqldeveloper.sh</span><br></pre></td></tr></table></figure>
+<h3 id="查看Oracle错误信息">查看Oracle错误信息</h3>
+<p>退出Oracle，在/下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oerr ora [错误代码]</span><br></pre></td></tr></table></figure>
+<h3 id="查看警告日志文件">查看警告日志文件</h3>
+<p>记录死锁、Oracle内部错误等等重大事件</p>
+<p>知道是哪一个参数不对</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;u01&#x2F;app&#x2F;oracle&#x2F;diag&#x2F;rdbms&#x2F;db12c&#x2F;trace&#x2F;alert_db12c.log</span><br></pre></td></tr></table></figure>
+<p>这个文件可以删，记录日志时会自动产生</p>
+<h3 id="adrci">adrci</h3>
+<p>到另一个tab的os下，使用adrci命令查看警告日志文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">adrci</span><br><span class="line">adrci&gt; help</span><br><span class="line">adrci&gt; show homes</span><br><span class="line">ADR Homes:</span><br><span class="line">diag/rdbms/db12c/db12c</span><br><span class="line">diag/rdbms/dummy/sales</span><br><span class="line">diag/rdbms/sales/sales</span><br><span class="line">diag/rdbms/oradup/oradup</span><br><span class="line">diag/rdbms/kwra_pitr_sales/kwra</span><br><span class="line">diag/rdbms/eyhf_pitr_sales/EyhF</span><br><span class="line">diag/rdbms/cdb/cdb</span><br><span class="line">diag/clients/user_oracle/host_901187968_107</span><br><span class="line">diag/tnslsnr/ocp/listener</span><br><span class="line"></span><br><span class="line">adrci&gt; set home diag/rdbms/db12c/db12c</span><br><span class="line">adrci&gt; show home</span><br><span class="line">ADR Homes:</span><br><span class="line">diag/rdbms/db12c/db12c</span><br><span class="line"></span><br><span class="line">adrci&gt; show alert -tail 30</span><br><span class="line"><span class="comment">-- 从后往前看，30行</span></span><br><span class="line">Errors in file /u01/app/oracle/diag/rdbms/db12c/db12c/trace/db12c_lgwr_28757.trc:</span><br><span class="line">ORA-00313: ??????? 1 (???? 1) ???</span><br><span class="line">ORA-00312: ???? 1 ?? 1: '/u01/app/oracle/oradata/db12c/redo01.log'</span><br><span class="line">ORA-27037: ????????</span><br><span class="line">Linux-x86_64 Error: 2: No such file or directory</span><br><span class="line"><span class="comment">-- 发现是redo01.log这个文件坏了</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="linux环境变量">linux环境变量</h3>
+<p>环境变量一般是指操作系统中指定操作系统运行环境的一些参数。它相当于一个指针，想要查看变量的值，需要加上“$”</p>
+<p>按作用的范围分。在Linux中的变量，可以分为环境变量和本地变量：</p>
+<p>1）环境变量：相当于全局变量，存在于所有的Shell中，具有继承性；<br>
+2）本地变量：相当于局部变量只存在当前Shell中，本地变量包含环境变量，非环境变量不具有继承性。</p>
+<p>按生存周期分</p>
+<p>1）永久：需要修改配置文件，变量永久生效；<br>
+2）暂时：使用export定义，关闭Shell后失效。</p>
+<p>在~下的.bash_profile中？？？</p>
+<ul>
+<li><code>export </code>命令显示当前系统定义的所有环境变量</li>
+<li><code>echo $PATH</code> 命令输出当前的<code>PATH</code>环境变量的值</li>
+</ul>
+<p>DISPLAY</p>
+<p>HOME  用户的主目录（也称家目录，和~相同） HOME 变量在不同用户身份下值不相同</p>
+<p>HOSTNAME 主机名</p>
+<p>LOGNAME 用户的登录名</p>
+<p>ORACLE_BASE  oracle的根目录</p>
+<p>ORACLE_HOME   oracle产品的目录，如果安装了两个版本的Oracle，会有两个</p>
+<p>方便用户更轻松地进入一个层次较深的目录</p>
+<p>ORACLE_SID 用于区别同一台机器上的不同实例</p>
+<p>ORACLE_UNQNAME？？？</p>
+<p>USER</p>
+<p>HISTSIZE 该变量指定保存历史命令的数目（最多1000）</p>
+<p>PATH  变量定义了==运行命令的查找路径==，以冒号<code>:</code>分割不同的路径</p>
+<p>SHELL 该变量指定用户当前使用的解析器</p>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/02/25/Oracle/Oracle%E5%9F%BA%E6%93%8D/" title="Oracle 基操">http://yoursite.com/2020/02/25/Oracle/Oracle基操/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/28/Research/%E9%85%8D%E7%BD%AEtensorflow/" rel="prev" title="tensorflow安装">
+      <i class="fa fa-chevron-left"></i> tensorflow安装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/10/Oracle/OracleSQL/" rel="next" title="Oracle SQL">
+      Oracle SQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-sqlplus常用命令"><span class="nav-text">1. sqlplus常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlplus-startup-shutdown"><span class="nav-text">sqlplus startup shutdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect切换用户"><span class="nav-text">connect切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit退出登录"><span class="nav-text">exit退出登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#password更改用户密码"><span class="nav-text">password更改用户密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-show"><span class="nav-text">set &amp; show</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#会话级别设置"><span class="nav-text">会话级别设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局设置显示格式"><span class="nav-text">全局设置显示格式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#column设置列"><span class="nav-text">column设置列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行sql脚本"><span class="nav-text">@执行sql脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#desc"><span class="nav-text">desc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-moba常用操作"><span class="nav-text">2. moba常用操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Oracle常用操作"><span class="nav-text">3. Oracle常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查数据字典"><span class="nav-text">查数据字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dict-columns"><span class="nav-text">dict_columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dict"><span class="nav-text">dict</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#users"><span class="nav-text">_users</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#views"><span class="nav-text">_views</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tables"><span class="nav-text">_tables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqldeveloper"><span class="nav-text">sqldeveloper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看Oracle错误信息"><span class="nav-text">查看Oracle错误信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看警告日志文件"><span class="nav-text">查看警告日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adrci"><span class="nav-text">adrci</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux环境变量"><span class="nav-text">linux环境变量</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ 2284648070 → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ 2284648070</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin 13182988567 → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin 13182988567</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://creeper121386.github.io/" title="https:&#x2F;&#x2F;creeper121386.github.io" rel="noopener" target="_blank">WHY's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+
+
+  <!-- 动态背景 -->
+  
+</body>
+</html>
+

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="创建容器数据库（cdb） test - 20210405 不建议手工创建，否则一堆问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 12c中的c">
+<meta property="og:url" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="创建容器数据库（cdb） test - 20210405 不建议手工创建，否则一堆问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083351622.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083517069.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084723162.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084820564.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084953390.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085120398.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085718644.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085928678.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417090536311.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417092430038.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417093150625.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095135258.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095612499.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095655521.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417101300271.png">
+<meta property="og:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417104917764.png">
+<meta property="article:published_time" content="2020-04-17T14:13:55.000Z">
+<meta property="article:modified_time" content="2022-03-28T08:05:47.540Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083351622.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle 12c中的c | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!--     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.inactive').click(function(){
+      if($(this).siblings('ul').css('display')=='none'){
+        $(this).addClass('inactives');
+        $(this).siblings('ul').slideDown(100).children('li');
+      }else{
+        $(this).removeClass('inactives');
+        $(this).siblings('ul').slideUp(100);
+      }
+    })
+  });
+  </script> -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle 12c中的c
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-17 22:13:55" itemprop="dateCreated datePublished" datetime="2020-04-17T22:13:55+08:00">2020-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 16:05:47" itemprop="dateModified" datetime="2022-03-28T16:05:47+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="创建容器数据库（cdb）">创建容器数据库（cdb）</h2>
+<p>test - 20210405</p>
+<p>不建议手工创建，否则一堆问题</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export DISPLAY&#x3D;192.168.11.1:0.0</span><br><span class="line">dbca</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建模式 - 高级配置</li>
+<li>全局数据库名 - cdb</li>
+<li>创建为容器数据库</li>
+<li>取消将本地还原表空间用于PDB（Oracle认证考试时取消）</li>
+<li>pdb名称 - pdb1</li>
+<li>将下列用于数据库存储属性（文件系统）</li>
+<li>指定快速恢复区</li>
+<li>启用归档</li>
+<li>配置选项 - 实例方案 - 将实例方案添加到数据库</li>
+<li>创建选项 - 所有用户使用同一口令（admin）</li>
+<li>开始创建就好了</li>
+</ul>
+<h2 id="cdb和non-cdb">cdb和non-cdb</h2>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083351622.png" alt="image-20200417083351622" style="zoom:67%;">
+<p>==cdb == 一个例程接多个数据库==</p>
+<p>dba管好cdb，分部门管好自己的数据</p>
+<p>重要</p>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417083517069.png" alt="image-20200417083517069" style="zoom:67%;">
+<p>可插拔数据库（PDB）pluggable</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME                       <span class="keyword">OPEN</span> <span class="keyword">MODE</span>  <span class="keyword">RESTRICTED</span></span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">         <span class="number">2</span> PDB$<span class="keyword">SEED</span>                       <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">         <span class="number">3</span> PDB1                           <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> con_name</span><br><span class="line"><span class="comment">-- CDB$ROOT</span></span><br><span class="line"><span class="keyword">show</span> con_id</span><br><span class="line"><span class="comment">-- 1</span></span><br></pre></td></tr></table></figure>
+<p>第一个是总的，pdb1是新建的哪个</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> con_id,<span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">tablespace</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    CON_ID NAME</span><br><span class="line"><span class="comment">---------- ------------------------------------------------------------</span></span><br><span class="line">         1 SYSAUX</span><br><span class="line">         1 SYSTEM</span><br><span class="line">         1 UNDOTBS1</span><br><span class="line">         1 USERS</span><br><span class="line">         1 TEMP</span><br><span class="line">         2 SYSTEM</span><br><span class="line">         2 TEMP</span><br><span class="line">         2 SYSAUX</span><br><span class="line">         3 TEMP</span><br><span class="line">         3 SYSTEM</span><br><span class="line">         3 SYSAUX</span><br><span class="line">         3 USERS</span><br><span class="line"></span><br><span class="line">12 rows selected.</span><br></pre></td></tr></table></figure>
+<p>系统数据共享？</p>
+<p>cdb下，系统数据分两部分</p>
+<ul>
+<li>Oracle系统数据：放在cdb_root里</li>
+<li>用户的系统数据：放在每个用户的system表空间里。用户表的定义（表的创建者等信息）</li>
+</ul>
+<p>非cdb时，两部分混在一起</p>
+<p>物理结构（查看哪些是共享的）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 初始化文件只有一个（因为instance只有一个）</span></span><br><span class="line"><span class="keyword">show</span> parameter <span class="keyword">spfile</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">NAME</span>                                 <span class="keyword">TYPE</span>                   <span class="keyword">VALUE</span></span><br><span class="line"><span class="comment">------------------------------------ ---------------------- ------------------------------</span></span><br><span class="line"><span class="keyword">spfile</span>                               <span class="keyword">string</span>                 /u01/app/<span class="keyword">oracle</span>/product/<span class="number">12.2</span><span class="number">.0</span></span><br><span class="line">                                                            /dbhome_1/dbs/spfilecdb.ora</span><br><span class="line"><span class="comment">-- 控制文件、日志文件共享，只在根下</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>;</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line"><span class="comment">----------------------------------------------------------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/cdb/control01.ctl</span><br><span class="line">/u01/app/oracle/fast_recovery_area/cdb/control02.ctl</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,con_id from v$logfile;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">GROUP</span><span class="comment">#     CON_ID</span></span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">         <span class="number">3</span>          <span class="number">0</span></span><br><span class="line">         <span class="number">2</span>          <span class="number">0</span></span><br><span class="line">         <span class="number">1</span>          <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 数据文件无法共享（根 + 总支 + pdb）</span></span><br><span class="line"><span class="comment">-- pdb中只有数据文件了</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br></pre></td></tr></table></figure>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084723162.png" alt="image-20200417084723162" style="zoom:80%;">
+<p>术语发生变化</p>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084820564.png" alt="image-20200417084820564" style="zoom:67%;">
+<p>数据字典视图结构发生变化</p>
+<p><code>dba_外面又有一层cdb_</code></p>
+<p>abc都对</p>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417084953390.png" alt="image-20200417084953390" style="zoom:67%;">
+<p>架构图，考试，和非cdb的不同点</p>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085120398.png" alt="image-20200417085120398"></p>
+<ul>
+<li>一对一，多对一</li>
+<li>共享不同</li>
+</ul>
+<p>初始化参数文件不同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show parameter enable_pluggable_database</span><br></pre></td></tr></table></figure>
+<p>考试a（实际上可以修改？？？）</p>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085718644.png" alt="image-20200417085718644" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line"><span class="comment">-- 看是不是容器数据库</span></span><br><span class="line"><span class="keyword">desc</span> v$<span class="keyword">database</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, cdb <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- cdb下yes</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, cdb <span class="keyword">from</span> v$<span class="keyword">database</span>; <span class="comment">-- sales下no</span></span><br><span class="line"></span><br><span class="line">col username for a20</span><br><span class="line"><span class="keyword">select</span> username,con_id <span class="keyword">from</span> cdb_users <span class="keyword">where</span> username=<span class="string">'HR'</span>;</span><br><span class="line"><span class="comment">-- 1原来就有hr，3克隆1，顺便把用户也带上了</span></span><br><span class="line">USERNAME                 CON_ID</span><br><span class="line"><span class="comment">-------------------- ----------</span></span><br><span class="line">HR                            3</span><br><span class="line">HR                            5</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line">    CON_ID CON_NAME                       <span class="keyword">OPEN</span> <span class="keyword">MODE</span>  <span class="keyword">RESTRICTED</span></span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">         <span class="number">2</span> PDB$<span class="keyword">SEED</span>                       <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">         <span class="number">3</span> PDB1                           <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">         <span class="number">4</span> PDB2                           <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br><span class="line">         <span class="number">5</span> PDB3                           <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br></pre></td></tr></table></figure>
+<h2 id="创建pdb">创建pdb</h2>
+<h3 id="1-基于pdb种子数据库创建pdb">1. 基于pdb种子数据库创建pdb</h3>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417085928678.png" alt="image-20200417085928678" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">col name for a50</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> con_id=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> con_id=<span class="number">2</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span> <span class="keyword">where</span> con_id=<span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- os</span></span><br><span class="line">mkdir -p /u01/app/oracle/oradata/cdb/pdbseed/</span><br><span class="line">mkdir -p /u01/app/oracle/oradata/cdb/pdb2/</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> pdb_file_name_convert=<span class="string">'/u01/app/oracle/oradata/cdb/pdbseed/'</span>,<span class="string">'/u01/app/oracle/oradata/cdb/pdb2/'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb2 <span class="keyword">admin</span> <span class="keyword">user</span> pdb2admin <span class="keyword">identified</span> <span class="keyword">by</span> <span class="keyword">admin</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb2 <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="2-克隆本地pdb">2.克隆本地pdb</h3>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417090536311.png" alt="image-20200417090536311" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">close</span>;</span><br><span class="line"><span class="keyword">show</span> pdbs</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">open</span> <span class="keyword">read</span> <span class="keyword">only</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- os</span></span><br><span class="line">mkdir -p /u01/app/oracle/oradata/cdb/pdb3/</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb3 <span class="keyword">from</span> pdb1 <span class="keyword">file_name_convert</span>=(<span class="string">'/u01/app/oracle/oradata/cdb/pdb1/'</span>,<span class="string">'/u01/app/oracle/oradata/cdb/pdb3/'</span>);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb3 <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="3-把非pdb插入cdb">3.把非pdb插入cdb</h3>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417092430038.png" alt="image-20200417092430038"></p>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417093150625.png" alt="image-20200417093150625"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- SYS@sales&gt;</span></span><br><span class="line">shutdown immediate</span><br><span class="line">startup open read only</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;</span><br><span class="line"></span><br><span class="line">NAME               OPEN_MODE</span><br><span class="line"><span class="comment">------------------ ----------------------------------------</span></span><br><span class="line">SALES              READ ONLY</span><br><span class="line"></span><br><span class="line">exec dbms_pdb.describe(PDB_DESCR_FILE=&gt;<span class="string">'/u01/app/oracle/oradata/sales/sales.xml'</span>);</span><br><span class="line"><span class="comment">-- 查看是否产生，用来描述数据库信息</span></span><br><span class="line">shutdown immediate</span><br><span class="line"><span class="comment">-- drop pluggable database db12c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- cdb下</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> sales <span class="keyword">using</span> <span class="string">'/u01/app/oracle/oradata/sales/sales.xml'</span></span><br><span class="line">copy</span><br><span class="line"><span class="keyword">FILE_NAME_CONVERT</span>=(<span class="string">'/u01/app/oracle/oradata/sales/'</span>,<span class="string">'/u01/app/oracle/oradata/cdb/sales/'</span>);</span><br><span class="line"></span><br><span class="line">col name for a20</span><br><span class="line">col restricted for a16</span><br><span class="line"><span class="keyword">select</span> con_id,<span class="keyword">name</span>,open_mode,<span class="keyword">restricted</span> <span class="keyword">from</span> v$pdbs;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 千万别打开</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=sales;</span><br><span class="line"><span class="comment">-- 执行脚本，去除不需要的元数据</span></span><br><span class="line">@?/rdbms/admin/noncdb_to_pdb</span><br><span class="line">conn / as sysdba</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> con_name</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=sales; <span class="comment">-- 记得换容器</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> sales <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="4-pdb的拔插和删除">4. pdb的拔插和删除</h3>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095135258.png" alt="image-20200417095135258"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 换回cdb</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=cdb$root;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">close</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 unplug <span class="keyword">into</span> <span class="string">'/u01/app/oracle/oradata/cdb/pdb1.xml'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb1 <span class="keyword">keep</span> <span class="keyword">datafiles</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,open_mode <span class="keyword">from</span> v$pdbs;</span><br></pre></td></tr></table></figure>
+<h2 id="使用pdb">使用pdb</h2>
+<h3 id="连接和切换">连接和切换</h3>
+<p>连接到pdb</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conn sys/admin@192.168.11.200:1521/pdb1 as sysdba</span><br><span class="line">conn sys/admin@192.168.11.200/sales as sysdba</span><br><span class="line"><span class="comment">-- 默认端口1521可以不写</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> scott.emp;</span><br></pre></td></tr></table></figure>
+<p>为pdb做服务名（服务名都写pdb1，主机名192.168.11.200）</p>
+<p>之后就可以这样登录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conn system/admin@pdb1</span><br><span class="line"><span class="comment">-- 或者sqlplus</span></span><br></pre></td></tr></table></figure>
+<p>连接到cdb</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn sys&#x2F;admin@cdb as sysdba</span><br></pre></td></tr></table></figure>
+<p>切换cdb和pdb</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 换回cdb</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=cdb$root;</span><br><span class="line"><span class="comment">-- 切换到pdb</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">session</span> <span class="keyword">set</span> <span class="keyword">container</span>=pdb1;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095612499.png" alt="image-20200417095612499"></p>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417095655521.png" alt="image-20200417095655521"></p>
+<p>关cdb之后，再起，发现所有pdb都是mounted，需要手动</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- cdb下</span></span><br><span class="line">shutdown immediate</span><br><span class="line">startup</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> <span class="keyword">all</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<p>自动怎么办</p>
+<ul>
+<li>
+<p>触发器</p>
+</li>
+<li>
+<p>命令</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> <span class="keyword">all</span> <span class="keyword">save</span> state;</span><br><span class="line"><span class="comment">-- 保留关闭时的状态</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> <span class="keyword">all</span> discard state;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>之后没听</p>
+<p>==pdb，只能看到数据文件==</p>
+<p>改初始化参数对pdb的影响</p>
+<p>有的参数不能在pdb里改，只能在cdb上改</p>
+<p>能改的一般都只影响自己的pdb</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">show parameter target_pdbs</span><br><span class="line"></span><br><span class="line">NAME                                 TYPE                   VALUE</span><br><span class="line">------------------------------------ ---------------------- ------------------------------</span><br><span class="line">target_pdbs                          integer                3</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417101300271.png" alt="image-20200417101300271"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show parameter session_max_open_files</span><br><span class="line">show parameter circuits</span><br></pre></td></tr></table></figure>
+<p>有的命令只能在cdb上做（切换日志文件）</p>
+<p>能在pdb上做的：做检查点，但是影响了整个cdb</p>
+<h3 id="公共用户-本地用户">公共用户&amp;本地用户</h3>
+<p>考试（互相指派能不能，多选题</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">-- cdb下</span></span><br><span class="line"> <span class="comment">-- 只能建公共用户</span></span><br><span class="line"><span class="keyword">select</span> username <span class="keyword">from</span> dba_users;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- create user test identified by 123123; -- 不能</span></span><br><span class="line"><span class="keyword">show</span> parameter prefix</span><br><span class="line"><span class="comment">-- 公共用户前缀必须是C##</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> C<span class="comment">##test identified by 123123;</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> C<span class="comment">##test; -- 默认本地权限</span></span><br><span class="line"><span class="keyword">conn</span> C<span class="comment">##test/123123</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 如果公共用户要登到pdb</span></span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">session</span> <span class="keyword">to</span> C<span class="comment">##test container=all; -- sys给了公共权限</span></span><br><span class="line"><span class="keyword">conn</span> C<span class="comment">##test/123123@pdb1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不能将公共权限给本地用户，别的都可以</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- pdb下</span></span><br><span class="line"><span class="comment">-- 本地用户只在pdb可见，cdb不可见？？？</span></span><br></pre></td></tr></table></figure>
+<img src="/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/image-20200417104917764.png" alt="image-20200417104917764" style="zoom:67%;">
+<h2 id="考试">考试</h2>
+<p>架构：区分是cdb还是非cdb（20分）</p>
+<p>SQL：只靠QL</p>
+<p>查询、条件、排序（top n功能、连接、子查询、函数）</p>
+<p>例程管理（启动的过程）</p>
+<p>控制文件（包含内容、出了问题怎么复用）</p>
+<p>日志文件（联机 重做日志文件 + 归档日志文件）</p>
+<p>表空间和数据文件（结构，基本管理）</p>
+<p>Oracle安全3a？？？</p>
+<p>数据移动 logmnr步骤！！！</p>
+<p>备份和恢复 完全恢复和不完全恢复</p>
+<p>闪回技术</p>
+<p>多租户架构</p>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/04/17/Oracle/Oracle12c%E4%B8%AD%E7%9A%84c/" title="Oracle 12c中的c">http://yoursite.com/2020/04/17/Oracle/Oracle12c中的c/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/05/Oracle/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D/" rel="prev" title="Oracle 数据库备份&恢复">
+      <i class="fa fa-chevron-left"></i> Oracle 数据库备份&恢复
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/14/Research/pip%E3%80%81conda%E3%80%81anaconda/" rel="next" title="pip、Conda、Anaconda">
+      pip、Conda、Anaconda <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建容器数据库（cdb）"><span class="nav-text">创建容器数据库（cdb）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cdb和non-cdb"><span class="nav-text">cdb和non-cdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建pdb"><span class="nav-text">创建pdb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基于pdb种子数据库创建pdb"><span class="nav-text">1. 基于pdb种子数据库创建pdb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-克隆本地pdb"><span class="nav-text">2.克隆本地pdb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-把非pdb插入cdb"><span class="nav-text">3.把非pdb插入cdb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-pdb的拔插和删除"><span class="nav-text">4. pdb的拔插和删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用pdb"><span class="nav-text">使用pdb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#连接和切换"><span class="nav-text">连接和切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公共用户-本地用户"><span class="nav-text">公共用户&amp;本地用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#考试"><span class="nav-text">考试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ 2284648070 → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ 2284648070</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin 13182988567 → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin 13182988567</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://creeper121386.github.io/" title="https:&#x2F;&#x2F;creeper121386.github.io" rel="noopener" target="_blank">WHY's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+
+
+  <!-- 动态背景 -->
+  
+</body>
+</html>
+

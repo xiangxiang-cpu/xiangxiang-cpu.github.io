@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|[object Object]:300,300italic,400,400italic,700,700italic|consolas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","width":350,"display":"always","padding":18,"offset":40,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":-1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+  <meta name="description" content="服务器：提供服务的计算机，计算机经过优化处理，在某方面功能强大 文件服务器：存储容量强 应用服务器：CPU、内存强 Oracle服务器干两件事：**数据存储（database）、数据处理（instance）**功能强大的计算机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 服务器架构">
+<meta property="og:url" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/index.html">
+<meta property="og:site_name" content="翔翔の据点">
+<meta property="og:description" content="服务器：提供服务的计算机，计算机经过优化处理，在某方面功能强大 文件服务器：存储容量强 应用服务器：CPU、内存强 Oracle服务器干两件事：**数据存储（database）、数据处理（instance）**功能强大的计算机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200303145045139.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200325233435103.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326125854573-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200305213828892-1586189129451.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326134947000.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326135317633.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326135131112.png">
+<meta property="og:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326102538205-1586189129451.png">
+<meta property="article:published_time" content="2020-03-13T14:13:55.000Z">
+<meta property="article:modified_time" content="2022-03-28T08:05:52.435Z">
+<meta property="article:author" content="zhx">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200303145045139.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle 服务器架构 | 翔翔の据点</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!--     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $('.inactive').click(function(){
+      if($(this).siblings('ul').css('display')=='none'){
+        $(this).addClass('inactives');
+        $(this).siblings('ul').slideDown(100).children('li');
+      }else{
+        $(this).removeClass('inactives');
+        $(this).siblings('ul').slideUp(100);
+      }
+    })
+  });
+  </script> -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">翔翔の据点</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Arrogance is the only obstacle to survival. Not weakness or ignorance.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">9</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/xiangxiang-cpu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar/yeah.jpg">
+      <meta itemprop="name" content="zhx">
+      <meta itemprop="description" content="中国南京 东南大学 软件学院">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="翔翔の据点">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle 服务器架构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-13 22:13:55" itemprop="dateCreated datePublished" datetime="2020-03-13T22:13:55+08:00">2020-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-28 16:05:52" itemprop="dateModified" datetime="2022-03-28T16:05:52+08:00">2022-03-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>服务器</strong>：提供服务的计算机，计算机经过优化处理，在某方面功能强大</p>
+<p><strong>文件服务器</strong>：存储容量强</p>
+<p><strong>应用服务器</strong>：CPU、内存强</p>
+<p><strong>Oracle服务器</strong>干两件事：**数据存储（database）、数据处理（instance）**功能强大的计算机</p>
+<a id="more"></a>
+<p>==Oracle服务器 == instance + database== + 管理数据库的软件？</p>
+<ol>
+<li>instance【播放器（打开需要内存）】【数据处理】【安装了Oracle软件的计算机】</li>
+<li>database【视频文件】【数据存储】【物理文件的集合】</li>
+</ol>
+<ul>
+<li>instance总是打开一个且仅一个db</li>
+<li>但一个db可以被多个实例装载和打开</li>
+</ul>
+<p>先装instance，再装database，否则会建库失败</p>
+<p>两者不是绑定的【视频文件不和播放器绑定】</p>
+<p>互相独立可以分离，数据库一般在raid阵列卡上</p>
+<p><strong>集群（冗余机制）</strong></p>
+<ul>
+<li>设置多个冗余节点（一台Oracle服务器）</li>
+<li>节点之间有心跳线，隔一段时间发一个信号，告诉别人我还活着</li>
+<li>一台机器坏了，心不跳了，另一台就来接管</li>
+</ul>
+<img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200303145045139.png" alt="image-20200303145045139" style="zoom:75%;">
+<h2 id="Oracle-instance">Oracle instance</h2>
+<ul>
+<li>翻译：例程（例行程序，示例程序）</li>
+<li>通过例程访问数据库</li>
+<li>例程进行数据处理工作</li>
+</ul>
+<p>==实例 == 内存结构 + 一组后台进程==</p>
+<h3 id="内存结构">内存结构</h3>
+<p>==内存 == 系统全局区域SGA + 程序全局区域PGA==</p>
+<h4 id="SGA">SGA</h4>
+<p>system global area，系统全局区域【分支机构都能访问的】</p>
+<p>系统：遵循统一标准的集合，不同系统标准不同【教育系统，银行系统】</p>
+<p><strong>例程下可以有很多会话</strong></p>
+<ul>
+<li>
+<p>都在db12c同一个系统下，例程级别</p>
+</li>
+<li>
+<p>instance启动时，根据初始化参数配置，向OS申请内存，所有会话可以共享（v$session）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> USERNAME,<span class="keyword">sid</span> <span class="keyword">from</span> v$<span class="keyword">session</span> <span class="keyword">where</span> username=<span class="string">'SCOTT'</span>;</span><br><span class="line"><span class="comment">-- 当scott用户连上时，会查到，且conn重连之后SID会变化</span></span><br><span class="line"><span class="comment">-- scott用户、SYS用户（总是比连接数多一个？谁？）可以通过多个会话连接，SID不同</span></span><br><span class="line"><span class="comment">-- 为什么用system as sysdba连上的用户是sys？？？</span></span><br><span class="line"><span class="comment">-- instance_name、ORACLE_SID，两者都表示oracle实例</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看当前会话的SID</span></span><br><span class="line"><span class="keyword">SELECT</span> USERENV(<span class="string">'SID'</span>) <span class="keyword">FROM</span> DUAL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> INSTANCE_NUMBER <span class="keyword">from</span> v$<span class="keyword">instance</span>; <span class="comment">-- 同一个例程（sales）不同会话查到的这个视图相同</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>不同数据库的内存不能共享，别的系统又有自己的一套内存</p>
+</li>
+<li>
+<p>一个用户select之后，文件留在内存（SGA），下一个用户读取就直接从内存获得内容</p>
+</li>
+</ul>
+<p>详细讲表 - 见Oracle知识点一栏</p>
+<h5 id="1-共享池">1 共享池</h5>
+<p>==共享池 == 库缓存 + 数据字典缓存==</p>
+<h6 id="a-库缓存：存放代码">a 库缓存：存放代码</h6>
+<p>代码放在这里（执行计划）（包括解析好的代码、DLL）</p>
+<p>sql为描述性语言，所以需要解析（成cpu能执行的代码）</p>
+<p>语法分析 - 语义分析 - 权限分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- scott下</span><br><span class="line">select * fom scott.emp; -- 语法不对</span><br><span class="line">select * from scott.hhh; -- 语义不对，对象不存在</span><br><span class="line">-- hr下</span><br><span class="line">select * fom scott.emp; -- 对象存在，但是没有select的权限，视为不存在</span><br></pre></td></tr></table></figure>
+<p>都通过的话会生成<strong>执行计划</strong>，选择一个最优的计划解析成cpu能执行的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set autot on -- 可以看到执行过程？？？</span><br></pre></td></tr></table></figure>
+<p>每次都这样走一遍流程太慢，将解析好的代码放在内存，下次执行很快</p>
+<p>每次解析SQL效率太低，在内存（共享池）中保存已经解析好的代码，避免重复解析</p>
+<p>库缓存还能细分：</p>
+<ul>
+<li>sql区，缓存sql语句的</li>
+<li>dlsql区，缓存sql语句块的</li>
+<li>还有别的语言对应的代码</li>
+</ul>
+<h6 id="b-数据字典缓存：存放系统数据">b 数据字典缓存：存放系统数据</h6>
+<p>Oracle并没有给出直接设置数据字典高速缓存大小的方法，只能通过设置共享池的大小来间接地设置数据字典高速缓存的大小。</p>
+<p>数据分为</p>
+<ul>
+<li>
+<p>系统数据（被Oracle维护和处理）== 数据字典 == 描述数据的数据 == 元数据 == 数据目录（编目）</p>
+<p>系统数据放在数据字典缓存中</p>
+<p>表上有没有索引，主键，约束等</p>
+<p>数据库安装完本身带了一些包（desc dbms_xdb 很多存储过程函数）</p>
+</li>
+<li>
+<p>用户数据（被用户维护和处理的）</p>
+<p>用户数据放在数据库高速缓存中</p>
+</li>
+</ul>
+<h5 id="2-数据库高速缓存池：存放用户数据">2 数据库高速缓存池：存放用户数据</h5>
+<p>存一些select的结果</p>
+<p>【共享池】和【数据库高速缓存池】占90%空间</p>
+<p>ps：这4个池之外的其他的池都是可选的</p>
+<ul>
+<li>java池，编译完了放在这里 - 通过java应用访问数据库时才需要</li>
+<li>通过c，没有c池。Oracle和微软对头，和sum好</li>
+</ul>
+<h5 id="2-5-事务">2.5 事务</h5>
+<p>事务的ACID准则：原子性(Atomicity)、一致性(Consistency)、隔离性(Isolation)、持久性(Durability)</p>
+<p><strong>原子性</strong></p>
+<p>【转账：一边少钱，一边多钱】【存钱：口袋里掏钱，存折里多钱】</p>
+<p>要不都做，要不都不做</p>
+<p>事务必须commit或者rollback，查询不是事务</p>
+<p><strong>一致性</strong></p>
+<p>保证事务只能把数据库从一个一致状态，“转移”到另一个一致状态</p>
+<p>开始之前和结束之后，数据库要处于一致状态</p>
+<blockquote>
+<p><a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Consistency_(database_systems)">Consistency</a> ensures that a transaction can <strong>only bring the database from one valid state to another</strong>, maintaining database <a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Invariant_(computer_science)">invariants</a>: <strong>any data written to the database must be valid according to all defined rules, including <a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Integrity_constraints">constraints</a>, <a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Cascading_rollback">cascades</a>,<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Database_trigger">triggers</a>, and any combination thereof.</strong> This prevents database corruption by an illegal transaction, but does <strong>not guarantee that a transaction is *correct*.</strong></p>
+</blockquote>
+<p>我对这段话的理解：</p>
+<ul>
+<li>数据库事务的一致性是指：保证事务只能把数据库从一个有效（正确）的状态“转移”到另一个有效（正确）的状态。那么，什么是数据库的有效(正确）的状态？满足给这个数据库pre-defined的一些规则的状态都是 valid 的。这些规则有哪些呢，比如说<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Integrity_constraints">constraints</a>, <a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Cascading_rollback">cascades</a>,<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Database_trigger">triggers</a> 及它们的组合等。具体到某个表的某个字段，比如你在定义表的时候，给这个字段的类型是number类型，并且它的值不能小于0，那么你在某个 transaction 中给这个字段插入（更改）为一个 String 值或者是负值是不可以的，这不是一个“合法”的transaction，也就是说它不满足我们给数据库定义的一些规则（约束条件）。</li>
+<li>“This prevents database corruption by an illegal transaction, but does <strong>not guarantee that a transaction is *correct*. ”</strong> 这又怎么理解呢？在数据库的角度来看，它只关心 transaction 符不符合定义好的规则，符合的就是legal的，不符合的就是illegal的。transaction 是否正确是从应用层的角度来看的，数据库并不知道你应用层的逻辑意义，它不保证应用层的transaction的正确性，这个逻辑正确性是由应用层的programmer来保证的。 这么说估计还是抽象，那么看下面我们熟知的转账的例子。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Table： Account</span><br><span class="line">Columns:   Name(string), Balance（int)</span><br><span class="line">约束条件：无</span><br><span class="line"></span><br><span class="line">执行下面一个事务(A,B的初始余额均为1000，A给B转账1200）</span><br><span class="line"></span><br><span class="line">1.  往表Account插入数据（A,1000)</span><br><span class="line">2. 往表Account插入数据 （B,1000)</span><br><span class="line">3. A给B转账1200，更新A的余额为-200，（A,-200)</span><br><span class="line">4. B的余额增加1200，更新B的余额为2200（B,2200)</span><br></pre></td></tr></table></figure>
+<p>那么，数据库会认为这个 transaction 合不合法呢？也就是它满不满足我们给数据库的定义的规则呢？答案就是这个 transaction 是合法的，因为你定义表的时候没有约定 Balance 不能小于0。虽然我们从应用层的角度来看，这个transaction是不正确的，因为它不符合逻辑- balance不能小于0.  但我们数据库只关心你的 transaction 满不满足你的数据库定义的rule，不关心它具有什么业务的逻辑，这个业务逻辑是应该由应用层来理解并处理的。</p>
+<p>修改一下上面这个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Table： Account</span><br><span class="line">Columns:   Name(string), Balance（int)</span><br><span class="line">约束条件：Balance &gt;&#x3D; 0</span><br><span class="line"></span><br><span class="line">执行下面一个事务(A,B的初始余额均为1000，A给B转账1200）</span><br><span class="line"></span><br><span class="line">1.  往表Account插入数据（A,1000)</span><br><span class="line">2. 往表Account插入数据 （B,1000)</span><br><span class="line">3. A给B转账1200，更新A的余额为-200，（A,-200)</span><br><span class="line">4. B的余额增加1200，更新B的余额为2200（B,2200)</span><br></pre></td></tr></table></figure>
+<p>注意，这里增加了约束条件Balance &gt; 0, 上面的这个transaction违反了规则Balance&gt;=0，那么这个事务数据库认为它是非法的，不满足一致性的要求，所以数据库执行这个事务会失败。</p>
+<p>最后请再认真研读一下链接 <a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Consistency_(database_systems)">Consistency (database systems) </a>中的这段话。</p>
+<blockquote>
+<p>This(Consistency）does not guarantee correctness of the transaction in all ways the application programmer might have wanted (that is the responsibility of application-level code) but merely that any programming errors cannot result in the violation of any defined database constraints.[1]</p>
+</blockquote>
+<p><strong>读的一致性？？？</strong></p>
+<p>事务开始之前和结束之后，数据库要处于一致状态</p>
+<p>别的数据库，事务未结束时，给表加锁，别的用户不能访问</p>
+<p>eg</p>
+<p>一个会话update，未commit；另一个会话访问的是旧数据</p>
+<p>oracle的读一致性 – 修改时，脏数据先在高速缓存中；别的用户在回滚段中访问旧数据，不用等事务结束</p>
+<p><strong>隔离性</strong></p>
+<p>只能看到事务开始和结束的状态，中间状态是看不见的</p>
+<p>用锁实现</p>
+<p>当事务t1进行数据修改的时候，会将数据复制到回滚带上，如果另外的事务前来查询发现（高速缓存中的）数据被锁，会到回滚带上查询</p>
+<p><strong>持久性</strong></p>
+<ul>
+<li>
+<p>持久 - 外存</p>
+</li>
+<li>
+<p>临时 - 内存</p>
+</li>
+</ul>
+<p>commit之后，通知LGWR将重做日志缓存，写入重做日志文件中</p>
+<p>checkpoint之后，将数据库高速缓存中的脏数据，写入数据文件中</p>
+<h5 id="3-重做日志缓存池">3 重做日志缓存池</h5>
+<p>重做日志作用：恢复</p>
+<p>==日志，记录事务==，不是增删改等细化的操作（这些操作属于事务）</p>
+<ul>
+<li>恢复redo，做对的事务再来一遍。【insert了100条数据，不知道什么原因没了，需要redo】</li>
+<li>撤销undo，把做错的东西撤销（对冲）掉</li>
+</ul>
+<p>出了问题，先restore最近的备份，再用重做日志将这些事务重做一遍（recover）</p>
+<p>演示：出问题</p>
+<p>创建表空间、数据文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">tablespace</span> demo <span class="keyword">datafile</span> <span class="string">'/u01/app/oracle/oradata/db12c/demo01.dbf'</span> <span class="keyword">size</span> <span class="number">10</span>m; <span class="comment">-- 同时，创建表空间数据文件？？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- scott为所有者</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> scott.st(<span class="keyword">id</span> <span class="built_in">int</span>,<span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>)) <span class="keyword">tablespace</span> demo; <span class="comment">-- 创建表</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.st <span class="keyword">values</span>(<span class="number">1</span>,<span class="string">'Tom'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> scott.st <span class="keyword">values</span>(<span class="number">2</span>,<span class="string">'Jerry'</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.st;</span><br><span class="line"></span><br><span class="line">desc [表名] <span class="comment">-- 查表的数据模式</span></span><br><span class="line">desc dba_data_files <span class="comment">-- 查数据文件</span></span><br><span class="line">desc v$datafile;</span><br><span class="line">desc dba_tables <span class="comment">-- 查表和所属的表空间</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> file_name, tablespace_name <span class="keyword">from</span> dba_data_files <span class="keyword">where</span> tablespace_name <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> tablespace_name <span class="keyword">from</span> dba_tables <span class="keyword">where</span> table_name=<span class="string">'ST'</span>);</span><br><span class="line"><span class="comment">-- 先查到这个表在哪个表空间，再看这个表空间在哪个数据文件</span></span><br><span class="line"><span class="comment">--sysaux01.dbf这里也有st表？？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- insufficient privilege，conn / as sysdba重连一下就好了</span></span><br></pre></td></tr></table></figure>
+<p><strong>将数据文件删除，利用日志文件恢复</strong></p>
+<p>因为表的数据在缓存里，首先要shutdown immediate，会将数据库高速缓存池中脏数据写盘，清空</p>
+<p>再模拟数据丢失（在os级别rm demo01.dbf数据文件）</p>
+<p>再startup时会报错，缺少数据文件，Oracle以为还有这个文件</p>
+<p>【单位的人在外面被干掉了，单位还以为有这个人，被开除了就认为没了】</p>
+<img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200325233435103.png" alt="image-20200325233435103" style="zoom:67%;">
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">file</span><span class="comment">#,name from v$datafile; -- 查看几号文件和具体路径</span></span><br></pre></td></tr></table></figure>
+<p>用日志恢复，recover要有被恢复的对象（demo01.dbf）</p>
+<p>所以要创建一个文件，但又不能再os级别上创建，这样Oracle不认识</p>
+<p>在Oracle下创建，缺哪个建那个（不过建完这个数据文件是空的）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">create</span> <span class="keyword">datafile</span> <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+<p>有了dbf文件基础，可以开始用日志recover</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">recover datafile 5;</span><br></pre></td></tr></table></figure>
+<p>再把数据库打开</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<p>就能查到信息了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> scott.st;</span><br></pre></td></tr></table></figure>
+<p>LGWR（log writer，后台进程之一）：将SGA中的重做日志缓存写入到磁盘中</p>
+<p>在shutdown时，会把重做日志缓存池写磁盘，恢复见上面的例子</p>
+<h6 id="重做日志缓冲区的内容">重做日志缓冲区的内容</h6>
+<p>A. 对于每个dml或ddl<strong>语句</strong>，oracle服务器进程都会把用户内存空间的重做条目复制到重做日志缓冲区上</p>
+<p>B. 重做条目包含：用于重做或重构dml或ddl操作对数据库所做更改的所需的信息，用于恢复数据库，并占据日志缓冲区的连续的有序的空间</p>
+<h6 id="lgwr进程">lgwr进程</h6>
+<p>那缓冲区满了，该怎么办呢？这就需要lgwr进程来行动了</p>
+<p>A. lgwr进程负责把重做日志缓冲区的内容写到磁盘上的活动的联机重做日志文件(或活动组的成员),他写入     自上次写入后的所有复制到缓冲区的条目</p>
+<p>B. 重做日志缓冲区是一个循环的缓冲区，oracle服务器进程（非LGWR，LGWR是后台进程）负责把重做的条目覆盖重做日志缓冲区的已经写入磁盘的条目，lgwr的写入速度是非常快的，以确保重做日志缓冲区总有写入新条目的空间</p>
+<h6 id="触发LGWR开始工作的动作">触发LGWR开始工作的动作</h6>
+<p>A. 重做日志缓冲区的已使用的空间达到三分之一时<br>
+B. 当dbwn进程向磁盘写入已修改的缓冲区的时候<br>
+C. 每隔3秒钟<br>
+D. 用户提交事务处理时的一条提交记录(经常commit会及时刷新重做日志缓冲区空间)</p>
+<h4 id="PGA">PGA</h4>
+<p>program global area，程序全局区域，创建会话时才初始化（程序==会话？？？）</p>
+<p>eg 表和堆表，排序区（order by子句）</p>
+<ul>
+<li>数据在表里一般不是顺序放的，顺序导致效率差。插数据时，哪里空插哪里</li>
+<li>不是顺序放的，但需要按某种顺序显示</li>
+<li>一个会话中order by了，另一个会话不会被影响</li>
+<li>变量（declare）、游标在PGA中，会话之间不能共享</li>
+</ul>
+<h3 id="进程">进程</h3>
+<ol>
+<li>用户进程</li>
+<li>服务器进程</li>
+<li>后台进程</li>
+</ol>
+<h4 id="1-用户进程">1. 用户进程</h4>
+<p>约等于UI，通过某个UI访问Oracle</p>
+<p>sqlplus就是一个用户进程，sqldeveloper也是</p>
+<p>用户进程<strong>不可以</strong>直接访问服务器进程【不能在银行柜台直接拿钱，要向柜台的人提请求】</p>
+<p><a href="https://blog.csdn.net/qqww120102/article/details/79289999" target="_blank" rel="noopener">https://blog.csdn.net/qqww120102/article/details/79289999</a></p>
+<p>一般来说，数据库服务名 == 全局数据库名 == SID == instance名？？？</p>
+<h4 id="服务名（发连接请求）">服务名（发连接请求）</h4>
+<p>形象理解【去银行取钱 == 先到银行 + 我要取钱】</p>
+<p>连接数据库请求 == 先通过某个协议-找到某台机器-找到这个机器上的某个端口 + 我要某某数据库服务</p>
+<p>【先考虑怎么到银行】</p>
+<ul>
+<li>
+<p>【要找到银行在哪，xx国家xx省xx市xx街xx号】</p>
+<p>（JDBC）通过什么协议，找到某台机器，在这个机器上的某个端口</p>
+</li>
+<li>
+<p>【直接说xx银行，代表具体到门牌号的地址】</p>
+<p>做一个服务名，代表（协议-机器-端口+服务名）这一串</p>
+<p>==做服务名就是为了缩写连接请求，将我要某某数据库服务，还原为上面那一串==</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn scott&#x2F;123123@db12c</span><br></pre></td></tr></table></figure>
+<p>用数据库服务名【银行名】就可以。为什么？有人帮你解析</p>
+<h5 id="tnsping">tnsping</h5>
+<p>Oracle Net 工具（命令）tnsping，是一个OSI会话层的工具，它用来：</p>
+<ol>
+<li>验证名字解析（name resolution，当然是oracle自己的网络服务名）</li>
+<li>远程的listener是否启动</li>
+</ol>
+<p>tnsping命令格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tnsping  &lt;service_name&gt;  n（n的意义是可以让tnsping ping多次）</span><br><span class="line">!tnsping db12c （查找db12c的意义 - service name）</span><br><span class="line"></span><br><span class="line">-- 这个感叹号代表立即刷新变化，由于IO区是需要在扫描结束后进行更新，因此对于一些需要立即更新的IO来说，其强迫IO区做立即更新。</span><br></pre></td></tr></table></figure>
+<img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326125854573-1586189129451.png" alt="image-20200326125854573" style="zoom: 50%;">
+<p>上面的信息存在tnsnames.ora中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $ORACLE_HOME&#x2F;network&#x2F;admin</span><br><span class="line">cat tnsnames.ora</span><br></pre></td></tr></table></figure>
+<p>通过TCP协议，找到ocp.com主机，通过端口1521，dedicated：通过专用数据库连接的方式，请求具体的服务名是db12c（和数据库名相同？？？）</p>
+<p>每次都写上面一串才能连接，太麻烦了，做一个服务名db12c代表上面一串即可。</p>
+<p>综上，客户机为了和服务器连接【我为了去银行取钱】，必须先和服务器上的监听进程联络【先找到银行门口（的小姐）】</p>
+<p>服务名解析基于客户端，ORACLE通过tnsnames.ora文件中的连接描述符来说明连接信息（解析的映射信息）</p>
+<h4 id="监听器（监听连接请求）">监听器（监听连接请求）</h4>
+<p>问题来了，上面只是通过服务名【具体到门牌号的地址】，我只到了服务器的端口【银行门口】，连接数据库服务【进门，取钱】咋办？</p>
+<p>【假设银行只能由接引员引进，无法自行进入】</p>
+<ul>
+<li>服务名（db15c）【工商银行的门牌号】</li>
+<li>名称解析到某机器的某端口 【银行在哪里，具体到门牌号】</li>
+<li>但名称解析<strong>只能</strong>到某机器的某端口，不知道有没有这个数据库服务【到了银行门口，不知道有没有取钱这个业务】</li>
+</ul>
+<p>所以，用户进程和服务器进程中间需要<strong>监听器</strong>【银行门口的小姐】，帮你看这个服务有没有注册【看有没有取钱这个服务】，并帮你找服务器进程【领进去找工作人员】</p>
+<p>监听器作用：它设置在服务端，是基于<strong>服务端</strong>的一种网络服务，用于监听==客户端向数据库端==发出的连接请求。判断一下连接请求是否正确，请求有效就连接，失败就拒绝。所以你要连接远程数据库，那么远程数据库就要配置监听器，客户端则不需要配置。</p>
+<p><img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200305213828892-1586189129451.png" alt="image-20200305213828892"></p>
+<p>监听器配两个东西</p>
+<ul>
+<li>地址（只接收来这个地址加端口的请求）【小姐不招待进农业银行的人】</li>
+<li>数据库服务【要写出能办的业务（比如能取钱）】</li>
+</ul>
+<p>如果监听器不开【没有人介绍服务、领进银行找工作人员去】</p>
+<h5 id="什么是注册">什么是注册</h5>
+<ul>
+<li>注册就是将数据库作为一个服务注册到监听程序。</li>
+<li>客户端不需要知道数据库名和实例名，只需要知道该数据库对外提供的服务名就可以申请连接到数据库。</li>
+<li>这个服务名可能与实例名一样，也有可能不一样。</li>
+<li>在数据库服务器启动过程中，数据库服务器会向监听程序注册相应的服务</li>
+<li>无论何时启动一个数据库，默认地都有两条信息注册到监听器中：数据库服务器对应的实例名和服务名</li>
+<li>相当于是这样：在数据库服务器和客户端之间有一监听程序（Listener），在监听程序中，会记录相应数据库对应的服务名（一个数据库可能对应有多个服务名），当客户端需要连接数据库时，只需要提供服务名，就可以建立客户端和服务器之间的连接。</li>
+</ul>
+<h5 id="动态注册lsnrctl-status">动态注册lsnrctl status</h5>
+<ol>
+<li>动态注册（ready）：表现为刚起来的时候连不上，一会才能连上</li>
+<li>监听文件没有配置监听数据库的信息，但是当数据库启动的时候，会自动将instance_name,service_names两个参数将实例和服务动态注册到listener中，这种监听就是动态监听。</li>
+<li>因为这个监听是从数据库发起的，这个时候监听肯定是有对应的数据库，所以显示的状态是READY，当数据库关闭后这个监听也就消失了。</li>
+<li>客户端（sys用户）只能在远程数据库启动的情况下连接上，远程数据库关闭时客户端连接不上远程数据库。</li>
+</ol>
+<p>有一个LREG进程监听轮询服务， LREG会每60秒尝试注册。监听起是起来了，但是找不到服务</p>
+<p>【小姐上班了，但不知道里面有啥业务，隔一会进去看一下业务，发现有数据库业务】</p>
+<h5 id="静态注册">静态注册/</h5>
+<ol>
+<li>
+<p>静态注册（unknown）：表现为数据库一启动就注册服务，就可以连</p>
+</li>
+<li>
+<p>如果知道数据库的信息，可以先在监听文件里面配置好要监听的数据库的实例名instance，并配置服务名server，这就是静态监听。</p>
+</li>
+<li>
+<p>这个监听服务器是由监听程序发起的，所以状态一直是UNKNOWN。这时监听器用来表明它不知道关于该实例的任何信息，只有当客户发出连接请求时，它才检查该实例是否存在。且数据库关闭后这个监听还会存在。</p>
+</li>
+<li>
+<p>静态注册：无论远程数据库处于开启还是关闭状态，客户端（sys用户）都可连接上。</p>
+<p>换一句换说静态注册可以在客户端控制服务器端数据库的启停，而动态注册则不可以。（动态注册的监听在实例关闭时会被注销）。数据库关闭的状态下，只有sys用户可连入数据库，其他用户不可连入。</p>
+</li>
+</ol>
+<p>【小姐上班，翻一翻手册，就知道有数据库这个业务】</p>
+<h5 id="如何配置静态注册">如何配置静态注册</h5>
+<p>admin之下 cat listener.ora</p>
+<p>动态注册长这样（没有指定数据库服务）</p>
+<img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326134947000.png" alt="image-20200326134947000" style="zoom:67%;">
+<p>静态长这样（指定了数据库服务名）</p>
+<img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326135317633.png" alt="image-20200326135317633" style="zoom:67%;">
+<p>同时存在？？？</p>
+<p>admin之下，export DISPLAY，netmgr</p>
+<img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326135131112.png" alt="image-20200326135131112" style="zoom:67%;">
+<p>SID：启动数据库实例的服务</p>
+<p>SIDXDB：高效处理XML数据的服务，默认会占用8080端口。</p>
+<p>监听器启动，需要一个参数，指定参数文件（listener.ora）</p>
+<p><img src="/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/image-20200326102538205-1586189129451.png" alt="image-20200326102538205"></p>
+<ul>
+<li>
+<p>用lsnrctl start命令启动oracle监听器</p>
+</li>
+<li>
+<p>在启动、关闭或者重启oracle监听器之前确保使用lsnrctl status命令检查oracle监听器的状态。</p>
+</li>
+<li>
+<p>lsnrctl stop 关闭所有的监听器</p>
+</li>
+<li>
+<p>snrctl stop [listener-name]  指定要关闭的监听器的名字</p>
+</li>
+<li>
+<p>lsnrctl reload重启监听器，此命令可以代替lsnrctl stop和lsnrctl start。</p>
+<p>重启将会在不需要关闭和启动监听器的情况下读取listener.ora的配置。</p>
+</li>
+</ul>
+<h5 id="连接connection和会话session">连接connection和会话session</h5>
+<p>用户进程找到服务器进程 – <strong>连接</strong>【找到这个办事的人】【到银行取钱，首先要知道银行在哪】</p>
+<p>服务进程去处理、干活 – <strong>会话</strong>【这个人去办事】</p>
+<h4 id="2-服务器进程">2. 服务器进程</h4>
+<p>==服务器进程用于访问instance，通过后台进程和数据库交互==</p>
+<p>服务器进程是用户进程的代理，帮忙做事</p>
+<p>接受用户进程的请求，访问Oracle服务器，把结果返回给用户进程</p>
+<p>eg 用户执行一条update语句</p>
+<ul>
+<li>首先，服务器进程看库缓存里有没有（之前有没有执行过这个语句）。如果做过，产生计划，则直接调用执行；没有的话，重新执行语句（语法分析等等）</li>
+<li>第二，先看要操作（增删改查）的这个对象定义在数据字典缓存中有没有，没有的话去数据文件中找；有则命中</li>
+<li>第三，看要改的数据在数据库高速缓存中有没有，有则直接修改；没有则从数据文件中调进来内存再改</li>
+<li>最后，改完要记日志到重做日志缓存中</li>
+<li>用户commit，服务器进程将发送信号给LGWR后台进程，将日志写入日志文件</li>
+<li>用户退出 / 做检查点，则发信号给DBWR后台进程，将脏数据写入数据文件</li>
+</ul>
+<h5 id="专用服务器进程">专用服务器进程</h5>
+<p>到netmgr中查看服务器类型</p>
+<p>【父母为我做饭，其他人饿了也不管】</p>
+<ul>
+<li>
+<p>专门为一个用户进程服务</p>
+</li>
+<li>
+<p>效率高，支持用户进程数量少</p>
+</li>
+<li>
+<p>适用：用户连接数 &lt; 200</p>
+</li>
+</ul>
+<h5 id="共享服务器进程">共享服务器进程</h5>
+<p>【去饭店吃饭，厨师为多个客户服务】</p>
+<ul>
+<li>
+<p>为多个用户进程共享</p>
+</li>
+<li>
+<p>效率低，支持用户进程数量多</p>
+</li>
+<li>
+<p>适用：200 - 3000个用户连接使用数</p>
+</li>
+</ul>
+<h5 id="池中服务器">池中服务器</h5>
+<p>【下课不是去学校外面饭店吃饭，饭店吃不消，去食堂】</p>
+<p>&gt;3000需要配置中间件（连接池）</p>
+<p>（web logic、IBM的sphere）</p>
+<h4 id="3-常见后台进程">3. 常见后台进程</h4>
+<p>Linux查看进程命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef |grep ora</span><br></pre></td></tr></table></figure>
+<h5 id="PMON">PMON</h5>
+<p>process monitor （用户）进程监视器进程</p>
+<p>PMON进行处理用户进程的异常（终止）</p>
+<p>轮询方式（工作机制具体不用了解）</p>
+<p>eg 用户update后，直接点了右上角×，异常终止，需要这个进程处理未完成的事务</p>
+<h5 id="SMON">SMON</h5>
+<p>system monitor，用来监视instance</p>
+<p>解决例程恢复</p>
+<p>eg update后机器重启了，脏数据未写盘</p>
+<p>采用先记日志的形式，数据未写盘，但日志写进日志文件了</p>
+<p>smon就会用日志进行恢复（例程恢复：东西在内存中丢掉了）</p>
+<h5 id="DBWR">DBWR</h5>
+<p>db writer 数据库书写器进程</p>
+<p>把数据库高速缓存写入数据文件中</p>
+<h5 id="LGWR">LGWR</h5>
+<p>log writer 日志书写器进程</p>
+<p>将重做日志高速缓存写入重做日志中（介质中）</p>
+<h5 id="CKPT">CKPT</h5>
+<p>checkpoint 检查点进程</p>
+<p>数据库（文件）和1min前不一样，由于scn号不同</p>
+<h5 id="其他后台进程">其他后台进程</h5>
+<p>查数据字典 v$bgprocess（正在运行的）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">type</span> <span class="keyword">from</span> v$bgprocess;</span><br></pre></td></tr></table></figure>
+<p>不需要把所有都搞清楚</p>
+<p>还有归档进程</p>
+<h4 id="ps：SCN">ps：SCN</h4>
+<p>system change number 系统改变号</p>
+<p>checkpoint_change# 检查点号（#代表号的意思）</p>
+<p>和时间相关的单调递增的序列，用scn号表示数据的某个状态</p>
+<p>恢复数据库时，把数据库推到任意一点的scn？？？</p>
+<ul>
+<li>过分强调运动的绝对性，导致不可知论【我不是刚刚的我】</li>
+<li>做研究需要承认相对静止【收电费，电表一直走，没法收费了，所以抄表（做检查点，相对静止点）】</li>
+</ul>
+<p>scn【电表的实时读数】一定大于等于checkpoint_change【抄表时的读数】</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> current_scn,checkpoint_change<span class="comment"># from v$database;</span></span><br><span class="line"><span class="keyword">select</span> dbms_flashback.get_system_change_number <span class="keyword">from</span> dual;</span><br></pre></td></tr></table></figure>
+<p>做检查点时，使用最新的scn号刷新检查点号</p>
+<p><strong>数据文件、日志文件、控制文件都有SCN号</strong></p>
+<p>eg</p>
+<p>写脏数据之前要写重做日志，如果在写完重做日志后，写脏数据之前例程故障（断电）</p>
+<p>日志文件SCN = 20000，数据文件SCN = 19000</p>
+<p>则只需要从19000开始恢复即可，重新做一遍</p>
+<h4 id="检查点">检查点</h4>
+<p>Q：数据库和五分钟前一样不一样？A：scn肯定不一样</p>
+<p>检查点分为：</p>
+<p>系统检查点</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> checkpoint_change<span class="comment"># from v$database;</span></span><br></pre></td></tr></table></figure>
+<p>数据文件检查点</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">file</span><span class="comment">#,checkpoint_change#,last_change# from v$datafile;</span></span><br></pre></td></tr></table></figure>
+<p>数据文件头检查点</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">file</span><span class="comment">#,checkpoint_change# from v$datafile_header;</span></span><br></pre></td></tr></table></figure>
+<p>这三个检查点都记录在控制文件中，因此数据库必须是mount状态</p>
+<p>以上三个checkpoint_change#要一致(只读、脱机表空间除外)，数据库才能正常打开。</p>
+<p>否则会需要进行一步的处理。</p>
+<p>正常关库时，会生成新的检查点，写入上述三个checkpoint_change#</p>
+<p>同时数据文件中的last_change#也会记录下该检查点，也就是说三个checkpoint_change#与last_change#记录着同一个值。</p>
+<p>数据库打开前，先确定是否介质恢复，再确定是否实例恢复。</p>
+<p>介质恢复主要是更新旧的文件，而实例恢复主要是更新内存。</p>
+<p>如果last_change#值为空，则说明需要进行实例恢复，恢复后的数据库才能打开。</p>
+<p>checkpoint_change#、last_change#实际上全部来自于SCN</p>
+<p>ps：关数据库时，mount到nomount时，需要访问控制文件写信息<br>
+（如果在open的时候把控制文件改名，则无法关闭）</p>
+<h5 id="自己做的实验">自己做的实验</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">shutdown immediate </span><br><span class="line">startup mount </span><br><span class="line"><span class="comment">-- 正常情况，此时3个检查点一致</span></span><br><span class="line"><span class="comment">-- 可以用上面3个sql验证</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>;</span><br></pre></td></tr></table></figure>
+<p>数据库成功打开后，数据文件中的last_change#会被清空。正常关库时，再重新下最后的检查点。</p>
+<p>shutdown abort关库，这个值是空的，此时数据库需要进行实例恢复（不需要用户干预），恢复后数据库才正常打开。</p>
+<h5 id="手动做检查点">手动做检查点</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> checkpoint;</span><br></pre></td></tr></table></figure>
+<h5 id="做检查点的作用">做检查点的作用</h5>
+<ol>
+<li>同步所有的<strong>数据文件</strong></li>
+</ol>
+<p>查找数据文件的检查点号</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,checkpoint_change<span class="comment"># from v$datafile;</span></span><br></pre></td></tr></table></figure>
+<p>所有的数据文件必须处于一致性状态</p>
+<p>如果有一个数据文件的SCN号比当前的checkpoint小，则说明这个数据文件太旧，需要进行介质恢复了</p>
+<ol start="2">
+<li>同步所有的<strong>控制文件</strong></li>
+</ol>
+<p>控制文件检查点号，和v$database中的checkpoint_change#一样</p>
+<p>因为这个视图中的检查点信息，就是来自控制文件的。。。</p>
+<p>控制文件太旧？？？</p>
+<ol start="3">
+<li>发送信号<strong>通知DBWR写盘</strong></li>
+</ol>
+<p>做检查点时要将数据库高速缓存中的脏数据写盘</p>
+<p>==例程恢复，根据检查点号来==，直接从最近的检查点开始恢复</p>
+<h5 id="检查点的间隔时间">检查点的间隔时间</h5>
+<p>长/短好：根据业务需求设置</p>
+<ul>
+<li>短：减少例程的恢复时间，但检查点是IO密集型事件，性能下降【打字每隔1s保存一次，很难受】</li>
+<li>长：与短相反</li>
+</ul>
+<p>【希望多长时间恢复正常卖票】：5min</p>
+<p>通过初始化参数设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">show parameter mttr</span><br><span class="line">-- fast_start_mttr_target</span><br><span class="line">-- instance 启动时进行初始化配置的文件</span><br><span class="line">-- 0：代表禁用自动checkpoint</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> fast_start_mttr_target=<span class="number">300</span>;</span><br></pre></td></tr></table></figure>
+<p>不是绝对的300s保存一次，出了问题恢复数据不能超过的时间</p>
+<p>数据库一直在操作，如果不写盘，出问题时要redo</p>
+<p>如果恢复这些数据的时间大于300s时，系统自动做一次检查点（写盘）</p>
+<p>【打字快的人，保存的要频繁一些】</p>
+<h5 id="查看数据库恢复时间">查看数据库恢复时间</h5>
+<p>问题：做了一次检查点之后，几乎没有做任何操作，现在这个数据库挂了，恢复需要多长时间？</p>
+<p>小于等于300，不知道，查数据字典</p>
+<p>用户一直在操作，产生的脏数据越来越多，只有日志写盘，脏数据还在数据库高速缓存中</p>
+<p>如果按照估算，按照日志恢复这些数据的时间超过300s，则做checkpoint</p>
+<p>estimated_mttr：后台进程监视，这个值达到300时自动checkpoint</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> estimated_mttr <span class="keyword">from</span> v$instance_recovery;</span><br></pre></td></tr></table></figure>
+<h2 id="database">database</h2>
+<p>数据库 == 文件的集合</p>
+<p>核心为数据文件（dbf），其他为辅助</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br></pre></td></tr></table></figure>
+<p>文件 == 代码 + 数据（系统数据 + 用户数据）==数据字典 == 系统数据 == 数据目录 == 元数据==</p>
+<ul>
+<li>Oracle内部文件 - 灰色，Oracle自己管理，都带SCN号（不能拷出去拷回来）</li>
+<li>Oracle外部文件 - 蓝色，也是Oracle文件，没有SCN号，但是性质等同于OS的文件，dba管理</li>
+</ul>
+<h3 id="数据文件">数据文件</h3>
+<p>系统文件 + 用户文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">datafile</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="控制文件">控制文件</h3>
+<p>记录整个数据库的状态</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$<span class="keyword">controlfile</span>;</span><br></pre></td></tr></table></figure>
+<p>控制文件，不能拷出来，再拷回去</p>
+<p>这个文件是有checkpoint（SCN号）的，自带时钟，和时间有关系，拷出拷进会导致和其他文件的不一致</p>
+<p>这个文件是由Oracle处理的</p>
+<p>区分控制文件复用的情形？？？</p>
+<h3 id="（联机）重做日志文件">（联机）重做日志文件</h3>
+<p>联机和归档相对</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$<span class="keyword">logfile</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="参数文件">参数文件</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show parameter</span><br><span class="line">-- 显示全部的初始化参数</span><br></pre></td></tr></table></figure>
+<p>内部有初始化参数</p>
+<p>用户不去修改，永远不会变</p>
+<h3 id="口令文件">口令文件</h3>
+<p>验证机制：Oracle数据库完全信任OS，能访问操作系统就能访问数据库？？？</p>
+<p>随意写用户名和口令，甚至都没有，都可以连上数据库</p>
+<p>不用操作系统验证，改用口令验证方式，需要创建password file？？？</p>
+<h3 id="归档日志文件">归档日志文件</h3>
+<p>重要</p>
+<h3 id="Oracle日志工作体系">Oracle日志工作体系</h3>
+<ul>
+<li>开用户进程做事务时（Transaction1），服务器进程（server process）把T1作为一个条目，放到重做日志缓存中</li>
+<li>commit后，发送信号，通知日志书写器（LGWR）将【重做日志缓存数据】写到联机重做日志【当前组文件】中</li>
+<li>联机重做日志文件以日志组形式管理</li>
+</ul>
+<h4 id="查日志组">查日志组</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#,sequence#,status from v$log;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>3个日志文件组</li>
+<li>group# 组号，sequence# 当前序列号</li>
+<li>status - current/active/inactive</li>
+<li>谁是current往谁里写</li>
+</ul>
+<h4 id="查具体的日志文件">查具体的日志文件</h4>
+  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">group</span><span class="comment">#, member from v$logfile;</span></span><br></pre></td></tr></table></figure>
+<p>文件满了之后，自动切换日志组（组内文件互为镜像），对于切换到的新的日志组里原来的文件怎么办，取决于数据库的日志模式</p>
+<h4 id="查数据库日志模式">查数据库日志模式</h4>
+<p>两种方法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>, log_mode <span class="keyword">from</span> v$<span class="keyword">database</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">archive log list</span><br><span class="line"></span><br><span class="line">Database log mode              Archive Mode</span><br><span class="line">Automatic archival             Enabled</span><br><span class="line">Archive destination            /u01/arch/2</span><br><span class="line">Oldest online log sequence     8</span><br><span class="line">Next log sequence to archive   10 <span class="comment">-- 下一个要被归档的日志（组？？？</span></span><br><span class="line">Current log sequence           10</span><br></pre></td></tr></table></figure>
+<ol>
+<li>非归档模式（noarchivelog）：直接覆盖原来的日志文件【旧书直接扔掉】</li>
+<li>归档模式：覆盖之前，先把原来的日志放在归档日志文件中【旧书转移到档案馆里，给新书腾出位置】</li>
+</ol>
+<p>切换日志文件，循环工作方式（组1 - 组2 - 组3 - 组1。。。）</p>
+<p>sequence#序列号是递增的（resetlog？？？）</p>
+<h4 id="手动切换日志组">手动切换日志组</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">switch</span> <span class="keyword">logfile</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="查询归档日志">查询归档日志</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> v$archived_log;</span><br><span class="line"><span class="comment">-- 非归档模式，没有归档文件（no rows selected）</span></span><br></pre></td></tr></table></figure>
+<h4 id="切换数据库归档模式">切换数据库归档模式</h4>
+<p>==在数据库的mount阶段敲==</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">shutdown immediate</span><br><span class="line">startup mount</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">archivelog</span>;</span><br><span class="line"><span class="comment">--alter database noarchivelog;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">database</span> <span class="keyword">open</span>; <span class="comment">-- 再将数据库打开</span></span><br></pre></td></tr></table></figure>
+<h4 id="手动归档当前日志">手动归档当前日志</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">archive</span> <span class="keyword">log</span> <span class="keyword">current</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="如何管理">如何管理</h4>
+<p>联机重做日志文件由Oracle管理，归档日志由dba管理</p>
+<p>当归档日志太多的时候，就做一个整库备份【设置一个基线】，之前的归档日志文件就不需要了</p>
+
+    </div>
+
+    
+    
+    
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+-------------------------- the end~ &nbsp;&nbsp;
+<i class="fa fa-heart-o" aria-hidden="true"></i>
+ thanks for your reading~ --------------------------
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>zhx
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/03/13/Oracle/Oracle%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%B6%E6%9E%84/" title="Oracle 服务器架构">http://yoursite.com/2020/03/13/Oracle/Oracle服务器架构/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/10/Oracle/OracleSQL_part2/" rel="prev" title="Oracle SQL_part2">
+      <i class="fa fa-chevron-left"></i> Oracle SQL_part2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/17/Oracle/Oracle%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="next" title="Oracle 零碎知识点">
+      Oracle 零碎知识点 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Oracle-instance"><span class="nav-text">Oracle instance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存结构"><span class="nav-text">内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SGA"><span class="nav-text">SGA</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-共享池"><span class="nav-text">1 共享池</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#a-库缓存：存放代码"><span class="nav-text">a 库缓存：存放代码</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#b-数据字典缓存：存放系统数据"><span class="nav-text">b 数据字典缓存：存放系统数据</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-数据库高速缓存池：存放用户数据"><span class="nav-text">2 数据库高速缓存池：存放用户数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-事务"><span class="nav-text">2.5 事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-重做日志缓存池"><span class="nav-text">3 重做日志缓存池</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#重做日志缓冲区的内容"><span class="nav-text">重做日志缓冲区的内容</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#lgwr进程"><span class="nav-text">lgwr进程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#触发LGWR开始工作的动作"><span class="nav-text">触发LGWR开始工作的动作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PGA"><span class="nav-text">PGA</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程"><span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-用户进程"><span class="nav-text">1. 用户进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务名（发连接请求）"><span class="nav-text">服务名（发连接请求）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#tnsping"><span class="nav-text">tnsping</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监听器（监听连接请求）"><span class="nav-text">监听器（监听连接请求）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是注册"><span class="nav-text">什么是注册</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态注册lsnrctl-status"><span class="nav-text">动态注册lsnrctl status</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#静态注册"><span class="nav-text">静态注册&#x2F;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何配置静态注册"><span class="nav-text">如何配置静态注册</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#连接connection和会话session"><span class="nav-text">连接connection和会话session</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-服务器进程"><span class="nav-text">2. 服务器进程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#专用服务器进程"><span class="nav-text">专用服务器进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#共享服务器进程"><span class="nav-text">共享服务器进程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#池中服务器"><span class="nav-text">池中服务器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-常见后台进程"><span class="nav-text">3. 常见后台进程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PMON"><span class="nav-text">PMON</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SMON"><span class="nav-text">SMON</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DBWR"><span class="nav-text">DBWR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LGWR"><span class="nav-text">LGWR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CKPT"><span class="nav-text">CKPT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他后台进程"><span class="nav-text">其他后台进程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ps：SCN"><span class="nav-text">ps：SCN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检查点"><span class="nav-text">检查点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#自己做的实验"><span class="nav-text">自己做的实验</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#手动做检查点"><span class="nav-text">手动做检查点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#做检查点的作用"><span class="nav-text">做检查点的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检查点的间隔时间"><span class="nav-text">检查点的间隔时间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看数据库恢复时间"><span class="nav-text">查看数据库恢复时间</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#database"><span class="nav-text">database</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据文件"><span class="nav-text">数据文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制文件"><span class="nav-text">控制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#（联机）重做日志文件"><span class="nav-text">（联机）重做日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数文件"><span class="nav-text">参数文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#口令文件"><span class="nav-text">口令文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归档日志文件"><span class="nav-text">归档日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle日志工作体系"><span class="nav-text">Oracle日志工作体系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查日志组"><span class="nav-text">查日志组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查具体的日志文件"><span class="nav-text">查具体的日志文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查数据库日志模式"><span class="nav-text">查数据库日志模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动切换日志组"><span class="nav-text">手动切换日志组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询归档日志"><span class="nav-text">查询归档日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切换数据库归档模式"><span class="nav-text">切换数据库归档模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#手动归档当前日志"><span class="nav-text">手动归档当前日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何管理"><span class="nav-text">如何管理</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="zhx"
+      src="/images/avatar/yeah.jpg">
+  <p class="site-author-name" itemprop="name">zhx</p>
+  <div class="site-description" itemprop="description">中国南京 东南大学 软件学院</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xiangxiang-cpu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xiangxiang-cpu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:harrison_zhanghx@foxmail.com" title="E-Mail → mailto:harrison_zhanghx@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/2284648070" title="QQ 2284648070 → 2284648070"><i class="fa fa-qq fa-fw"></i>QQ 2284648070</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13182988567" title="weixin 13182988567 → 13182988567"><i class="fa fa-weixin fa-fw"></i>weixin 13182988567</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://creeper121386.github.io/" title="https:&#x2F;&#x2F;creeper121386.github.io" rel="noopener" target="_blank">WHY's blog</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-music"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhx</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+
+  <!-- 鼠标效果 -->
+  
+
+
+  <!-- 动态背景 -->
+  
+</body>
+</html>
+
