@@ -6754,6 +6754,7 @@ D. 用户提交事务处理时的一条提交记录(经常commit会及时刷新�
 <li>否则就给权限：右键属性 - 安全 - Users的都勾上允许</li>
 </ul>
 <h3 id="环境变量">环境变量</h3>
+<p>win下，用set命令即可看到所有环境变量</p>
 <p>用conda prompt就不用配了？</p>
 <p>所有命令的帮助，可以用</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda [命令] -h</span><br></pre></td></tr></table></figure>
@@ -6764,6 +6765,7 @@ D. 用户提交事务处理时的一条提交记录(经常commit会及时刷新�
 <p>用来生成.condarc文件</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda config --set show_channel_urls yes</span><br></pre></td></tr></table></figure>
 <h4 id="添加下载源">添加下载源</h4>
+<p>==记得把-default删掉！==</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;main&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;pkgs&#x2F;free&#x2F;</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;conda-forge</span><br><span class="line">conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;msys2&#x2F;</span><br></pre></td></tr></table></figure>
 <p>add是添加到最上面。当有多个源时，也可以用这条语句来调整位置</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(base) C:\Users\zhx&gt;conda config --add channels https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;msys2&#x2F;</span><br><span class="line">Warning: &#39;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;msys2&#x2F;&#39; already in &#39;channels&#39; list, moving to the top</span><br></pre></td></tr></table></figure>
@@ -6808,8 +6810,86 @@ D. 用户提交事务处理时的一条提交记录(经常commit会及时刷新�
 </ul>
 <h4 id="安装包">安装包</h4>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install [包名]</span><br></pre></td></tr></table></figure>
+<p>安装本地包，需要进入whl文件的路径，然后用pip安装，不能用conda</p>
 <h4 id="删除包">删除包</h4>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda remove -n [环境名] [包名]</span><br></pre></td></tr></table></figure>
+<h2 id="概念">概念</h2>
+<p><a href="https://blog.csdn.net/weixin_58283091/article/details/133349022" target="_blank" rel="noopener">https://blog.csdn.net/weixin_58283091/article/details/133349022</a></p>
+<p>显卡驱动 → CUDA → CUDA Toolkit → cuDNN → Pytorch</p>
+<p>即显卡（驱动）决定了CUDA版本，CUDA版本决定了CUDA Toolkit、cuDNN、Pytorch、torch-vision各自的版本</p>
+<p><a href="https://zhuanlan.zhihu.com/p/669089641" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/669089641</a></p>
+<ol>
+<li>CUDA：并行计算的基础架构</li>
+<li>CUDA Toolkit：用于CUDA开发的软件包</li>
+<li>cuDNN（CUDA Deep Neural Network library）：用于深度学习的GPU加速库</li>
+<li>Pytorch：机器学习框架</li>
+</ol>
+<h3 id="查看版本">查看版本</h3>
+<p><strong>驱动</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Driver Version: 546.33</li>
+<li>CUDA Version: 12.3（本机最高支持的CUDA版本）</li>
+</ul>
+<p><strong>CUDA</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nvcc -V</span><br></pre></td></tr></table></figure>
+<p>其余都是python包</p>
+<p><strong>cuDNN</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.0\include\cudnn.h</span><br><span class="line"></span><br><span class="line"># DEFINE CUDNN_MAJOR之类的就是版本号</span><br></pre></td></tr></table></figure>
+<p>使用 PyTorch 查看 CUDA 和 cuDNN 版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import torch</span><br><span class="line">print(torch.__version__)</span><br><span class="line"></span><br><span class="line">print(torch.version.cuda)</span><br><span class="line">print(torch.backends.cudnn.version())</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.cnblogs.com/wuliytTaotao/p/11453265.html#%E6%9F%A5%E7%9C%8B-cudnn-%E7%89%88%E6%9C%AC-1" target="_blank" rel="noopener">https://www.cnblogs.com/wuliytTaotao/p/11453265.html#查看-cudnn-版本-1</a></p>
+<h3 id="版本对应关系">版本对应关系</h3>
+<p>pytorch和以及cuda对应表</p>
+<p><a href="https://blog.csdn.net/FL1768317420/article/details/134769203" target="_blank" rel="noopener">https://blog.csdn.net/FL1768317420/article/details/134769203</a></p>
+<p><a href="https://blog.csdn.net/shiwanghualuo/article/details/122860521" target="_blank" rel="noopener">https://blog.csdn.net/shiwanghualuo/article/details/122860521</a></p>
+<p>很好的安装教程：<a href="https://blog.csdn.net/2302_76726543/article/details/134722054" target="_blank" rel="noopener">https://blog.csdn.net/2302_76726543/article/details/134722054</a></p>
+<h2 id="CUDA安装">CUDA安装</h2>
+<p>win11只能装11.6之上的版本，更低版本那会win11还没出（</p>
+<p>如果版本安装错了要卸载：把以下东西都卸掉，CUDA文件夹下V11.6文件夹删除就好</p>
+<p><img src="/2020/07/14/Research/pip%E3%80%81conda%E3%80%81anaconda/image-20240123210101750.png" alt="image-20240123210101750"></p>
+<p>不行的话尝试：<a href="https://www.zhihu.com/tardis/bd/art/609847842?source_id=1001" target="_blank" rel="noopener">https://www.zhihu.com/tardis/bd/art/609847842?source_id=1001</a></p>
+<h2 id="cuDNN安装">cuDNN安装</h2>
+<p>要自己注册英伟达账户 才能下载</p>
+<p>从官网https://developer.nvidia.com/rdp/cudnn-archive，下载对应版本的cudnn</p>
+<p>解压后，把里面cudnn中的include，lib，bin文件夹里面的所有文件分别复制到</p>
+<p>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.6文件 对应的include，lib，bin文件里面</p>
+<h2 id="百度OCR">百度OCR</h2>
+<p>保证已经安装了CUDA和cuDDN</p>
+<p>并且手动安装了正确版本的pytorch和torchvision，否则会报错，后缀要有+cu113之类的才是gpu版本</p>
+<h3 id="Step-1：安装paddlepaddle">Step 1：安装paddlepaddle</h3>
+<p><a href="https://www.paddlepaddle.org.cn/" target="_blank" rel="noopener">https://www.paddlepaddle.org.cn/</a></p>
+<p><img src="/2020/07/14/Research/pip%E3%80%81conda%E3%80%81anaconda/image-20240123203337690.png" alt="image-20240123203337690"></p>
+<p>记得选对CUDA版本</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">conda install paddlepaddle-gpu&#x3D;&#x3D;2.6.0 cudatoolkit&#x3D;11.6 -c https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;anaconda&#x2F;cloud&#x2F;Paddle&#x2F; -c conda-forge</span><br></pre></td></tr></table></figure>
+<p>这条命令顺便安装CUDA Toolkit和cuDNN</p>
+<h3 id="Step-2：安装Shapely">Step 2：安装Shapely</h3>
+<p><a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely</a></p>
+<p><img src="/2020/07/14/Research/pip%E3%80%81conda%E3%80%81anaconda/image-20240123204510643.png" alt="image-20240123204510643"></p>
+<p>找好对应python版本的包，进到whl所在的目录，本地安装</p>
+<p>这里也是只能用pip，不能用conda，为什么？</p>
+<h3 id="Step-3：安装PaddleOCR">Step 3：安装PaddleOCR</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install paddleocr</span><br></pre></td></tr></table></figure>
+<p>不知道为啥conda安不上，pip可以</p>
+<h3 id="报错记录">报错记录</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">The GPU architecture in your current machine is Ampere, which is not compatiable</span><br></pre></td></tr></table></figure>
+<p>CUDA版本太旧（20系是Turing，30 40都是Ampere）</p>
+<p>解决方法：整套重新装</p>
+<p><img src="/2020/07/14/Research/pip%E3%80%81conda%E3%80%81anaconda/image-20240123213114949.png" alt="image-20240123213114949"></p>
+<p>这不对</p>
+<p><img src="/2020/07/14/Research/pip%E3%80%81conda%E3%80%81anaconda/image-20240123213127001.png" alt="image-20240123213127001"></p>
+<p>这才对</p>
+<p>运行起来可能会报各种ModuleNotFoundError，比如decorator、idna</p>
+<p>解决方法：用本地安装的paddlepaddle-gpu有问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">InvalidMatchSpec: Invalid spec &#39;paddlepaddle-gpu[url&#x3D;file:&#x2F;&#x2F;&#x2F;C:&#x2F;Users&#x2F;zhx&#x2F;Py</span><br></pre></td></tr></table></figure>
+<p>decorator手动装上不报错，但idna本身在conda list里，还报错。所以remove掉重装</p>
+<p>后面还报了两个包：urllib3.exception和You need either charset normalizer or chardet installed</p>
+<p>remove掉urllib3的时候，自动帮忙把exception补全了？？</p>
+<p>手动装了chardet，成功运行！</p>
+<p>但还是报了个错</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">TypeError: &#39;&lt;&#39; not supported between instances of &#39;tuple&#39; and &#39;float&#39;</span><br></pre></td></tr></table></figure>
+<p>示例代码太旧的原因，在新版本PaddleOCR上运行会报错</p>
+<p><a href="https://blog.csdn.net/Blackrosetian/article/details/130386122" target="_blank" rel="noopener">https://blog.csdn.net/Blackrosetian/article/details/130386122</a></p>
 ]]></content>
       <categories>
         <category>Research</category>
